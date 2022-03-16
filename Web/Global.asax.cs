@@ -14,7 +14,7 @@ namespace Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             DatabaseConfig.ReadFromConfigFile("MovieDB");
             DatabaseConfig.OtherSettings();
-            MigrationConfig.Migrate();
+            //MigrationConfig.Migrate();
             EmailConfig.RegisterEmail();
         }
 

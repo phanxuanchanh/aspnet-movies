@@ -48,6 +48,7 @@
     <Compile Include="BLL\CountryBLL.cs" />
     <Compile Include="BLL\DirectorBLL.cs" />
     <Compile Include="BLL\FilmBLL.cs" />
+    <Compile Include="BLL\Installation\DBInstallation.cs" />
     <Compile Include="BLL\LanguageBLL.cs" />
     <Compile Include="BLL\Migration\UserMigration.cs" />
     <Compile Include="BLL\TagBLL.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{2bafd121-9a00-48e8-921a-fb250b8f81ca}</Project>

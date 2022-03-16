@@ -1715,7 +1715,7 @@
     <Content Include="account_assets\fonts\fontawesome\webfonts\fa-regular-400.svg" />
     <Content Include="account_assets\fonts\fontawesome\webfonts\fa-solid-900.svg" />
     <Content Include="account_assets\images\favicon.png" />
-    <Content Include="account_assets\videos\Loki_OfficalTrailer.mp4" />
+    <Content Include="account_assets\videos\Puples-33590.mp4" />
     <Content Include="Admin\CastManagement\CastDetail.aspx" />
     <Content Include="Admin\CastManagement\CastList.aspx" />
     <Content Include="Admin\CastManagement\CreateCast.aspx" />
@@ -1772,6 +1772,8 @@
     <Content Include="admin_assets\js\jquery.js" />
     <Content Include="FileUpload\Images\Default\default.png" />
     <Content Include="FileUpload\Videos\Default\default.mp4" />
+    <Content Include="Install\Index.aspx" />
+    <Content Include="Install\Movie.sql" />
     <Content Include="User\CategoryList.aspx" />
     <Content Include="User\FilmDetail.aspx" />
     <Content Include="User\FilmsByCategory.aspx" />
@@ -2253,6 +2255,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Install\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\UserSession.cs" />

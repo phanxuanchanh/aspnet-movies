@@ -80,6 +80,8 @@ namespace Web.App_Start
             routes.MapPageRoute("User_FilmsByCategory_Lite", "lite-version/films-by-category/{slug}/{id}", "~/User/LiteVersion/FilmsByCategoryLite.aspx");
 
             routes.MapPageRoute("Notification_Error", "notification/error", "~/Notification/Error.aspx");
+
+            routes.MapPageRoute("Install", "install/run-setup", "~/Install/Index.aspx");
         }
     }
 }
