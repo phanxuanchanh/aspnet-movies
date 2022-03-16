@@ -1,0 +1,724 @@
+﻿@import url('common.css');
+
+.background-video {
+    position: absolute;
+    right: 0%;
+    bottom: 0px;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.audio-tool {
+    position: absolute;
+}
+
+.space {
+    background-color: rgb(0, 200, 0);
+    float: left;
+}
+
+.audio-control {
+    float: right;
+}
+
+    .audio-control i {
+        text-align: left;
+    }
+
+    .audio-control:hover {
+        display: block;
+        background-color: rgb(40, 40, 40);
+    }
+
+        .audio-control:hover i {
+            color: rgb(255, 255, 255);
+        }
+
+.account-form {
+    background-color: rgba(0, 0, 0, 1);
+    position: absolute;
+}
+
+.account-form-title {
+    color: rgb(255, 255, 255);
+}
+
+    .account-form-title h3 {
+        text-transform: uppercase;
+    }
+
+.account-form-data {
+    float: left;
+    position: relative;
+}
+
+    .account-form-data input {
+        border: none;
+        position: relative;
+        border-radius: 3px;
+    }
+
+.show-error {
+    position: absolute;
+}
+
+.show-error-item {
+    float: left;
+}
+
+    .show-error-item span {
+        color: rgb(255, 0, 0);
+    }
+
+.account-form-submit {
+    float: right;
+    position: relative;
+}
+
+.button-login {
+    font-weight: bold;
+    position: relative;
+}
+
+.account-form-support {
+    position: absolute;
+/*    color: rgb(255, 255, 255);*/
+    white-space: nowrap;
+}
+
+    .account-form-support span {
+        display: inline-block;
+    }
+
+        .account-form-support span a {
+            text-decoration: none;
+            color: rgb(255, 255, 255);
+        }
+
+.notify {
+    background-color: rgba(40, 40, 40, 0.4);
+    position: absolute;
+}
+
+.notify-title h3 {
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+}
+
+.notify-item {
+    color: rgb(255, 255, 255);
+}
+
+.video-info {
+    background-color: rgba(40, 40, 40, 0.4);
+    position: absolute;
+    border-radius: 3px;
+}
+
+    .video-info h3 {
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+    }
+
+    .video-info h4 {
+        color: rgb(255, 255, 255);
+    }
+
+    .video-info p {
+        color: rgb(255, 255, 255);
+    }
+
+.login-status {
+    background-color: rgba(40, 40, 40, 0.4);
+    position: absolute;
+    border-radius: 3px;
+}
+
+.login-status-space {
+    background-color: rgb(200, 0, 0);
+    float: left;
+}
+
+.login-status-message {
+    float: left;
+}
+
+    .login-status-message h3 {
+        color: rgb(255, 255, 255);
+        text-transform: uppercase;
+    }
+
+
+@media only screen and (max-width: 1920px) {
+    .audio-tool {
+        top: 10px;
+        left: 2%;
+        width: 5%;
+        height: 55px;
+    }
+
+    .space {
+        width: 4%;
+        height: 55px;
+    }
+
+    .audio-control {
+        width: 96%;
+        height: 55px;
+    }
+
+        .audio-control i {
+            font-size: 40px;
+            margin-left: 10%;
+            line-height: 55px;
+        }
+
+    .account-form {
+        width: 100%;
+        height: 225px;
+        bottom: 0px;
+        left: 0%;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .account-form-title {
+        width: 100%;
+        height: 50px;
+        margin: 5px 0% 0px 0%;
+    }
+
+        .account-form-title h3 {
+            margin: 0px 0% 0px 1%;
+        }
+
+        .account-form-title p {
+            margin: 0px 0% 0px 1%;
+        }
+
+    .account-form-data {
+        width: 80%;
+        height: 60px;
+    }
+
+        .account-form-data input {
+            width: 35% !important;
+            height: 35px !important;
+            top: calc(calc(60px /2) - (35px / 2));
+            margin-left: 5% !important;
+        }
+
+    .show-error {
+        width: 100%;
+        height: 35px;
+        top: 116px;
+    }
+
+    .show-error-item {
+        width: calc(35% / 1.25);
+        height: 35px;
+        margin-left: calc(5% / 1.25);
+    }
+
+        .show-error-item span {
+            margin: 0px;
+        }
+
+    .account-form-submit {
+        width: 20%;
+        height: 60px;
+    }
+
+    .button-login {
+        width: 60% !important;
+        height: 55px !important;
+        font-size: 20px;
+        top: calc(calc(60px / 2) - calc(55px / 2));
+        left: calc(calc(100% / 2) - calc(60%/ 2));
+    }
+
+    .account-form-support {
+        width: 98%;
+        height: 50px;
+        top: 152px;
+        margin-left: 0%;
+        margin-right: 2%;
+    }
+
+        .account-form-support span {
+            line-height: 50px;
+            margin-top: 0px;
+            margin-left: 1%;
+            margin-right: 30px;
+        }
+
+    .notify {
+        width: 40%;
+        height: 425px;
+        top: 25px;
+        right: 5%;
+        border-radius: 3px;
+    }
+
+    .notify-title {
+        width: 90%;
+        height: 50px;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+        .notify-title h3 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+    .notify-list {
+        width: 90%;
+        height: 375px;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .notify-item {
+        width: 100%;
+        height: 67.5px;
+        margin-bottom: 7.5px;
+    }
+
+        .notify-item h5 {
+            padding-top: 3px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 2%;
+        }
+
+        .notify-item p {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 2%;
+        }
+
+    .video-info {
+        width: 45%;
+        height: 170px;
+        top: 285px;
+        left: 5%;
+    }
+
+        .video-info h3 {
+            margin-left: 2%;
+        }
+
+        .video-info h4 {
+            margin-left: 2%;
+        }
+
+        .video-info p {
+            margin-left: 2%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+    .login-status {
+        width: 45%;
+        height: 55px;
+        top: 205px;
+        left: 5%;
+    }
+
+    .login-status-space {
+        width: 1.5%;
+        height: 55px;
+    }
+
+    .login-status-message {
+        width: 97.5%;
+        height: 55px;
+    }
+
+        .login-status-message h3 {
+            margin: 0px 0px 0px 2%;
+            line-height: 55px;
+        }
+}
+
+@media only screen and (max-width: 1024px) {
+
+
+    .audio-tool {
+        top: 10px;
+        left: 2%;
+        width: 7%;
+        height: 55px;
+    }
+
+    .space {
+        width: 4%;
+        height: 55px;
+    }
+
+    .audio-control {
+        width: 96%;
+        height: 55px;
+    }
+
+        .audio-control i {
+            font-size: 40px;
+            margin-left: 10%;
+            line-height: 55px;
+        }
+
+    .account-form {
+        width: 100%;
+        height: 225px;
+        bottom: 0px;
+        left: 0%;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .account-form-title {
+        width: 100%;
+        height: 50px;
+        margin: 5px 0% 0px 0%;
+    }
+
+        .account-form-title h3 {
+            margin: 0px 0% 0px 1%;
+        }
+
+        .account-form-title p {
+            margin: 0px 0% 0px 1%;
+        }
+
+    .account-form-data {
+        width: 80%;
+        height: 60px;
+    }
+
+        .account-form-data input {
+            width: 35% !important;
+            height: 35px !important;
+            top: calc(calc(60px / 2) - calc(35px / 2));
+            margin-left: 5% !important;
+        }
+
+    .show-error {
+        width: 100%;
+        height: 35px;
+        top: 116px;
+    }
+
+    .show-error-item {
+        width: calc(35% / 1.25);
+        height: 35px;
+        margin-left: calc(5% / 1.25);
+    }
+
+        .show-error-item span {
+            margin: 0px;
+        }
+
+    .account-form-submit {
+        width: 20%;
+        height: 60px;
+    }
+
+    .button-login {
+        width: 65% !important;
+        height: 55px !important;
+        font-size: 20px;
+        top: calc(calc(60px / 2) - calc(55px / 2));
+        left: calc(calc(100% / 2) - calc(65%/ 2));
+    }
+
+    .account-form-support {
+        width: 98%;
+        height: 50px;
+        top: 152px;
+        margin-left: 0%;
+        margin-right: 2%;
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+
+        .account-form-support::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+        }
+
+        .account-form-support::-webkit-scrollbar {
+            height: 4px;
+            width: 1px;
+            background-color: #F5F5F5;
+        }
+
+        .account-form-support::-webkit-scrollbar-thumb {
+            background-color: #000000;
+            border: 2px solid #555555;
+        }
+
+        .account-form-support span {
+            line-height: 50px;
+            margin-top: 0px;
+            margin-left: 1%;
+            margin-right: 30px;
+        }
+
+    .notify {
+        width: 40%;
+        height: 375px;
+        top: 40px;
+        right: 5%;
+    }
+
+    .notify-title {
+        width: 90%;
+        height: 50px;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+        .notify-title h3 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+    .notify-list {
+        width: 90%;
+        height: 305px;
+        margin-left: 5%;
+        margin-right: 5%;
+        overflow-x: none;
+        overflow-y: scroll;
+    }
+
+        .notify-list::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+        }
+
+        .notify-list::-webkit-scrollbar {
+            width: 1px;
+            background-color: #F5F5F5;
+        }
+
+        .notify-list::-webkit-scrollbar-thumb {
+            background-color: #000000;
+            border: 2px solid #555555;
+        }
+
+    .notify-item {
+        width: 100%;
+        height: 67.5px;
+        margin-bottom: 7.5px;
+    }
+
+        .notify-item h5 {
+            padding-top: 3px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 2%;
+        }
+
+        .notify-item p {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 2%;
+        }
+
+    .video-info {
+        width: 45%;
+        height: 170px;
+        top: 235px;
+        left: 5%;
+    }
+
+        .video-info h3 {
+            margin-left: 2%;
+        }
+
+        .video-info h4 {
+            margin-left: 2%;
+        }
+
+        .video-info p {
+            margin-left: 2%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+    .login-status {
+        width: 45%;
+        height: 55px;
+        top: 155px;
+        left: 5%;
+    }
+
+    .login-status-space {
+        width: 1.5%;
+        height: 55px;
+    }
+
+    .login-status-message {
+        width: 97.5%;
+        height: 55px;
+    }
+
+        .login-status-message h3 {
+            margin: 0px 0px 0px 2%;
+            line-height: 55px;
+        }
+}
+
+@media only screen and (max-width: 768px) {
+
+    .audio-tool {
+        top: 10px;
+        left: 2%;
+        width: 10%;
+        height: 55px;
+    }
+
+    .space {
+        width: 4%;
+        height: 55px;
+    }
+
+    .audio-control {
+        width: 96%;
+        height: 55px;
+    }
+
+        .audio-control i {
+            font-size: 40px;
+            margin-left: 10%;
+            line-height: 55px;
+        }
+
+    .account-form {
+        width: 100%;
+        height: 225px;
+        bottom: 0px;
+        left: 0%;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .account-form-title {
+        width: 100%;
+        height: 50px;
+        margin: 5px 0% 0px 0%;
+    }
+
+        .account-form-title h3 {
+            margin: 0px 0% 0px 1%;
+        }
+
+        .account-form-title p {
+            margin: 0px 0% 0px 1%;
+        }
+
+    .account-form-data {
+        width: 80%;
+        height: 60px;
+    }
+
+        .account-form-data input {
+            width: 35% !important;
+            height: 35px !important;
+            top: calc(calc(60px / 2) - calc(35px / 2));
+            margin-left: 5% !important;
+        }
+
+    .show-error {
+        width: 100%;
+        height: 35px;
+        top: 116px;
+    }
+
+    .show-error-item {
+        width: calc(35% / 1.25);
+        height: 35px;
+        margin-left: calc(5% / 1.25);
+    }
+
+        .show-error-item span {
+            margin: 0px;
+        }
+
+    .account-form-submit {
+        width: 20%;
+        height: 60px;
+    }
+
+    .button-login {
+        width: 70% !important;
+        height: 55px !important;
+        font-size: 18px;
+        top: calc(calc(60px / 2) - calc(55px / 2));
+        left: calc(calc(100% / 2) - calc(70%/ 2));
+    }
+
+    .account-form-support {
+        width: 98%;
+        height: 50px;
+        top: 152px;
+        margin-left: 0%;
+        margin-right: 2%;
+    }
+
+        .account-form-support p {
+            line-height: 50px;
+            margin-top: 0px;
+            margin-left: 1%;
+            margin-right: 30px;
+        }
+
+    .notify {
+        display: none;
+    }
+
+    .video-info {
+        width: 90%;
+        height: 170px;
+        top: 235px;
+        left: 5%;
+    }
+
+        .video-info h3 {
+            margin-left: 2%;
+        }
+
+        .video-info h4 {
+            margin-left: 2%;
+        }
+
+        .video-info p {
+            margin-left: 2%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+    .login-status {
+        width: 90%;
+        height: 55px;
+        top: 155px;
+        left: 5%;
+    }
+
+    .login-status-space {
+        width: 1.5%;
+        height: 55px;
+    }
+
+    .login-status-message {
+        width: 97.5%;
+        height: 55px;
+    }
+
+        .login-status-message h3 {
+            margin: 0px 0px 0px 2%;
+            line-height: 55px;
+        }
+}

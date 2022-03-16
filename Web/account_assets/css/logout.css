@@ -1,0 +1,136 @@
+﻿@import url('common.css');
+
+.logout-panel {
+    background-color: rgb(50, 50, 50);
+}
+
+.logout-panel-header h3 {
+    color: rgb(255, 255, 255);
+}
+
+.logout-panel-header hr {
+    border: 1px solid rgb(255, 255, 255);
+}
+
+.logout-panel-body p {
+    color: rgb(255, 255, 255);
+}
+
+.logout-panel-body p a {
+    color: rgb(255, 255, 255);
+}
+
+@media only screen and (max-width: 1920px) {
+    .logout-panel {
+        width: 60%;
+        height: 300px;
+        position: absolute;
+        top: 20px;
+        left: calc(calc(100% / 2) - (60% / 2));
+    }
+
+    .logout-panel-header {
+        width: 100%;
+        height: 45px;
+    }
+
+        .logout-panel-header h3 {
+            margin: 0px 0% 0px 1%;
+            padding-top: 5px;
+        }
+
+    .logout-panel-body {
+        width: 100%;
+        height: 200px;
+        position: relative;
+    }
+
+        .logout-panel-body p {
+            margin-left: 1%;
+            margin-top: 5px;
+        }
+
+    .button-logout {
+        width: 20%;
+        height: 45px;
+        position: absolute;
+        top: calc(calc(200px / 2) - calc(45px / 2));
+        left: calc(calc(100% / 2) - calc(20% / 2));
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .logout-panel {
+        width: 80%;
+        height: 300px;
+        position: absolute;
+        top: 20px;
+        left: calc(calc(100% / 2) - (80% / 2));
+    }
+
+    .logout-panel-header {
+        width: 100%;
+        height: 45px;
+    }
+
+        .logout-panel-header h3 {
+            margin: 0px 0% 0px 1%;
+            padding-top: 5px;
+        }
+
+    .logout-panel-body {
+        width: 100%;
+        height: 200px;
+    }
+
+        .logout-panel-body p {
+            margin-left: 1%;
+            margin-top: 5px;
+        }
+
+    .button-logout {
+        width: 20%;
+        height: 45px;
+        position: absolute;
+        top: calc(calc(200px / 2) - calc(45px / 2));
+        left: calc(calc(100% / 2) - calc(20% / 2));
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .logout-panel {
+        width: 100%;
+        height: 300px;
+        position: absolute;
+        top: 20px;
+        left: 0%;
+    }
+
+    .logout-panel-header {
+        width: 100%;
+        height: 45px;
+    }
+
+        .logout-panel-header h3 {
+            margin: 0px 0% 0px 1%;
+            padding-top: 5px;
+        }
+
+    .logout-panel-body {
+        width: 100%;
+        height: 200px;
+    }
+
+        .logout-panel-body p {
+            margin-left: 1%;
+            margin-top: 5px;
+        }
+
+    .button-logout {
+        width: 20%;
+        height: 45px;
+        position: absolute;
+        top: calc(calc(200px / 2) - calc(45px / 2));
+        left: calc(calc(100% / 2) - calc(20% / 2));
+    }
+}

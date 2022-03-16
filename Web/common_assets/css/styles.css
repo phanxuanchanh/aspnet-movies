@@ -1,0 +1,29 @@
+.text-red{
+    color: #ff0000;
+}
+
+.text-white{
+    color: #ffffff;
+}
+
+.text-green{
+    color: #008000;
+}
+
+.text-yellow{
+    color: #ffff00;
+}
+
+
+
+.button{
+    width: 85px;
+    height: 30px;
+    border: none;
+    border-radius: 2px;
+}
+
+.button-red{
+    color: #ffffff;
+    background-color: #ff0000;
+}

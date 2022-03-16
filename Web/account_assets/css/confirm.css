@@ -1,0 +1,279 @@
+﻿@import url('common.css');
+
+.confirm-form {
+    background-color: rgb(55, 55, 55);
+    position: absolute;
+}
+
+.confirm-form-title {
+    color: rgb(255, 255, 255);
+}
+
+    .confirm-form-title h3 {
+        text-transform: uppercase;
+    }
+
+.confirm-form-group p {
+    color: rgb(255, 255, 255);
+}
+
+.confirm-form-group input {
+    border: none;
+    border-radius: 3px;
+}
+
+.show-error span {
+    color: rgb(255, 0, 0);
+}
+
+.button-confirm {
+    float: right;
+}
+
+.confirm-form-support p a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+@media only screen and (max-width: 1920px) {
+    .confirm-form {
+        width: 40%;
+        height: 255px;
+        top: calc(calc(100% / 2) - calc(310px / 2));
+        left: calc(calc(100% / 2) - calc(40% / 2));
+    }
+
+    .confirm-form-title {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 60px;
+    }
+
+        .confirm-form-title h3 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .confirm-form-title p {
+            margin: 0px;
+        }
+
+    .confirm-form-data {
+        margin-top: 10px;
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 95px;
+    }
+
+    .confirm-form-group {
+        width: 100%;
+        height: 80px;
+        margin-bottom: 5px;
+    }
+
+        .confirm-form-group p {
+            margin: 0px 0% 2px 0%;
+        }
+
+        .confirm-form-group input {
+            width: 98%;
+            height: 25px;
+        }
+
+    .show-error {
+        height: 25px;
+        width: 100%;
+        margin: 5px 0% 0px 0%;
+    }
+
+        .show-error span {
+            margin: 0px;
+        }
+
+    .confirm-form-submit {
+        width: 90%;
+        height: 35px;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .button-confirm {
+        width: 24%;
+        height: 35px;
+    }
+
+    .confirm-form-support {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 25px;
+    }
+
+        .confirm-form-support p a {
+            line-height: 25px;
+        }
+}
+
+@media only screen and (max-width: 1024px) {
+    .confirm-form {
+        width: 60%;
+        height: 255px;
+        top: calc(calc(100% / 2) - calc(310px / 2));
+        left: calc(calc(100% / 2) - calc(60% / 2));
+    }
+
+    .confirm-form-title {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 60px;
+    }
+
+        .confirm-form-title h3 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .confirm-form-title p {
+            margin: 0px;
+        }
+
+    .confirm-form-data {
+        margin-top: 10px;
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 95px;
+    }
+
+    .confirm-form-group {
+        width: 100%;
+        height: 80px;
+        margin-bottom: 5px;
+    }
+
+        .confirm-form-group p {
+            margin: 0px 0% 2px 0%;
+        }
+
+        .confirm-form-group input {
+            width: 98%;
+            height: 25px;
+        }
+
+    .show-error {
+        height: 25px;
+        width: 100%;
+        margin: 5px 0% 0px 0%;
+    }
+
+        .show-error span {
+            margin: 0px;
+        }
+
+    .confirm-form-submit {
+        width: 90%;
+        height: 35px;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .button-confirm {
+        width: 24%;
+        height: 35px;
+    }
+
+    .confirm-form-support {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 25px;
+    }
+
+        .confirm-form-support p a {
+            line-height: 25px;
+        }
+}
+
+@media only screen and (max-width: 768px) {
+    .confirm-form {
+        width: 80%;
+        height: 255px;
+        top: calc(calc(100% / 2) - calc(310px / 2));
+        left: calc(calc(100% / 2) - calc(80% / 2));
+    }
+
+    .confirm-form-title {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 60px;
+    }
+
+        .confirm-form-title h3 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .confirm-form-title p {
+            margin: 0px;
+        }
+
+    .confirm-form-data {
+        margin-top: 10px;
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 95px;
+    }
+
+    .confirm-form-group {
+        width: 100%;
+        height: 80px;
+        margin-bottom: 5px;
+    }
+
+        .confirm-form-group p {
+            margin: 0px 0% 2px 0%;
+        }
+
+        .confirm-form-group input {
+            width: 98%;
+            height: 25px;
+        }
+
+    .show-error {
+        height: 25px;
+        width: 100%;
+        margin: 5px 0% 0px 0%;
+    }
+
+        .show-error span {
+            margin: 0px;
+        }
+
+    .confirm-form-submit {
+        width: 90%;
+        height: 35px;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .button-confirm {
+        width: 24%;
+        height: 35px;
+    }
+
+    .confirm-form-support {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+        height: 25px;
+    }
+
+        .confirm-form-support p a {
+            line-height: 25px;
+        }
+}

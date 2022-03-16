@@ -1,0 +1,179 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="UserLayout.master.cs" Inherits="Web.User.Layout.UserLayout" %>
+
+<%@ Import Namespace="Data.DTO" %>
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head runat="server">
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+
+    <link rel="icon" type="image/png" href="<% = ResolveUrl("~/user_assets/images/favicon.png") %>"/>
+
+    <link rel="stylesheet" href="<%= ResolveUrl("~/user_assets/css/plugins.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/user_assets/css/style.css") %>">
+
+    <script src="<%= ResolveUrl("~/user_assets/js/jquery.js") %>"></script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header class="ht-header">
+            <div class="container">
+                <nav class="navbar navbar-default navbar-custom">
+
+                    <div class="navbar-header logo">
+                        <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <div id="nav-icon1">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <a href="<% = hyplnkHome %>">
+                            <img class="logo" src="<% = ResolveUrl("~/user_assets/images/logo1.png") %>" alt="" width="119" height="58"></a>
+                    </div>
+
+                    <div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav flex-child-menu menu-left">
+                            <li class="hidden">
+                                <a href="#page-top"></a>
+                            </li>
+                            <li><a class="btn btn-default" href="<% = hyplnkHome %>">Trang chủ</a></li>
+                            <li class="dropdown first">
+                                <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">Thể loại<i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="dropdown-menu level1">
+                                    <% if (categories != null)
+                                        {
+                                            foreach (CategoryInfo category in categories)
+                                            { %>
+                                    <li>
+                                        <a href="<%= category.url %>"><% = category.name %></a>
+                                    </li>
+                                    <% }
+                                        } %>
+                                </ul>
+                            </li>
+                            <li><a class="btn btn-default" href="<% = hyplnkWatchedList %>">Lịch sử</a></li>
+                            <li class="dropdown first">
+                                <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">Bài viết<i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="dropdown-menu level1">
+                                    <li><a href="#">Hướng dẫn</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav flex-child-menu menu-right">
+                            <li class="dropdown first">
+                                <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">Công cụ <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="dropdown-menu level1">
+                                    <li><a href="#">API</a></li>
+                                    <li><a href="<% = hyplnkLiteVersion %>">Phiên bản rút gọn</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li class="btn"><a id="hyplnkAccount" href="#" runat="server"></a></li>
+                        </ul>
+                    </div>
+
+                </nav>
+
+
+                <div class="top-search">
+                    <select>
+                        <option value="united">Phim chiếu rạp</option>
+                        <option value="saab">Phim bộ</option>
+                    </select>
+                    <input id="search-input" type="text" placeholder="Nhập tên phim mà bạn muốn tìm....">
+                </div>
+            </div>
+        </header>
+
+        <asp:ContentPlaceHolder ID="mainContent" runat="server">
+        </asp:ContentPlaceHolder>
+
+        <footer class="ht-footer">
+            <div class="container">
+                <div class="flex-parent-ft">
+                    <div class="flex-child-ft item1">
+                        <a href="index.html">
+                            <img class="logo" src="<% = ResolveUrl("~/user_assets/images/logo1.png") %>" alt=""></a>
+                        <p>
+                            140 Lê Trọng Tấn<br>
+                            Tây Thạnh,Tân Phú, Việt Nam
+                        </p>
+                        <p>Số ĐT: <a href="#">(+84) 0961314600</a></p>
+                    </div>
+                    <div class="flex-child-ft item2">
+                        <h4>Tài Nguyên</h4>
+                        <ul>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Liên hệ</a></li>
+                            <li><a href="#">Diễn Đàn</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Trung tâm hỗ trợ</a></li>
+                        </ul>
+                    </div>
+                    <div class="flex-child-ft item3">
+                        <h4>Điều khoản</h4>
+                        <ul>
+                            <li><a href="#">Chính sách người dùng</a></li>
+                            <li><a href="#">Chính sách quyền riêng tư</a></li>
+                            <li><a href="#">Bảo mật</a></li>
+                        </ul>
+                    </div>
+                    <div class="flex-child-ft item4">
+                        <h4>Tài Khoản</h4>
+                        <ul>
+                            <li><a href="#">Tài khoản của tôi</a></li>
+                            <li><a href="#">Xem danh sách</a></li>
+                            <li><a href="#">Bộ sưu tập</a></li>
+                            <li><a href="#">Hướng dẫn</a></li>
+                        </ul>
+                    </div>
+                    <div class="flex-child-ft item5">
+                        <h4>Đăng ký nhận Email</h4>
+                        <p>
+                            Đăng ký để nhận thông tin mới
+                            <br>
+                            và sớm nhất của chúng tôi.
+                        </p>
+                        <div>
+                            <input type="text" placeholder="Enter your email...">
+                        </div>
+                        <a href="#" class="btn">Đăng ký Ngay <i class="ion-ios-arrow-forward"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="ft-copyright">
+                <div class="ft-left">
+                    <p>© <% = DateTime.Now.ToString("yyyy") %> MovieWeb.</p>
+                </div>
+                <div class="backtotop">
+                    <p><a href="#" id="back-to-top">Về đầu trang  <i class="ion-ios-arrow-thin-up"></i></a></p>
+                </div>
+            </div>
+        </footer>
+
+    </form>
+    <script src="<%= ResolveUrl("~/user_assets/js/plugins.js") %>"></script>
+    <script src="<%= ResolveUrl("~/user_assets/js/plugins2.js") %>"></script>
+    <script src="<%= ResolveUrl("~/user_assets/js/custom.js") %>"></script>
+    <script type="text/javascript">
+        $("#search-input").keypress(function (e) {
+            if (e.which == 13 || e.keyCode == 13) {
+                window.location.href = "<% = hyplnkSearch %>?input=" + $("#search-input").val();
+            }
+        });
+    </script>
+    <asp:ContentPlaceHolder ID="foot" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>

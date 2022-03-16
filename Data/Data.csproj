@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E3877F3-E094-4D4B-B954-A5D9F56FB1D8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Data</RootNamespace>
+    <AssemblyName>Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLL\BLLState.cs" />
+    <Compile Include="BLL\BusinessLogicLayer.cs" />
+    <Compile Include="BLL\CastBLL.cs" />
+    <Compile Include="BLL\CategoryBLL.cs" />
+    <Compile Include="BLL\CountryBLL.cs" />
+    <Compile Include="BLL\DirectorBLL.cs" />
+    <Compile Include="BLL\FilmBLL.cs" />
+    <Compile Include="BLL\LanguageBLL.cs" />
+    <Compile Include="BLL\Migration\UserMigration.cs" />
+    <Compile Include="BLL\TagBLL.cs" />
+    <Compile Include="BLL\UserReactionBLL.cs" />
+    <Compile Include="Config\DatabaseConfig.cs" />
+    <Compile Include="Config\MigrationConfig.cs" />
+    <Compile Include="BLL\Migration\PaymentMethodMigration.cs" />
+    <Compile Include="BLL\Migration\RoleMigration.cs" />
+    <Compile Include="BLL\PaymentInfoBLL.cs" />
+    <Compile Include="BLL\PaymentMethodBLL.cs" />
+    <Compile Include="BLL\RoleBLL.cs" />
+    <Compile Include="BLL\UserBLL.cs" />
+    <Compile Include="DAL\Cast.cs" />
+    <Compile Include="DAL\CastOfFilm.cs" />
+    <Compile Include="DAL\Category.cs" />
+    <Compile Include="DAL\CategoryDistribution.cs" />
+    <Compile Include="DAL\Country.cs" />
+    <Compile Include="DAL\DBContext.cs" />
+    <Compile Include="DAL\Director.cs" />
+    <Compile Include="DAL\DirectorOfFilm.cs" />
+    <Compile Include="DAL\Film.cs" />
+    <Compile Include="DAL\Language.cs" />
+    <Compile Include="DAL\PaymentInfo.cs" />
+    <Compile Include="DAL\PaymentMethod.cs" />
+    <Compile Include="DAL\Role.cs" />
+    <Compile Include="DAL\Tag.cs" />
+    <Compile Include="DAL\TagDistribution.cs" />
+    <Compile Include="DAL\User.cs" />
+    <Compile Include="DAL\UserReaction.cs" />
+    <Compile Include="DTO\CastDTO.cs" />
+    <Compile Include="DTO\CategoryDTO.cs" />
+    <Compile Include="DTO\CountryDTO.cs" />
+    <Compile Include="DTO\DirectorDTO.cs" />
+    <Compile Include="DTO\FilmDTO.cs" />
+    <Compile Include="DTO\LanguageDTO.cs" />
+    <Compile Include="DTO\PaymentInfoDTO.cs" />
+    <Compile Include="DTO\PaymentMethodDTO.cs" />
+    <Compile Include="DTO\RoleDTO.cs" />
+    <Compile Include="DTO\TagDTO.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{2bafd121-9a00-48e8-921a-fb250b8f81ca}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSSQL\MSSQL.csproj">
+      <Project>{d7c08863-5fbb-4131-b72c-2ca0e9ed3fe8}</Project>
+      <Name>MSSQL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

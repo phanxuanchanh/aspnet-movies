@@ -1,0 +1,70 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AdminLayout.master.cs" Inherits="Web.Admin.Layout.AdminLayout" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta charset="utf-8">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/font-awesome.min.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/normalize.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/milligram.min.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/styles.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/addition.css") %>" />
+
+    <script type="text/javascript" src="<%= ResolveUrl("~/admin_assets/js/jquery.js") %>"></script>
+    <link rel="icon" type="image/png" href="<% = ResolveUrl("~/admin_assets/images/favicon.png") %>"/>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="frmAdminLayout" runat="server">
+        <div class="navbar">
+            <div class="row">
+                <div class="column column-30 col-site-title"><a href="#" class="site-title float-left">Trang quản trị</a></div>
+                <div class="column column-40 col-search">
+                    <a href="#" class="search-btn fa fa-search"></a>
+                    <input type="text" name="" value="" placeholder="Tìm kiếm chức năng..." />
+                </div>
+                <div class="column column-30">
+                    <div class="user-section">
+                        <a href="#">
+                            <img src="<% = ResolveUrl("~/admin_assets/images/avatar.png") %>" alt="profile photo" class="circle float-left profile-photo" width="50" height="50">
+                            <div class="username">
+                                <h4 id="txtUsername" runat="server">Phan Xuân Chánh</h4>
+                                <p id="txtRole" runat="server">Quản trị viên</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="sidebar" class="column">
+                <h5>Công cụ</h5>
+                <ul>
+                    <li><a href="<% = hyplnkOverview %>"><em class="fa fa-tasks"></em>Tổng quan</a></li>
+                    <li><a href="<% = hyplnkFilmList %>"><em class="fa fa-film"></em>Quản lý phim</a></li>
+                    <li><a href="<% = hyplnkCategoryList %>"><em class="fa fa fa-list"></em>Quản lý thể loại</a></li>
+                    <li><a href="<% = hyplnkCountryList %>"><em class="fa fa fa-map"></em>Quản lý quốc gia</a></li>
+                    <li><a href="<% = hyplnkLanguageList %>"><em class="fa fa fa-language"></em>Quản lý ngôn ngữ</a></li>
+                    <li><a href="<% = hyplnkTagList %>"><em class="fa fa-tags"></em>Quản lý thẻ tag</a></li>
+                    <li><a href="<% = hyplnkDirectorList %>"><em class="fa fa-video-camera"></em>Quản lý đạo diễn</a></li>
+                    <li><a href="<% = hyplnkCastList %>"><em class="fa fa-video-camera"></em>Quản lý diễn viên</a></li>
+                    <li><a href="<% = hyplnkRoleList %>"><em class="fa fa-list"></em>Quản lý vai trò</a></li>
+                    <li><a href="<% = hyplnkUserList %>"><em class="fa fa-users"></em>Quản lý người dùng</a></li>
+                </ul>
+            </div>
+            <section id="main-content" class="column column-offset-20">
+                <asp:ContentPlaceHolder ID="mainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </section>
+        </div>
+    </form>
+    <asp:ContentPlaceHolder ID="foot" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>

@@ -1,0 +1,59 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="UserLayoutLite.master.cs" Inherits="Web.User.Layout.UserLayoutLite" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <asp:PlaceHolder runat="server">
+        <link rel="icon" type="image/png" href="<% = ResolveUrl("~/user_assets/images/favicon.png") %>" />
+        <link href="<% = ResolveUrl("~/user_assets/css/lite.css") %>" rel="stylesheet" />
+    </asp:PlaceHolder>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="header">
+            <asp:Menu ID="mainMenu" runat="server" DynamicHorizontalOffset="2" CssClass="main-menu" Font-Size="20px" ForeColor="White" Orientation="Horizontal" StaticEnableDefaultPopOutImage="False" StaticSubMenuIndent="10px">
+                <DynamicHoverStyle BackColor="#990000" ForeColor="White" />
+                <DynamicMenuItemStyle HorizontalPadding="10px" VerticalPadding="0px" />
+                <DynamicMenuStyle BackColor="#FFFBD6" />
+                <DynamicSelectedStyle BackColor="#FFCC66" />
+                <StaticHoverStyle BackColor="#990000" ForeColor="White" />
+                <StaticMenuItemStyle HorizontalPadding="10px" VerticalPadding="0px" />
+                <StaticSelectedStyle BackColor="#FFCC66" />
+            </asp:Menu>
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <asp:GridView ID="grvCategory" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="White" GridLines="Horizontal" Width="100%">
+                    <Columns>
+                        <asp:HyperLinkField HeaderText="Thể loại" DataNavigateUrlFields="url" DataNavigateUrlFormatString="{0}" DataTextField="name" DataTextFormatString="Thể loại: {0}" />
+                    </Columns>
+                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                    <HeaderStyle Font-Bold="True" ForeColor="White" />
+                    <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                    <SortedDescendingHeaderStyle BackColor="#242121" />
+                </asp:GridView>
+            </div>
+
+            <div class="main-content">
+                <asp:ContentPlaceHolder ID="mainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+        <div class="footer">
+            <p class="footer-title">Copyright by MovieWeb - Phiên bản rút gọn</p>
+        </div>
+    </form>
+    <asp:ContentPlaceHolder ID="foot" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>
