@@ -14,7 +14,7 @@
 <body>
     <form id="frmLogin" method="post" runat="server">
         <video id="backgroundVideo" class="background-video" autoplay>
-            <source src="<% = ResolveUrl("~/account_assets/videos/Loki_OfficalTrailer.mp4") %>" type='video/mp4'>
+            <source src="<% = ResolveUrl("~/account_assets/videos/Puples-33590.mp4") %>" type='video/mp4'>
             <p>Không thể phát video</p>
         </video>
         <div class="audio-tool">
