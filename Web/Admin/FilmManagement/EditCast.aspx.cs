@@ -138,7 +138,7 @@ namespace Web.Admin.FilmManagement
             {
                 drdlFilmCast.Items.Add(new ListItem(castInfo.name, castInfo.ID.ToString()));
             }
-            drdlFilmCast.SelectedIndex = 5;
+            drdlFilmCast.SelectedIndex = 0;
         }
 
         protected async void btnAdd_Click(object sender, EventArgs e)
