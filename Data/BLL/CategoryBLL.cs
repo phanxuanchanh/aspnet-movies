@@ -49,15 +49,15 @@ namespace Data.BLL
 
             CategoryInfo categoryInfo = new CategoryInfo();
             categoryInfo.ID = category.ID;
-            categoryInfo.name = category.name;
+            categoryInfo.Name = category.name;
 
             if (includeDescription)
-                categoryInfo.description = category.description;
+                categoryInfo.Description = category.description;
 
             if (includeTimestamp)
             {
-                categoryInfo.createAt = category.createAt;
-                categoryInfo.updateAt = category.updateAt;
+                categoryInfo.CreatedAt = category.createAt;
+                categoryInfo.UpdatedAt = category.updateAt;
             }
 
             return categoryInfo;
@@ -70,8 +70,8 @@ namespace Data.BLL
 
             return new Category
             {
-                name = categoryCreation.name,
-                description = categoryCreation.description,
+                name = categoryCreation.Name,
+                description = categoryCreation.Description,
                 createAt = DateTime.Now,
                 updateAt = DateTime.Now
             };
@@ -85,8 +85,8 @@ namespace Data.BLL
             return new Category
             {
                 ID = categoryUpdate.ID,
-                name = categoryUpdate.name,
-                description = categoryUpdate.description,
+                name = categoryUpdate.Name,
+                description = categoryUpdate.Description,
                 updateAt = DateTime.Now
             };
         }

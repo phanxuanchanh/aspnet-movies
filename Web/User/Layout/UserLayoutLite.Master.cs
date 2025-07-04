@@ -46,9 +46,9 @@ namespace Web.User.Layout
                 List<CategoryInfo> categoryInfos = categoryBLL.GetCategories().Select(c => new CategoryInfo
                 {
                     ID = c.ID,
-                    name = c.name,
-                    description = c.description,
-                    url = GetRouteUrl("User_FilmsByCategory_Lite", new { slug = c.name.TextToUrl(), id = c.ID })
+                    Name = c.Name,
+                    Description = c.Description,
+                    Url = GetRouteUrl("User_FilmsByCategory_Lite", new { slug = c.Name.TextToUrl(), id = c.ID })
                 }).ToList();
 
                 grvCategory.DataSource = categoryInfos;

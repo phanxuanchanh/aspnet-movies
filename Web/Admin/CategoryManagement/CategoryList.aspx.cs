@@ -1,14 +1,19 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.CategoryManagement
 {
     public partial class CategoryList : System.Web.UI.Page
     {
+        private CategoryService _categoryService;
+
         private CategoryBLL categoryBLL;
         protected long currentPage;
         protected long pageNumber;
@@ -17,6 +22,8 @@ namespace Web.Admin.CategoryManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
+            _categoryService = NinjectWebCommon.Kernel.Get<CategoryService>();
+
             categoryBLL = new CategoryBLL();
             enableTool = false;
             toolDetail = null;
@@ -105,7 +112,7 @@ namespace Web.Admin.CategoryManagement
             {
                 int key = (int)grvCategory.DataKeys[grvCategory.SelectedIndex].Value;
                 CategoryInfo categoryInfo = await categoryBLL.GetCategoryAsync(key);
-                toolDetail = string.Format("{0} -- {1}", categoryInfo.ID, categoryInfo.name);
+                toolDetail = string.Format("{0} -- {1}", categoryInfo.ID, categoryInfo.Name);
                 hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CategoryDetail", new { id = categoryInfo.ID });
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCategory", new { id = categoryInfo.ID });
                 hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCategory", new { id = categoryInfo.ID });

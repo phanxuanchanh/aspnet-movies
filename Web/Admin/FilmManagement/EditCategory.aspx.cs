@@ -109,7 +109,7 @@ namespace Web.Admin.FilmManagement
             List<CategoryInfo> categoryInfos = await new CategoryBLL(filmBLL).GetCategoriesAsync();
             foreach (CategoryInfo categoryInfo in categoryInfos)
             {
-                drdlFilmCategory.Items.Add(new ListItem(categoryInfo.name, categoryInfo.ID.ToString()));
+                drdlFilmCategory.Items.Add(new ListItem(categoryInfo.Name, categoryInfo.ID.ToString()));
             }
             drdlFilmCategory.SelectedIndex = 0;
         }

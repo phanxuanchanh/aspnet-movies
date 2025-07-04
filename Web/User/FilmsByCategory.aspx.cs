@@ -56,7 +56,7 @@ namespace Web.User
                 }
                 else
                 {
-                    categoryName = categoryInfo.name;
+                    categoryName = categoryInfo.Name;
                     filmInfos = await filmBLL.GetFilmsByCategoryIdAsync(id, 24);
                     foreach (FilmInfo filmInfo in filmInfos)
                     {

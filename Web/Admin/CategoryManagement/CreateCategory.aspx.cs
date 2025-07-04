@@ -81,8 +81,8 @@ namespace Web.Admin.CategoryManagement
         {
             return new CategoryCreation
             {
-                name = Request.Form[txtCategoryName.UniqueID],
-                description = Request.Form[txtCategoryDescription.UniqueID]
+                Name = Request.Form[txtCategoryName.UniqueID],
+                Description = Request.Form[txtCategoryDescription.UniqueID]
             };
         }
 

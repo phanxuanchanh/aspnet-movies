@@ -5,17 +5,17 @@ namespace Data.DTO
     public class CategoryInfo
     {
         public int ID { get; set; }
-        public string url { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public DateTime createAt { get; set; }
-        public DateTime updateAt { get; set; }
+        public string Url { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class CategoryCreation
     {
-        public string name { get; set; }
-        public string description { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 
     public class CategoryUpdate : CategoryCreation

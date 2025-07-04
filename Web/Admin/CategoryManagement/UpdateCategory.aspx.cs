@@ -95,8 +95,8 @@ namespace Web.Admin.CategoryManagement
                 else
                 {
                     hdCategoryId.Value = categoryInfo.ID.ToString();
-                    txtCategoryName.Text = categoryInfo.name;
-                    txtCategoryDescription.Text = categoryInfo.description;
+                    txtCategoryName.Text = categoryInfo.Name;
+                    txtCategoryDescription.Text = categoryInfo.Description;
                 }
             }
         }
@@ -129,8 +129,8 @@ namespace Web.Admin.CategoryManagement
             return new CategoryUpdate
             {
                 ID = int.Parse(Request.Form[hdCategoryId.UniqueID]),
-                name = Request.Form[txtCategoryName.UniqueID],
-                description = Request.Form[txtCategoryDescription.UniqueID]
+                Name = Request.Form[txtCategoryName.UniqueID],
+                Description = Request.Form[txtCategoryDescription.UniqueID]
             };
         }
 

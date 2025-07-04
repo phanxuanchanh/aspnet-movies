@@ -53,7 +53,7 @@ namespace Web.User.LiteVersion
                     }
                     else
                     {
-                        categoryName = categoryInfo.name;
+                        categoryName = categoryInfo.Name;
                         List<FilmInfo> filmInfos = await filmBLL.GetFilmsByCategoryIdAsync(id, 24);
                         foreach (FilmInfo filmInfo in filmInfos)
                         {

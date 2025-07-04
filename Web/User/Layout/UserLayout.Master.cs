@@ -51,9 +51,9 @@ namespace Web.User.Layout
                 .Select(c => new CategoryInfo
                 {
                     ID = c.ID,
-                    name = c.name,
-                    description = c.description,
-                    url = GetRouteUrl("User_FilmsByCategory", new { slug = c.name.TextToUrl(), id = c.ID })
+                    Name = c.Name,
+                    Description = c.Description,
+                    Url = GetRouteUrl("User_FilmsByCategory", new { slug = c.Name.TextToUrl(), id = c.ID })
                 }).ToList();
             }
         }

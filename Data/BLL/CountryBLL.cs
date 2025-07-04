@@ -47,15 +47,15 @@ namespace Data.BLL
 
             CountryInfo countryInfo = new CountryInfo();
             countryInfo.ID = country.ID;
-            countryInfo.name = country.name;
+            countryInfo.name = country.Name;
 
             if (includeDescription)
-                countryInfo.description = country.description;
+                countryInfo.description = country.Description;
 
             if (includeTimestamp)
             {
-                countryInfo.createAt = country.createAt;
-                countryInfo.updateAt = country.updateAt;
+                countryInfo.createAt = country.CreatedAt;
+                countryInfo.updateAt = country.UpdatedAt;
             }
 
             return countryInfo;
@@ -68,10 +68,10 @@ namespace Data.BLL
 
             return new Country
             {
-                name = countryCreation.name,
-                description = countryCreation.description,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now
+                Name = countryCreation.name,
+                Description = countryCreation.description,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
         }
 
@@ -83,9 +83,9 @@ namespace Data.BLL
             return new Country
             {
                 ID = countryUpdate.ID,
-                name = countryUpdate.name,
-                description = countryUpdate.description,
-                updateAt = DateTime.Now
+                Name = countryUpdate.name,
+                Description = countryUpdate.description,
+                UpdatedAt = DateTime.Now
             };
         }
 
@@ -95,13 +95,13 @@ namespace Data.BLL
             if (includeDescription && includeTimestamp)
                 countries = (await db.Countries.ToListAsync()).Select(c => ToCountryInfo(c)).ToList();
             else if(includeDescription)
-                countries = (await db.Countries.ToListAsync(c => new { c.ID, c.name, c.description }))
+                countries = (await db.Countries.ToListAsync(c => new { c.ID, c.Name, c.Description }))
                     .Select(c => ToCountryInfo(c)).ToList();
             else if(includeTimestamp)
-                countries = (await db.Countries.ToListAsync(c => new { c.ID, c.name, c.createAt, c.updateAt }))
+                countries = (await db.Countries.ToListAsync(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }))
                     .Select(c => ToCountryInfo(c)).ToList();
             else
-                countries = (await db.Countries.ToListAsync(c => new { c.ID, c.name }))
+                countries = (await db.Countries.ToListAsync(c => new { c.ID, c.Name }))
                     .Select(c => ToCountryInfo(c)).ToList();
 
             return countries;
@@ -113,13 +113,13 @@ namespace Data.BLL
             if (includeDescription && includeTimestamp)
                 countries = db.Countries.ToList().Select(c => ToCountryInfo(c)).ToList();
             else if(includeDescription)
-                countries = db.Countries.ToList(c => new { c.ID, c.name, c.description })
+                countries = db.Countries.ToList(c => new { c.ID, c.Name, c.Description })
                     .Select(c => ToCountryInfo(c)).ToList();
             else if(includeTimestamp)
-                countries = db.Countries.ToList(c => new { c.ID, c.name, c.createAt, c.updateAt })
+                countries = db.Countries.ToList(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt })
                     .Select(c => ToCountryInfo(c)).ToList();
             else
-                countries = db.Countries.ToList(c => new { c.ID, c.name })
+                countries = db.Countries.ToList(c => new { c.ID, c.Name })
                     .Select(c => ToCountryInfo(c)).ToList();
 
             return countries;
@@ -133,13 +133,13 @@ namespace Data.BLL
                 pagedList = await db.Countries.ToPagedListAsync(orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if (includeDescription)
                 pagedList = await db.Countries.ToPagedListAsync(
-                    c => new { c.ID, c.name, c.description }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.Description }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if(includeTimestamp)
                 pagedList = await db.Countries.ToPagedListAsync(
-                    c => new { c.ID, c.name, c.createAt, c.updateAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else
                 pagedList = await db.Countries.ToPagedListAsync(
-                    c => new { c.ID, c.name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
 
             return new PagedList<CountryInfo>
             {
@@ -157,13 +157,13 @@ namespace Data.BLL
                 pagedList = db.Countries.ToPagedList(orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if (includeDescription)
                 pagedList = db.Countries.ToPagedList(
-                    c => new { c.ID, c.name, c.description }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.Description }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if (includeTimestamp)
                 pagedList = db.Countries.ToPagedList(
-                    c => new { c.ID, c.name, c.createAt, c.updateAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else
                 pagedList = db.Countries.ToPagedList(
-                    c => new { c.ID, c.name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
 
             return new PagedList<CountryInfo>
             {
@@ -183,13 +183,13 @@ namespace Data.BLL
                 country = (await db.Countries.SingleOrDefaultAsync(c => c.ID == countryId));
             else if (includeDescription)
                 country = (await db.Countries
-                    .SingleOrDefaultAsync(c => new { c.ID, c.name, c.description }, c => c.ID == countryId));
+                    .SingleOrDefaultAsync(c => new { c.ID, c.Name, c.Description }, c => c.ID == countryId));
             else if (includeTimestamp)
                 country = (await db.Countries
-                    .SingleOrDefaultAsync(c => new { c.ID, c.name, c.createAt, c.updateAt }, c => c.ID == countryId));
+                    .SingleOrDefaultAsync(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, c => c.ID == countryId));
             else
                 country = (await db.Countries
-                    .SingleOrDefaultAsync(c => new { c.ID, c.name }, c => c.ID == countryId));
+                    .SingleOrDefaultAsync(c => new { c.ID, c.Name }, c => c.ID == countryId));
 
             return ToCountryInfo(country);
         }
@@ -204,13 +204,13 @@ namespace Data.BLL
                 country = db.Countries.SingleOrDefault(c => c.ID == countryId);
             else if (includeDescription)
                 country = db.Countries
-                    .SingleOrDefault(c => new { c.ID, c.name, c.description }, c => c.ID == countryId);
+                    .SingleOrDefault(c => new { c.ID, c.Name, c.Description }, c => c.ID == countryId);
             else if (includeTimestamp)
                 country = db.Countries
-                    .SingleOrDefault(c => new { c.ID, c.name, c.createAt, c.updateAt }, c => c.ID == countryId);
+                    .SingleOrDefault(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, c => c.ID == countryId);
             else
                 country = db.Countries
-                    .SingleOrDefault(c => new { c.ID, c.name }, c => c.ID == countryId);
+                    .SingleOrDefault(c => new { c.ID, c.Name }, c => c.ID == countryId);
 
             return ToCountryInfo(country);
         }
@@ -218,15 +218,15 @@ namespace Data.BLL
         public async Task<CreationState> CreateCountryAsync(CountryCreation countryCreation)
         {
             Country country = ToCountry(countryCreation);
-            if (country.name == null)
+            if (country.Name == null)
                 throw new Exception("@'country.name' must not be null");
 
-            int checkExists = (int)await db.Countries.CountAsync(c => c.name == country.name);
+            int checkExists = (int)await db.Countries.CountAsync(c => c.Name == country.Name);
             if (checkExists != 0)
                 return CreationState.AlreadyExists;
 
             int affected;
-            if (country.description == null)
+            if (country.Description == null)
                 affected = await db.Countries.InsertAsync(country, new List<string> { "ID", "description" });
             else
                 affected = await db.Countries.InsertAsync(country, new List<string> { "ID" });
@@ -237,20 +237,20 @@ namespace Data.BLL
         public async Task<UpdateState> UpdateCountryAsync(CountryUpdate countryUpdate)
         {
             Country country = ToCountry(countryUpdate);
-            if (country.name == null)
+            if (country.Name == null)
                 throw new Exception("@'country.name' must not be null");
 
             int affected;
-            if (country.description == null)
+            if (country.Description == null)
                 affected = await db.Countries.UpdateAsync(
                     country,
-                    c => new { c.name, c.updateAt },
+                    c => new { c.Name, c.UpdatedAt },
                     c => c.ID == country.ID
                 );
             else
                 affected = await db.Countries.UpdateAsync(
                     country,
-                    c => new { c.name, c.description, c.updateAt },
+                    c => new { c.Name, c.Description, c.UpdatedAt },
                     c => c.ID == country.ID
                 );
 
