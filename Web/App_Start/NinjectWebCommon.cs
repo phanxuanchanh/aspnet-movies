@@ -5,6 +5,7 @@ namespace Web.App_Start
 {
     using System;
     using System.Web;
+    using Data.BLL;
     using Data.Services;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
@@ -63,6 +64,8 @@ namespace Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<GeneralDao>().To<GeneralDao>();
+
             kernel.Bind<CategoryService>().To<CategoryService>();
         }
     }

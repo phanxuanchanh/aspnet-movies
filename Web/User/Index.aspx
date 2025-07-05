@@ -37,7 +37,7 @@
                             <div class="cate">
                                 <% foreach (CategoryInfo categoryOfFilm in filmInfo.Categories)
                                     { %>
-                                <span class="blue"><a href="#"><%= categoryOfFilm.name %></a></span>
+                                <span class="blue"><a href="#"><%= categoryOfFilm.Name %></a></span>
                                 <%} %>
                             </div>
                             <h6><a href="<% = filmInfo.url %>"><% = filmInfo.name %></a></h6>
@@ -54,7 +54,7 @@
         <div class="container">
             <div class="row ipad-width">
                 <div class="col-md-8">
-                    <% foreach (KeyValuePair<CategoryInfo, List<FilmInfo>> filmOfCategory in films_CategoryDict)
+                    <% foreach (KeyValuePair<CategoryDto, List<FilmInfo>> filmOfCategory in films_CategoryDict)
                         { %>
                     <div class="title-hd">
                         <h2><% = filmOfCategory.Key.name %></h2>
@@ -108,7 +108,7 @@
                                 <a href="#">
                                     <img src="<% = ResolveUrl("~/user_assets/images/uploads/film-icon.png") %>" alt="" width="70" height="70"></a>
                                 <div class="celeb-author">
-                                    <h6><a href="<% = categoryInfo.url %>"><% = categoryInfo.name %></a></h6>
+                                    <h6><a href="<% = categoryInfo.Url %>"><% = categoryInfo.Name %></a></h6>
                                     <span></span>
                                 </div>
                             </div>

@@ -9,7 +9,7 @@ namespace Web.Admin.CastManagement
 {
     public partial class CastDetail : System.Web.UI.Page
     {
-        protected CastInfo castInfo;
+        protected ActorDto actorDto;
         protected bool enableShowDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -23,7 +23,7 @@ namespace Web.Admin.CastManagement
                 hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCast", new { id = id });
 
                 if (CheckLoggedIn())
-                    await GetCastInfo(id);
+                    await GetactorDto(id);
                 else
                     Response.RedirectToRoute("Account_Login", null);
             }
@@ -52,7 +52,7 @@ namespace Web.Admin.CastManagement
             return long.Parse(obj.ToString());
         }
 
-        private async Task GetCastInfo(long id)
+        private async Task GetactorDto(long id)
         {
             if (id <= 0)
             {
@@ -64,10 +64,10 @@ namespace Web.Admin.CastManagement
                 {
                     castBLL.IncludeDescription = true;
                     castBLL.IncludeTimestamp = true;
-                    castInfo = await castBLL.GetCastAsync(id);
+                    actorDto = await castBLL.GetCastAsync(id);
                 }
 
-                if (castInfo == null)
+                if (actorDto == null)
                     Response.RedirectToRoute("Admin_CastList", null);
                 else
                     enableShowDetail = true;

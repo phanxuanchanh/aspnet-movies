@@ -40,92 +40,92 @@ namespace Data.BLL
             includeDescription = false;
         }
 
-        private CountryInfo ToCountryInfo(Country country)
+        private CountryDto ToCountryDto(Country country)
         {
             if (country == null)
                 return null;
 
-            CountryInfo countryInfo = new CountryInfo();
-            countryInfo.ID = country.ID;
-            countryInfo.name = country.Name;
+            CountryDto countryDto = new CountryDto();
+            countryDto.ID = country.ID;
+            countryDto.Name = country.Name;
 
             if (includeDescription)
-                countryInfo.description = country.Description;
+                countryDto.Description = country.Description;
 
             if (includeTimestamp)
             {
-                countryInfo.createAt = country.CreatedAt;
-                countryInfo.updateAt = country.UpdatedAt;
+                countryDto.CreatedAt = country.CreatedAt;
+                countryDto.UpdatedAt = country.UpdatedAt;
             }
 
-            return countryInfo;
+            return countryDto;
         }
 
-        private Country ToCountry(CountryCreation countryCreation)
+        private Country ToCountry(CreateCountryDto createCountryDto)
         {
-            if (countryCreation == null)
+            if (createCountryDto == null)
                 throw new Exception("@'countryCreation' must not be null");
 
             return new Country
             {
-                Name = countryCreation.name,
-                Description = countryCreation.description,
+                Name = createCountryDto.Name,
+                Description = createCountryDto.Description,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
         }
 
-        private Country ToCountry(CountryUpdate countryUpdate)
+        private Country ToCountry(UpdateCountryDto updateCountryDto)
         {
-            if (countryUpdate == null)
+            if (updateCountryDto == null)
                 throw new Exception("@'countryUpdate' must not be null");
 
             return new Country
             {
-                ID = countryUpdate.ID,
-                Name = countryUpdate.name,
-                Description = countryUpdate.description,
+                ID = updateCountryDto.ID,
+                Name = updateCountryDto.Name,
+                Description = updateCountryDto.Description,
                 UpdatedAt = DateTime.Now
             };
         }
 
-        public async Task<List<CountryInfo>> GetCountriesAsync()
+        public async Task<List<CountryDto>> GetCountriesAsync()
         {
-            List<CountryInfo> countries = null;
+            List<CountryDto> countries = null;
             if (includeDescription && includeTimestamp)
-                countries = (await db.Countries.ToListAsync()).Select(c => ToCountryInfo(c)).ToList();
+                countries = (await db.Countries.ToListAsync()).Select(c => ToCountryDto(c)).ToList();
             else if(includeDescription)
                 countries = (await db.Countries.ToListAsync(c => new { c.ID, c.Name, c.Description }))
-                    .Select(c => ToCountryInfo(c)).ToList();
+                    .Select(c => ToCountryDto(c)).ToList();
             else if(includeTimestamp)
                 countries = (await db.Countries.ToListAsync(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }))
-                    .Select(c => ToCountryInfo(c)).ToList();
+                    .Select(c => ToCountryDto(c)).ToList();
             else
                 countries = (await db.Countries.ToListAsync(c => new { c.ID, c.Name }))
-                    .Select(c => ToCountryInfo(c)).ToList();
+                    .Select(c => ToCountryDto(c)).ToList();
 
             return countries;
         }
 
-        public List<CountryInfo> GetCountries()
+        public List<CountryDto> GetCountries()
         {
-            List<CountryInfo> countries = null;
+            List<CountryDto> countries = null;
             if (includeDescription && includeTimestamp)
-                countries = db.Countries.ToList().Select(c => ToCountryInfo(c)).ToList();
+                countries = db.Countries.ToList().Select(c => ToCountryDto(c)).ToList();
             else if(includeDescription)
                 countries = db.Countries.ToList(c => new { c.ID, c.Name, c.Description })
-                    .Select(c => ToCountryInfo(c)).ToList();
+                    .Select(c => ToCountryDto(c)).ToList();
             else if(includeTimestamp)
                 countries = db.Countries.ToList(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt })
-                    .Select(c => ToCountryInfo(c)).ToList();
+                    .Select(c => ToCountryDto(c)).ToList();
             else
                 countries = db.Countries.ToList(c => new { c.ID, c.Name })
-                    .Select(c => ToCountryInfo(c)).ToList();
+                    .Select(c => ToCountryDto(c)).ToList();
 
             return countries;
         }
 
-        public async Task<PagedList<CountryInfo>> GetCountriesAsync(int pageIndex, int pageSize)
+        public async Task<PagedList<CountryDto>> GetCountriesAsync(int pageIndex, int pageSize)
         {
             SqlPagedList<Country> pagedList = null;
             Expression<Func<Country, object>> orderBy = c => new { c.ID };
@@ -141,15 +141,15 @@ namespace Data.BLL
                 pagedList = await db.Countries.ToPagedListAsync(
                     c => new { c.ID, c.Name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
 
-            return new PagedList<CountryInfo>
+            return new PagedList<CountryDto>
             {
                 PageNumber = pagedList.PageNumber,
                 CurrentPage = pagedList.CurrentPage,
-                Items = pagedList.Items.Select(c => ToCountryInfo(c)).ToList()
+                Items = pagedList.Items.Select(c => ToCountryDto(c)).ToList()
             };
         }
 
-        public PagedList<CountryInfo> GetCountries(int pageIndex, int pageSize)
+        public PagedList<CountryDto> GetCountries(int pageIndex, int pageSize)
         {
             SqlPagedList<Country> pagedList = null;
             Expression<Func<Country, object>> orderBy = c => new { c.ID };
@@ -165,15 +165,15 @@ namespace Data.BLL
                 pagedList = db.Countries.ToPagedList(
                     c => new { c.ID, c.Name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
 
-            return new PagedList<CountryInfo>
+            return new PagedList<CountryDto>
             {
                 PageNumber = pagedList.PageNumber,
                 CurrentPage = pagedList.CurrentPage,
-                Items = pagedList.Items.Select(c => ToCountryInfo(c)).ToList()
+                Items = pagedList.Items.Select(c => ToCountryDto(c)).ToList()
             };
         }
 
-        public async Task<CountryInfo> GetCountryAsync(int countryId)
+        public async Task<CountryDto> GetCountryAsync(int countryId)
         {
             if (countryId <= 0)
                 throw new Exception("@'countryId' must be greater than 0");
@@ -191,10 +191,10 @@ namespace Data.BLL
                 country = (await db.Countries
                     .SingleOrDefaultAsync(c => new { c.ID, c.Name }, c => c.ID == countryId));
 
-            return ToCountryInfo(country);
+            return ToCountryDto(country);
         }
 
-        public CountryInfo GetCountry(int countryId)
+        public CountryDto GetCountry(int countryId)
         {
             if (countryId <= 0)
                 throw new Exception("@'countryId' must be greater than 0");
@@ -212,14 +212,14 @@ namespace Data.BLL
                 country = db.Countries
                     .SingleOrDefault(c => new { c.ID, c.Name }, c => c.ID == countryId);
 
-            return ToCountryInfo(country);
+            return ToCountryDto(country);
         }
 
-        public async Task<CreationState> CreateCountryAsync(CountryCreation countryCreation)
+        public async Task<CreationState> CreateCountryAsync(CreateCountryDto countryCreation)
         {
             Country country = ToCountry(countryCreation);
             if (country.Name == null)
-                throw new Exception("@'country.name' must not be null");
+                throw new Exception("@'country.Name' must not be null");
 
             int checkExists = (int)await db.Countries.CountAsync(c => c.Name == country.Name);
             if (checkExists != 0)
@@ -227,18 +227,18 @@ namespace Data.BLL
 
             int affected;
             if (country.Description == null)
-                affected = await db.Countries.InsertAsync(country, new List<string> { "ID", "description" });
+                affected = await db.Countries.InsertAsync(country, new List<string> { "ID", "Description" });
             else
                 affected = await db.Countries.InsertAsync(country, new List<string> { "ID" });
 
             return (affected == 0) ? CreationState.Failed : CreationState.Success;
         }
 
-        public async Task<UpdateState> UpdateCountryAsync(CountryUpdate countryUpdate)
+        public async Task<UpdateState> UpdateCountryAsync(UpdateCountryDto countryUpdate)
         {
             Country country = ToCountry(countryUpdate);
             if (country.Name == null)
-                throw new Exception("@'country.name' must not be null");
+                throw new Exception("@'country.Name' must not be null");
 
             int affected;
             if (country.Description == null)

@@ -77,12 +77,12 @@ namespace Web.Admin.CastManagement
             return cvCastName.IsValid;
         }
 
-        private CastCreation GetCastCreation()
+        private CreateActorDto GetCastCreation()
         {
-            return new CastCreation
+            return new CreateActorDto
             {
-                name = Request.Form[txtCastName.UniqueID],
-                description = Request.Form[txtCastDescription.UniqueID]
+                Name = Request.Form[txtCastName.UniqueID],
+                Description = Request.Form[txtCastDescription.UniqueID]
             };
         }
 
@@ -90,7 +90,7 @@ namespace Web.Admin.CastManagement
         {
             if (IsValidData())
             {
-                CastCreation cast = GetCastCreation();
+                CreateActorDto cast = GetCastCreation();
                 CreationState state;
                 using(CastBLL castBLL = new CastBLL())
                 {

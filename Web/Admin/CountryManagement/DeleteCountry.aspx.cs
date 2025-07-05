@@ -13,7 +13,7 @@ namespace Web.Admin.CountryManagement
 {
     public partial class DeleteCountry : System.Web.UI.Page
     {
-        protected CountryInfo countryInfo;
+        protected CountryDto countryInfo;
         protected bool enableShowInfo;
         protected bool enableShowResult;
         protected string stateString;

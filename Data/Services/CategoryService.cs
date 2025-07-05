@@ -9,11 +9,14 @@ namespace Data.Services
 {
     public class CategoryService
     {
+        private readonly GeneralDao _generalDao;
         private readonly CategoryBLL _categoryBLL;
 
-        public CategoryService()
+        public CategoryService(GeneralDao generalDao)
         {
-            _categoryBLL = new CategoryBLL();
+            _generalDao = generalDao;
+            _categoryBLL = _generalDao.CategoryDao;
+
         }
 
 

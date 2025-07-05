@@ -49,6 +49,7 @@
     <Compile Include="BLL\CountryBLL.cs" />
     <Compile Include="BLL\DirectorBLL.cs" />
     <Compile Include="BLL\FilmBLL.cs" />
+    <Compile Include="BLL\GeneralDao.cs" />
     <Compile Include="BLL\Installation\DBInstallation.cs" />
     <Compile Include="BLL\LanguageBLL.cs" />
     <Compile Include="BLL\Migration\UserMigration.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="DAL\TagDistribution.cs" />
     <Compile Include="DAL\User.cs" />
     <Compile Include="DAL\UserReaction.cs" />
-    <Compile Include="DTO\CastDTO.cs" />
+    <Compile Include="DTO\ActorDTO.cs" />
     <Compile Include="DTO\CategoryDTO.cs" />
     <Compile Include="DTO\CountryDTO.cs" />
     <Compile Include="DTO\DirectorDTO.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="DTO\TagDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ActorService.cs" />
     <Compile Include="Services\CategoryService.cs" />
   </ItemGroup>
   <ItemGroup>

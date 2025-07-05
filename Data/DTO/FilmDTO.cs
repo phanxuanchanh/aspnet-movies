@@ -23,11 +23,11 @@ namespace Data.DTO
         public DateTime updateAt { get; set; }
 
         public LanguageInfo Language { get; set; }
-        public CountryInfo Country { get; set; }
+        public CountryDto Country { get; set; }
         public List<CategoryInfo> Categories { get; set; }
         public List<TagInfo> Tags { get; set; }
         public List<DirectorInfo> Directors { get; set; }
-        public List<CastInfo> Casts { get; set; }
+        public List<ActorDto> Casts { get; set; }
     }
 
     public class FilmCreation

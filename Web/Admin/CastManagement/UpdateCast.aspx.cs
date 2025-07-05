@@ -11,7 +11,7 @@ namespace Web.Admin.CastManagement
     public partial class UpdateCast : System.Web.UI.Page
     {
         private CastBLL castBLL;
-        protected CastInfo castInfo;
+        protected ActorDto actorDto;
         private CustomValidation customValidation;
         protected bool enableShowResult;
         protected string stateString;
@@ -87,7 +87,7 @@ namespace Web.Admin.CastManagement
             else
             {
                 castBLL.IncludeDescription = true;
-                CastInfo castInfo = await castBLL.GetCastAsync(id);
+                ActorDto castInfo = await castBLL.GetCastAsync(id);
                 if (castInfo == null)
                 {
                     Response.RedirectToRoute("Admin_CastList", null);
@@ -95,8 +95,8 @@ namespace Web.Admin.CastManagement
                 else
                 {
                     hdCastId.Value = castInfo.ID.ToString();
-                    txtCastName.Text = castInfo.name;
-                    txtCastDescription.Text = castInfo.description;
+                    txtCastName.Text = castInfo.Name;
+                    txtCastDescription.Text = castInfo.Description;
                 }
             }
         }
@@ -124,19 +124,19 @@ namespace Web.Admin.CastManagement
             return cvCastName.IsValid;
         }
 
-        private CastUpdate GetCastUpdate()
+        private UpdateActorDto GetCastUpdate()
         {
-            return new CastUpdate
+            return new UpdateActorDto
             {
                 ID = long.Parse(Request.Form[hdCastId.UniqueID]),
-                name = Request.Form[txtCastName.UniqueID],
-                description = Request.Form[txtCastDescription.UniqueID]
+                Name = Request.Form[txtCastName.UniqueID],
+                Description = Request.Form[txtCastDescription.UniqueID]
             };
         }
 
         private async Task Update()
         {
-            CastUpdate castUpdate = GetCastUpdate();
+            UpdateActorDto castUpdate = GetCastUpdate();
             UpdateState state = await castBLL.UpdateCastAsync(castUpdate);
             if (state == UpdateState.Success)
             {

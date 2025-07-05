@@ -75,7 +75,7 @@ namespace Web.Admin.CountryManagement
         private async Task SetGrvCountry()
         {
             countryBLL.IncludeTimestamp = true;
-            PagedList<CountryInfo> countries = await countryBLL
+            PagedList<CountryDto> countries = await countryBLL
                 .GetCountriesAsync(drdlPage.SelectedIndex, 20);
             grvCountry.DataSource = countries.Items;
             grvCountry.DataBind();
@@ -104,8 +104,8 @@ namespace Web.Admin.CountryManagement
             try
             {
                 int key = (int)grvCountry.DataKeys[grvCountry.SelectedIndex].Value;
-                CountryInfo countryInfo = await countryBLL.GetCountryAsync(key);
-                toolDetail = string.Format("{0} -- {1}", countryInfo.ID, countryInfo.name);
+                CountryDto countryInfo = await countryBLL.GetCountryAsync(key);
+                toolDetail = string.Format("{0} -- {1}", countryInfo.ID, countryInfo.Name);
                 hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = countryInfo.ID });
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCountry", new { id = countryInfo.ID });
                 hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCountry", new { id = countryInfo.ID });

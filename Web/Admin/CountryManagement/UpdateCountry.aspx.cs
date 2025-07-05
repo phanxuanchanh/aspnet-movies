@@ -11,7 +11,7 @@ namespace Web.Admin.CountryManagement
     public partial class UpdateCountry : System.Web.UI.Page
     {
         private CountryBLL countryBLL;
-        protected CountryInfo countryInfo;
+        protected CountryDto countryInfo;
         private CustomValidation customValidation;
         protected bool enableShowResult;
         protected string stateString;
@@ -87,7 +87,7 @@ namespace Web.Admin.CountryManagement
             else
             {
                 countryBLL.IncludeDescription = true;
-                CountryInfo countryInfo = await countryBLL.GetCountryAsync(id);
+                CountryDto countryInfo = await countryBLL.GetCountryAsync(id);
                 if (countryInfo == null)
                 {
                     Response.RedirectToRoute("Admin_CountryList", null);
@@ -95,8 +95,8 @@ namespace Web.Admin.CountryManagement
                 else
                 {
                     hdCountryId.Value = countryInfo.ID.ToString();
-                    txtCountryName.Text = countryInfo.name;
-                    txtCountryDescription.Text = countryInfo.description;
+                    txtCountryName.Text = countryInfo.Name;
+                    txtCountryDescription.Text = countryInfo.Description;
                 }
             }
         }
@@ -124,19 +124,19 @@ namespace Web.Admin.CountryManagement
             return cvCountryName.IsValid;
         }
 
-        private CountryUpdate GetCountryUpdate()
+        private UpdateCountryDto GetCountryUpdate()
         {
-            return new CountryUpdate
+            return new UpdateCountryDto
             {
                 ID = int.Parse(Request.Form[hdCountryId.UniqueID]),
-                name = Request.Form[txtCountryName.UniqueID],
-                description = Request.Form[txtCountryDescription.UniqueID]
+                Name = Request.Form[txtCountryName.UniqueID],
+                Description = Request.Form[txtCountryDescription.UniqueID]
             };
         }
 
         private async Task Update()
         {
-            CountryUpdate countryUpdate = GetCountryUpdate();
+            UpdateCountryDto countryUpdate = GetCountryUpdate();
             UpdateState state = await countryBLL.UpdateCountryAsync(countryUpdate);
             if (state == UpdateState.Success)
             {

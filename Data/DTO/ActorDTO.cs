@@ -2,23 +2,23 @@
 
 namespace Data.DTO
 {
-    public class CountryDto
+    public class ActorDto
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
 
-    public class CreateCountryDto
+    public class CreateActorDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class UpdateCountryDto : CreateCountryDto
+    public class UpdateActorDto : CreateActorDto
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
     }
 }

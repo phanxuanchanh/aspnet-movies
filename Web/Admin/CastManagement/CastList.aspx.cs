@@ -1,14 +1,19 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.CastManagement
 {
     public partial class CastList : System.Web.UI.Page
     {
+        private ActorService actorService;
+
         private CastBLL castBLL;
         protected long currentPage;
         protected long pageNumber;
@@ -17,6 +22,7 @@ namespace Web.Admin.CastManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
+            actorService = NinjectWebCommon.Kernel.Get<ActorService>();
             castBLL = new CastBLL();
             enableTool = false;
             toolDetail = null;
@@ -75,7 +81,7 @@ namespace Web.Admin.CastManagement
         private async Task SetGrvCast()
         {
             castBLL.IncludeTimestamp = true;
-            PagedList<CastInfo> casts = await castBLL
+            PagedList<ActorDto> casts = await castBLL
                 .GetCastsAsync(drdlPage.SelectedIndex, 20);
             grvCast.DataSource = casts.Items;
             grvCast.DataBind();
@@ -104,8 +110,8 @@ namespace Web.Admin.CastManagement
             try
             {
                 long key = (long)grvCast.DataKeys[grvCast.SelectedIndex].Value;
-                CastInfo castInfo = await castBLL.GetCastAsync(key);
-                toolDetail = string.Format("{0} -- {1}", castInfo.ID, castInfo.name);
+                ActorDto castInfo = await castBLL.GetCastAsync(key);
+                toolDetail = string.Format("{0} -- {1}", castInfo.ID, castInfo.Name);
                 hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CastDetail", new { id = castInfo.ID });
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCast", new { id = castInfo.ID });
                 hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCast", new { id = castInfo.ID });

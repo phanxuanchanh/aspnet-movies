@@ -64,10 +64,10 @@ namespace Web.Admin.FilmManagement
         private async Task LoadFilmCountries()
         {
             drdlFilmCountry.Items.Clear();
-            List<CountryInfo> countryInfos = await new CountryBLL(filmBLL).GetCountriesAsync();
-            foreach (CountryInfo countryInfo in countryInfos)
+            List<CountryDto> countryInfos = await new CountryBLL(filmBLL).GetCountriesAsync();
+            foreach (CountryDto countryInfo in countryInfos)
             {
-                drdlFilmCountry.Items.Add(new ListItem(countryInfo.name, countryInfo.ID.ToString()));
+                drdlFilmCountry.Items.Add(new ListItem(countryInfo.Name, countryInfo.ID.ToString()));
             }
             drdlFilmCountry.SelectedIndex = 0;
         }

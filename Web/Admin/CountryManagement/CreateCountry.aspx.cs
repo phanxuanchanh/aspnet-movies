@@ -77,12 +77,12 @@ namespace Web.Admin.CountryManagement
             return cvCountryName.IsValid;
         }
 
-        private CountryCreation GetCountryCreation()
+        private CreateCountryDto GetCountryCreation()
         {
-            return new CountryCreation
+            return new CreateCountryDto
             {
-                name = Request.Form[txtCountryName.UniqueID],
-                description = Request.Form[txtCountryDescription.UniqueID]
+                Name = Request.Form[txtCountryName.UniqueID],
+                Description = Request.Form[txtCountryDescription.UniqueID]
             };
         }
 
@@ -90,7 +90,7 @@ namespace Web.Admin.CountryManagement
         {
             if (IsValidData())
             {
-                CountryCreation country = GetCountryCreation();
+                CreateCountryDto country = GetCountryCreation();
                 CreationState state;
                 using(CountryBLL countryBLL = new CountryBLL())
                 {

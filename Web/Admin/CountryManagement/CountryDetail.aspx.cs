@@ -9,7 +9,7 @@ namespace Web.Admin.CountryManagement
 {
     public partial class CountryDetail : System.Web.UI.Page
     {
-        protected CountryInfo countryInfo;
+        protected CountryDto countryInfo;
         protected bool enableShowDetail;
 
         protected async void Page_Load(object sender, EventArgs e)

@@ -42,92 +42,92 @@ namespace Data.BLL
             includeDescription = false;
         }
 
-        private CastInfo ToCastInfo(Cast cast)
+        private ActorDto ToActorDto(Cast cast)
         {
             if (cast == null)
                 return null;
 
-            CastInfo castInfo = new CastInfo();
-            castInfo.ID = cast.ID;
-            castInfo.name = cast.name;
+            ActorDto actorDto = new ActorDto();
+            actorDto.ID = cast.ID;
+            actorDto.Name = cast.Name;
 
             if (includeDescription)
-                castInfo.description = cast.description;
+                actorDto.Description = cast.Description;
 
             if (includeTimestamp)
             {
-                castInfo.createAt = cast.createAt;
-                castInfo.updateAt = cast.updateAt;
+                actorDto.CreatedAt = cast.CreatedAt;
+                actorDto.UpdatedAt = cast.UpdatedAt;
             }
 
-            return castInfo;
+            return actorDto;
         }
 
-        private Cast ToCast(CastCreation castCreation)
+        private Cast ToCast(CreateActorDto createActorDto)
         {
-            if (castCreation == null)
+            if (createActorDto == null)
                 throw new Exception("@'castCreation' must not be null");
 
             return new Cast
             {
-                name = castCreation.name,
-                description = castCreation.description,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now,
+                Name = createActorDto.Name,
+                Description = createActorDto.Description,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
             };
         }
 
-        private Cast ToCast(CastUpdate castUpdate)
+        private Cast ToCast(UpdateActorDto updateActorDto)
         {
-            if (castUpdate == null)
+            if (updateActorDto == null)
                 throw new Exception("@'castUpdate' must not be null");
 
             return new Cast
             {
-                ID = castUpdate.ID,
-                name = castUpdate.name,
-                description = castUpdate.description,
-                updateAt = DateTime.Now,
+                ID = updateActorDto.ID,
+                Name = updateActorDto.Name,
+                Description = updateActorDto.Description,
+                UpdatedAt = DateTime.Now,
             };
         }
 
-        public async Task<List<CastInfo>> GetCastsAsync()
+        public async Task<List<ActorDto>> GetCastsAsync()
         {
-            List<CastInfo> casts = null;
+            List<ActorDto> casts = null;
             if (includeDescription && includeTimestamp)
-                casts = (await db.Casts.ToListAsync()).Select(c => ToCastInfo(c)).ToList();
+                casts = (await db.Casts.ToListAsync()).Select(c => ToActorDto(c)).ToList();
             else if (includeDescription)
-                casts = (await db.Casts.ToListAsync(c => new { c.ID, c.name, c.description }))
-                     .Select(c => ToCastInfo(c)).ToList();
+                casts = (await db.Casts.ToListAsync(c => new { c.ID, c.Name, c.Description }))
+                     .Select(c => ToActorDto(c)).ToList();
             else if (includeTimestamp)
-                casts = (await db.Casts.ToListAsync(c => new { c.ID, c.name, c.createAt, c.updateAt }))
-                     .Select(c => ToCastInfo(c)).ToList();
+                casts = (await db.Casts.ToListAsync(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }))
+                     .Select(c => ToActorDto(c)).ToList();
             else
-                casts = (await db.Casts.ToListAsync(c => new { c.ID, c.name }))
-                     .Select(c => ToCastInfo(c)).ToList();
+                casts = (await db.Casts.ToListAsync(c => new { c.ID, c.Name }))
+                     .Select(c => ToActorDto(c)).ToList();
 
             return casts;
         }
 
-        public List<CastInfo> GetCasts()
+        public List<ActorDto> GetCasts()
         {
-            List<CastInfo> casts = null;
+            List<ActorDto> casts = null;
             if (includeDescription && includeTimestamp)
-                casts = db.Casts.ToList().Select(c => ToCastInfo(c)).ToList();
+                casts = db.Casts.ToList().Select(c => ToActorDto(c)).ToList();
             else if (includeDescription)
-                casts = db.Casts.ToList(c => new { c.ID, c.name, c.description })
-                     .Select(c => ToCastInfo(c)).ToList();
+                casts = db.Casts.ToList(c => new { c.ID, c.Name, c.Description })
+                     .Select(c => ToActorDto(c)).ToList();
             else if (includeTimestamp)
-                casts = db.Casts.ToList(c => new { c.ID, c.name, c.createAt, c.updateAt })
-                     .Select(c => ToCastInfo(c)).ToList();
+                casts = db.Casts.ToList(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt })
+                     .Select(c => ToActorDto(c)).ToList();
             else
-                casts = db.Casts.ToList(c => new { c.ID, c.name })
-                     .Select(c => ToCastInfo(c)).ToList();
+                casts = db.Casts.ToList(c => new { c.ID, c.Name })
+                     .Select(c => ToActorDto(c)).ToList();
 
             return casts;
         }
 
-        public async Task<PagedList<CastInfo>> GetCastsAsync(int pageIndex, int pageSize)
+        public async Task<PagedList<ActorDto>> GetCastsAsync(int pageIndex, int pageSize)
         {
             SqlPagedList<Cast> pagedList = null;
             Expression<Func<Cast, object>> orderBy = c => new { c.ID };
@@ -135,23 +135,23 @@ namespace Data.BLL
                 pagedList = await db.Casts.ToPagedListAsync(orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if (includeDescription)
                 pagedList = await db.Casts.ToPagedListAsync(
-                    c => new { c.ID, c.name, c.description }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.Description }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if (includeTimestamp)
                 pagedList = await db.Casts.ToPagedListAsync(
-                    c => new { c.ID, c.name, c.createAt, c.updateAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else
                 pagedList = await db.Casts.ToPagedListAsync(
-                    c => new { c.ID, c.name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
 
-            return new PagedList<CastInfo>
+            return new PagedList<ActorDto>
             {
                 PageNumber = pagedList.PageNumber,
                 CurrentPage = pagedList.CurrentPage,
-                Items = pagedList.Items.Select(c => ToCastInfo(c)).ToList()
+                Items = pagedList.Items.Select(c => ToActorDto(c)).ToList()
             };
         }
 
-        public PagedList<CastInfo> GetCasts(int pageIndex, int pageSize)
+        public PagedList<ActorDto> GetCasts(int pageIndex, int pageSize)
         {
             SqlPagedList<Cast> pagedList = null;
             Expression<Func<Cast, object>> orderBy = c => new { c.ID };
@@ -159,23 +159,23 @@ namespace Data.BLL
                 pagedList = db.Casts.ToPagedList(orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if(includeDescription)
                 pagedList = db.Casts.ToPagedList(
-                    c => new { c.ID, c.name, c.description },orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.Description },orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else if(includeTimestamp)
                 pagedList = db.Casts.ToPagedList(
-                    c => new { c.ID, c.name, c.createAt, c.updateAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
             else
                 pagedList = db.Casts.ToPagedList(
-                    c => new { c.ID, c.name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+                    c => new { c.ID, c.Name }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
 
-            return new PagedList<CastInfo>
+            return new PagedList<ActorDto>
             {
                 PageNumber = pagedList.PageNumber,
                 CurrentPage = pagedList.CurrentPage,
-                Items = pagedList.Items.Select(c => ToCastInfo(c)).ToList()
+                Items = pagedList.Items.Select(c => ToActorDto(c)).ToList()
             };
         }
 
-        public async Task<CastInfo> GetCastAsync(long castId)
+        public async Task<ActorDto> GetCastAsync(long castId)
         {
             if (castId <= 0)
                 throw new Exception("@'castId' must be greater than 0");
@@ -185,18 +185,18 @@ namespace Data.BLL
                 cast = await db.Casts.SingleOrDefaultAsync(c => c.ID == castId);
             else if(includeDescription)
                 cast = await db.Casts
-                    .SingleOrDefaultAsync(c => new { c.ID, c.name, c.description }, c => c.ID == castId);
+                    .SingleOrDefaultAsync(c => new { c.ID, c.Name, c.Description }, c => c.ID == castId);
             else if(includeTimestamp)
                 cast = await db.Casts
-                    .SingleOrDefaultAsync(c => new { c.ID, c.name, c.createAt, c.updateAt }, c => c.ID == castId);
+                    .SingleOrDefaultAsync(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, c => c.ID == castId);
             else
                 cast = await db.Casts
-                    .SingleOrDefaultAsync(c => new { c.ID, c.name }, c => c.ID == castId);
+                    .SingleOrDefaultAsync(c => new { c.ID, c.Name }, c => c.ID == castId);
 
-            return ToCastInfo(cast);
+            return ToActorDto(cast);
         }
 
-        public CastInfo GetCast(long castId)
+        public ActorDto GetCast(long castId)
         {
             if (castId <= 0)
                 throw new Exception("@'castId' must be greater than 0");
@@ -206,18 +206,18 @@ namespace Data.BLL
                 cast = db.Casts.SingleOrDefault(c => c.ID == castId);
             else if(includeDescription)
                 cast = db.Casts
-                    .SingleOrDefault(c => new { c.ID, c.name, c.description }, c => c.ID == castId);
+                    .SingleOrDefault(c => new { c.ID, c.Name, c.Description }, c => c.ID == castId);
             else if(includeTimestamp)
                 cast = db.Casts
-                    .SingleOrDefault(c => new { c.ID, c.name, c.createAt, c.updateAt }, c => c.ID == castId);
+                    .SingleOrDefault(c => new { c.ID, c.Name, c.CreatedAt, c.UpdatedAt }, c => c.ID == castId);
             else
                 cast = db.Casts
-                    .SingleOrDefault(c => new { c.ID, c.name }, c => c.ID == castId);
+                    .SingleOrDefault(c => new { c.ID, c.Name }, c => c.ID == castId);
 
-            return ToCastInfo(cast);
+            return ToActorDto(cast);
         }
 
-        public async Task<List<CastInfo>> GetCastsByFilmIdAsync(string filmId)
+        public async Task<List<ActorDto>> GetCastsByFilmIdAsync(string filmId)
         {
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
@@ -228,25 +228,25 @@ namespace Data.BLL
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
             else if(includeDescription)
-                commandText = @"Select [Cast].[ID], [Cast].[name], [Cast].[description] 
+                commandText = @"Select [Cast].[ID], [Cast].[Name], [Cast].[Description] 
                                 from [CastOfFilm], [Cast]
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
             else if (includeTimestamp)
-                commandText = @"Select [Cast].[ID], [Cast].[name], [Cast].[createAt], [Cast].[updateAt] 
+                commandText = @"Select [Cast].[ID], [Cast].[Name], [Cast].[CreatedAt], [Cast].[UpdatedAt] 
                                 from [CastOfFilm], [Cast]
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
             else
-                commandText = @"Select [Cast].[ID], [Cast].[name] 
+                commandText = @"Select [Cast].[ID], [Cast].[Name] 
                                 from [CastOfFilm], [Cast]
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
 
-            return await db.Execute_ToListAsync<CastInfo>(commandText, CommandType.Text, new SqlParameter("@filmId", filmId));
+            return await db.Execute_ToListAsync<ActorDto>(commandText, CommandType.Text, new SqlParameter("@filmId", filmId));
         }
 
-        public List<CastInfo> GetCastsByFilmId(string filmId)
+        public List<ActorDto> GetCastsByFilmId(string filmId)
         {
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
@@ -257,60 +257,60 @@ namespace Data.BLL
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
             else if (includeDescription)
-                commandText = @"Select [Cast].[ID], [Cast].[name], [Cast].[description] 
+                commandText = @"Select [Cast].[ID], [Cast].[Name], [Cast].[Description] 
                                 from [CastOfFilm], [Cast]
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
             else if (includeTimestamp)
-                commandText = @"Select [Cast].[ID], [Cast].[name], [Cast].[createAt], [Cast].[updateAt] 
+                commandText = @"Select [Cast].[ID], [Cast].[Name], [Cast].[CreatedAt], [Cast].[UpdatedAt] 
                                 from [CastOfFilm], [Cast]
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
             else
-                commandText = @"Select [Cast].[ID], [Cast].[name] 
+                commandText = @"Select [Cast].[ID], [Cast].[Name] 
                                 from [CastOfFilm], [Cast]
                                 where [CastOfFilm].[castId] = [Cast].[ID]
                                     and [CastOfFilm].[filmId] = @filmId";
 
-            return db.Execute_ToList<CastInfo>(commandText, CommandType.Text, new SqlParameter("@filmId", filmId));
+            return db.Execute_ToList<ActorDto>(commandText, CommandType.Text, new SqlParameter("@filmId", filmId));
         }
 
-        public async Task<CreationState> CreateCastAsync(CastCreation castCreation)
+        public async Task<CreationState> CreateCastAsync(CreateActorDto createActorDto)
         {
-            Cast cast = ToCast(castCreation);
-            if (cast.name == null)
-                throw new Exception("@'cast.name' must not be null");
+            Cast cast = ToCast(createActorDto);
+            if (cast.Name == null)
+                throw new Exception("@'cast.Name' must not be null");
 
-            int checkExists = (int)await db.Casts.CountAsync(c => c.name == cast.name);
+            int checkExists = (int)await db.Casts.CountAsync(c => c.Name == cast.Name);
             if (checkExists != 0)
                 return CreationState.AlreadyExists;
 
             int affected;
-            if (cast.description == null)
-                affected = await db.Casts.InsertAsync(cast, new List<string> { "ID", "description" });
+            if (cast.Description == null)
+                affected = await db.Casts.InsertAsync(cast, new List<string> { "ID", "Description" });
             else
                 affected = await db.Casts.InsertAsync(cast, new List<string> { "ID" });
 
             return (affected == 0) ? CreationState.Failed : CreationState.Success;
         }
 
-        public async Task<UpdateState> UpdateCastAsync(CastUpdate castUpdate)
+        public async Task<UpdateState> UpdateCastAsync(UpdateActorDto updateActorDto)
         {
-            Cast cast = ToCast(castUpdate);
-            if (cast.name == null)
-                throw new Exception("@'cast.name' must not be null");
+            Cast cast = ToCast(updateActorDto);
+            if (cast.Name == null)
+                throw new Exception("@'cast.Name' must not be null");
 
             int affected;
-            if (cast.description == null)
+            if (cast.Description == null)
                 affected = await db.Casts.UpdateAsync(
                     cast,
-                    c => new { c.name, c.updateAt },
+                    c => new { c.Name, c.UpdatedAt },
                     c => c.ID == cast.ID
                 );
             else
                 affected = await db.Casts.UpdateAsync(
                     cast,
-                    c => new { c.name, c.description, c.updateAt },
+                    c => new { c.Name, c.Description, c.UpdatedAt },
                     c => c.ID == cast.ID
                 );
 

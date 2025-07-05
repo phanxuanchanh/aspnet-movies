@@ -9,7 +9,7 @@ namespace Web.Admin.CastManagement
 {
     public partial class DeleteCast : System.Web.UI.Page
     {
-        protected CastInfo castInfo;
+        protected ActorDto actorDto;
         protected bool enableShowInfo;
         protected bool enableShowResult;
         protected string stateString;
@@ -73,10 +73,10 @@ namespace Web.Admin.CastManagement
             {
                 using(CastBLL castBLL = new CastBLL())
                 {
-                    castInfo = await castBLL.GetCastAsync(id);
+                    actorDto = await castBLL.GetCastAsync(id);
                 }
 
-                if (castInfo == null)
+                if (actorDto == null)
                     Response.RedirectToRoute("Admin_CastList", null);
                 else
                     enableShowInfo = true;
