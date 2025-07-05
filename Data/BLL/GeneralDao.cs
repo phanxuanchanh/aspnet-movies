@@ -10,6 +10,8 @@ namespace Data.BLL
             _context = new DBContext();
         }
 
+        public FilmMetadataDao FilmMetadataDao { get { return new FilmMetadataDao(_context); } }
+
         public CastBLL ActorDao { get { return new CastBLL(); } }
         public CategoryBLL CategoryDao { get { return new CategoryBLL(); } }
     }

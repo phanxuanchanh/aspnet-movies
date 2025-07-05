@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class Language
+    public class Language
     {
         public int ID { get; set; }
         public string name { get; set; }

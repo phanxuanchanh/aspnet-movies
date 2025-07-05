@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class UserReaction
+    public class UserReaction
     {
         public string filmId { get; set; }
         public string userId { get; set; }

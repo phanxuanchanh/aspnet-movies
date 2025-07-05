@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class TagDistribution
+    public class TagDistribution
     {
         public long tagId { get; set; }
         public string filmId { get; set; }

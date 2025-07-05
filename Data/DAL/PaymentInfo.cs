@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class PaymentInfo
+    public class PaymentInfo
     {
         public string userId { get; set; }
         public int paymentMethodId { get; set; }

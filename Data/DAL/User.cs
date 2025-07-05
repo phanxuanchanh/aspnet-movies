@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.DAL
 {
-    internal class User
+    public class User
     {
         public string ID { get; set; }
         public string userName { get; set; }

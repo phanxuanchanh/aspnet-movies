@@ -1,14 +1,17 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.CountryManagement
 {
     public partial class CountryList : System.Web.UI.Page
     {
+        private FilmMetadataDao _filmMetadataDao;
         private CountryBLL countryBLL;
         protected long currentPage;
         protected long pageNumber;
@@ -17,6 +20,7 @@ namespace Web.Admin.CountryManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
+            _filmMetadataDao = NinjectWebCommon.Kernel.Get<FilmMetadataDao>();
             countryBLL = new CountryBLL();
             enableTool = false;
             toolDetail = null;

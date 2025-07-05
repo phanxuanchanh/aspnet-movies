@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class DirectorOfFilm
+    public class DirectorOfFilm
     {
         public string filmId { get; set; }
         public long directorId { get; set; }

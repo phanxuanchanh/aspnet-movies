@@ -3,7 +3,7 @@ using MSSQL.Connection;
 
 namespace Data.DAL
 {
-    internal class DBContext : SqlContext
+    public class DBContext : SqlContext
     {
         private bool disposed;
         private SqlAccess<Role> roles;
@@ -22,6 +22,8 @@ namespace Data.DAL
         private SqlAccess<Cast> casts;
         private SqlAccess<CastOfFilm> castOfFilms;
         private SqlAccess<UserReaction> userReactions;
+        private SqlAccess<FilmMetadata> filmMetadata;
+        private SqlAccess<FilmMetaLink> filmMetaLinks;
 
         public DBContext()
             : base()
@@ -42,6 +44,8 @@ namespace Data.DAL
             casts = null;
             castOfFilms = null;
             userReactions = null;
+            filmMetadata = null;
+            filmMetaLinks = null;
             disposed = false;
         }
 
@@ -61,6 +65,8 @@ namespace Data.DAL
         public SqlAccess<Cast> Casts { get { return InitSqlAccess<Cast>(ref casts); } }
         public SqlAccess<CastOfFilm> CastOfFilms { get { return InitSqlAccess<CastOfFilm>(ref castOfFilms); } }
         public SqlAccess<UserReaction> UserReactions { get { return InitSqlAccess<UserReaction>(ref userReactions); } }
+        public SqlAccess<FilmMetadata> FilmMetadata { get { return InitSqlAccess<FilmMetadata>(ref filmMetadata); } }
+        public SqlAccess<FilmMetaLink> FilmMetaLinks { get { return InitSqlAccess<FilmMetaLink>(ref filmMetaLinks); } }
 
         protected override void Dispose(bool disposing)
         {
@@ -86,6 +92,7 @@ namespace Data.DAL
                         DisposeSqlAccess<Cast>(ref casts);
                         DisposeSqlAccess<CastOfFilm>(ref castOfFilms);
                         DisposeSqlAccess<UserReaction>(ref userReactions);
+                        DisposeSqlAccess<FilmMetadata>(ref filmMetadata);
                     }
                     this.disposed = true;
                 }

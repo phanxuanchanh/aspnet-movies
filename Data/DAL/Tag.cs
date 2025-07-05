@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class Tag
+    public class Tag
     {
         public long ID { get; set; }
         public string name { get; set; }

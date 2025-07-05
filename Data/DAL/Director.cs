@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class Director
+    public class Director
     {
         public long ID { get; set; }
         public string name { get; set; }

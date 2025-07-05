@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class Role
+    public class Role
     {
         public string ID { get; set; }
         public string name { get; set; }

@@ -44,6 +44,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExecResult.cs" />
+    <Compile Include="ExecStatus.cs" />
     <Compile Include="Hash\HashFunction.cs" />
     <Compile Include="Mail\EMail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

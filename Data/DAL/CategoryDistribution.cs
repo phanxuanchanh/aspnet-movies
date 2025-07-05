@@ -2,7 +2,7 @@
 
 namespace Data.DAL
 {
-    internal class CategoryDistribution
+    public class CategoryDistribution
     {
         public int categoryId { get; set; }
         public string filmId { get; set; }
