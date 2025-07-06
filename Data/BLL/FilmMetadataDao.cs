@@ -42,7 +42,7 @@ namespace Data.BLL
         public async Task<int> UpdateAsync(FilmMetadata metadata)
         {
             metadata.UpdatedAt = DateTime.Now;
-            return await _context.FilmMetadata.UpdateAsync(metadata, s => new { });
+            return await _context.FilmMetadata.UpdateAsync(metadata, s => new { s.Name, s.Description, s.UpdatedAt }, x => x.Id == metadata.Id);
         }
 
         public async Task<int> DeleteAsync(int id, bool forceDelete = false)

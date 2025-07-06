@@ -25,7 +25,7 @@ namespace Web.Admin.CountryManagement
             toolDetail = null;
             try
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateCountry", null);
+                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { action = "create" });
 
                 if (CheckLoggedIn())
                 {
@@ -111,11 +111,11 @@ namespace Web.Admin.CountryManagement
             try
             {
                 int key = (int)grvCountry.DataKeys[grvCountry.SelectedIndex].Value;
-                CountryDto countryInfo = (await _filmMetadataService.GetCountryAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", countryInfo.ID, countryInfo.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = countryInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCountry", new { id = countryInfo.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCountry", new { id = countryInfo.ID });
+                CountryDto country = (await _filmMetadataService.GetCountryAsync(key)).Data;
+                toolDetail = string.Format("{0} -- {1}", country.ID, country.Name);
+                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = country.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = country.ID, action = "update" });
+                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCountry", new { id = country.ID });
                 enableTool = true;
             }
             catch(Exception ex)

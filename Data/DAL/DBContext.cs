@@ -15,7 +15,6 @@ namespace Data.DAL
         private SqlAccess<TagDistribution> tagDistributions;
         private SqlAccess<Film> films;
         private SqlAccess<Language> languages;
-        private SqlAccess<Country> countries;
         private SqlAccess<CategoryDistribution> categoryDistributions;
         private SqlAccess<Director> directors;
         private SqlAccess<DirectorOfFilm> directorOfFilms;
@@ -37,7 +36,6 @@ namespace Data.DAL
             tagDistributions = null;
             films = null;
             languages = null;
-            countries = null;
             categoryDistributions = null;
             directors = null;
             directorOfFilms = null;
@@ -58,7 +56,6 @@ namespace Data.DAL
         public SqlAccess<TagDistribution> TagDistributions { get { return InitSqlAccess<TagDistribution>(ref tagDistributions); } }
         public SqlAccess<Film> Films { get { return InitSqlAccess<Film>(ref films); } }
         public SqlAccess<Language> Languages { get { return InitSqlAccess<Language>(ref languages); } }
-        public SqlAccess<Country> Countries { get { return InitSqlAccess<Country>(ref countries); } }
         public SqlAccess<CategoryDistribution> CategoryDistributions { get { return InitSqlAccess<CategoryDistribution>(ref categoryDistributions); } }
         public SqlAccess<Director> Directors { get { return InitSqlAccess<Director>(ref directors); } }
         public SqlAccess<DirectorOfFilm> DirectorOfFilms { get { return InitSqlAccess<DirectorOfFilm>(ref directorOfFilms); } }
@@ -86,7 +83,6 @@ namespace Data.DAL
                         DisposeSqlAccess<TagDistribution>(ref tagDistributions);
                         DisposeSqlAccess<Film>(ref films);
                         DisposeSqlAccess<Language>(ref languages);
-                        DisposeSqlAccess<Country>(ref countries);
                         DisposeSqlAccess<Director>(ref directors);
                         DisposeSqlAccess<DirectorOfFilm>(ref directorOfFilms);
                         DisposeSqlAccess<Cast>(ref casts);

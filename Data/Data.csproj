@@ -46,7 +46,6 @@
     <Compile Include="BLL\BusinessLogicLayer.cs" />
     <Compile Include="BLL\CastBLL.cs" />
     <Compile Include="BLL\CategoryBLL.cs" />
-    <Compile Include="BLL\CountryBLL.cs" />
     <Compile Include="BLL\DirectorBLL.cs" />
     <Compile Include="BLL\FilmBLL.cs" />
     <Compile Include="BLL\FilmMetadataDao.cs" />
@@ -70,7 +69,6 @@
     <Compile Include="DAL\CastOfFilm.cs" />
     <Compile Include="DAL\Category.cs" />
     <Compile Include="DAL\CategoryDistribution.cs" />
-    <Compile Include="DAL\Country.cs" />
     <Compile Include="DAL\DBContext.cs" />
     <Compile Include="DAL\Director.cs" />
     <Compile Include="DAL\DirectorOfFilm.cs" />

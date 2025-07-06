@@ -1,30 +1,33 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="CreateCountry.aspx.cs" Inherits="Web.Admin.CountryManagement.CreateCountry" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditCountry.aspx.cs" Inherits="Web.Admin.CountryManagement.CreateCountry" %>
+<%@ Import Namespace="Common" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Tạo mới quốc gia - Trang quản trị</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
     <% if (enableShowResult)
-        { %>
+    { %>
     <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
     <a class="anchor" name="alerts"></a>
     <div class="row grid-responsive">
         <div class="column">
-            <%if (stateString == "Success")
-                { %>
-            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = stateDetail %></div>
+            <%if (commandResult.Status == ExecStatus.Success)
+        { %>
+            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = commandResult.Message %></div>
             <%}
-                else if (stateString == "AlreadyExists")
-                { %>
-            <div class="alert background-warning"><em class="fa fa-warning"></em><% = stateDetail %></div>
+        else if (commandResult.Status == ExecStatus.AlreadyExists)
+        { %>
+            <div class="alert background-warning"><em class="fa fa-warning"></em><% = commandResult.Message %></div>
             <%}
-                else
-                { %>
-            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = stateDetail %></div>
+        else
+        { %>
+            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = commandResult.Message %></div>
             <%} %>
         </div>
     </div>
     <%} %>
+
     <h5 class="mt-2">Tạo mới quốc gia</h5>
     <a class="anchor" name="forms"></a>
     <div class="row grid-responsive">
@@ -36,6 +39,7 @@
                 <div class="card-block">
                     <div>
                         <fieldset>
+                            <asp:HiddenField ID="hdCountryId" runat="server" />
                             <asp:Label ID="lbCountryName" runat="server" Text="Tên quốc gia" AssociatedControlID="txtCountryName"></asp:Label>
                             <asp:TextBox ID="txtCountryName" placeholder="Nhập vào tên quốc gia" runat="server"></asp:TextBox>
                             <asp:CustomValidator ID="cvCountryName" CssClass="text-red" runat="server"></asp:CustomValidator>
@@ -45,7 +49,7 @@
                     </div>
                 </div>
                 <div class="card-block mt-0">
-                    <asp:Button ID="btnSubmit" CssClass="button-primary" runat="server" Text="Tạo mới" />
+                    <asp:Button ID="btnSubmit" CssClass="button-primary" runat="server" />
                 </div>
             </div>
         </div>

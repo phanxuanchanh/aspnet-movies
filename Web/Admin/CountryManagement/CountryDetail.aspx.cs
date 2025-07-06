@@ -16,7 +16,6 @@ namespace Web.Admin.CountryManagement
         protected ExecResult commandResult;
         protected bool enableShowDetail;
         protected bool enableShowResult;
-        protected bool enableEditForm;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -25,8 +24,7 @@ namespace Web.Admin.CountryManagement
             {
                 int id = GetCountryId();
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCountry", new { id = id, action = "update" });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCountry", new { id = id });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = id, action = "update" });
 
                 if (CheckLoggedIn())
                 {

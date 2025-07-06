@@ -1741,9 +1741,7 @@
     <Content Include="Admin\CategoryManagement\CreateCategory.aspx" />
     <Content Include="Admin\CountryManagement\CountryDetail.aspx" />
     <Content Include="Admin\CountryManagement\CountryList.aspx" />
-    <Content Include="Admin\CountryManagement\CreateCountry.aspx" />
-    <Content Include="Admin\CountryManagement\DeleteCountry.aspx" />
-    <Content Include="Admin\CountryManagement\UpdateCountry.aspx" />
+    <Content Include="Admin\CountryManagement\EditCountry.aspx" />
     <Content Include="Admin\DirectorManagement\CreateDirector.aspx" />
     <Content Include="Admin\DirectorManagement\DeleteDirector.aspx" />
     <Content Include="Admin\DirectorManagement\DirectorDetail.aspx" />
@@ -1792,10 +1790,6 @@
     <Content Include="User\CategoryList.aspx" />
     <Content Include="User\FilmDetail.aspx" />
     <Content Include="User\FilmsByCategory.aspx" />
-    <Content Include="User\LiteVersion\FilmDetailLite.aspx" />
-    <Content Include="User\LiteVersion\FilmsByCategoryLite.aspx" />
-    <Content Include="User\LiteVersion\IndexLite.aspx" />
-    <Content Include="User\LiteVersion\WatchLite.aspx" />
     <Content Include="User\Search.aspx" />
     <Content Include="User\Watch.aspx" />
     <Content Include="User\WatchedList.aspx" />
@@ -1979,26 +1973,12 @@
     <Compile Include="Admin\CountryManagement\CountryList.aspx.designer.cs">
       <DependentUpon>CountryList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\CountryManagement\CreateCountry.aspx.cs">
-      <DependentUpon>CreateCountry.aspx</DependentUpon>
+    <Compile Include="Admin\CountryManagement\EditCountry.aspx.cs">
+      <DependentUpon>EditCountry.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\CountryManagement\CreateCountry.aspx.designer.cs">
-      <DependentUpon>CreateCountry.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\CountryManagement\DeleteCountry.aspx.cs">
-      <DependentUpon>DeleteCountry.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CountryManagement\DeleteCountry.aspx.designer.cs">
-      <DependentUpon>DeleteCountry.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\CountryManagement\UpdateCountry.aspx.cs">
-      <DependentUpon>UpdateCountry.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CountryManagement\UpdateCountry.aspx.designer.cs">
-      <DependentUpon>UpdateCountry.aspx</DependentUpon>
+    <Compile Include="Admin\CountryManagement\EditCountry.aspx.designer.cs">
+      <DependentUpon>EditCountry.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\DirectorManagement\CreateDirector.aspx.cs">
       <DependentUpon>CreateDirector.aspx</DependentUpon>
@@ -2337,34 +2317,6 @@
     </Compile>
     <Compile Include="User\Layout\UserLayoutLite.Master.designer.cs">
       <DependentUpon>UserLayoutLite.Master</DependentUpon>
-    </Compile>
-    <Compile Include="User\LiteVersion\FilmDetailLite.aspx.cs">
-      <DependentUpon>FilmDetailLite.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="User\LiteVersion\FilmDetailLite.aspx.designer.cs">
-      <DependentUpon>FilmDetailLite.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="User\LiteVersion\FilmsByCategoryLite.aspx.cs">
-      <DependentUpon>FilmsByCategoryLite.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="User\LiteVersion\FilmsByCategoryLite.aspx.designer.cs">
-      <DependentUpon>FilmsByCategoryLite.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="User\LiteVersion\IndexLite.aspx.cs">
-      <DependentUpon>IndexLite.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="User\LiteVersion\IndexLite.aspx.designer.cs">
-      <DependentUpon>IndexLite.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="User\LiteVersion\WatchLite.aspx.cs">
-      <DependentUpon>WatchLite.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="User\LiteVersion\WatchLite.aspx.designer.cs">
-      <DependentUpon>WatchLite.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>

@@ -112,6 +112,39 @@ namespace Data.Services
             };
         }
 
+        public async Task<ExecResult<CountryDto>> UpdateCountryAsync(UpdateCountryDto input)
+        {
+            if (string.IsNullOrEmpty(input.Name))
+                return new ExecResult<CountryDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
+
+            FilmMetadata filmMetadata = new FilmMetadata
+            {
+                Id = input.ID,
+                Name = input.Name,
+                Description = input.Description,
+                Type = "country",
+                CreatedAt = DateTime.Now,
+            };
+
+            int affected = await _filmMetadataDao.UpdateAsync(filmMetadata);
+            if (affected <= 0)
+                return new ExecResult<CountryDto> { Status = ExecStatus.Failure, Message = "Failed to update country." };
+
+            return new ExecResult<CountryDto>
+            {
+                Status = ExecStatus.Success,
+                Message = "Country updated successfully.",
+                Data = new CountryDto
+                {
+                    ID = filmMetadata.Id,
+                    Name = filmMetadata.Name,
+                    Description = filmMetadata.Description,
+                    CreatedAt = filmMetadata.CreatedAt,
+                    UpdatedAt = filmMetadata.UpdatedAt
+                }
+            };
+        }
+
         public async Task<ExecResult> DeleteAsync(int id, bool forceDelete = false)
         {
             int affected = await _filmMetadataDao.DeleteAsync(id, forceDelete);

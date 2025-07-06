@@ -35,11 +35,11 @@ namespace Web.App_Start
             routes.MapPageRoute("Admin_CreateRole", "admin/role/create", "~/Admin/RoleManagement/CreateRole.aspx");
             routes.MapPageRoute("Admin_UpdateRole", "admin/role/update/{id}", "~/Admin/RoleManagement/UpdateRole.aspx");
             routes.MapPageRoute("Admin_DeleteRole", "admin/role/delete/{id}", "~/Admin/RoleManagement/DeleteRole.aspx");
+
             routes.MapPageRoute("Admin_CountryList", "admin/country/list", "~/Admin/CountryManagement/CountryList.aspx");
             routes.MapPageRoute("Admin_CountryDetail", "admin/country/detail/{id}", "~/Admin/CountryManagement/CountryDetail.aspx");
-            routes.MapPageRoute("Admin_CreateCountry", "admin/country/create", "~/Admin/CountryManagement/CreateCountry.aspx");
-            routes.MapPageRoute("Admin_UpdateCountry", "admin/country/update/{id}", "~/Admin/CountryManagement/UpdateCountry.aspx");
-            routes.MapPageRoute("Admin_DeleteCountry", "admin/country/delete/{id}", "~/Admin/CountryManagement/DeleteCountry.aspx");
+            routes.MapPageRoute("Admin_EditCountry", "admin/country/edit", "~/Admin/CountryManagement/EditCountry.aspx");
+            
             routes.MapPageRoute("Admin_LanguageList", "admin/language/list", "~/Admin/LanguageManagement/LanguageList.aspx");
             routes.MapPageRoute("Admin_LanguageDetail", "admin/language/detail/{id}", "~/Admin/LanguageManagement/LanguageDetail.aspx");
             routes.MapPageRoute("Admin_CreateLanguage", "admin/language/create", "~/Admin/LanguageManagement/CreateLanguage.aspx");

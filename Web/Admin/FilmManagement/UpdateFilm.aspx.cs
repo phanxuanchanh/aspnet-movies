@@ -110,7 +110,7 @@ namespace Web.Admin.FilmManagement
                     txtReleaseDate.Text = filmInfo.releaseDate;
 
                     drdlFilmCountry.Items.Clear();
-                    List<CountryDto> countryInfos = await new CountryBLL(filmBLL).GetCountriesAsync();
+                    List<CountryDto> countryInfos = null;// await new CountryBLL(filmBLL).GetCountriesAsync();
                     foreach (CountryDto countryInfo in countryInfos)
                     {
                         drdlFilmCountry.Items.Add(new ListItem(countryInfo.Name, countryInfo.ID.ToString()));

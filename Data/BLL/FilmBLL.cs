@@ -92,9 +92,9 @@ namespace Data.BLL
                 filmInfo.Language = ((film.languageId != 0)
                     ? new LanguageBLL(this).GetLanguage(film.languageId) : null);
 
-            if (includeCountry)
-                filmInfo.Country = ((film.countryId != 0)
-                    ? new CountryBLL(this).GetCountry(film.countryId) : null);
+            //if (includeCountry)
+            //    filmInfo.Country = ((film.countryId != 0)
+            //        ? new CountryBLL(this).GetCountry(film.countryId) : null);
 
             if (includeTimestamp)
             {

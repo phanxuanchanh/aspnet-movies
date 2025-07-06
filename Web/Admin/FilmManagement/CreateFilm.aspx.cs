@@ -1,9 +1,12 @@
 ﻿using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
+using Web.App_Start;
 using Web.Models;
 using Web.Validation;
 
@@ -11,6 +14,7 @@ namespace Web.Admin.FilmManagement
 {
     public partial class CreateFilm : System.Web.UI.Page
     {
+        private FilmMetadataService _filmMetaService;
         private FilmBLL filmBLL;
         private CustomValidation customValidation;
         protected bool enableShowResult;
@@ -19,6 +23,7 @@ namespace Web.Admin.FilmManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
+            _filmMetaService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
             filmBLL = new FilmBLL();
             customValidation = new CustomValidation();
             enableShowResult = false;
@@ -51,6 +56,15 @@ namespace Web.Admin.FilmManagement
             filmBLL.Dispose();
         }
 
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            if (_filmMetaService != null)
+            {
+                _filmMetaService.Dispose();
+                _filmMetaService = null;
+            }
+        }
+
         private bool CheckLoggedIn()
         {
             object obj = Session["userSession"];
@@ -64,10 +78,10 @@ namespace Web.Admin.FilmManagement
         private async Task LoadFilmCountries()
         {
             drdlFilmCountry.Items.Clear();
-            List<CountryDto> countryInfos = await new CountryBLL(filmBLL).GetCountriesAsync();
-            foreach (CountryDto countryInfo in countryInfos)
+            List<CountryDto> countries = (await _filmMetaService.GetCountriesAsync(1, 30)).Items;
+            foreach (CountryDto country in countries)
             {
-                drdlFilmCountry.Items.Add(new ListItem(countryInfo.Name, countryInfo.ID.ToString()));
+                drdlFilmCountry.Items.Add(new ListItem(country.Name, country.ID.ToString()));
             }
             drdlFilmCountry.SelectedIndex = 0;
         }
