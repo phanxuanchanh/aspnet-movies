@@ -1,4 +1,5 @@
-﻿using Data.DAL;
+﻿using Common;
+using Data.DAL;
 using System.Threading.Tasks;
 
 namespace Data.BLL
@@ -12,15 +13,15 @@ namespace Data.BLL
             _context = context;
         }
 
-        public async Task AddAsync(string filmId, int metaId)
+        public async Task<int> AddAsync(string filmId, int metaId)
         {
             FilmMetaLink metaLink = new FilmMetaLink { FilmId = filmId, MetaId = metaId };
-            await _context.FilmMetaLinks.InsertAsync(metaLink);
+            return await _context.FilmMetaLinks.InsertAsync(metaLink);
         }
 
-        public async Task DeleteAsync(string filmId, int metaId)
+        public async Task<int> DeleteAsync(string filmId, int metaId)
         {
-            await _context.FilmMetaLinks.DeleteAsync(x => x.FilmId == filmId && x.MetaId == metaId);
+           return await _context.FilmMetaLinks.DeleteAsync(x => x.FilmId == filmId && x.MetaId == metaId);
         }
     }
 }

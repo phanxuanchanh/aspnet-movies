@@ -1,16 +1,22 @@
-﻿using Data.BLL;
+﻿using Common;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.CountryManagement
 {
     public partial class CountryDetail : System.Web.UI.Page
     {
-        protected CountryDto countryInfo;
+        protected CountryDto country;
+        protected ExecResult commandResult;
         protected bool enableShowDetail;
+        protected bool enableShowResult;
+        protected bool enableEditForm;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -19,11 +25,14 @@ namespace Web.Admin.CountryManagement
             {
                 int id = GetCountryId();
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCountry", new { id = id });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCountry", new { id = id, action = "update" });
                 hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCountry", new { id = id });
 
                 if (CheckLoggedIn())
-                    await GetCountryInfo(id);
+                {
+                    await GetCountry(id);
+                    this.DataBind();
+                }
                 else
                     Response.RedirectToRoute("Account_Login", null);
             }
@@ -52,25 +61,60 @@ namespace Web.Admin.CountryManagement
             return int.Parse(obj.ToString());
         }
 
-        private async Task GetCountryInfo(int id)
+        private async Task GetCountry(int id)
         {
             if (id <= 0)
             {
                 Response.RedirectToRoute("Admin_CountryList", null);
+                return;
             }
-            else
+
+            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
             {
-                using(CountryBLL countryBLL = new CountryBLL())
+                ExecResult<CountryDto> result = await filmMetadataService.GetCountryAsync(id);
+                if (result.Status == ExecStatus.Success)
                 {
-                    countryBLL.IncludeDescription = true;
-                    countryBLL.IncludeTimestamp = true;
-                    countryInfo = await countryBLL.GetCountryAsync(id);
-                }
-                
-                if (countryInfo == null)
-                    Response.RedirectToRoute("Admin_CountryList", null);
-                else
+                    country = result.Data;
                     enableShowDetail = true;
+                }
+                else
+                {
+                    Response.RedirectToRoute("Admin_CountryList", null);
+                }
+
+            }
+        }
+
+        protected async void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await DeleteCountry();
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
+                Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        private async Task DeleteCountry()
+        {
+            int id = GetCountryId();
+            if (id <= 0)
+            {
+                Response.RedirectToRoute("Admin_CountryList", null);
+                return;
+            }
+
+            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            {
+                commandResult = await filmMetadataService.DeleteAsync(id); ;
+                if (commandResult.Status == ExecStatus.Success)
+                {
+                    Response.RedirectToRoute("Admin_CountryList", null);
+                    return;
+                }
             }
         }
     }

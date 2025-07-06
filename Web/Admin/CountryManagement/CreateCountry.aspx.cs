@@ -1,7 +1,11 @@
-﻿using Data.BLL;
+﻿using Common;
+using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 using Web.Validation;
 
@@ -9,6 +13,7 @@ namespace Web.Admin.CountryManagement
 {
     public partial class CreateCountry : System.Web.UI.Page
     {
+        private FilmMetadataService _filmMetadataService;
         private CustomValidation customValidation;
         protected bool enableShowResult;
         protected string stateString;
@@ -91,18 +96,19 @@ namespace Web.Admin.CountryManagement
             if (IsValidData())
             {
                 CreateCountryDto country = GetCountryCreation();
-                CreationState state;
-                using(CountryBLL countryBLL = new CountryBLL())
+                ExecResult<CountryDto> result;
+                //CreationState state;
+                using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
                 {
-                    state = await countryBLL.CreateCountryAsync(country);
+                    result = await filmMetadataService.AddCountryAsync(country);
                 }
 
-                if (state == CreationState.Success)
+                if (result.Status == ExecStatus.Success)
                 {
                     stateString = "Success";
                     stateDetail = "Đã thêm quốc gia thành công";
                 }
-                else if (state == CreationState.AlreadyExists)
+                else if (result.Status == ExecStatus.AlreadyExists)
                 {
                     stateString = "AlreadyExists";
                     stateDetail = "Thêm quốc gia thất bại. Lý do: Đã tồn tại quốc gia này";

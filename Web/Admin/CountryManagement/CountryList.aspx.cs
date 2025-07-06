@@ -1,6 +1,7 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
@@ -11,8 +12,7 @@ namespace Web.Admin.CountryManagement
 {
     public partial class CountryList : System.Web.UI.Page
     {
-        private FilmMetadataDao _filmMetadataDao;
-        private CountryBLL countryBLL;
+        private FilmMetadataService _filmMetadataService;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -20,8 +20,7 @@ namespace Web.Admin.CountryManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            _filmMetadataDao = NinjectWebCommon.Kernel.Get<FilmMetadataDao>();
-            countryBLL = new CountryBLL();
+            _filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
             enableTool = false;
             toolDetail = null;
             try
@@ -34,20 +33,26 @@ namespace Web.Admin.CountryManagement
                     {
                         await SetGrvCountry();
                         SetDrdlPage();
-                        countryBLL.Dispose();
                     }
                 }
                 else
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    countryBLL.Dispose();
                 }
             }
             catch(Exception ex)
             {
-                countryBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            if (_filmMetadataService != null)
+            {
+                _filmMetadataService.Dispose();
+                _filmMetadataService = null;
             }
         }
 
@@ -73,13 +78,11 @@ namespace Web.Admin.CountryManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            countryBLL.Dispose();
         }
 
         private async Task SetGrvCountry()
         {
-            countryBLL.IncludeTimestamp = true;
-            PagedList<CountryDto> countries = await countryBLL
+            PagedList<CountryDto> countries = await _filmMetadataService
                 .GetCountriesAsync(drdlPage.SelectedIndex, 20);
             grvCountry.DataSource = countries.Items;
             grvCountry.DataBind();
@@ -108,7 +111,7 @@ namespace Web.Admin.CountryManagement
             try
             {
                 int key = (int)grvCountry.DataKeys[grvCountry.SelectedIndex].Value;
-                CountryDto countryInfo = await countryBLL.GetCountryAsync(key);
+                CountryDto countryInfo = (await _filmMetadataService.GetCountryAsync(key)).Data;
                 toolDetail = string.Format("{0} -- {1}", countryInfo.ID, countryInfo.Name);
                 hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = countryInfo.ID });
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCountry", new { id = countryInfo.ID });
@@ -120,7 +123,6 @@ namespace Web.Admin.CountryManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            countryBLL.Dispose();
         }
     }
 }
