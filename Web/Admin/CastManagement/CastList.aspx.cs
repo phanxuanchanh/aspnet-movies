@@ -12,7 +12,7 @@ namespace Web.Admin.CastManagement
 {
     public partial class CastList : System.Web.UI.Page
     {
-        private ActorService actorService;
+        private PeopleService peopleService;
 
         private CastBLL castBLL;
         protected long currentPage;
@@ -22,7 +22,7 @@ namespace Web.Admin.CastManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            actorService = NinjectWebCommon.Kernel.Get<ActorService>();
+            peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
             castBLL = new CastBLL();
             enableTool = false;
             toolDetail = null;

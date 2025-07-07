@@ -67,6 +67,7 @@ namespace Web.App_Start
             kernel.Bind<GeneralDao>().To<GeneralDao>();
 
             kernel.Bind<FilmMetadataService>().To<FilmMetadataService>().InRequestScope();
+            kernel.Bind<PeopleService>().To<PeopleService>().InRequestScope();
         }
     }
 }

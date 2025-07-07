@@ -15,13 +15,14 @@ namespace Data.DAL
         private SqlAccess<TagDistribution> tagDistributions;
         private SqlAccess<Film> films;
         private SqlAccess<CategoryDistribution> categoryDistributions;
-        private SqlAccess<Director> directors;
         private SqlAccess<DirectorOfFilm> directorOfFilms;
         private SqlAccess<Cast> casts;
         private SqlAccess<CastOfFilm> castOfFilms;
         private SqlAccess<UserReaction> userReactions;
         private SqlAccess<FilmMetadata> filmMetadata;
         private SqlAccess<FilmMetaLink> filmMetaLinks;
+        private SqlAccess<People> people;
+        private SqlAccess<Taxonomy> taxonomy;
 
         public DBContext()
             : base()
@@ -35,13 +36,14 @@ namespace Data.DAL
             tagDistributions = null;
             films = null;
             categoryDistributions = null;
-            directors = null;
             directorOfFilms = null;
             casts = null;
             castOfFilms = null;
             userReactions = null;
             filmMetadata = null;
             filmMetaLinks = null;
+            people = null;
+            taxonomy = null;
             disposed = false;
         }
 
@@ -54,13 +56,14 @@ namespace Data.DAL
         public SqlAccess<TagDistribution> TagDistributions { get { return InitSqlAccess<TagDistribution>(ref tagDistributions); } }
         public SqlAccess<Film> Films { get { return InitSqlAccess<Film>(ref films); } }
         public SqlAccess<CategoryDistribution> CategoryDistributions { get { return InitSqlAccess<CategoryDistribution>(ref categoryDistributions); } }
-        public SqlAccess<Director> Directors { get { return InitSqlAccess<Director>(ref directors); } }
         public SqlAccess<DirectorOfFilm> DirectorOfFilms { get { return InitSqlAccess<DirectorOfFilm>(ref directorOfFilms); } }
         public SqlAccess<Cast> Casts { get { return InitSqlAccess<Cast>(ref casts); } }
         public SqlAccess<CastOfFilm> CastOfFilms { get { return InitSqlAccess<CastOfFilm>(ref castOfFilms); } }
         public SqlAccess<UserReaction> UserReactions { get { return InitSqlAccess<UserReaction>(ref userReactions); } }
         public SqlAccess<FilmMetadata> FilmMetadata { get { return InitSqlAccess<FilmMetadata>(ref filmMetadata); } }
         public SqlAccess<FilmMetaLink> FilmMetaLinks { get { return InitSqlAccess<FilmMetaLink>(ref filmMetaLinks); } }
+        public SqlAccess<People> People { get { return InitSqlAccess<People>(ref people); } }
+        public SqlAccess<Taxonomy> Taxonomy { get { return InitSqlAccess<Taxonomy>(ref taxonomy); } }
 
         protected override void Dispose(bool disposing)
         {
@@ -79,12 +82,12 @@ namespace Data.DAL
                         DisposeSqlAccess<Tag>(ref tags);
                         DisposeSqlAccess<TagDistribution>(ref tagDistributions);
                         DisposeSqlAccess<Film>(ref films);
-                        DisposeSqlAccess<Director>(ref directors);
                         DisposeSqlAccess<DirectorOfFilm>(ref directorOfFilms);
                         DisposeSqlAccess<Cast>(ref casts);
                         DisposeSqlAccess<CastOfFilm>(ref castOfFilms);
                         DisposeSqlAccess<UserReaction>(ref userReactions);
                         DisposeSqlAccess<FilmMetadata>(ref filmMetadata);
+                        DisposeSqlAccess<People>(ref people);
                     }
                     this.disposed = true;
                 }

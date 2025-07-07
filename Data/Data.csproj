@@ -46,12 +46,13 @@
     <Compile Include="BLL\BusinessLogicLayer.cs" />
     <Compile Include="BLL\CastBLL.cs" />
     <Compile Include="BLL\CategoryBLL.cs" />
-    <Compile Include="BLL\DirectorBLL.cs" />
     <Compile Include="BLL\FilmBLL.cs" />
     <Compile Include="BLL\FilmMetadataDao.cs" />
     <Compile Include="BLL\FilmMetaLinkDao.cs" />
     <Compile Include="BLL\GeneralDao.cs" />
     <Compile Include="BLL\Installation\DBInstallation.cs" />
+    <Compile Include="BLL\PeopleDao.cs" />
+    <Compile Include="BLL\TaxonomyDao.cs" />
     <Compile Include="DAL\FilmMetaLink.cs" />
     <Compile Include="BLL\Migration\UserMigration.cs" />
     <Compile Include="BLL\TagBLL.cs" />
@@ -69,15 +70,16 @@
     <Compile Include="DAL\Category.cs" />
     <Compile Include="DAL\CategoryDistribution.cs" />
     <Compile Include="DAL\DBContext.cs" />
-    <Compile Include="DAL\Director.cs" />
     <Compile Include="DAL\DirectorOfFilm.cs" />
     <Compile Include="DAL\Film.cs" />
     <Compile Include="DAL\FilmMetadata.cs" />
     <Compile Include="DAL\PaymentInfo.cs" />
     <Compile Include="DAL\PaymentMethod.cs" />
+    <Compile Include="DAL\People.cs" />
     <Compile Include="DAL\Role.cs" />
     <Compile Include="DAL\Tag.cs" />
     <Compile Include="DAL\TagDistribution.cs" />
+    <Compile Include="DAL\Taxonomy.cs" />
     <Compile Include="DAL\User.cs" />
     <Compile Include="DAL\UserReaction.cs" />
     <Compile Include="DTO\ActorDTO.cs" />
@@ -92,8 +94,8 @@
     <Compile Include="DTO\TagDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ActorService.cs" />
-    <Compile Include="Services\CategoryService.cs" />
+    <Compile Include="Services\PeopleService.cs" />
+    <Compile Include="Services\TaxonomyService.cs" />
     <Compile Include="Services\FilmMetadataService.cs" />
     <Compile Include="Services\FilmService.cs" />
   </ItemGroup>

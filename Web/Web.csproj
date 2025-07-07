@@ -1742,11 +1742,9 @@
     <Content Include="Admin\CountryManagement\CountryDetail.aspx" />
     <Content Include="Admin\CountryManagement\CountryList.aspx" />
     <Content Include="Admin\CountryManagement\EditCountry.aspx" />
-    <Content Include="Admin\DirectorManagement\CreateDirector.aspx" />
-    <Content Include="Admin\DirectorManagement\DeleteDirector.aspx" />
+    <Content Include="Admin\DirectorManagement\EditDirector.aspx" />
     <Content Include="Admin\DirectorManagement\DirectorDetail.aspx" />
     <Content Include="Admin\DirectorManagement\DirectorList.aspx" />
-    <Content Include="Admin\DirectorManagement\UpdateDirector.aspx" />
     <Content Include="Admin\FilmManagement\CreateFilm.aspx" />
     <Content Include="Admin\FilmManagement\DeleteFilm.aspx" />
     <Content Include="Admin\FilmManagement\EditCast.aspx" />
@@ -1978,19 +1976,12 @@
     <Compile Include="Admin\CountryManagement\EditCountry.aspx.designer.cs">
       <DependentUpon>EditCountry.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\DirectorManagement\CreateDirector.aspx.cs">
-      <DependentUpon>CreateDirector.aspx</DependentUpon>
+    <Compile Include="Admin\DirectorManagement\EditDirector.aspx.cs">
+      <DependentUpon>EditDirector.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\DirectorManagement\CreateDirector.aspx.designer.cs">
-      <DependentUpon>CreateDirector.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\DirectorManagement\DeleteDirector.aspx.cs">
-      <DependentUpon>DeleteDirector.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\DirectorManagement\DeleteDirector.aspx.designer.cs">
-      <DependentUpon>DeleteDirector.aspx</DependentUpon>
+    <Compile Include="Admin\DirectorManagement\EditDirector.aspx.designer.cs">
+      <DependentUpon>EditDirector.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\DirectorManagement\DirectorDetail.aspx.cs">
       <DependentUpon>DirectorDetail.aspx</DependentUpon>
@@ -2005,13 +1996,6 @@
     </Compile>
     <Compile Include="Admin\DirectorManagement\DirectorList.aspx.designer.cs">
       <DependentUpon>DirectorList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\DirectorManagement\UpdateDirector.aspx.cs">
-      <DependentUpon>UpdateDirector.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\DirectorManagement\UpdateDirector.aspx.designer.cs">
-      <DependentUpon>UpdateDirector.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\FilmManagement\CreateFilm.aspx.cs">
       <DependentUpon>CreateFilm.aspx</DependentUpon>

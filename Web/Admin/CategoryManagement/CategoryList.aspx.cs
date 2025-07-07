@@ -12,7 +12,7 @@ namespace Web.Admin.CategoryManagement
 {
     public partial class CategoryList : System.Web.UI.Page
     {
-        private CategoryService _categoryService;
+        private TaxonomyService _taxonomyService;
 
         private CategoryBLL categoryBLL;
         protected long currentPage;
@@ -22,7 +22,7 @@ namespace Web.Admin.CategoryManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            _categoryService = NinjectWebCommon.Kernel.Get<CategoryService>();
+            _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
 
             categoryBLL = new CategoryBLL();
             enableTool = false;

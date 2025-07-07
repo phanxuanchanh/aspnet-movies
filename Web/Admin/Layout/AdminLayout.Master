@@ -55,12 +55,16 @@
                             <li><a href="<% = hyplnkCountryList %>"><em class="fa fa fa-map"></em>Quản lý quốc gia</a></li>
                             <li><a href="<% = hyplnkLanguageList %>"><em class="fa fa fa-language"></em>Quản lý ngôn ngữ</a></li>
                         </ul>
+                        <h6 style="padding-left:25px; font-size:10px">People</h6>
+                        <ul style="margin-left:10px;">
+                            <li><a href="<% = hyplnkDirectorList %>"><em class="fa fa-video-camera"></em>Quản lý đạo diễn</a></li>
+                            <li><a href="<% = hyplnkCastList %>"><em class="fa fa-video-camera"></em>Quản lý diễn viên</a></li>
+                        </ul>
                     </li>
                     <hr style ="margin:0px" />
                     <li><a href="<% = hyplnkCategoryList %>"><em class="fa fa fa-list"></em>Quản lý thể loại</a></li>
                     <li><a href="<% = hyplnkTagList %>"><em class="fa fa-tags"></em>Quản lý thẻ tag</a></li>
-                    <li><a href="<% = hyplnkDirectorList %>"><em class="fa fa-video-camera"></em>Quản lý đạo diễn</a></li>
-                    <li><a href="<% = hyplnkCastList %>"><em class="fa fa-video-camera"></em>Quản lý diễn viên</a></li>
+                    
                     <hr style ="margin:0px" />
                     <li><a href="<% = hyplnkRoleList %>"><em class="fa fa-list"></em>Quản lý vai trò</a></li>
                     <li><a href="<% = hyplnkUserList %>"><em class="fa fa-users"></em>Quản lý người dùng</a></li>

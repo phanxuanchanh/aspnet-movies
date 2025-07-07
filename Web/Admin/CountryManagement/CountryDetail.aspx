@@ -6,6 +6,28 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
+    <% if (enableShowResult)
+    { %>
+    <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
+    <a class="anchor" name="alerts"></a>
+    <div class="row grid-responsive">
+        <div class="column">
+            <%if (commandResult.Status == ExecStatus.Success)
+            { %>
+            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = commandResult.Message %></div>
+            <%}
+            else if (commandResult.Status == ExecStatus.AlreadyExists)
+            { %>
+            <div class="alert background-warning"><em class="fa fa-warning"></em><% = commandResult.Message %></div>
+            <%}
+            else
+            { %>
+            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = commandResult.Message %></div>
+            <%} %>
+        </div>
+    </div>
+    <%} %>
+
     <% if (enableShowDetail)
         { %>
     <h5 class="mt-2">Chi tiết quốc gia</h5>
@@ -49,28 +71,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-    <%} %>
-
-    <% if (enableShowResult)
-    { %>
-    <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
-    <a class="anchor" name="alerts"></a>
-    <div class="row grid-responsive">
-        <div class="column">
-            <%if (commandResult.Status == ExecStatus.Success)
-            { %>
-            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = commandResult.Message %></div>
-            <%}
-            else if (commandResult.Status == ExecStatus.AlreadyExists)
-            { %>
-            <div class="alert background-warning"><em class="fa fa-warning"></em><% = commandResult.Message %></div>
-            <%}
-            else
-            { %>
-            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = commandResult.Message %></div>
-            <%} %>
         </div>
     </div>
     <%} %>

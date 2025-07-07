@@ -1,16 +1,22 @@
-﻿using Data.BLL;
+﻿using Common;
+using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.DirectorManagement
 {
     public partial class DirectorDetail : System.Web.UI.Page
     {
-        protected DirectorInfo directorInfo;
+        protected DirectorDto director;
+        protected ExecResult commandResult;
         protected bool enableShowDetail;
+        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -19,8 +25,7 @@ namespace Web.Admin.DirectorManagement
             {
                 long id = GetDirectorId();
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_DirectorList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateDirector", new { id = id });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteDirector", new { id = id });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = id, action = "update" });
 
                 if (CheckLoggedIn())
                     await GetDirectorInfo(id);
@@ -57,20 +62,54 @@ namespace Web.Admin.DirectorManagement
             if (id <= 0)
             {
                 Response.RedirectToRoute("Admin_DirectorList", null);
+                return;
             }
-            else
-            {
-                using(DirectorBLL directorBLL = new DirectorBLL())
-                {
-                    directorBLL.IncludeDescription = true;
-                    directorBLL.IncludeTimestamp = true;
-                    directorInfo = await directorBLL.GetDirectorAsync(id);
-                }
 
-                if (directorInfo == null)
-                    Response.RedirectToRoute("Admin_DirectorList", null);
-                else
+            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
+            {
+                ExecResult<DirectorDto> result = await peopleService.GetDirectorAsync(id);
+                if (result.Status == ExecStatus.Success)
+                {
+                    director = result.Data;
                     enableShowDetail = true;
+                }
+                else
+                {
+                    Response.RedirectToRoute("Admin_DirectorList", null);
+                }
+            }
+        }
+
+        protected async void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await DeleteDirector();
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
+                Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        private async Task DeleteDirector()
+        {
+            long id = GetDirectorId();
+            if (id <= 0)
+            {
+                Response.RedirectToRoute("Admin_DirectorList", null);
+                return;
+            }
+
+            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
+            {
+                commandResult = await peopleService.DeleteAsync(id); ;
+                if (commandResult.Status == ExecStatus.Success)
+                {
+                    Response.RedirectToRoute("Admin_DirectorList", null);
+                    return;
+                }
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Common.Web;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -114,7 +113,6 @@ namespace Web.Admin.CountryManagement
                 toolDetail = string.Format("{0} -- {1}", country.ID, country.Name);
                 hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = country.ID });
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = country.ID, action = "update" });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCountry", new { id = country.ID });
                 enableTool = true;
             }
             catch(Exception ex)

@@ -82,8 +82,8 @@ namespace Data.BLL
             if (includeTag)
                 filmInfo.Tags = new TagBLL(this).GetTagsByFilmId(film.ID);
 
-            if (includeDirector)
-                filmInfo.Directors = new DirectorBLL(this).GetDirectorsByFilmId(film.ID);
+            //if (includeDirector)
+            //    filmInfo.Directors = new DirectorBLL(this).GetDirectorsByFilmId(film.ID);
 
             if (includeCast)
                 filmInfo.Casts = new CastBLL(this).GetCastsByFilmId(film.ID);

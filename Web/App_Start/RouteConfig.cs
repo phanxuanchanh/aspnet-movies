@@ -46,9 +46,8 @@ namespace Web.App_Start
             
             routes.MapPageRoute("Admin_DirectorList", "admin/director/list", "~/Admin/DirectorManagement/DirectorList.aspx");
             routes.MapPageRoute("Admin_DirectorDetail", "admin/director/detail/{id}", "~/Admin/DirectorManagement/DirectorDetail.aspx");
-            routes.MapPageRoute("Admin_CreateDirector", "admin/director/create", "~/Admin/DirectorManagement/CreateDirector.aspx");
-            routes.MapPageRoute("Admin_UpdateDirector", "admin/director/update/{id}", "~/Admin/DirectorManagement/UpdateDirector.aspx");
-            routes.MapPageRoute("Admin_DeleteDirector", "admin/director/delete/{id}", "~/Admin/DirectorManagement/DeleteDirector.aspx");
+            routes.MapPageRoute("Admin_EditDirector", "admin/director/edit", "~/Admin/DirectorManagement/EditDirector.aspx");
+            
             routes.MapPageRoute("Admin_CastList", "admin/cast/list", "~/Admin/CastManagement/CastList.aspx");
             routes.MapPageRoute("Admin_CastDetail", "admin/cast/detail/{id}", "~/Admin/CastManagement/CastDetail.aspx");
             routes.MapPageRoute("Admin_CreateCast", "admin/cast/create", "~/Admin/CastManagement/CreateCast.aspx");

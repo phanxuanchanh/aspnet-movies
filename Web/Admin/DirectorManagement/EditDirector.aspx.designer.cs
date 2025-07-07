@@ -11,7 +11,7 @@ namespace Web.Admin.DirectorManagement
 {
 
 
-    public partial class UpdateDirector
+    public partial class CreateDirector
     {
 
         /// <summary>
@@ -85,23 +85,5 @@ namespace Web.Admin.DirectorManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
-
-        /// <summary>
-        /// hyplnkDetail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDetail;
-
-        /// <summary>
-        /// hyplnkDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDelete;
     }
 }

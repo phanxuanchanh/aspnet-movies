@@ -15,7 +15,7 @@ namespace Web.Admin.FilmManagement
         private FilmBLL filmBLL;
         private CustomValidation customValidation;
         protected string filmName;
-        protected List<DirectorInfo> directorsByFilmId;
+        protected List<DirectorDto> directorsByFilmId;
         protected bool enableShowDetail;
         protected bool enableShowResult;
         protected string stateString;
@@ -133,10 +133,10 @@ namespace Web.Admin.FilmManagement
         private async Task LoadDirectors()
         {
             drdlFilmDirector.Items.Clear();
-            List<DirectorInfo> directorInfos = await new DirectorBLL(filmBLL).GetDirectorsAsync();
-            foreach (DirectorInfo directorInfo in directorInfos)
+            List<DirectorDto> directorInfos = new List<DirectorDto>();// await new DirectorBLL(filmBLL).GetDirectorsAsync();
+            foreach (DirectorDto directorInfo in directorInfos)
             {
-                drdlFilmDirector.Items.Add(new ListItem(directorInfo.name, directorInfo.ID.ToString()));
+                drdlFilmDirector.Items.Add(new ListItem(directorInfo.Name, directorInfo.ID.ToString()));
             }
             drdlFilmDirector.SelectedIndex = 0;
         }

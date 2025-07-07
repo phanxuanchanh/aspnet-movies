@@ -1,15 +1,18 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.DirectorManagement
 {
     public partial class DirectorList : System.Web.UI.Page
     {
-        private DirectorBLL directorBLL;
+        private PeopleService _peopleService;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -17,33 +20,39 @@ namespace Web.Admin.DirectorManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            directorBLL = new DirectorBLL();
+            _peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
             enableTool = false;
             toolDetail = null;
             try
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateDirector", null);
+                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { action = "create" });
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvDirector();
-                        SetDrdlPage();
-                        directorBLL.Dispose();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    directorBLL.Dispose();
+                    return;
+                    
+                }
+
+                if (!IsPostBack)
+                {
+                    await SetGrvDirector();
+                    SetDrdlPage();
                 }
             }
             catch (Exception ex)
             {
-                directorBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            if (_peopleService != null)
+            {
+                _peopleService.Dispose();
+                _peopleService = null;
             }
         }
 
@@ -69,13 +78,11 @@ namespace Web.Admin.DirectorManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            directorBLL.Dispose();
         }
 
         private async Task SetGrvDirector()
         {
-            directorBLL.IncludeTimestamp = true;
-            PagedList<DirectorInfo> directors = await directorBLL
+            PagedList<DirectorDto> directors = await _peopleService
                 .GetDirectorsAsync(drdlPage.SelectedIndex, 20);
             grvDirector.DataSource = directors.Items;
             grvDirector.DataBind();
@@ -104,11 +111,10 @@ namespace Web.Admin.DirectorManagement
             try
             {
                 long key = (long)grvDirector.DataKeys[grvDirector.SelectedIndex].Value;
-                DirectorInfo directorInfo = await directorBLL.GetDirectorAsync(key);
-                toolDetail = string.Format("{0} -- {1}", directorInfo.ID, directorInfo.name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_DirectorDetail", new { id = directorInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateDirector", new { id = directorInfo.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteDirector", new { id = directorInfo.ID });
+                DirectorDto director = (await _peopleService.GetDirectorAsync(key)).Data;
+                toolDetail = string.Format("{0} -- {1}", director.ID, director.Name);
+                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_DirectorDetail", new { id = director.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = director.ID, action = "update" });
                 enableTool = true;
             }
             catch (Exception ex)
@@ -116,7 +122,6 @@ namespace Web.Admin.DirectorManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            directorBLL.Dispose();
         }
     }
 }

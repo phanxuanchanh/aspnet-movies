@@ -7,18 +7,15 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class CategoryService
+    public class TaxonomyService
     {
         private readonly GeneralDao _generalDao;
-        private readonly CategoryBLL _categoryBLL;
+        private readonly TaxonomyDao _taxonomyDao;
 
-        public CategoryService(GeneralDao generalDao)
+        public TaxonomyService(GeneralDao generalDao)
         {
             _generalDao = generalDao;
-            _categoryBLL = _generalDao.CategoryDao;
-
+            _taxonomyDao = _generalDao.TaxonomyDao;
         }
-
-
     }
 }
