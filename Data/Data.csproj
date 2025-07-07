@@ -52,7 +52,6 @@
     <Compile Include="BLL\FilmMetaLinkDao.cs" />
     <Compile Include="BLL\GeneralDao.cs" />
     <Compile Include="BLL\Installation\DBInstallation.cs" />
-    <Compile Include="BLL\LanguageBLL.cs" />
     <Compile Include="DAL\FilmMetaLink.cs" />
     <Compile Include="BLL\Migration\UserMigration.cs" />
     <Compile Include="BLL\TagBLL.cs" />
@@ -74,7 +73,6 @@
     <Compile Include="DAL\DirectorOfFilm.cs" />
     <Compile Include="DAL\Film.cs" />
     <Compile Include="DAL\FilmMetadata.cs" />
-    <Compile Include="DAL\Language.cs" />
     <Compile Include="DAL\PaymentInfo.cs" />
     <Compile Include="DAL\PaymentMethod.cs" />
     <Compile Include="DAL\Role.cs" />

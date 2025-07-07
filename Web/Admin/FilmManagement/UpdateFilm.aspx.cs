@@ -118,10 +118,10 @@ namespace Web.Admin.FilmManagement
                     drdlFilmCountry.Items.FindByValue(filmInfo.Country.ID.ToString()).Selected = true;
 
                     drdlFilmLanguage.Items.Clear();
-                    List<LanguageInfo> languageInfos = await new LanguageBLL(filmBLL).GetLanguagesAsync();
-                    foreach (LanguageInfo languageInfo in languageInfos)
+                    List<LanguageDto> languageInfos = null;// await new LanguageBLL(filmBLL).GetLanguagesAsync();
+                    foreach (LanguageDto languageInfo in languageInfos)
                     {
-                        drdlFilmLanguage.Items.Add(new ListItem(languageInfo.name, languageInfo.ID.ToString()));
+                        drdlFilmLanguage.Items.Add(new ListItem(languageInfo.Name, languageInfo.ID.ToString()));
                     }
                     drdlFilmLanguage.Items.FindByValue(filmInfo.Language.ID.ToString()).Selected = true;
                 }

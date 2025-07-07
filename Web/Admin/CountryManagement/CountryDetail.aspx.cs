@@ -27,10 +27,7 @@ namespace Web.Admin.CountryManagement
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = id, action = "update" });
 
                 if (CheckLoggedIn())
-                {
                     await GetCountry(id);
-                    this.DataBind();
-                }
                 else
                     Response.RedirectToRoute("Account_Login", null);
             }

@@ -12,36 +12,36 @@
         <div class="column ">
             <div class="card">
                 <div class="card-title">
-                    <h3>Chi tiết ngôn ngữ: <% = languageInfo.name %></h3>
+                    <h3>Chi tiết ngôn ngữ: <% = language.Name %></h3>
                 </div>
                 <div class="card-block">
                     <table>
                         <tr>
                             <th>ID của ngôn ngữ</th>
-                            <td><% = languageInfo.ID %></td>
+                            <td><% = language.ID %></td>
                         </tr>
                         <tr>
                             <th>Tên của ngôn ngữ</th>
-                            <td><% = languageInfo.name %></td>
+                            <td><% = language.Name %></td>
                         </tr>
                         <tr>
                             <th>Mô tả của ngôn ngữ</th>
-                            <td><% = languageInfo.description %></td>
+                            <td><% = language.Description %></td>
                         </tr>
                         <tr>
                             <th>Ngày tạo của ngôn ngữ</th>
-                            <td><% = languageInfo.createAt %></td>
+                            <td><% = language.CreatedAt %></td>
                         </tr>
                         <tr>
                             <th>Ngày cập nhật của ngôn ngữ</th>
-                            <td><% = languageInfo.updateAt %></td>
+                            <td><% = language.UpdatedAt %></td>
                         </tr>
                         <tr>
                             <th>Công cụ</th>
                             <td>
                                 <asp:HyperLink ID="hyplnkList" CssClass="button button-blue" runat="server">Quay về trang danh sách</asp:HyperLink>
                                 <asp:HyperLink ID="hyplnkEdit" CssClass="button button-green" runat="server">Chỉnh sửa</asp:HyperLink>
-                                <asp:HyperLink ID="hyplnkDelete" CssClass="button button-red" runat="server">Xóa</asp:HyperLink>
+                                <asp:Button ID="btnDelete" CssClass="button button-red" runat="server" Text="Xóa" OnClick="btnDelete_Click" />
                             </td>
                         </tr>
                     </table>

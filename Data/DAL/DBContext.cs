@@ -14,7 +14,6 @@ namespace Data.DAL
         private SqlAccess<Tag> tags;
         private SqlAccess<TagDistribution> tagDistributions;
         private SqlAccess<Film> films;
-        private SqlAccess<Language> languages;
         private SqlAccess<CategoryDistribution> categoryDistributions;
         private SqlAccess<Director> directors;
         private SqlAccess<DirectorOfFilm> directorOfFilms;
@@ -35,7 +34,6 @@ namespace Data.DAL
             tags = null;
             tagDistributions = null;
             films = null;
-            languages = null;
             categoryDistributions = null;
             directors = null;
             directorOfFilms = null;
@@ -55,7 +53,6 @@ namespace Data.DAL
         public SqlAccess<Tag> Tags { get { return InitSqlAccess<Tag>(ref tags); } }
         public SqlAccess<TagDistribution> TagDistributions { get { return InitSqlAccess<TagDistribution>(ref tagDistributions); } }
         public SqlAccess<Film> Films { get { return InitSqlAccess<Film>(ref films); } }
-        public SqlAccess<Language> Languages { get { return InitSqlAccess<Language>(ref languages); } }
         public SqlAccess<CategoryDistribution> CategoryDistributions { get { return InitSqlAccess<CategoryDistribution>(ref categoryDistributions); } }
         public SqlAccess<Director> Directors { get { return InitSqlAccess<Director>(ref directors); } }
         public SqlAccess<DirectorOfFilm> DirectorOfFilms { get { return InitSqlAccess<DirectorOfFilm>(ref directorOfFilms); } }
@@ -82,7 +79,6 @@ namespace Data.DAL
                         DisposeSqlAccess<Tag>(ref tags);
                         DisposeSqlAccess<TagDistribution>(ref tagDistributions);
                         DisposeSqlAccess<Film>(ref films);
-                        DisposeSqlAccess<Language>(ref languages);
                         DisposeSqlAccess<Director>(ref directors);
                         DisposeSqlAccess<DirectorOfFilm>(ref directorOfFilms);
                         DisposeSqlAccess<Cast>(ref casts);

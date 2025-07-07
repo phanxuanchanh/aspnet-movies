@@ -22,7 +22,7 @@ namespace Data.DTO
         public DateTime createAt { get; set; }
         public DateTime updateAt { get; set; }
 
-        public LanguageInfo Language { get; set; }
+        public LanguageDto Language { get; set; }
         public CountryDto Country { get; set; }
         public List<CategoryInfo> Categories { get; set; }
         public List<TagInfo> Tags { get; set; }

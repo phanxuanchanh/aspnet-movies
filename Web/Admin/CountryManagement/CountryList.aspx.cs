@@ -27,17 +27,16 @@ namespace Web.Admin.CountryManagement
             {
                 hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { action = "create" });
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvCountry();
-                        SetDrdlPage();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
+                    return;
+                }
+
+                if (!IsPostBack)
+                {
+                    await SetGrvCountry();
+                    SetDrdlPage();
                 }
             }
             catch(Exception ex)

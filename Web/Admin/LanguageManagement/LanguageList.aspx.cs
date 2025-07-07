@@ -1,15 +1,18 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.LanguageManagement
 {
     public partial class LanguageList : System.Web.UI.Page
     {
-        private LanguageBLL languageBLL;
+        private FilmMetadataService _filmMetadataService;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -17,34 +20,39 @@ namespace Web.Admin.LanguageManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            languageBLL = new LanguageBLL();
+            _filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
             enableTool = false;
             toolDetail = null;
             try
             {
 
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateLanguage", null);
+                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { action = "create" });
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvLanguage(0);
-                        SetDrdlPage();
-                        languageBLL.Dispose();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    languageBLL.Dispose();
+                    return;
+                }
+
+                if (!IsPostBack)
+                {
+                    await SetGrvLanguage(0);
+                    SetDrdlPage();
                 }
             }
             catch (Exception ex)
             {
-                languageBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            if (_filmMetadataService != null)
+            {
+                _filmMetadataService.Dispose();
+                _filmMetadataService = null;
             }
         }
 
@@ -60,8 +68,7 @@ namespace Web.Admin.LanguageManagement
 
         private async Task SetGrvLanguage(int pageIndex)
         {
-            languageBLL.IncludeTimestamp = true;
-            PagedList<LanguageInfo> languages = await languageBLL
+            PagedList<LanguageDto> languages = await _filmMetadataService
                 .GetLanguagesAsync(drdlPage.SelectedIndex, 20);
             grvLanguage.DataSource = languages.Items;
             grvLanguage.DataBind();
@@ -90,11 +97,10 @@ namespace Web.Admin.LanguageManagement
             try
             {
                 int key = (int)grvLanguage.DataKeys[grvLanguage.SelectedIndex].Value;
-                LanguageInfo languageInfo = await languageBLL.GetLanguageAsync(key);
-                toolDetail = string.Format("{0} -- {1}", languageInfo.ID, languageInfo.name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_LanguageDetail", new { id = languageInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateLanguage", new { id = languageInfo.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteLanguage", new { id = languageInfo.ID });
+                LanguageDto language = (await _filmMetadataService.GetLanguageAsync(key)).Data;
+                toolDetail = string.Format("{0} -- {1}", language.ID, language.Name);
+                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_LanguageDetail", new { id = language.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { id = language.ID, action = "update" });
                 enableTool = true;
             }
             catch (Exception ex)
@@ -102,7 +108,6 @@ namespace Web.Admin.LanguageManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            languageBLL.Dispose();
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
@@ -117,7 +122,6 @@ namespace Web.Admin.LanguageManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            languageBLL.Dispose();
         }
     }
 }

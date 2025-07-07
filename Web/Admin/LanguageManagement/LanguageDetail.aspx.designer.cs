@@ -33,12 +33,12 @@ namespace Web.Admin.LanguageManagement
         protected global::System.Web.UI.WebControls.HyperLink hyplnkEdit;
 
         /// <summary>
-        /// hyplnkDelete control.
+        /// btnDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDelete;
+        protected global::System.Web.UI.WebControls.Button btnDelete;
     }
 }

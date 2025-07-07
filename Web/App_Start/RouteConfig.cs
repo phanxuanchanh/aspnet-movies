@@ -42,9 +42,8 @@ namespace Web.App_Start
             
             routes.MapPageRoute("Admin_LanguageList", "admin/language/list", "~/Admin/LanguageManagement/LanguageList.aspx");
             routes.MapPageRoute("Admin_LanguageDetail", "admin/language/detail/{id}", "~/Admin/LanguageManagement/LanguageDetail.aspx");
-            routes.MapPageRoute("Admin_CreateLanguage", "admin/language/create", "~/Admin/LanguageManagement/CreateLanguage.aspx");
-            routes.MapPageRoute("Admin_UpdateLanguage", "admin/language/update/{id}", "~/Admin/LanguageManagement/UpdateLanguage.aspx");
-            routes.MapPageRoute("Admin_DeleteLanguage", "admin/language/delete/{id}", "~/Admin/LanguageManagement/DeleteLanguage.aspx");
+            routes.MapPageRoute("Admin_EditLanguage", "admin/language/edit", "~/Admin/LanguageManagement/EditLanguage.aspx");
+            
             routes.MapPageRoute("Admin_DirectorList", "admin/director/list", "~/Admin/DirectorManagement/DirectorList.aspx");
             routes.MapPageRoute("Admin_DirectorDetail", "admin/director/detail/{id}", "~/Admin/DirectorManagement/DirectorDetail.aspx");
             routes.MapPageRoute("Admin_CreateDirector", "admin/director/create", "~/Admin/DirectorManagement/CreateDirector.aspx");

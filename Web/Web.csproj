@@ -1758,14 +1758,12 @@
     <Content Include="Admin\FilmManagement\FilmDetail.aspx" />
     <Content Include="Admin\FilmManagement\FilmList.aspx" />
     <Content Include="Admin\FilmManagement\UpdateFilm.aspx" />
-    <Content Include="Admin\LanguageManagement\CreateLanguage.aspx" />
+    <Content Include="Admin\LanguageManagement\EditLanguage.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageDetail.aspx" />
     <Content Include="Admin\RoleManagement\CreateRole.aspx" />
     <Content Include="Admin\CategoryManagement\DeleteCategory.aspx" />
     <Content Include="Admin\Index.aspx" />
-    <Content Include="Admin\LanguageManagement\DeleteLanguage.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageList.aspx" />
-    <Content Include="Admin\LanguageManagement\UpdateLanguage.aspx" />
     <Content Include="Admin\RoleManagement\DeleteRole.aspx" />
     <Content Include="Admin\RoleManagement\RoleDetail.aspx" />
     <Content Include="Admin\RoleManagement\RoleList.aspx" />
@@ -2092,12 +2090,12 @@
     <Compile Include="Admin\FilmManagement\UpdateFilm.aspx.designer.cs">
       <DependentUpon>UpdateFilm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\LanguageManagement\CreateLanguage.aspx.cs">
-      <DependentUpon>CreateLanguage.aspx</DependentUpon>
+    <Compile Include="Admin\LanguageManagement\EditLanguage.aspx.cs">
+      <DependentUpon>EditLanguage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\LanguageManagement\CreateLanguage.aspx.designer.cs">
-      <DependentUpon>CreateLanguage.aspx</DependentUpon>
+    <Compile Include="Admin\LanguageManagement\EditLanguage.aspx.designer.cs">
+      <DependentUpon>EditLanguage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\LanguageManagement\LanguageDetail.aspx.cs">
       <DependentUpon>LanguageDetail.aspx</DependentUpon>
@@ -2127,26 +2125,12 @@
     <Compile Include="Admin\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\LanguageManagement\DeleteLanguage.aspx.cs">
-      <DependentUpon>DeleteLanguage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\LanguageManagement\DeleteLanguage.aspx.designer.cs">
-      <DependentUpon>DeleteLanguage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\LanguageManagement\LanguageList.aspx.cs">
       <DependentUpon>LanguageList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\LanguageManagement\LanguageList.aspx.designer.cs">
       <DependentUpon>LanguageList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\LanguageManagement\UpdateLanguage.aspx.cs">
-      <DependentUpon>UpdateLanguage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\LanguageManagement\UpdateLanguage.aspx.designer.cs">
-      <DependentUpon>UpdateLanguage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Layout\AdminLayout.Master.cs">
       <DependentUpon>AdminLayout.Master</DependentUpon>

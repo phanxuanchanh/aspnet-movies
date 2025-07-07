@@ -89,10 +89,10 @@ namespace Web.Admin.FilmManagement
         private async Task LoadFilmLanguages()
         {
             drdlFilmLanguage.Items.Clear();
-            List<LanguageInfo> languageInfos = await new LanguageBLL(filmBLL).GetLanguagesAsync();
-            foreach (LanguageInfo languageInfo in languageInfos)
+            List<LanguageDto> languages = (await _filmMetaService.GetLanguagesAsync(1, 30)).Items;
+            foreach (LanguageDto language in languages)
             {
-                drdlFilmLanguage.Items.Add(new ListItem(languageInfo.name, languageInfo.ID.ToString()));
+                drdlFilmLanguage.Items.Add(new ListItem(language.Name, language.ID.ToString()));
             }
             drdlFilmLanguage.SelectedIndex = 0;
         }

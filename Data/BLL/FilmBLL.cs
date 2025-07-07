@@ -88,9 +88,9 @@ namespace Data.BLL
             if (includeCast)
                 filmInfo.Casts = new CastBLL(this).GetCastsByFilmId(film.ID);
 
-            if (includeLanguage)
-                filmInfo.Language = ((film.languageId != 0)
-                    ? new LanguageBLL(this).GetLanguage(film.languageId) : null);
+            //if (includeLanguage)
+            //    filmInfo.Language = ((film.languageId != 0)
+            //        ? new LanguageBLL(this).GetLanguage(film.languageId) : null);
 
             //if (includeCountry)
             //    filmInfo.Country = ((film.countryId != 0)
