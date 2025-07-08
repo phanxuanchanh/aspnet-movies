@@ -44,8 +44,6 @@
   <ItemGroup>
     <Compile Include="BLL\BLLState.cs" />
     <Compile Include="BLL\BusinessLogicLayer.cs" />
-    <Compile Include="BLL\CastBLL.cs" />
-    <Compile Include="BLL\CategoryBLL.cs" />
     <Compile Include="BLL\FilmBLL.cs" />
     <Compile Include="BLL\FilmMetadataDao.cs" />
     <Compile Include="BLL\FilmMetaLinkDao.cs" />
@@ -55,7 +53,6 @@
     <Compile Include="BLL\TaxonomyDao.cs" />
     <Compile Include="DAL\FilmMetaLink.cs" />
     <Compile Include="BLL\Migration\UserMigration.cs" />
-    <Compile Include="BLL\TagBLL.cs" />
     <Compile Include="BLL\UserReactionBLL.cs" />
     <Compile Include="Config\DatabaseConfig.cs" />
     <Compile Include="Config\MigrationConfig.cs" />
@@ -65,9 +62,7 @@
     <Compile Include="BLL\PaymentMethodBLL.cs" />
     <Compile Include="BLL\RoleBLL.cs" />
     <Compile Include="BLL\UserBLL.cs" />
-    <Compile Include="DAL\Cast.cs" />
     <Compile Include="DAL\CastOfFilm.cs" />
-    <Compile Include="DAL\Category.cs" />
     <Compile Include="DAL\CategoryDistribution.cs" />
     <Compile Include="DAL\DBContext.cs" />
     <Compile Include="DAL\DirectorOfFilm.cs" />
@@ -77,7 +72,6 @@
     <Compile Include="DAL\PaymentMethod.cs" />
     <Compile Include="DAL\People.cs" />
     <Compile Include="DAL\Role.cs" />
-    <Compile Include="DAL\Tag.cs" />
     <Compile Include="DAL\TagDistribution.cs" />
     <Compile Include="DAL\Taxonomy.cs" />
     <Compile Include="DAL\User.cs" />

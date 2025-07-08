@@ -107,9 +107,9 @@ namespace Web.User
                 description_MetaTag = (string.Format("{0}...", filmInfo.description.TakeStr(100))).Replace("\n", " ");
 
                 StringBuilder stringBuilder = new StringBuilder();
-                foreach (TagInfo tagInfo in filmInfo.Tags)
+                foreach (TagDto tagInfo in filmInfo.Tags)
                 {
-                    stringBuilder.Append(string.Format("{0}, ", tagInfo.name));
+                    stringBuilder.Append(string.Format("{0}, ", tagInfo.Name));
                 }
                 keywords_MetaTag = stringBuilder.ToString().TrimEnd(' ').TrimEnd(',');
             }

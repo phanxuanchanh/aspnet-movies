@@ -68,7 +68,7 @@ namespace Data.Services
         {
             SqlPagedList<People> data = await _peopleDao.GetsAsync("director", pageIndex, pageSize);
 
-            List<DirectorDto> countries = data.Items.Select(s => new DirectorDto
+            List<DirectorDto> directors = data.Items.Select(s => new DirectorDto
             {
                 ID = s.Id,
                 Name = s.Name,
@@ -79,7 +79,7 @@ namespace Data.Services
 
             return new PagedList<DirectorDto>
             {
-                Items = countries,
+                Items = directors,
                 PageNumber = data.PageNumber,
                 CurrentPage = data.CurrentPage,
             };

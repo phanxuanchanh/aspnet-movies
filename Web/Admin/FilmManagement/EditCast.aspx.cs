@@ -133,7 +133,7 @@ namespace Web.Admin.FilmManagement
         private async Task LoadCasts()
         {
             drdlFilmCast.Items.Clear();
-            List<ActorDto> castInfos = await new CastBLL(filmBLL).GetCastsAsync();
+            List<ActorDto> castInfos = new List<ActorDto>() ;// await new CastBLL(filmBLL).GetCastsAsync();
             foreach (ActorDto castInfo in castInfos)
             {
                 drdlFilmCast.Items.Add(new ListItem(castInfo.Name, castInfo.ID.ToString()));

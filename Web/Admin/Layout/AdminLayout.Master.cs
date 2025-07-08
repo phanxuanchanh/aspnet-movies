@@ -28,7 +28,7 @@ namespace Web.Admin.Layout
                 hyplnkDirectorList = GetRouteUrl("Admin_DirectorList", null);
                 hyplnkTagList = GetRouteUrl("Admin_TagList", null);
                 hyplnkUserList = GetRouteUrl("Admin_UserList", null);
-                hyplnkCastList = GetRouteUrl("Admin_CastList", null);
+                hyplnkCastList = GetRouteUrl("Admin_ActorList", null);
                 hyplnkFilmList = GetRouteUrl("Admin_FilmList", null);
 
                 object obj = Session["userSession"];

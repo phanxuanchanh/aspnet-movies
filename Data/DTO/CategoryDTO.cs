@@ -2,7 +2,7 @@
 
 namespace Data.DTO
 {
-    public class CategoryInfo
+    public class CategoryDto
     {
         public int ID { get; set; }
         public string Url { get; set; }
@@ -12,13 +12,13 @@ namespace Data.DTO
         public DateTime UpdatedAt { get; set; }
     }
 
-    public class CategoryCreation
+    public class CreateCategoryDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class CategoryUpdate : CategoryCreation
+    public class UpdateCategoryDto : CreateCategoryDto
     {
         public int ID { get; set; }
     }

@@ -76,17 +76,17 @@ namespace Data.BLL
                 source = film.source
             };
 
-            if (includeCategory)
-                filmInfo.Categories = new CategoryBLL(this).GetCategoriesByFilmId(film.ID);
+            //if (includeCategory)
+            //    filmInfo.Categories = new CategoryBLL(this).GetCategoriesByFilmId(film.ID);
 
-            if (includeTag)
-                filmInfo.Tags = new TagBLL(this).GetTagsByFilmId(film.ID);
+            //if (includeTag)
+            //    filmInfo.Tags = new TagBLL(this).GetTagsByFilmId(film.ID);
 
             //if (includeDirector)
             //    filmInfo.Directors = new DirectorBLL(this).GetDirectorsByFilmId(film.ID);
 
-            if (includeCast)
-                filmInfo.Casts = new CastBLL(this).GetCastsByFilmId(film.ID);
+            //if (includeCast)
+            //    filmInfo.Casts = new CastBLL(this).GetCastsByFilmId(film.ID);
 
             //if (includeLanguage)
             //    filmInfo.Language = ((film.languageId != 0)

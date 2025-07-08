@@ -56,8 +56,8 @@ namespace Web.Admin
         private async Task LoadOverview()
         {
             movieNumber = await filmBLL.CountAllAsync();
-            categoryNumber = await new CategoryBLL(filmBLL).CountAllAsync();
-            tagNumber = await new TagBLL(filmBLL).CountAllAsync();
+            categoryNumber = 0;// await new CategoryBLL(filmBLL).CountAllAsync();
+            tagNumber = 0; // await new TagBLL(filmBLL).CountAllAsync();
         }
     }
 }

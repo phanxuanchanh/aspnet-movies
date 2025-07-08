@@ -7,57 +7,66 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Web.Admin.TagManagement
+namespace Web.Admin.CategoryManagement
 {
 
 
-    public partial class CreateTag
+    public partial class CreateCategory
     {
 
         /// <summary>
-        /// lbTagName control.
+        /// hdCategoryId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbTagName;
+        protected global::System.Web.UI.WebControls.HiddenField hdCategoryId;
 
         /// <summary>
-        /// txtTagName control.
+        /// lbCategoryName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTagName;
+        protected global::System.Web.UI.WebControls.Label lbCategoryName;
 
         /// <summary>
-        /// cvTagName control.
+        /// txtCategoryName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvTagName;
+        protected global::System.Web.UI.WebControls.TextBox txtCategoryName;
 
         /// <summary>
-        /// lbTagDescription control.
+        /// cvCategoryName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbTagDescription;
+        protected global::System.Web.UI.WebControls.CustomValidator cvCategoryName;
 
         /// <summary>
-        /// txtTagDescription control.
+        /// lbCategoryDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTagDescription;
+        protected global::System.Web.UI.WebControls.Label lbCategoryDescription;
+
+        /// <summary>
+        /// txtCategoryDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCategoryDescription;
 
         /// <summary>
         /// btnSubmit control.

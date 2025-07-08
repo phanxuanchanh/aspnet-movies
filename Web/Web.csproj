@@ -1731,14 +1731,12 @@
     <Content Include="account_assets\fonts\fontawesome\webfonts\fa-solid-900.svg" />
     <Content Include="account_assets\images\favicon.png" />
     <Content Include="account_assets\videos\Puples-33590.mp4" />
-    <Content Include="Admin\CastManagement\CastDetail.aspx" />
-    <Content Include="Admin\CastManagement\CastList.aspx" />
-    <Content Include="Admin\CastManagement\CreateCast.aspx" />
-    <Content Include="Admin\CastManagement\DeleteCast.aspx" />
-    <Content Include="Admin\CastManagement\UpdateCast.aspx" />
+    <Content Include="Admin\ActorManagement\ActorDetail.aspx" />
+    <Content Include="Admin\ActorManagement\ActorList.aspx" />
+    <Content Include="Admin\ActorManagement\EditActor.aspx" />
     <Content Include="Admin\CategoryManagement\CategoryDetail.aspx" />
     <Content Include="Admin\CategoryManagement\CategoryList.aspx" />
-    <Content Include="Admin\CategoryManagement\CreateCategory.aspx" />
+    <Content Include="Admin\CategoryManagement\EditCategory.aspx" />
     <Content Include="Admin\CountryManagement\CountryDetail.aspx" />
     <Content Include="Admin\CountryManagement\CountryList.aspx" />
     <Content Include="Admin\CountryManagement\EditCountry.aspx" />
@@ -1759,19 +1757,15 @@
     <Content Include="Admin\LanguageManagement\EditLanguage.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageDetail.aspx" />
     <Content Include="Admin\RoleManagement\CreateRole.aspx" />
-    <Content Include="Admin\CategoryManagement\DeleteCategory.aspx" />
     <Content Include="Admin\Index.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageList.aspx" />
     <Content Include="Admin\RoleManagement\DeleteRole.aspx" />
     <Content Include="Admin\RoleManagement\RoleDetail.aspx" />
     <Content Include="Admin\RoleManagement\RoleList.aspx" />
-    <Content Include="Admin\CategoryManagement\UpdateCategory.aspx" />
     <Content Include="Admin\RoleManagement\UpdateRole.aspx" />
-    <Content Include="Admin\TagManagement\CreateTag.aspx" />
-    <Content Include="Admin\TagManagement\DeleteTag.aspx" />
+    <Content Include="Admin\TagManagement\EditTag.aspx" />
     <Content Include="Admin\TagManagement\TagDetail.aspx" />
     <Content Include="Admin\TagManagement\TagList.aspx" />
-    <Content Include="Admin\TagManagement\UpdateTag.aspx" />
     <Content Include="Admin\UserManagement\CreateUser.aspx" />
     <Content Include="Admin\UserManagement\DeleteUser.aspx" />
     <Content Include="Admin\UserManagement\UserList.aspx" />
@@ -1899,40 +1893,26 @@
     <Compile Include="Account\ResetPassword.aspx.designer.cs">
       <DependentUpon>ResetPassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\CastManagement\CastDetail.aspx.cs">
-      <DependentUpon>CastDetail.aspx</DependentUpon>
+    <Compile Include="Admin\ActorManagement\ActorDetail.aspx.cs">
+      <DependentUpon>ActorDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\CastManagement\CastDetail.aspx.designer.cs">
-      <DependentUpon>CastDetail.aspx</DependentUpon>
+    <Compile Include="Admin\ActorManagement\ActorDetail.aspx.designer.cs">
+      <DependentUpon>ActorDetail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\CastManagement\CastList.aspx.cs">
-      <DependentUpon>CastList.aspx</DependentUpon>
+    <Compile Include="Admin\ActorManagement\ActorList.aspx.cs">
+      <DependentUpon>ActorList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\CastManagement\CastList.aspx.designer.cs">
-      <DependentUpon>CastList.aspx</DependentUpon>
+    <Compile Include="Admin\ActorManagement\ActorList.aspx.designer.cs">
+      <DependentUpon>ActorList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\CastManagement\CreateCast.aspx.cs">
-      <DependentUpon>CreateCast.aspx</DependentUpon>
+    <Compile Include="Admin\ActorManagement\EditActor.aspx.cs">
+      <DependentUpon>EditActor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\CastManagement\CreateCast.aspx.designer.cs">
-      <DependentUpon>CreateCast.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\CastManagement\DeleteCast.aspx.cs">
-      <DependentUpon>DeleteCast.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CastManagement\DeleteCast.aspx.designer.cs">
-      <DependentUpon>DeleteCast.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\CastManagement\UpdateCast.aspx.cs">
-      <DependentUpon>UpdateCast.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CastManagement\UpdateCast.aspx.designer.cs">
-      <DependentUpon>UpdateCast.aspx</DependentUpon>
+    <Compile Include="Admin\ActorManagement\EditActor.aspx.designer.cs">
+      <DependentUpon>EditActor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\CategoryManagement\CategoryDetail.aspx.cs">
       <DependentUpon>CategoryDetail.aspx</DependentUpon>
@@ -1948,12 +1928,12 @@
     <Compile Include="Admin\CategoryManagement\CategoryList.aspx.designer.cs">
       <DependentUpon>CategoryList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\CategoryManagement\CreateCategory.aspx.cs">
-      <DependentUpon>CreateCategory.aspx</DependentUpon>
+    <Compile Include="Admin\CategoryManagement\EditCategory.aspx.cs">
+      <DependentUpon>EditCategory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\CategoryManagement\CreateCategory.aspx.designer.cs">
-      <DependentUpon>CreateCategory.aspx</DependentUpon>
+    <Compile Include="Admin\CategoryManagement\EditCategory.aspx.designer.cs">
+      <DependentUpon>EditCategory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\CountryManagement\CountryDetail.aspx.cs">
       <DependentUpon>CountryDetail.aspx</DependentUpon>
@@ -2095,13 +2075,6 @@
     <Compile Include="Admin\RoleManagement\CreateRole.aspx.designer.cs">
       <DependentUpon>CreateRole.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\CategoryManagement\DeleteCategory.aspx.cs">
-      <DependentUpon>DeleteCategory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CategoryManagement\DeleteCategory.aspx.designer.cs">
-      <DependentUpon>DeleteCategory.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2144,13 +2117,6 @@
     <Compile Include="Admin\RoleManagement\RoleList.aspx.designer.cs">
       <DependentUpon>RoleList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\CategoryManagement\UpdateCategory.aspx.cs">
-      <DependentUpon>UpdateCategory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CategoryManagement\UpdateCategory.aspx.designer.cs">
-      <DependentUpon>UpdateCategory.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\RoleManagement\UpdateRole.aspx.cs">
       <DependentUpon>UpdateRole.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2158,19 +2124,12 @@
     <Compile Include="Admin\RoleManagement\UpdateRole.aspx.designer.cs">
       <DependentUpon>UpdateRole.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\TagManagement\CreateTag.aspx.cs">
-      <DependentUpon>CreateTag.aspx</DependentUpon>
+    <Compile Include="Admin\TagManagement\EditTag.aspx.cs">
+      <DependentUpon>EditTag.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\TagManagement\CreateTag.aspx.designer.cs">
-      <DependentUpon>CreateTag.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\TagManagement\DeleteTag.aspx.cs">
-      <DependentUpon>DeleteTag.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\TagManagement\DeleteTag.aspx.designer.cs">
-      <DependentUpon>DeleteTag.aspx</DependentUpon>
+    <Compile Include="Admin\TagManagement\EditTag.aspx.designer.cs">
+      <DependentUpon>EditTag.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\TagManagement\TagDetail.aspx.cs">
       <DependentUpon>TagDetail.aspx</DependentUpon>
@@ -2185,13 +2144,6 @@
     </Compile>
     <Compile Include="Admin\TagManagement\TagList.aspx.designer.cs">
       <DependentUpon>TagList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\TagManagement\UpdateTag.aspx.cs">
-      <DependentUpon>UpdateTag.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\TagManagement\UpdateTag.aspx.designer.cs">
-      <DependentUpon>UpdateTag.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\UserManagement\CreateUser.aspx.cs">
       <DependentUpon>CreateUser.aspx</DependentUpon>
@@ -2278,13 +2230,6 @@
     </Compile>
     <Compile Include="User\Layout\UserLayout.Master.designer.cs">
       <DependentUpon>UserLayout.Master</DependentUpon>
-    </Compile>
-    <Compile Include="User\Layout\UserLayoutLite.Master.cs">
-      <DependentUpon>UserLayoutLite.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="User\Layout\UserLayoutLite.Master.designer.cs">
-      <DependentUpon>UserLayoutLite.Master</DependentUpon>
     </Compile>
     <Compile Include="User\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
@@ -2386,7 +2331,6 @@
     <Content Include="user_assets\fonts\fontawesome-webfont.eot" />
     <Content Include="user_assets\fonts\fontawesome-webfont.ttf" />
     <Content Include="user_assets\fonts\fontawesome-webfont.woff" />
-    <Content Include="User\Layout\UserLayoutLite.Master" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

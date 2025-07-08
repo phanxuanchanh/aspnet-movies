@@ -1,15 +1,17 @@
 ﻿using Common.Web;
-using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.TagManagement
 {
     public partial class TagList : System.Web.UI.Page
     {
-        private TagBLL tagBLL;
+        private TaxonomyService _taxonomyService;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -17,33 +19,38 @@ namespace Web.Admin.TagManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            tagBLL = new TagBLL();
+            _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
             enableTool = false;
             toolDetail = null;
             try
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateTag", null);
+                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditTag", new { action = "create" });
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvTag();
-                        SetDrdlPage();
-                        tagBLL.Dispose();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    tagBLL.Dispose();
+                    return;
+                }
+
+                if (!IsPostBack)
+                {
+                    await SetGrvTag();
+                    SetDrdlPage();
                 }
             }
             catch (Exception ex)
             {
-                tagBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            if (_taxonomyService != null)
+            {
+                _taxonomyService.Dispose();
+                _taxonomyService = null;
             }
         }
 
@@ -69,19 +76,17 @@ namespace Web.Admin.TagManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            tagBLL.Dispose();
         }
 
         private async Task SetGrvTag()
         {
-            tagBLL.IncludeTimestamp = true;
-            PagedList<TagInfo> categories = await tagBLL
+            PagedList<TagDto> tags = await _taxonomyService
                 .GetTagsAsync(drdlPage.SelectedIndex, 20);
-            grvTag.DataSource = categories.Items;
+            grvTag.DataSource = tags.Items;
             grvTag.DataBind();
 
-            pageNumber = categories.PageNumber;
-            currentPage = categories.CurrentPage;
+            pageNumber = tags.PageNumber;
+            currentPage = tags.CurrentPage;
         }
 
         private void SetDrdlPage()
@@ -103,12 +108,11 @@ namespace Web.Admin.TagManagement
         {
             try
             {
-                long key = (long)grvTag.DataKeys[grvTag.SelectedIndex].Value;
-                TagInfo tagInfo = await tagBLL.GetTagAsync(key);
-                toolDetail = string.Format("{0} -- {1}", tagInfo.ID, tagInfo.name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_TagDetail", new { id = tagInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateTag", new { id = tagInfo.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteTag", new { id = tagInfo.ID });
+                int key = (int)grvTag.DataKeys[grvTag.SelectedIndex].Value;
+                TagDto tag = (await _taxonomyService.GetTagAsync(key)).Data;
+                toolDetail = string.Format("{0} -- {1}", tag.ID, tag.Name);
+                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_TagDetail", new { id = tag.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = tag.ID, action = "update" });
                 enableTool = true;
             }
             catch (Exception ex)
@@ -116,7 +120,6 @@ namespace Web.Admin.TagManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            tagBLL.Dispose();
         }
     }
 }

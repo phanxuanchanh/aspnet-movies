@@ -7,65 +7,83 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Web.Admin.CastManagement
+namespace Web.Admin.TagManagement
 {
 
 
-    public partial class CastList
+    public partial class CreateTag
     {
 
         /// <summary>
-        /// grvCast control.
+        /// hdTagId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grvCast;
+        protected global::System.Web.UI.WebControls.HiddenField hdTagId;
 
         /// <summary>
-        /// drdlPage control.
+        /// lbTagName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdlPage;
+        protected global::System.Web.UI.WebControls.Label lbTagName;
 
         /// <summary>
-        /// hyplnkDetail control.
+        /// txtTagName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDetail;
+        protected global::System.Web.UI.WebControls.TextBox txtTagName;
 
         /// <summary>
-        /// hyplnkEdit control.
+        /// cvTagName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkEdit;
+        protected global::System.Web.UI.WebControls.CustomValidator cvTagName;
 
         /// <summary>
-        /// hyplnkDelete control.
+        /// lbTagDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDelete;
+        protected global::System.Web.UI.WebControls.Label lbTagDescription;
 
         /// <summary>
-        /// hyplnkCreate control.
+        /// txtTagDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkCreate;
+        protected global::System.Web.UI.WebControls.TextBox txtTagDescription;
+
+        /// <summary>
+        /// btnSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
+
+        /// <summary>
+        /// hyplnkList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
     }
 }

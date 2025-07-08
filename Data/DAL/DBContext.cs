@@ -10,13 +10,10 @@ namespace Data.DAL
         private SqlAccess<User> users;
         private SqlAccess<PaymentMethod> paymentMethods;
         private SqlAccess<PaymentInfo> paymentInfos;
-        private SqlAccess<Category> categories;
-        private SqlAccess<Tag> tags;
         private SqlAccess<TagDistribution> tagDistributions;
         private SqlAccess<Film> films;
         private SqlAccess<CategoryDistribution> categoryDistributions;
         private SqlAccess<DirectorOfFilm> directorOfFilms;
-        private SqlAccess<Cast> casts;
         private SqlAccess<CastOfFilm> castOfFilms;
         private SqlAccess<UserReaction> userReactions;
         private SqlAccess<FilmMetadata> filmMetadata;
@@ -31,13 +28,10 @@ namespace Data.DAL
             users = null;
             paymentInfos = null;
             paymentMethods = null;
-            categories = null;
-            tags = null;
             tagDistributions = null;
             films = null;
             categoryDistributions = null;
             directorOfFilms = null;
-            casts = null;
             castOfFilms = null;
             userReactions = null;
             filmMetadata = null;
@@ -51,13 +45,10 @@ namespace Data.DAL
         public SqlAccess<User> Users { get { return InitSqlAccess<User>(ref users); } }
         public SqlAccess<PaymentMethod> PaymentMethods { get { return InitSqlAccess<PaymentMethod>(ref paymentMethods); } }
         public SqlAccess<PaymentInfo> PaymentInfos { get { return InitSqlAccess<PaymentInfo>(ref paymentInfos); } }
-        public SqlAccess<Category> Categories { get { return InitSqlAccess<Category>(ref categories); } }
-        public SqlAccess<Tag> Tags { get { return InitSqlAccess<Tag>(ref tags); } }
         public SqlAccess<TagDistribution> TagDistributions { get { return InitSqlAccess<TagDistribution>(ref tagDistributions); } }
         public SqlAccess<Film> Films { get { return InitSqlAccess<Film>(ref films); } }
         public SqlAccess<CategoryDistribution> CategoryDistributions { get { return InitSqlAccess<CategoryDistribution>(ref categoryDistributions); } }
         public SqlAccess<DirectorOfFilm> DirectorOfFilms { get { return InitSqlAccess<DirectorOfFilm>(ref directorOfFilms); } }
-        public SqlAccess<Cast> Casts { get { return InitSqlAccess<Cast>(ref casts); } }
         public SqlAccess<CastOfFilm> CastOfFilms { get { return InitSqlAccess<CastOfFilm>(ref castOfFilms); } }
         public SqlAccess<UserReaction> UserReactions { get { return InitSqlAccess<UserReaction>(ref userReactions); } }
         public SqlAccess<FilmMetadata> FilmMetadata { get { return InitSqlAccess<FilmMetadata>(ref filmMetadata); } }
@@ -77,13 +68,10 @@ namespace Data.DAL
                         DisposeSqlAccess<User>(ref users);
                         DisposeSqlAccess<PaymentMethod>(ref paymentMethods);
                         DisposeSqlAccess<PaymentInfo>(ref paymentInfos);
-                        DisposeSqlAccess<Category>(ref categories);
                         DisposeSqlAccess<CategoryDistribution>(ref categoryDistributions);
-                        DisposeSqlAccess<Tag>(ref tags);
                         DisposeSqlAccess<TagDistribution>(ref tagDistributions);
                         DisposeSqlAccess<Film>(ref films);
                         DisposeSqlAccess<DirectorOfFilm>(ref directorOfFilms);
-                        DisposeSqlAccess<Cast>(ref casts);
                         DisposeSqlAccess<CastOfFilm>(ref castOfFilms);
                         DisposeSqlAccess<UserReaction>(ref userReactions);
                         DisposeSqlAccess<FilmMetadata>(ref filmMetadata);

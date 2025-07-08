@@ -2,22 +2,22 @@
 
 namespace Data.DTO
 {
-    public class TagInfo
+    public class TagDto
     {
-        public long ID { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public DateTime createAt { get; set; }
-        public DateTime updateAt { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
-    public class TagCreation{
-        public string name { get; set; }
-        public string description { get; set; }
+    public class CreateTagDto {
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 
-    public class TagUpdate : TagCreation
+    public class UpdateTagDto : CreateTagDto
     {
-        public long ID { get; set; }
+        public int ID { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Common.Web;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -13,8 +12,6 @@ namespace Web.Admin.CategoryManagement
     public partial class CategoryList : System.Web.UI.Page
     {
         private TaxonomyService _taxonomyService;
-
-        private CategoryBLL categoryBLL;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -23,34 +20,38 @@ namespace Web.Admin.CategoryManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
-
-            categoryBLL = new CategoryBLL();
             enableTool = false;
             toolDetail = null;
             try
             {
                 
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateCategory", null);
+                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { action = "create" });
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvCategory();
-                        SetDrdlPage();
-                        categoryBLL.Dispose();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    categoryBLL.Dispose();
+                    return;               
                 }
-            }catch(Exception ex)
+
+                if (!IsPostBack)
+                {
+                    await SetGrvCategory();
+                    SetDrdlPage();
+                }
+            }
+            catch(Exception ex)
             {
-                categoryBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            if (_taxonomyService != null)
+            {
+                _taxonomyService.Dispose();
+                _taxonomyService = null;
             }
         }
 
@@ -76,13 +77,11 @@ namespace Web.Admin.CategoryManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            categoryBLL.Dispose();
         }
 
         private async Task SetGrvCategory()
         {
-            categoryBLL.IncludeTimestamp = true;
-            PagedList<CategoryInfo> categories = await categoryBLL
+            PagedList<CategoryDto> categories = await _taxonomyService
                 .GetCategoriesAsync(drdlPage.SelectedIndex, 20);
             grvCategory.DataSource = categories.Items;
             grvCategory.DataBind();
@@ -111,11 +110,10 @@ namespace Web.Admin.CategoryManagement
             try
             {
                 int key = (int)grvCategory.DataKeys[grvCategory.SelectedIndex].Value;
-                CategoryInfo categoryInfo = await categoryBLL.GetCategoryAsync(key);
-                toolDetail = string.Format("{0} -- {1}", categoryInfo.ID, categoryInfo.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CategoryDetail", new { id = categoryInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateCategory", new { id = categoryInfo.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteCategory", new { id = categoryInfo.ID });
+                CategoryDto category = (await _taxonomyService.GetCategoryAsync(key)).Data;
+                toolDetail = string.Format("{0} -- {1}", category.ID, category.Name);
+                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CategoryDetail", new { id = category.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = category.ID, action = "update" });
                 enableTool = true;
             }
             catch(Exception ex)
@@ -123,7 +121,6 @@ namespace Web.Admin.CategoryManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            categoryBLL.Dispose();
         }
     }
 }

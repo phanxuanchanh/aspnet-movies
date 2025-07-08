@@ -51,10 +51,10 @@
                                 <ul class="dropdown-menu level1">
                                     <% if (categories != null)
                                         {
-                                            foreach (CategoryInfo category in categories)
+                                            foreach (CategoryDto category in categories)
                                             { %>
                                     <li>
-                                        <a href="<%= category.url %>"><% = category.name %></a>
+                                        <a href="<%= category.Url %>"><% = category.Name %></a>
                                     </li>
                                     <% }
                                         } %>

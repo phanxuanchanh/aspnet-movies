@@ -4,18 +4,22 @@ using System.Collections.Generic;
 using Data.DTO;
 using System.Linq;
 using Web.Models;
+using Data.Services;
+using Web.App_Start;
+using Ninject;
+using System.Threading.Tasks;
 
 namespace Web.User.Layout
 {
     public partial class UserLayout : System.Web.UI.MasterPage
     {
-        protected List<CategoryInfo> categories;
+        protected List<CategoryDto> categories;
         protected string hyplnkSearch;
         protected string hyplnkWatchedList;
         protected string hyplnkLiteVersion;
         protected string hyplnkHome;
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected async void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -34,7 +38,7 @@ namespace Web.User.Layout
                 hyplnkWatchedList = GetRouteUrl("User_WatchedList", null);
                 hyplnkLiteVersion = GetRouteUrl("User_Home_Lite", null);
                 hyplnkHome = GetRouteUrl("User_Home", null);
-                GetCategories();
+                await GetCategoriesAsync();
             }
             catch(Exception ex)
             {
@@ -43,17 +47,14 @@ namespace Web.User.Layout
             }
         }
 
-        private void GetCategories()
+        private async Task GetCategoriesAsync()
         {
-            using(CategoryBLL categoryBLL = new CategoryBLL())
+            using(TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                categories = categoryBLL.GetCategories()
-                .Select(c => new CategoryInfo
-                {
-                    ID = c.ID,
-                    Name = c.Name,
-                    Description = c.Description,
-                    Url = GetRouteUrl("User_FilmsByCategory", new { slug = c.Name.TextToUrl(), id = c.ID })
+                categories = (await taxonomyService.GetCategoriesAsync(1, 30)).Items
+                .Select(s => {
+                    s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID }); 
+                    return s;
                 }).ToList();
             }
         }

@@ -1,4 +1,5 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="CreateCategory.aspx.cs" Inherits="Web.Admin.CategoryManagement.CreateCategory" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditCategory.aspx.cs" Inherits="Web.Admin.CategoryManagement.CreateCategory" %>
+<%@ Import Namespace="Common" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Tạo mới thể loại - Trang quản trị</title>
@@ -6,26 +7,27 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
     <% if (enableShowResult)
-        { %>
-    <h5 class="mt-2">Trạng thái thêm thể loại</h5>
+    { %>
+    <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
     <a class="anchor" name="alerts"></a>
     <div class="row grid-responsive">
         <div class="column">
-            <%if (stateString == "Success")
-                { %>
-            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = stateDetail %></div>
+            <%if (commandResult.Status == ExecStatus.Success)
+        { %>
+            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = commandResult.Message %></div>
             <%}
-                else if (stateString == "AlreadyExists")
-                { %>
-            <div class="alert background-warning"><em class="fa fa-warning"></em><% = stateDetail %></div>
+        else if (commandResult.Status == ExecStatus.AlreadyExists)
+        { %>
+            <div class="alert background-warning"><em class="fa fa-warning"></em><% = commandResult.Message %></div>
             <%}
-                else
-                { %>
-            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = stateDetail %></div>
+        else
+        { %>
+            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = commandResult.Message %></div>
             <%} %>
         </div>
     </div>
     <%} %>
+
     <h5 class="mt-2">Tạo mới thể loại</h5>
     <a class="anchor" name="forms"></a>
     <div class="row grid-responsive">
@@ -37,6 +39,7 @@
                 <div class="card-block">
                     <div>
                         <fieldset>
+                            <asp:HiddenField ID="hdCategoryId" runat="server" />
                             <asp:Label ID="lbCategoryName" runat="server" Text="Tên thể loại" AssociatedControlID="txtCategoryName"></asp:Label>
                             <asp:TextBox ID="txtCategoryName" placeholder="Nhập vào tên thể loại" runat="server"></asp:TextBox>
                             <asp:CustomValidator ID="cvCategoryName" CssClass="text-red" runat="server"></asp:CustomValidator>

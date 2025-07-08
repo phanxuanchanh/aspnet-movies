@@ -1,10 +1,13 @@
 ﻿using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.FilmManagement
@@ -13,7 +16,7 @@ namespace Web.Admin.FilmManagement
     {
         private FilmBLL filmBLL;
         protected string filmName;
-        protected List<CategoryInfo> categoriesByFilmId;
+        protected List<CategoryDto> categoriesByFilmId;
         protected bool enableShowDetail;
         protected bool enableShowResult;
         protected string stateString;
@@ -106,12 +109,15 @@ namespace Web.Admin.FilmManagement
         private async Task LoadCategories()
         {
             drdlFilmCategory.Items.Clear();
-            List<CategoryInfo> categoryInfos = await new CategoryBLL(filmBLL).GetCategoriesAsync();
-            foreach (CategoryInfo categoryInfo in categoryInfos)
+            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                drdlFilmCategory.Items.Add(new ListItem(categoryInfo.Name, categoryInfo.ID.ToString()));
+                List<CategoryDto> categories = (await taxonomyService.GetCategoriesAsync(1, 30)).Items;
+                foreach (CategoryDto category in categories)
+                {
+                    drdlFilmCategory.Items.Add(new ListItem(category.Name, category.ID.ToString()));
+                }
+                drdlFilmCategory.SelectedIndex = 0;
             }
-            drdlFilmCategory.SelectedIndex = 0;
         }
 
         protected async void btnAdd_Click(object sender, EventArgs e)

@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="CastList.aspx.cs" Inherits="Web.Admin.CastManagement.CastList" MaintainScrollPositionOnPostback="true" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="ActorList.aspx.cs" Inherits="Web.Admin.ActorManagement.ActorList" MaintainScrollPositionOnPostback="true" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Danh sách diễn viên - Trang quản trị</title>
 </asp:Content>
@@ -13,7 +13,7 @@
                     <h3>Danh sách diễn viên</h3>
                 </div>
                 <div class="card-block">
-                    <asp:GridView ID="grvCast" runat="server" BorderColor="Silver" BorderStyle="Solid" AutoGenerateColumns="False" DataKeyNames="ID" OnSelectedIndexChanged="grvCast_SelectedIndexChanged">
+                    <asp:GridView ID="grvActor" runat="server" BorderColor="Silver" BorderStyle="Solid" AutoGenerateColumns="False" DataKeyNames="ID" OnSelectedIndexChanged="grvActor_SelectedIndexChanged">
                         <AlternatingRowStyle BackColor="White" />
                         <Columns>
                             <asp:BoundField DataField="ID" HeaderText="ID" />

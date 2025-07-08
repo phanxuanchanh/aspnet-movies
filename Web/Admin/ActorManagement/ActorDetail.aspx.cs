@@ -5,14 +5,15 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
+using System.Web.UI;
 using Web.App_Start;
 using Web.Models;
 
-namespace Web.Admin.CategoryManagement
+namespace Web.Admin.ActorManagement
 {
-    public partial class CategoryDetail : System.Web.UI.Page
+    public partial class ActorDetail : System.Web.UI.Page
     {
-        protected CategoryDto category;
+        protected ActorDto actor;
         protected ExecResult commandResult;
         protected bool enableShowDetail;
         protected bool enableShowResult;
@@ -22,12 +23,12 @@ namespace Web.Admin.CategoryManagement
             enableShowDetail = false;
             try
             {
-                int id = GetCategoryId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = id, action = "update" });
+                long id = GetActorId();
+                hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditActor", new { id = id, action = "update" });
 
                 if (CheckLoggedIn())
-                    await GetCategory(id);
+                    await GetActor(id);
                 else
                     Response.RedirectToRoute("Account_Login", null);
             }
@@ -48,33 +49,33 @@ namespace Web.Admin.CategoryManagement
             return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
-        private int GetCategoryId()
+        private long GetActorId()
         {
             object obj = Page.RouteData.Values["id"];
             if (obj == null)
                 return -1;
-            return int.Parse(obj.ToString());
+            return long.Parse(obj.ToString());
         }
 
-        private async Task GetCategory(int id)
+        private async Task GetActor(long id)
         {
             if (id <= 0)
             {
-                Response.RedirectToRoute("Admin_CategoryList", null);
+                Response.RedirectToRoute("Admin_ActorList", null);
                 return;
             }
 
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
             {
-                ExecResult<CategoryDto> result = await taxonomyService.GetCategoryAsync(id);
+                ExecResult<ActorDto> result = await peopleService.GetActorAsync(id);
                 if (result.Status == ExecStatus.Success)
                 {
-                    category = result.Data;
+                    actor = result.Data;
                     enableShowDetail = true;
                 }
                 else
                 {
-                    Response.RedirectToRoute("Admin_CategoryList", null);
+                    Response.RedirectToRoute("Admin_CountryList", null);
                 }
             }
         }
@@ -83,7 +84,7 @@ namespace Web.Admin.CategoryManagement
         {
             try
             {
-                await DeleteCategory();
+                await DeleteCountry();
             }
             catch (Exception ex)
             {
@@ -92,21 +93,21 @@ namespace Web.Admin.CategoryManagement
             }
         }
 
-        private async Task DeleteCategory()
+        private async Task DeleteCountry()
         {
-            int id = GetCategoryId();
+            long id = GetActorId();
             if (id <= 0)
             {
-                Response.RedirectToRoute("Admin_CategoryList", null);
+                Response.RedirectToRoute("Admin_ActorList", null);
                 return;
             }
 
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
             {
-                commandResult = await taxonomyService.DeleteAsync(id); ;
+                commandResult = await peopleService.DeleteAsync(id); ;
                 if (commandResult.Status == ExecStatus.Success)
                 {
-                    Response.RedirectToRoute("Admin_CategoryList", null);
+                    Response.RedirectToRoute("Admin_ActorList", null);
                     return;
                 }
             }

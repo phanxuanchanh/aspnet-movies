@@ -35,7 +35,7 @@
                         </div>
                         <div class="title-in">
                             <div class="cate">
-                                <% foreach (CategoryInfo categoryOfFilm in filmInfo.Categories)
+                                <% foreach (CategoryDto categoryOfFilm in filmInfo.Categories)
                                     { %>
                                 <span class="blue"><a href="#"><%= categoryOfFilm.Name %></a></span>
                                 <%} %>
@@ -57,8 +57,8 @@
                     <% foreach (KeyValuePair<CategoryDto, List<FilmInfo>> filmOfCategory in films_CategoryDict)
                         { %>
                     <div class="title-hd">
-                        <h2><% = filmOfCategory.Key.name %></h2>
-                        <a href="<% = filmOfCategory.Key.url %>" class="viewall">Xem tất cả <i class="ion-ios-arrow-right"></i></a>
+                        <h2><% = filmOfCategory.Key.Name %></h2>
+                        <a href="<% = filmOfCategory.Key.Url %>" class="viewall">Xem tất cả <i class="ion-ios-arrow-right"></i></a>
                     </div>
                     <div class="tabs">
                         <ul class="tab-links">
@@ -100,15 +100,15 @@
                         <div class="celebrities">
                             <h4 class="sb-title">Thể loại phim</h4>
 
-                            <% if (categoryInfos != null)
+                            <% if (categories != null)
                                 {
-                                    foreach (CategoryInfo categoryInfo in categoryInfos)
+                                    foreach (CategoryDto category in categories)
                                     { %>
                             <div class="celeb-item">
                                 <a href="#">
                                     <img src="<% = ResolveUrl("~/user_assets/images/uploads/film-icon.png") %>" alt="" width="70" height="70"></a>
                                 <div class="celeb-author">
-                                    <h6><a href="<% = categoryInfo.Url %>"><% = categoryInfo.Name %></a></h6>
+                                    <h6><a href="<% = category.Url %>"><% = category.Name %></a></h6>
                                     <span></span>
                                 </div>
                             </div>

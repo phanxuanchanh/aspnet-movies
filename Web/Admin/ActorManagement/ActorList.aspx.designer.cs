@@ -7,74 +7,65 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Web.Admin.CastManagement
+namespace Web.Admin.ActorManagement
 {
 
 
-    public partial class CreateCast
+    public partial class ActorList
     {
 
         /// <summary>
-        /// lbCastName control.
+        /// grvActor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbCastName;
+        protected global::System.Web.UI.WebControls.GridView grvActor;
 
         /// <summary>
-        /// txtCastName control.
+        /// drdlPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCastName;
+        protected global::System.Web.UI.WebControls.DropDownList drdlPage;
 
         /// <summary>
-        /// cvCastName control.
+        /// hyplnkDetail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvCastName;
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkDetail;
 
         /// <summary>
-        /// lbCastDescription control.
+        /// hyplnkEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbCastDescription;
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkEdit;
 
         /// <summary>
-        /// txtCastDescription control.
+        /// hyplnkDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCastDescription;
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkDelete;
 
         /// <summary>
-        /// btnSubmit control.
+        /// hyplnkCreate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
-
-        /// <summary>
-        /// hyplnkList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkCreate;
     }
 }

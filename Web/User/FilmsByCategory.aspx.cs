@@ -49,7 +49,7 @@ namespace Web.User
             }
             else
             {
-                CategoryInfo categoryInfo = await new CategoryBLL(filmBLL).GetCategoryAsync(id);
+                CategoryDto categoryInfo = new CategoryDto();//  await new CategoryBLL(filmBLL).GetCategoryAsync(id);
                 if(categoryInfo == null)
                 {
                     Response.RedirectToRoute("User_Home", null);

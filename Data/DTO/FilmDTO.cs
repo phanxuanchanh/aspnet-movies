@@ -24,8 +24,8 @@ namespace Data.DTO
 
         public LanguageDto Language { get; set; }
         public CountryDto Country { get; set; }
-        public List<CategoryInfo> Categories { get; set; }
-        public List<TagInfo> Tags { get; set; }
+        public List<CategoryDto> Categories { get; set; }
+        public List<TagDto> Tags { get; set; }
         public List<DirectorDto> Directors { get; set; }
         public List<ActorDto> Casts { get; set; }
     }

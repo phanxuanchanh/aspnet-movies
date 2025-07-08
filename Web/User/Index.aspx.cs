@@ -8,6 +8,9 @@ using Common.Upload;
 using Web.Models;
 using System.Linq;
 using Common;
+using Data.Services;
+using Web.App_Start;
+using Ninject;
 
 namespace Web.User
 {
@@ -15,14 +18,14 @@ namespace Web.User
     {
         private FilmBLL filmBLL;
         protected List<FilmInfo> latestFilms;
-        protected List<CategoryInfo> categoryInfos;
-        protected Dictionary<CategoryInfo, List<FilmInfo>> films_CategoryDict;
+        protected List<CategoryDto> categories;
+        protected Dictionary<CategoryDto, List<FilmInfo>> films_CategoryDict;
         protected string hyplnkCategoryList;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             filmBLL = new FilmBLL();
-            films_CategoryDict = new Dictionary<CategoryInfo, List<FilmInfo>>();
+            films_CategoryDict = new Dictionary<CategoryDto, List<FilmInfo>>();
             try
             {
                 hyplnkCategoryList = GetRouteUrl("User_CategoryList", null);
@@ -59,20 +62,21 @@ namespace Web.User
 
         private async Task GetCategories()
         {
-            categoryInfos = (await new CategoryBLL(filmBLL).GetCategoriesAsync())
-                .Select(c => new CategoryInfo
-                {
-                    ID = c.ID,
-                    Name = c.Name,
-                    Description = c.Description,
-                    Url = GetRouteUrl("User_FilmsByCategory", new { slug = c.Name.TextToUrl(), id = c.ID })
-                }).ToList();
+            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            {
+                categories = (await taxonomyService.GetCategoriesAsync(1, 30)).Items
+                    .Select(s =>
+                    {
+                        s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID });
+                        return s;
+                    }).ToList();
+            }
         }
 
         private async Task GetFilmsByCategory()
         {
             filmBLL.IncludeCategory = false;
-            foreach(CategoryInfo categoryInfo in categoryInfos)
+            foreach(CategoryDto categoryInfo in categories)
             {
                 List<FilmInfo> filmInfos = await filmBLL.GetFilmsByCategoryIdAsync(categoryInfo.ID);
                 foreach (FilmInfo filmInfo in filmInfos)

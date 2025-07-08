@@ -7,66 +7,66 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Web.Admin.TagManagement
+namespace Web.Admin.ActorManagement
 {
 
 
-    public partial class UpdateTag
+    public partial class EditActor
     {
 
         /// <summary>
-        /// hdTagId control.
+        /// hdActorId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdTagId;
+        protected global::System.Web.UI.WebControls.HiddenField hdActorId;
 
         /// <summary>
-        /// lbTagName control.
+        /// lbActorName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbTagName;
+        protected global::System.Web.UI.WebControls.Label lbActorName;
 
         /// <summary>
-        /// txtTagName control.
+        /// txtActorName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTagName;
+        protected global::System.Web.UI.WebControls.TextBox txtActorName;
 
         /// <summary>
-        /// cvTagName control.
+        /// cvActorName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvTagName;
+        protected global::System.Web.UI.WebControls.CustomValidator cvActorName;
 
         /// <summary>
-        /// lbTagDescription control.
+        /// lbActorDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbTagDescription;
+        protected global::System.Web.UI.WebControls.Label lbActorDescription;
 
         /// <summary>
-        /// txtTagDescription control.
+        /// txtActorDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTagDescription;
+        protected global::System.Web.UI.WebControls.TextBox txtActorDescription;
 
         /// <summary>
         /// btnSubmit control.
@@ -85,23 +85,5 @@ namespace Web.Admin.TagManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
-
-        /// <summary>
-        /// hyplnkDetail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDetail;
-
-        /// <summary>
-        /// hyplnkDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDelete;
     }
 }
