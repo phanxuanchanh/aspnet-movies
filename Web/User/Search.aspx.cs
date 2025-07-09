@@ -12,7 +12,7 @@ namespace Web.User
 {
     public partial class Search : System.Web.UI.Page
     {
-        protected List<FilmInfo> filmInfos;
+        protected List<FilmDto> filmInfos;
         protected string keyword;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -43,18 +43,18 @@ namespace Web.User
                     filmInfos = await filmBLL.SeachFilmsAsync(searchContent);
                 }
 
-                foreach(FilmInfo filmInfo in filmInfos)
+                foreach(FilmDto filmInfo in filmInfos)
                 {
-                    if (string.IsNullOrEmpty(filmInfo.thumbnail))
-                        filmInfo.thumbnail = VirtualPathUtility
+                    if (string.IsNullOrEmpty(filmInfo.Thumbnail))
+                        filmInfo.Thumbnail = VirtualPathUtility
                             .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                     else
-                        filmInfo.thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                        filmInfo.Thumbnail = VirtualPathUtility
+                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                    Rating rating = new Rating(filmInfo.upvote, filmInfo.downvote);
-                    filmInfo.scoreRating = rating.SolveScore();
-                    filmInfo.url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.name.TextToUrl(), id = filmInfo.ID });
+                    Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
+                    filmInfo.ScoreRating = rating.SolveScore();
+                    filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
                 }
             }
         }

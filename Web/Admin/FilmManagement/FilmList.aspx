@@ -17,10 +17,10 @@
                         <AlternatingRowStyle BackColor="White" />
                         <Columns>
                             <asp:BoundField DataField="ID" HeaderText="ID" />
-                            <asp:BoundField DataField="name" HeaderText="Tên phim" />
-                            <asp:ImageField DataImageUrlField="thumbnail" DataImageUrlFormatString="{0}" HeaderText="Hình ảnh" ControlStyle-Width="80" ControlStyle-Height="110" />
-                            <asp:BoundField DataField="createAt" HeaderText="Ngày tạo" />
-                            <asp:BoundField DataField="updateAt" HeaderText="Ngày cập nhật" />
+                            <asp:BoundField DataField="Name" HeaderText="Tên phim" />
+                            <asp:ImageField DataImageUrlField="Thumbnail" DataImageUrlFormatString="{0}" HeaderText="Hình ảnh" ControlStyle-Width="80" ControlStyle-Height="110" />
+                            <asp:BoundField DataField="CreatedAt" HeaderText="Ngày tạo" />
+                            <asp:BoundField DataField="UpdatedAt" HeaderText="Ngày cập nhật" />
                             <asp:CommandField AccessibleHeaderText="Chọn" ShowSelectButton="True" SelectText="Chọn phim" />
                         </Columns>
                         <EditRowStyle BackColor="#2461BF" />

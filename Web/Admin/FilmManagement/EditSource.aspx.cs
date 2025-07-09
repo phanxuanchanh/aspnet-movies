@@ -87,21 +87,21 @@ namespace Web.Admin.FilmManagement
             }
             else
             {
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(id);
+                FilmDto filmInfo = await filmBLL.GetFilmAsync(id);
                 if (filmInfo == null)
                 {
                     Response.RedirectToRoute("Admin_FilmList", null);
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(filmInfo.source))
+                    if (string.IsNullOrEmpty(filmInfo.Source))
                         film_Source = VirtualPathUtility
                         .ToAbsolute(string.Format("{0}/Default/default.mp4", FileUpload.VideoFilePath));
                     else
                         film_Source = VirtualPathUtility
-                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.VideoFilePath, filmInfo.source));
+                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.VideoFilePath, filmInfo.Source));
 
-                    filmName = filmInfo.name;
+                    filmName = filmInfo.Name;
                     enableShowDetail = true;
                 }
             }
@@ -131,8 +131,8 @@ namespace Web.Admin.FilmManagement
                 else
                 {
                     string filmId = GetFilmId();
-                    FilmInfo film = await filmBLL.GetFilmAsync(filmId);
-                    if (!string.IsNullOrEmpty(film.source))
+                    FilmDto film = await filmBLL.GetFilmAsync(filmId);
+                    if (!string.IsNullOrEmpty(film.Source))
                     {
                         stateString = "Failed";
                         stateDetail = "Phim này đã có video. Cần xóa video đang dùng hiện tại để thêm mới video khác";
@@ -188,8 +188,8 @@ namespace Web.Admin.FilmManagement
             try
             {
                 string filmId = GetFilmId();
-                FilmInfo film = await filmBLL.GetFilmAsync(filmId);
-                if (string.IsNullOrEmpty(film.source))
+                FilmDto film = await filmBLL.GetFilmAsync(filmId);
+                if (string.IsNullOrEmpty(film.Source))
                 {
                     stateString = "Failed";
                     stateDetail = "Phim này hiện chưa có video. Video bạn đang thấy là video được gán mặc định";
@@ -200,7 +200,7 @@ namespace Web.Admin.FilmManagement
                     if (state == UpdateState.Success)
                     {
                         FileUpload fileUpload = new FileUpload();
-                        if (fileUpload.RemoveVideo(film.source))
+                        if (fileUpload.RemoveVideo(film.Source))
                         {
                             stateString = "Success";
                             stateDetail = "Đã xóa video của phim thành công";

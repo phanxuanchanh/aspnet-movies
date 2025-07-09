@@ -13,7 +13,7 @@ namespace Web.User
 {
     public partial class Watch : System.Web.UI.Page
     {
-        protected FilmInfo filmInfo;
+        protected FilmDto filmInfo;
         protected string title_HeadTag;
         protected string keywords_MetaTag;
         protected string description_MetaTag;
@@ -37,9 +37,9 @@ namespace Web.User
                     userSession.Histories.Add(new History
                     {
                         filmId = filmInfo.ID,
-                        name = filmInfo.name,
-                        thumbnail = filmInfo.thumbnail,
-                        url = filmInfo.url,
+                        name = filmInfo.Name,
+                        thumbnail = filmInfo.Thumbnail,
+                        url = filmInfo.Url,
                         timestamp = DateTime.Now
                     });
                 }
@@ -80,21 +80,21 @@ namespace Web.User
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(filmInfo.thumbnail))
-                        filmInfo.thumbnail = VirtualPathUtility
+                    if (string.IsNullOrEmpty(filmInfo.Thumbnail))
+                        filmInfo.Thumbnail = VirtualPathUtility
                             .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                     else
-                        filmInfo.thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                        filmInfo.Thumbnail = VirtualPathUtility
+                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                    if (string.IsNullOrEmpty(filmInfo.source))
-                        filmInfo.source = VirtualPathUtility
+                    if (string.IsNullOrEmpty(filmInfo.Source))
+                        filmInfo.Source = VirtualPathUtility
                             .ToAbsolute(string.Format("{0}/Default/default.mp4", FileUpload.VideoFilePath));
                     else
-                        filmInfo.source = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.VideoFilePath, filmInfo.source));
+                        filmInfo.Source = VirtualPathUtility
+                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.VideoFilePath, filmInfo.Source));
 
-                    filmInfo.url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.name.TextToUrl(), id = filmInfo.ID });
+                    filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
                 }
             }
         }
@@ -103,8 +103,8 @@ namespace Web.User
         {
             if (filmInfo != null)
             {
-                title_HeadTag = filmInfo.name;
-                description_MetaTag = (string.Format("{0}...", filmInfo.description.TakeStr(100))).Replace("\n", " ");
+                title_HeadTag = filmInfo.Name;
+                description_MetaTag = (string.Format("{0}...", filmInfo.Description.TakeStr(100))).Replace("\n", " ");
 
                 StringBuilder stringBuilder = new StringBuilder();
                 foreach (TagDto tagInfo in filmInfo.Tags)

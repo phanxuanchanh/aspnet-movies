@@ -92,7 +92,7 @@ namespace Web.Admin.FilmManagement
             else
             {
                 filmBLL.IncludeTag = true;
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(id);
+                FilmDto filmInfo = null;// await filmBLL.GetFilmAsync(id);
                 if (filmInfo == null)
                 {
                     Response.RedirectToRoute("Admin_FilmList", null);
@@ -101,7 +101,7 @@ namespace Web.Admin.FilmManagement
                 {
                     enableShowDetail = true;
                     tagsByFilmId = filmInfo.Tags;
-                    filmName = filmInfo.name;
+                    filmName = filmInfo.Name;
                 }
             }
         }

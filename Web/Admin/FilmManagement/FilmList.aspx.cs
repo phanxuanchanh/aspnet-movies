@@ -2,17 +2,20 @@
 using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.FilmManagement
 {
     public partial class FilmList : System.Web.UI.Page
     {
-        private FilmBLL filmBLL;
+        private FilmService _filmService;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -20,33 +23,38 @@ namespace Web.Admin.FilmManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            filmBLL = new FilmBLL();
+            _filmService = NinjectWebCommon.Kernel.Get<FilmService>();
             enableTool = false;
             toolDetail = null;
             try
             {
                 hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateFilm", null);
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvFilm();
-                        SetDrdlPage();
-                        filmBLL.Dispose();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    filmBLL.Dispose();
+                    return;
+                }
+
+                if (!IsPostBack)
+                {
+                    await SetGrvFilm();
+                    SetDrdlPage();
                 }
             }
             catch (Exception ex)
             {
-                filmBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            if (_filmService != null)
+            {
+                _filmService.Dispose();
+                _filmService = null;
             }
         }
 
@@ -72,22 +80,19 @@ namespace Web.Admin.FilmManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            filmBLL.Dispose();
         }
 
         private async Task SetGrvFilm()
         {
-            filmBLL.IncludeTimestamp = true;
-            PagedList<FilmInfo> films = await filmBLL
-                .GetFilmsAsync(drdlPage.SelectedIndex, 20);
-            foreach(FilmInfo film in films.Items)
+            PagedList<FilmDto> films = await _filmService.GetFilmsAsync(drdlPage.SelectedIndex, 20);
+            foreach(FilmDto film in films.Items)
             {
-                if(string.IsNullOrEmpty(film.thumbnail))
-                    film.thumbnail = VirtualPathUtility
+                if(string.IsNullOrEmpty(film.Thumbnail))
+                    film.Thumbnail = VirtualPathUtility
                         .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                 else
-                    film.thumbnail = VirtualPathUtility
-                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.thumbnail));
+                    film.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
             }
             grvFilm.DataSource = films.Items;
             grvFilm.DataBind();
@@ -116,8 +121,8 @@ namespace Web.Admin.FilmManagement
             try
             {
                 string key = (string)grvFilm.DataKeys[grvFilm.SelectedIndex].Value;
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(key);
-                toolDetail = string.Format("{0} -- {1}", filmInfo.ID, filmInfo.name);
+                FilmDto filmInfo = (await _filmService.GetFilmAsync(key, false, false)).Data;
+                toolDetail = string.Format("{0} -- {1}", filmInfo.ID, filmInfo.Name);
                 hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_FilmDetail", new { id = filmInfo.ID });
                 hyplnkEdit_Category.NavigateUrl = GetRouteUrl("Admin_EditCategory_Film", new { id = filmInfo.ID });
                 hyplnkEdit_Tag.NavigateUrl = GetRouteUrl("Admin_EditTag_Film", new { id = filmInfo.ID });
@@ -134,7 +139,6 @@ namespace Web.Admin.FilmManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            filmBLL.Dispose();
         }
     }
 }

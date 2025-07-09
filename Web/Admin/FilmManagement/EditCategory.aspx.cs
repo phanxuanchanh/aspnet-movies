@@ -92,7 +92,7 @@ namespace Web.Admin.FilmManagement
             else
             {
                 filmBLL.IncludeCategory = true;
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(id);
+                FilmDto filmInfo = await filmBLL.GetFilmAsync(id);
                 if(filmInfo == null)
                 {
                     Response.RedirectToRoute("Admin_FilmList", null);
@@ -101,7 +101,7 @@ namespace Web.Admin.FilmManagement
                 {
                     enableShowDetail = true;
                     categoriesByFilmId = filmInfo.Categories;
-                    filmName = filmInfo.name;
+                    filmName = filmInfo.Name;
                 }
             }
         }

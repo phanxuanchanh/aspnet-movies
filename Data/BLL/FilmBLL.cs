@@ -56,53 +56,53 @@ namespace Data.BLL
             includeDirector = false;
         }
 
-        private FilmInfo ToFilmInfo(Film film)
+        private FilmDto ToFilmDto(Film film)
         {
             if (film == null)
                 return null;
 
-            FilmInfo filmInfo = new FilmInfo()
+            FilmDto FilmDto = new FilmDto()
             {
                 ID = film.ID,
-                name = film.name,
-                description = film.description,
-                productionCompany = film.productionCompany,
-                thumbnail = film.thumbnail,
-                releaseDate = film.releaseDate,
-                upvote = film.upvote,
-                downvote = film.downvote,
-                views = film.views,
-                duration = film.duration,
-                source = film.source
+                Name = film.Name,
+                Description = film.Description,
+                ProductionCompany = film.ProductionCompany,
+                Thumbnail = film.Thumbnail,
+                ReleaseDate = film.ReleaseDate,
+                Upvote = film.Upvote,
+                Downvote = film.Downvote,
+                Views = film.Views,
+                Duration = film.Duration,
+                Source = film.Source
             };
 
             //if (includeCategory)
-            //    filmInfo.Categories = new CategoryBLL(this).GetCategoriesByFilmId(film.ID);
+            //    FilmDto.Categories = new CategoryBLL(this).GetCategoriesByFilmId(film.ID);
 
             //if (includeTag)
-            //    filmInfo.Tags = new TagBLL(this).GetTagsByFilmId(film.ID);
+            //    FilmDto.Tags = new TagBLL(this).GetTagsByFilmId(film.ID);
 
             //if (includeDirector)
-            //    filmInfo.Directors = new DirectorBLL(this).GetDirectorsByFilmId(film.ID);
+            //    FilmDto.Directors = new DirectorBLL(this).GetDirectorsByFilmId(film.ID);
 
             //if (includeCast)
-            //    filmInfo.Casts = new CastBLL(this).GetCastsByFilmId(film.ID);
+            //    FilmDto.Casts = new CastBLL(this).GetCastsByFilmId(film.ID);
 
             //if (includeLanguage)
-            //    filmInfo.Language = ((film.languageId != 0)
+            //    FilmDto.Language = ((film.languageId != 0)
             //        ? new LanguageBLL(this).GetLanguage(film.languageId) : null);
 
             //if (includeCountry)
-            //    filmInfo.Country = ((film.countryId != 0)
+            //    FilmDto.Country = ((film.countryId != 0)
             //        ? new CountryBLL(this).GetCountry(film.countryId) : null);
 
             if (includeTimestamp)
             {
-                filmInfo.createAt = film.createAt;
-                filmInfo.updateAt = film.updateAt;
+                FilmDto.CreatedAt = film.CreatedAt;
+                FilmDto.UpdatedAt = film.UpdatedAt;
             }
 
-            return filmInfo;
+            return FilmDto;
         }
 
         private Film ToFilm(FilmCreation filmCreation)
@@ -112,25 +112,23 @@ namespace Data.BLL
 
             HashFunction hash = new HashFunction();
             string filmId = hash.MD5_Hash(string
-                .Format("name:{0}//random:{1}", filmCreation.name, new Random().NextString(25)));
+                .Format("Name:{0}//random:{1}", filmCreation.name, new Random().NextString(25)));
 
             return new Film
             {
                 ID = filmId,
-                name = filmCreation.name,
-                description = filmCreation.description,
-                countryId = filmCreation.countryId,
-                productionCompany = filmCreation.productionCompany,
-                thumbnail = filmCreation.thumbnail,
-                languageId = filmCreation.languageId,
-                releaseDate = filmCreation.releaseDate,
-                duration = filmCreation.duration,
-                source = filmCreation.source,
-                views = 0,
-                downvote = 0,
-                upvote = 0,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now,
+                Name = filmCreation.name,
+                Description = filmCreation.description,
+                ProductionCompany = filmCreation.productionCompany,
+                Thumbnail = filmCreation.thumbnail,
+                ReleaseDate = filmCreation.releaseDate,
+                Duration = filmCreation.duration,
+                Source = filmCreation.source,
+                Views = 0,
+                Downvote = 0,
+                Upvote = 0,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
             };
         }
 
@@ -142,22 +140,20 @@ namespace Data.BLL
             return new Film
             {
                 ID = filmUpdate.ID,
-                name = filmUpdate.name,
-                description = filmUpdate.description,
-                countryId = filmUpdate.countryId,
-                productionCompany = filmUpdate.productionCompany,
-                thumbnail = filmUpdate.thumbnail,
-                languageId = filmUpdate.languageId,
-                releaseDate = filmUpdate.releaseDate,
-                duration = filmUpdate.duration,
-                source = filmUpdate.source,
-                updateAt = DateTime.Now
+                Name = filmUpdate.name,
+                Description = filmUpdate.description,
+                ProductionCompany = filmUpdate.productionCompany,
+                Thumbnail = filmUpdate.thumbnail,
+                ReleaseDate = filmUpdate.releaseDate,
+                Duration = filmUpdate.duration,
+                Source = filmUpdate.source,
+                UpdatedAt = DateTime.Now
             };
         }
 
         public async Task<object> CountFilmByCategoryAsync()
         {
-            string commandText = @"Select [Category].[ID], [Category].[name], 
+            string commandText = @"Select [Category].[ID], [Category].[Name], 
                                     (select count([filmId]) from[CategoryDistribution] 
                                     where[CategoryDistribution].[categoryId] = [Category].[ID]) as 'count'
                                 from Category";
@@ -165,66 +161,64 @@ namespace Data.BLL
             return await db.Execute_ToOriginalDataAsync(commandText, CommandType.Text);
         }
 
-        public async Task<List<FilmInfo>> SeachFilmsAsync(string name)
+        public async Task<List<FilmDto>> SeachFilmsAsync(string Name)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new Exception("@'name' must not be null");
+            if (string.IsNullOrEmpty(Name))
+                throw new Exception("@'Name' must not be null");
 
             string commandText;
             if (includeTimestamp)
                 commandText = @"Select [Film].* from [Film]
-                            where [Film].[name] like @name";
+                            where [Film].[Name] like @Name";
             else
-                commandText = @"Select [Film].[ID],[Film].[name],[Film].[description],
-                                [Film].[languageId],[Film].[countryId],[Film].[productionCompany],
-                                [Film].[releaseDate],[Film].[duration],[Film].[thumbnail],
-                                [Film].[upvote],[Film].[downvote],[Film].[views], [Film].[source]
+                commandText = @"Select [Film].[ID],[Film].[Name],[Film].[description],
+                                [Film].[languageId],[Film].[countryId],[Film].[ProductionCompany],
+                                [Film].[releaseDate],[Film].[duration],[Film].[Thumbnail],
+                                [Film].[upvote],[Film].[downvote],[Film].[Views], [Film].[Source]
                             from [Film]
-                            where [Film].[name] like @name";
+                            where [Film].[Name] like @Name";
 
-            return await db.Execute_ToListAsync<FilmInfo>(
-                commandText, CommandType.Text, new SqlParameter("@name", string.Format("%{0}%", name)));
+            return await db.Execute_ToListAsync<FilmDto>(
+                commandText, CommandType.Text, new SqlParameter("@Name", string.Format("%{0}%", Name)));
         }
 
-        public async Task<List<FilmInfo>> GetLatestFilmAsync(int count = 12)
+        public async Task<List<FilmDto>> GetLatestFilmAsync(int count = 12)
         {
-            string commandText = string.Format(@"Select top {0} [Film].[ID], [Film].[name], 
-                                [Film].[thumbnail], [Film].[countryId], [Film].[upvote], [Film].[downvote]
+            string commandText = string.Format(@"Select top {0} [Film].[ID], [Film].[Name], 
+                                [Film].[Thumbnail], [Film].[countryId], [Film].[upvote], [Film].[downvote]
                             from [Film] order by [createAt] desc", count);
 
             return (await db.Execute_ToListAsync<Film>(commandText, CommandType.Text))
-                .Select(f => ToFilmInfo(f)).ToList();
+                .Select(f => ToFilmDto(f)).ToList();
         }
 
-        public async Task<List<FilmInfo>> GetFilmsAsync()
+        public async Task<List<FilmDto>> GetFilmsAsync()
         {
-            List<FilmInfo> films = null;
+            List<FilmDto> films = null;
             if (includeTimestamp)
-                films = (await db.Films.ToListAsync()).Select(f => ToFilmInfo(f)).ToList();
+                films = (await db.Films.ToListAsync()).Select(f => ToFilmDto(f)).ToList();
             else
                 films = (await db.Films.ToListAsync(
                             f => new
                             {
                                 f.ID,
-                                f.name,
-                                f.description,
-                                f.languageId,
-                                f.countryId,
-                                f.productionCompany,
-                                f.releaseDate,
-                                f.thumbnail,
-                                f.upvote,
-                                f.downvote,
-                                f.views,
-                                f.duration,
-                                f.source
+                                f.Name,
+                                f.Description,
+                                f.ProductionCompany,
+                                f.ReleaseDate,
+                                f.Thumbnail,
+                                f.Upvote,
+                                f.Downvote,
+                                f.Views,
+                                f.Duration,
+                                f.Source
                             })
-                    ).Select(f => ToFilmInfo(f)).ToList();
+                    ).Select(f => ToFilmDto(f)).ToList();
 
             return films;
         }
 
-        public async Task<FilmInfo> GetFilmAsync(string filmId)
+        public async Task<FilmDto> GetFilmAsync(string filmId)
         {
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
@@ -236,24 +230,22 @@ namespace Data.BLL
                 film = await db.Films.SingleOrDefaultAsync(f => new
                 {
                     f.ID,
-                    f.name,
-                    f.description,
-                    f.languageId,
-                    f.countryId,
-                    f.productionCompany,
-                    f.releaseDate,
-                    f.thumbnail,
-                    f.upvote,
-                    f.downvote,
-                    f.views,
-                    f.duration,
-                    f.source
+                    f.Name,
+                    f.Description,
+                    f.ProductionCompany,
+                    f.ReleaseDate,
+                    f.Thumbnail,
+                    f.Upvote,
+                    f.Downvote,
+                    f.Views,
+                    f.Duration,
+                    f.Source
                 }, f => f.ID == filmId);
 
-            return ToFilmInfo(film);
+            return ToFilmDto(film);
         }
 
-        public async Task<PagedList<FilmInfo>> GetFilmsAsync(int pageIndex, int pageSize)
+        public async Task<PagedList<FilmDto>> GetFilmsAsync(int pageIndex, int pageSize)
         {
             SqlPagedList<Film> pagedList = null;
             Expression<Func<Film, object>> orderBy = f => new { f.ID };
@@ -264,30 +256,28 @@ namespace Data.BLL
                     f => new
                     {
                         f.ID,
-                        f.name,
-                        f.description,
-                        f.languageId,
-                        f.countryId,
-                        f.productionCompany,
-                        f.releaseDate,
-                        f.thumbnail,
-                        f.upvote,
-                        f.downvote,
-                        f.views,
-                        f.duration,
-                        f.source
+                        f.Name,
+                        f.Description,
+                        f.ProductionCompany,
+                        f.ReleaseDate,
+                        f.Thumbnail,
+                        f.Upvote,
+                        f.Downvote,
+                        f.Views,
+                        f.Duration,
+                        f.Source
                     }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize
                 );
 
-            return new PagedList<FilmInfo>
+            return new PagedList<FilmDto>
             {
                 PageNumber = pagedList.PageNumber,
                 CurrentPage = pagedList.CurrentPage,
-                Items = pagedList.Items.Select(f => ToFilmInfo(f)).ToList()
+                Items = pagedList.Items.Select(f => ToFilmDto(f)).ToList()
             };
         }
 
-        public PagedList<FilmInfo> GetFilms(int pageIndex, int pageSize)
+        public PagedList<FilmDto> GetFilms(int pageIndex, int pageSize)
         {
             SqlPagedList<Film> pagedList = null;
             Expression<Func<Film, object>> orderBy = f => new { f.ID };
@@ -298,30 +288,28 @@ namespace Data.BLL
                     f => new
                     {
                         f.ID,
-                        f.name,
-                        f.description,
-                        f.languageId,
-                        f.countryId,
-                        f.productionCompany,
-                        f.releaseDate,
-                        f.thumbnail,
-                        f.upvote,
-                        f.downvote,
-                        f.views,
-                        f.duration,
-                        f.source
+                        f.Name,
+                        f.Description,
+                        f.ProductionCompany,
+                        f.ReleaseDate,
+                        f.Thumbnail,
+                        f.Upvote,
+                        f.Downvote,
+                        f.Views,
+                        f.Duration,
+                        f.Source
                     }, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize
                 );
 
-            return new PagedList<FilmInfo>
+            return new PagedList<FilmDto>
             {
                 PageNumber = pagedList.PageNumber,
                 CurrentPage = pagedList.CurrentPage,
-                Items = pagedList.Items.Select(f => ToFilmInfo(f)).ToList()
+                Items = pagedList.Items.Select(f => ToFilmDto(f)).ToList()
             };
         }
 
-        public FilmInfo GetFilm(string filmId)
+        public FilmDto GetFilm(string filmId)
         {
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
@@ -333,24 +321,22 @@ namespace Data.BLL
                 film = db.Films.SingleOrDefault(f => new
                 {
                     f.ID,
-                    f.name,
-                    f.description,
-                    f.languageId,
-                    f.countryId,
-                    f.productionCompany,
-                    f.releaseDate,
-                    f.thumbnail,
-                    f.upvote,
-                    f.downvote,
-                    f.views,
-                    f.duration,
-                    f.source
+                    f.Name,
+                    f.Description,
+                    f.ProductionCompany,
+                    f.ReleaseDate,
+                    f.Thumbnail,
+                    f.Upvote,
+                    f.Downvote,
+                    f.Views,
+                    f.Duration,
+                    f.Source
                 }, f => f.ID == filmId);
 
-            return ToFilmInfo(film);
+            return ToFilmDto(film);
         }
 
-        public async Task<List<FilmInfo>> GetFilmsByCategoryIdAsync(int categoryId, int count = 12)
+        public async Task<List<FilmDto>> GetFilmsByCategoryIdAsync(int categoryId, int count = 12)
         {
             if (categoryId <= 0)
                 throw new Exception("@'categoryId' must be greater than 0");
@@ -361,40 +347,38 @@ namespace Data.BLL
                             where [Film].[ID] = [CategoryDistribution].[filmId]
                                 and [CategoryDistribution].[categoryId] = @categoryId", count);
             else
-                commandText = string.Format(@"Select top {0} [Film].[ID],[Film].[name],[Film].[description],
-                                [Film].[languageId],[Film].[countryId],[Film].[productionCompany],
-                                [Film].[releaseDate],[Film].[duration],[Film].[thumbnail],
-                                [Film].[upvote],[Film].[downvote],[Film].[views], [Film].[source]
+                commandText = string.Format(@"Select top {0} [Film].[ID],[Film].[Name],[Film].[description],
+                                [Film].[languageId],[Film].[countryId],[Film].[ProductionCompany],
+                                [Film].[releaseDate],[Film].[duration],[Film].[Thumbnail],
+                                [Film].[upvote],[Film].[downvote],[Film].[Views], [Film].[Source]
                             from [Film], [CategoryDistribution]
                             where [Film].[ID] = [CategoryDistribution].[filmId]
                                 and [CategoryDistribution].[categoryId] = @categoryId", count);
 
-            return await db.Execute_ToListAsync<FilmInfo>(commandText, CommandType.Text, new SqlParameter("@categoryId", categoryId));
+            return await db.Execute_ToListAsync<FilmDto>(commandText, CommandType.Text, new SqlParameter("@categoryId", categoryId));
         }
 
         public async Task<CreationState> CreateFilmAsync(FilmCreation filmCreation)
         {
             Film film = ToFilm(filmCreation);
-            if (string.IsNullOrEmpty(film.name) || film.languageId <= 0
-                || string.IsNullOrEmpty(film.productionCompany) || film.countryId <= 0
+            if (string.IsNullOrEmpty(film.Name) 
+                || string.IsNullOrEmpty(film.ProductionCompany) 
             )
             {
                 throw new Exception("");
             }
 
             long checkExists = await db.Films.CountAsync(
-                f => (f.ID == film.ID) || (f.name == film.name
-                    && f.languageId == film.languageId
-                    && f.countryId == film.countryId)
+                f => (f.ID == film.ID) || (f.Name == film.Name)
             );
             if (checkExists != 0)
                 return CreationState.AlreadyExists;
 
             int affected;
-            if (film.description == null)
-                affected = await db.Films.InsertAsync(film, new List<string> { "description", "duration", "thumbnail", "source" });
+            if (film.Description == null)
+                affected = await db.Films.InsertAsync(film, new List<string> { "description", "duration", "Thumbnail", "Source" });
             else
-                affected = await db.Films.InsertAsync(film, new List<string> { "duration", "thumbnail", "source" });
+                affected = await db.Films.InsertAsync(film, new List<string> { "duration", "Thumbnail", "Source" });
 
             return (affected == 0) ? CreationState.Failed : CreationState.Success;
         }
@@ -402,34 +386,30 @@ namespace Data.BLL
         public async Task<UpdateState> UpdateFilmAsync(FilmUpdate filmUpdate)
         {
             Film film = ToFilm(filmUpdate);
-            if (string.IsNullOrEmpty(film.name) || film.languageId <= 0
-                || string.IsNullOrEmpty(film.productionCompany) || film.countryId <= 0
+            if (string.IsNullOrEmpty(film.Name)
+                || string.IsNullOrEmpty(film.ProductionCompany)
             )
             {
                 throw new Exception("");
             }
 
             int affected;
-            if (film.description == null)
+            if (film.Description == null)
                 affected = await db.Films.UpdateAsync(film, f => new
                 {
-                    f.name,
-                    f.countryId,
-                    f.languageId,
-                    f.releaseDate,
-                    f.productionCompany,
-                    f.updateAt
+                    f.Name,
+                    f.ReleaseDate,
+                    f.ProductionCompany,
+                    f.UpdatedAt
                 }, f => f.ID == film.ID);
             else
                 affected = await db.Films.UpdateAsync(film, f => new
                 {
-                    f.name,
-                    f.description,
-                    f.countryId,
-                    f.languageId,
-                    f.releaseDate,
-                    f.productionCompany,
-                    f.updateAt
+                    f.Name,
+                    f.Description,
+                    f.ReleaseDate,
+                    f.ProductionCompany,
+                    f.UpdatedAt
                 }, f => f.ID == film.ID);
 
             return (affected == 0) ? UpdateState.Failed : UpdateState.Success;
@@ -461,20 +441,20 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || categoryId <= 0)
                 throw new Exception("");
 
-            long checkExists = await db.CategoryDistributions
-                .CountAsync(cd => cd.filmId == filmId && cd.categoryId == categoryId);
+            long checkExists = 0;// await db.CategoryDistributions
+                //.CountAsync(cd => cd.filmId == filmId && cd.categoryId == categoryId);
             if (checkExists != 0)
                 return CreationState.AlreadyExists;
 
-            CategoryDistribution categoryDistribution = new CategoryDistribution
-            {
-                filmId = filmId,
-                categoryId = categoryId,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now
-            };
+            //CategoryDistribution categoryDistribution = new CategoryDistribution
+            //{
+            //    filmId = filmId,
+            //    categoryId = categoryId,
+            //    createAt = DateTime.Now,
+            //    updateAt = DateTime.Now
+            //};
 
-            int affected = await db.CategoryDistributions.InsertAsync(categoryDistribution);
+            int affected = 0;// await db.CategoryDistributions.InsertAsync(categoryDistribution);
             return (affected == 0) ? CreationState.Failed : CreationState.Success;
         }
 
@@ -483,8 +463,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || categoryId <= 0)
                 throw new Exception("");
 
-            int affected = await db.CategoryDistributions
-                .DeleteAsync(cd => cd.filmId == filmId && cd.categoryId == categoryId);
+            int affected = 0;// await db.CategoryDistributions
+                //.DeleteAsync(cd => cd.filmId == filmId && cd.categoryId == categoryId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -494,8 +474,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
 
-            int affected = await db.CategoryDistributions
-                .DeleteAsync(cd => cd.filmId == filmId);
+            int affected = 0; // await db.CategoryDistributions
+                //.DeleteAsync(cd => cd.filmId == filmId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -505,20 +485,20 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || tagId <= 0)
                 throw new Exception("");
 
-            long checkExists = await db.TagDistributions
-                .CountAsync(td => td.filmId == filmId && td.tagId == tagId);
+            long checkExists = 0;// await db.TagDistributions
+                //.CountAsync(td => td.filmId == filmId && td.tagId == tagId);
             if (checkExists != 0)
                 return CreationState.AlreadyExists;
 
-            TagDistribution tagDistribution = new TagDistribution
-            {
-                filmId = filmId,
-                tagId = tagId,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now
-            };
+            //TagDistribution tagDistribution = new TagDistribution
+            //{
+            //    filmId = filmId,
+            //    tagId = tagId,
+            //    createAt = DateTime.Now,
+            //    updateAt = DateTime.Now
+            //};
 
-            int affected = await db.TagDistributions.InsertAsync(tagDistribution);
+            int affected = 0; // await db.TagDistributions.InsertAsync(null);
             return (affected == 0) ? CreationState.Failed : CreationState.Success;
         }
 
@@ -527,8 +507,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || tagId <= 0)
                 throw new Exception("");
 
-            int affected = await db.TagDistributions
-                .DeleteAsync(td => td.filmId == filmId && td.tagId == tagId);
+            int affected = 0;// await db.TagDistributions
+                //.DeleteAsync(td => td.filmId == filmId && td.tagId == tagId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -538,8 +518,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
 
-            int affected = await db.TagDistributions
-                .DeleteAsync(td => td.filmId == filmId);
+            int affected = 0;// await db.TagDistributions
+                //.DeleteAsync(td => td.filmId == filmId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -549,21 +529,21 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || directorId <= 0 || string.IsNullOrEmpty(directorRole))
                 throw new Exception("");
 
-            long checkExists = await db.DirectorOfFilms
-                .CountAsync(df => df.filmId == filmId && df.directorId == directorId);
+            long checkExists = 0;// await db.DirectorOfFilms
+                //.CountAsync(df => df.filmId == filmId && df.directorId == directorId);
             if (checkExists != 0)
                 return CreationState.AlreadyExists;
 
-            DirectorOfFilm directorOfFilm = new DirectorOfFilm
-            {
-                filmId = filmId,
-                directorId = directorId,
-                role = directorRole,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now
-            };
+            //DirectorOfFilm directorOfFilm = new DirectorOfFilm
+            //{
+            //    filmId = filmId,
+            //    directorId = directorId,
+            //    role = directorRole,
+            //    createAt = DateTime.Now,
+            //    updateAt = DateTime.Now
+            //};
 
-            int affected = await db.DirectorOfFilms.InsertAsync(directorOfFilm);
+            int affected = 0;// await db.DirectorOfFilms.InsertAsync(directorOfFilm);
             return (affected == 0) ? CreationState.Failed : CreationState.Success;
         }
 
@@ -572,8 +552,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || directorId <= 0)
                 throw new Exception("");
 
-            int affected = await db.DirectorOfFilms
-                .DeleteAsync(df => df.filmId == filmId && df.directorId == directorId);
+            int affected = 0;/// await db.DirectorOfFilms
+                //.DeleteAsync(df => df.filmId == filmId && df.directorId == directorId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -583,8 +563,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
 
-            int affected = await db.DirectorOfFilms
-                .DeleteAsync(df => df.filmId == filmId);
+            int affected = 0;// await db.DirectorOfFilms
+                //.DeleteAsync(df => df.filmId == filmId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -594,21 +574,21 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || castId <= 0 || string.IsNullOrEmpty(castRole))
                 throw new Exception("");
 
-            long checkExists = await db.CastOfFilms
-                .CountAsync(cf => cf.filmId == filmId && cf.castId == castId);
+            long checkExists = 0;// await db.CastOfFilms
+                //.CountAsync(cf => cf.filmId == filmId && cf.castId == castId);
             if (checkExists != 0)
                 return CreationState.AlreadyExists;
 
-            CastOfFilm castOfFilm = new CastOfFilm
-            {
-                filmId = filmId,
-                castId = castId,
-                role = castRole,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now
-            };
+            //CastOfFilm castOfFilm = new CastOfFilm
+            //{
+            //    filmId = filmId,
+            //    castId = castId,
+            //    role = castRole,
+            //    createAt = DateTime.Now,
+            //    updateAt = DateTime.Now
+            //};
 
-            int affected = await db.CastOfFilms.InsertAsync(castOfFilm);
+            int affected = 0;// await db.CastOfFilms.InsertAsync(castOfFilm);
             return (affected == 0) ? CreationState.Failed : CreationState.Success;
         }
 
@@ -617,8 +597,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || castId <= 0)
                 throw new Exception("");
 
-            int affected = await db.CastOfFilms
-                .DeleteAsync(cf => cf.filmId == filmId && cf.castId == castId);
+            int affected = 0;// await db.CastOfFilms
+                //.DeleteAsync(cf => cf.filmId == filmId && cf.castId == castId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -628,8 +608,8 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
 
-            int affected = await db.CastOfFilms
-                .DeleteAsync(cf => cf.filmId == filmId);
+            int affected = 0;// await db.CastOfFilms
+                //.DeleteAsync(cf => cf.filmId == filmId);
 
             return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         }
@@ -639,15 +619,15 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || string.IsNullOrEmpty(filePath))
                 throw new Exception("");
 
-            Film film = await db.Films.SingleOrDefaultAsync(f => new { f.ID, f.thumbnail }, f => f.ID == filmId);
+            Film film = await db.Films.SingleOrDefaultAsync(f => new { f.ID, f.Thumbnail }, f => f.ID == filmId);
             if (film == null)
                 return UpdateState.Failed;
 
-            if (!string.IsNullOrEmpty(film.thumbnail))
+            if (!string.IsNullOrEmpty(film.Thumbnail))
                 return UpdateState.Failed;
 
             int affected = await db.Films
-                .UpdateAsync(new Film { thumbnail = filePath }, f => new { f.thumbnail }, f => f.ID == film.ID);
+                .UpdateAsync(new Film { Thumbnail = filePath }, f => new { f.Thumbnail }, f => f.ID == film.ID);
 
             return (affected == 0) ? UpdateState.Failed : UpdateState.Success;
         }
@@ -658,7 +638,7 @@ namespace Data.BLL
                 throw new Exception("@'filmId' must not be null or empty");
 
             int affected = await db.Films
-                .UpdateAsync(new Film { thumbnail = null }, f => new { f.thumbnail }, f => f.ID == filmId);
+                .UpdateAsync(new Film { Thumbnail = null }, f => new { f.Thumbnail }, f => f.ID == filmId);
 
             return (affected == 0) ? UpdateState.Failed : UpdateState.Success;
         }
@@ -668,15 +648,15 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId) || string.IsNullOrEmpty(filePath))
                 throw new Exception("");
 
-            Film film = await db.Films.SingleOrDefaultAsync(f => new { f.ID, f.source }, f => f.ID == filmId);
+            Film film = await db.Films.SingleOrDefaultAsync(f => new { f.ID, f.Source }, f => f.ID == filmId);
             if (film == null)
                 return UpdateState.Failed;
 
-            if (!string.IsNullOrEmpty(film.source))
+            if (!string.IsNullOrEmpty(film.Source))
                 return UpdateState.Failed;
 
             int affected = await db.Films
-                .UpdateAsync(new Film { source = filePath }, f => new { f.source }, f => f.ID == film.ID);
+                .UpdateAsync(new Film { Source = filePath }, f => new { f.Source }, f => f.ID == film.ID);
 
             return (affected == 0) ? UpdateState.Failed : UpdateState.Success;
         }
@@ -687,7 +667,7 @@ namespace Data.BLL
                 throw new Exception("@'filmId' must not be null or empty");
 
             int affected = await db.Films
-                .UpdateAsync(new Film { source = null }, f => new { f.source }, f => f.ID == filmId);
+                .UpdateAsync(new Film { Source = null }, f => new { f.Source }, f => f.ID == filmId);
 
             return (affected == 0) ? UpdateState.Failed : UpdateState.Success;
         }
@@ -731,11 +711,11 @@ namespace Data.BLL
             if (string.IsNullOrEmpty(filmId))
                 throw new Exception("@'filmId' must not be null or empty");
 
-            Film film = db.Films.SingleOrDefault(f => new { f.ID, f.views }, f => f.ID == filmId);
+            Film film = db.Films.SingleOrDefault(f => new { f.ID, f.Views }, f => f.ID == filmId);
             if (film == null)
                 return UpdateState.Failed;
 
-            int affected = db.Films.Update(new Film { views = film.views + 1 }, f => new { f.views }, f => f.ID == filmId);
+            int affected = db.Films.Update(new Film { Views = film.Views + 1 }, f => new { f.Views }, f => f.ID == filmId);
             return (affected == 0) ? UpdateState.Failed : UpdateState.Success;
         }
 

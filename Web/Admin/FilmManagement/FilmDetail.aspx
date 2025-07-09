@@ -1,5 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="FilmDetail.aspx.cs" Inherits="Web.Admin.FilmManagement.FilmDetail" %>
-
+<%@ Import Namespace="Common" %>
 <%@ Import Namespace="Data.DTO" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -15,37 +15,37 @@
         <div class="column ">
             <div class="card">
                 <div class="card-title">
-                    <h3>Chi tiết phim: <% = filmInfo.name %></h3>
+                    <h3>Chi tiết phim: <% = film.Name %></h3>
                 </div>
                 <div class="card-block">
                     <table>
                         <tr>
                             <th>ID của phim</th>
-                            <td><% = filmInfo.ID %></td>
+                            <td><% = film.ID %></td>
                         </tr>
                         <tr>
                             <th>Tên của phim</th>
-                            <td><% = filmInfo.name %></td>
+                            <td><% = film.Name %></td>
                         </tr>
                         <tr>
                             <th>Quốc gia</th>
-                            <td><% = filmInfo.Country.name %></td>
+                            <td><% = film.Country.Name %></td>
                         </tr>
                         <tr>
                             <th>Ngôn ngữ</th>
-                            <td><% = filmInfo.Language.name %></td>
+                            <td><% = film.Language.Name %></td>
                         </tr>
                         <tr>
                             <th>Năm phát hành</th>
-                            <td><% = filmInfo.releaseDate %></td>
+                            <td><% = film.ReleaseDate %></td>
                         </tr>
                         <tr>
                             <th>Thể loại</th>
                             <td>
                                 <ul>
-                                    <% foreach (CategoryInfo categoryInfo in filmInfo.Categories)
+                                    <% foreach (CategoryDto category in film.Categories)
                                         {%>
-                                    <li><% = categoryInfo.name %></li>
+                                    <li><% = category.Name %></li>
                                     <% } %>
                                 </ul>
                             </td>
@@ -54,24 +54,24 @@
                             <th>Thẻ tag</th>
                             <td>
                                 <ul>
-                                    <% foreach (TagInfo tagInfo in filmInfo.Tags)
+                                    <% foreach (TagDto tag in film.Tags)
                                         {%>
-                                    <li><% = tagInfo.name %></li>
+                                    <li><% = tag.Name %></li>
                                     <% } %>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
                             <th>Công ty sản xuất</th>
-                            <td><% = filmInfo.productionCompany %></td>
+                            <td><% = film.ProductionCompany %></td>
                         </tr>
                         <tr>
                             <th>Đạo diễn</th>
                             <td>
                                 <ul>
-                                    <% foreach (DirectorInfo directorInfo in filmInfo.Directors)
+                                    <% foreach (DirectorDto director in film.Directors)
                                         {%>
-                                    <li><% = directorInfo.name %></li>
+                                    <li><% = director.Name %></li>
                                     <% } %>
                                 </ul>
                             </td>
@@ -80,41 +80,41 @@
                             <th>Diễn viên</th>
                             <td>
                                 <ul>
-                                    <% foreach (CastInfo castInfo in filmInfo.Casts)
+                                    <% foreach (ActorDto actor in film.Actors)
                                         {%>
-                                    <li><% = castInfo.name %></li>
+                                    <li><% = actor.Name %></li>
                                     <% } %>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
                             <th>Mô tả của phim</th>
-                            <td><% = filmInfo.description %></td>
+                            <td><% = film.Description %></td>
                         </tr>
                         <tr>
                             <th>Ảnh</th>
                             <td>
-                                <img src="<% = filmInfo.thumbnail %>" width="150" height="240" /></td>
+                                <img src="<% = film.Thumbnail %>" width="150" height="240" /></td>
                         </tr>
                         <tr>
                             <th>Lượt thích</th>
-                            <td><% = filmInfo.upvote %></td>
+                            <td><% = film.Upvote %></td>
                         </tr>
                         <tr>
                             <th>Lượt không thích</th>
-                            <td><% = filmInfo.downvote %></td>
+                            <td><% = film.Downvote %></td>
                         </tr>
                         <tr>
                             <th>Lượt xem</th>
-                            <td><% = filmInfo.views %></td>
+                            <td><% = film.Views %></td>
                         </tr>
                         <tr>
                             <th>Ngày tạo của phim</th>
-                            <td><% = filmInfo.createAt %></td>
+                            <td><% = film.CreatedAt %></td>
                         </tr>
                         <tr>
                             <th>Ngày cập nhật của phim</th>
-                            <td><% = filmInfo.updateAt %></td>
+                            <td><% = film.UpdatedAt %></td>
                         </tr>
                         <tr>
                             <th>Công cụ</th>
@@ -127,7 +127,7 @@
                                 <asp:HyperLink ID="hyplnkEdit_Image" CssClass="button button-green" runat="server">Thêm/xóa hình ảnh</asp:HyperLink>
                                 <asp:HyperLink ID="hyplnkEdit_Source" CssClass="button button-green" runat="server">Thêm/xóa nguồn video</asp:HyperLink>
                                 <asp:HyperLink ID="hyplnkEdit" CssClass="button button-green" runat="server">Chỉnh sửa</asp:HyperLink>
-                                <asp:HyperLink ID="hyplnkDelete" CssClass="button button-red" runat="server">Xóa</asp:HyperLink>
+                                <asp:Button ID="btnDelete" CssClass="button button-red" runat="server" Text="Xóa" OnClick="btnDelete_Click" />
                             </td>
                         </tr>
                     </table>

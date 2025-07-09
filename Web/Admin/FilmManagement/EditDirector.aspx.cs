@@ -116,7 +116,7 @@ namespace Web.Admin.FilmManagement
             else
             {
                 filmBLL.IncludeDirector = true;
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(id);
+                FilmDto filmInfo = await filmBLL.GetFilmAsync(id);
                 if (filmInfo == null)
                 {
                     Response.RedirectToRoute("Admin_FilmList", null);
@@ -125,7 +125,7 @@ namespace Web.Admin.FilmManagement
                 {
                     enableShowDetail = true;
                     directorsByFilmId = filmInfo.Directors;
-                    filmName = filmInfo.name;
+                    filmName = filmInfo.Name;
                 }
             }
         }

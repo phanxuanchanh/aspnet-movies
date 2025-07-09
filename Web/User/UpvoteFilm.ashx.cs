@@ -27,7 +27,7 @@ namespace Web.User
                 {
                     UserInfo userInfo = new UserBLL(userReactionBLL).GetUser(userId);
                     FilmBLL filmBLL = new FilmBLL(userReactionBLL);
-                    FilmInfo filmInfo = filmBLL.GetFilm(filmId);
+                    FilmDto filmInfo = filmBLL.GetFilm(filmId);
 
                     if(userInfo == null || filmInfo == null)
                     {

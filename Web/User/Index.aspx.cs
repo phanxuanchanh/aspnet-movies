@@ -17,15 +17,15 @@ namespace Web.User
     public partial class Index : System.Web.UI.Page
     {
         private FilmBLL filmBLL;
-        protected List<FilmInfo> latestFilms;
+        protected List<FilmDto> latestFilms;
         protected List<CategoryDto> categories;
-        protected Dictionary<CategoryDto, List<FilmInfo>> films_CategoryDict;
+        protected Dictionary<CategoryDto, List<FilmDto>> films_CategoryDict;
         protected string hyplnkCategoryList;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             filmBLL = new FilmBLL();
-            films_CategoryDict = new Dictionary<CategoryDto, List<FilmInfo>>();
+            films_CategoryDict = new Dictionary<CategoryDto, List<FilmDto>>();
             try
             {
                 hyplnkCategoryList = GetRouteUrl("User_CategoryList", null);
@@ -45,18 +45,18 @@ namespace Web.User
         {
             filmBLL.IncludeCategory = true;
             latestFilms = await filmBLL.GetLatestFilmAsync();
-            foreach (FilmInfo filmInfo in latestFilms)
+            foreach (FilmDto filmInfo in latestFilms)
             {
-                if (string.IsNullOrEmpty(filmInfo.thumbnail))
-                    filmInfo.thumbnail = VirtualPathUtility
+                if (string.IsNullOrEmpty(filmInfo.Thumbnail))
+                    filmInfo.Thumbnail = VirtualPathUtility
                         .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                 else
-                    filmInfo.thumbnail = VirtualPathUtility
-                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                    filmInfo.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                Rating rating = new Rating(filmInfo.upvote, filmInfo.downvote);
-                filmInfo.scoreRating = rating.SolveScore();
-                filmInfo.url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.name.TextToUrl(), id = filmInfo.ID });
+                Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
+                filmInfo.ScoreRating = rating.SolveScore();
+                filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
             }
         }
 
@@ -78,19 +78,19 @@ namespace Web.User
             filmBLL.IncludeCategory = false;
             foreach(CategoryDto categoryInfo in categories)
             {
-                List<FilmInfo> filmInfos = await filmBLL.GetFilmsByCategoryIdAsync(categoryInfo.ID);
-                foreach (FilmInfo filmInfo in filmInfos)
+                List<FilmDto> filmInfos = await filmBLL.GetFilmsByCategoryIdAsync(categoryInfo.ID);
+                foreach (FilmDto filmInfo in filmInfos)
                 {
-                    if (string.IsNullOrEmpty(filmInfo.thumbnail))
-                        filmInfo.thumbnail = VirtualPathUtility
+                    if (string.IsNullOrEmpty(filmInfo.Thumbnail))
+                        filmInfo.Thumbnail = VirtualPathUtility
                             .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                     else
-                        filmInfo.thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                        filmInfo.Thumbnail = VirtualPathUtility
+                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                    Rating rating = new Rating(filmInfo.upvote, filmInfo.downvote);
-                    filmInfo.scoreRating = rating.SolveScore();
-                    filmInfo.url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.name.TextToUrl(), id = filmInfo.ID });
+                    Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
+                    filmInfo.ScoreRating = rating.SolveScore();
+                    filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
                 }
                 films_CategoryDict.Add(categoryInfo, filmInfos);
             }

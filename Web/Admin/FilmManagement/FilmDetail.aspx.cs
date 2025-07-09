@@ -1,18 +1,23 @@
-﻿using Common.Upload;
-using Data.BLL;
+﻿using Common;
+using Common.Upload;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.FilmManagement
 {
     public partial class FilmDetail : System.Web.UI.Page
     {
-        protected FilmInfo filmInfo;
+        protected FilmDto film;
+        protected ExecResult commandResult;
         protected bool enableShowDetail;
+        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -28,10 +33,9 @@ namespace Web.Admin.FilmManagement
                 hyplnkEdit_Image.NavigateUrl = GetRouteUrl("Admin_EditImage_Film", new { id = id });
                 hyplnkEdit_Source.NavigateUrl = GetRouteUrl("Admin_EditSource_Film", new { id = id });
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateFilm", new { id = id });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteFilm", new { id = id });
 
                 if (CheckLoggedIn())
-                    await GetFilmInfo(id);
+                    await GetFilm(id);
                 else
                     Response.RedirectToRoute("Account_Login", null);
             }
@@ -60,39 +64,66 @@ namespace Web.Admin.FilmManagement
             return obj.ToString();
         }
 
-        private async Task GetFilmInfo(string id)
+        private async Task GetFilm(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
                 Response.RedirectToRoute("Admin_FilmList", null);
+                return;
             }
-            else
-            {
-                using(FilmBLL filmBLL = new FilmBLL())
-                {
-                    filmBLL.IncludeCategory = true;
-                    filmBLL.IncludeTag = true;
-                    filmBLL.IncludeLanguage = true;
-                    filmBLL.IncludeCountry = true;
-                    filmBLL.IncludeDirector = true;
-                    filmBLL.IncludeCast = true;
-                    filmBLL.IncludeTimestamp = true;
-                    filmInfo = await filmBLL.GetFilmAsync(id);
-                }
 
-                if (filmInfo == null)
+            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
+            {
+                ExecResult<FilmDto> result = await filmService.GetFilmAsync(id, includeMetadata: true, includeTaxonomy: true);
+                if (result.Status == ExecStatus.Success)
                 {
-                    Response.RedirectToRoute("Admin_FilmList", null);
+                    film = result.Data;
+                    enableShowDetail = true;
+
+                    if (string.IsNullOrEmpty(film.Thumbnail))
+                        film.Thumbnail = VirtualPathUtility
+                            .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
+                    else
+                        film.Thumbnail = VirtualPathUtility
+                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
                 }
                 else
                 {
-                    enableShowDetail = true;
-                    if (string.IsNullOrEmpty(filmInfo.thumbnail))
-                        filmInfo.thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
-                    else
-                        filmInfo.thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                    Response.RedirectToRoute("Admin_FilmList", null);
+                }
+
+            }
+        }
+
+        protected async void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await DeleteFilm();
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
+                Response.RedirectToRoute("Notification_Error", null);
+            }
+        }
+
+        private async Task DeleteFilm()
+        {
+            string id = GetFilmId();
+            if (string.IsNullOrEmpty(id))
+            {
+                Response.RedirectToRoute("Admin_CategoryList", null);
+                return;
+            }
+
+            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
+            {
+                commandResult = await filmService.DeleteAsync(id); ;
+                if (commandResult.Status == ExecStatus.Success)
+                {
+                    Response.RedirectToRoute("Admin_CategoryList", null);
+                    return;
                 }
             }
         }

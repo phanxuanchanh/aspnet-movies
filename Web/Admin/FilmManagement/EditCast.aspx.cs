@@ -116,7 +116,7 @@ namespace Web.Admin.FilmManagement
             else
             {
                 filmBLL.IncludeCast = true;
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(id);
+                FilmDto filmInfo = await filmBLL.GetFilmAsync(id);
                 if (filmInfo == null)
                 {
                     Response.RedirectToRoute("Admin_FilmList", null);
@@ -124,8 +124,8 @@ namespace Web.Admin.FilmManagement
                 else
                 {
                     enableShowDetail = true;
-                    castsByFilmId = filmInfo.Casts;
-                    filmName = filmInfo.name;
+                    castsByFilmId = filmInfo.Actors;
+                    filmName = filmInfo.Name;
                 }
             }
         }

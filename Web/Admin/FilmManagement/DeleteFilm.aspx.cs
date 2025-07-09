@@ -13,7 +13,7 @@ namespace Web.Admin.FilmManagement
 {
     public partial class DeleteFilm : System.Web.UI.Page
     {
-        protected FilmInfo filmInfo;
+        protected FilmDto filmInfo;
         protected bool enableShowInfo;
         protected bool enableShowResult;
         protected string stateString;
@@ -100,8 +100,8 @@ namespace Web.Admin.FilmManagement
             if (state == DeletionState.Success)
             {
                 FileUpload fileUpload = new FileUpload();
-                bool delImage = fileUpload.RemoveImage(filmInfo.thumbnail);
-                bool delVideo = fileUpload.RemoveVideo(filmInfo.source);
+                bool delImage = fileUpload.RemoveImage(filmInfo.Thumbnail);
+                bool delVideo = fileUpload.RemoveVideo(filmInfo.Source);
                 if (delImage && delVideo)
                 {
                     stateString = "Success";

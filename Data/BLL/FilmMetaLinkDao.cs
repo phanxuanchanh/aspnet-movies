@@ -1,5 +1,6 @@
 ﻿using Common;
 using Data.DAL;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Data.BLL
@@ -11,6 +12,11 @@ namespace Data.BLL
         public FilmMetaLinkDao(DBContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<FilmMetaLink>> GetsByFilmIdAsync(string filmId)
+        {
+            return await _context.FilmMetaLinks.ToListAsync(x => x.FilmId == filmId);
         }
 
         public async Task<int> AddAsync(string filmId, int metaId)

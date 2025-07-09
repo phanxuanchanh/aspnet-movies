@@ -13,7 +13,7 @@ namespace Web.User
 {
     public partial class FilmDetail : System.Web.UI.Page
     {
-        protected FilmInfo filmInfo;
+        protected FilmDto filmInfo;
         protected string title_HeadTag;
         protected string keywords_MetaTag;
         protected string description_MetaTag;
@@ -82,18 +82,18 @@ namespace Web.User
                 }
                 else
                 {
-                    Rating rating = new Rating(filmInfo.upvote, filmInfo.downvote);
-                    filmInfo.starRating = rating.SolveStar();
-                    filmInfo.scoreRating = rating.SolveScore();
+                    Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
+                    filmInfo.StarRating = rating.SolveStar();
+                    filmInfo.ScoreRating = rating.SolveScore();
 
-                    if (string.IsNullOrEmpty(filmInfo.thumbnail))
-                        filmInfo.thumbnail = VirtualPathUtility
+                    if (string.IsNullOrEmpty(filmInfo.Thumbnail))
+                        filmInfo.Thumbnail = VirtualPathUtility
                             .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                     else
-                        filmInfo.thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                        filmInfo.Thumbnail = VirtualPathUtility
+                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                    filmInfo.url = GetRouteUrl("User_Watch", new { slug = filmInfo.name.TextToUrl(), id = filmInfo.ID });
+                    filmInfo.Url = GetRouteUrl("User_Watch", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
                 }
             }
         }
@@ -102,8 +102,8 @@ namespace Web.User
         {
             if (filmInfo != null)
             {
-                title_HeadTag = filmInfo.name;
-                description_MetaTag = (string.Format("{0}...", filmInfo.description.TakeStr(100))).Replace("\n", " ");
+                title_HeadTag = filmInfo.Name;
+                description_MetaTag = (string.Format("{0}...", filmInfo.Description.TakeStr(100))).Replace("\n", " ");
 
                 StringBuilder stringBuilder = new StringBuilder();
                 foreach (TagDto tagInfo in filmInfo.Tags)

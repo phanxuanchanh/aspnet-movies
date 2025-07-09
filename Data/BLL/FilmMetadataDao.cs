@@ -4,7 +4,10 @@ using MSSQL.Access;
 using MSSQL.Query;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.BLL
@@ -20,6 +23,20 @@ namespace Data.BLL
         public async Task<FilmMetadata> GetAsync(int id)
         {
             return await _context.FilmMetadata.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<FilmMetadata>> GetsByIdsAsync(List<int> ids)
+        {
+            StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM FilmMetadata WHERE Id IN (");
+            SqlParameter[] parameters = new SqlParameter[ids.Count];
+            for(int i = 0; i < ids.Count; i++)
+            {
+                commandTextBuilder.Append($"@Id{i}, ");
+                parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+            }
+            commandTextBuilder.Append(")").Replace(", )", " )");
+
+            return await _context.Execute_ToListAsync<FilmMetadata>(commandTextBuilder.ToString(), CommandType.Text, parameters);
         }
 
         public async Task<SqlPagedList<FilmMetadata>> GetsAsync(string type = "language", long pageIndex = 1, long pageSize = 10)

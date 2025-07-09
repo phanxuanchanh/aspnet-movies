@@ -14,7 +14,7 @@ namespace Web.User
     public partial class FilmsByCategory : System.Web.UI.Page
     {
         private FilmBLL filmBLL;
-        protected List<FilmInfo> filmInfos;
+        protected List<FilmDto> filmInfos;
         protected string categoryName;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -58,18 +58,18 @@ namespace Web.User
                 {
                     categoryName = categoryInfo.Name;
                     filmInfos = await filmBLL.GetFilmsByCategoryIdAsync(id, 24);
-                    foreach (FilmInfo filmInfo in filmInfos)
+                    foreach (FilmDto filmInfo in filmInfos)
                     {
-                        if (string.IsNullOrEmpty(filmInfo.thumbnail))
-                            filmInfo.thumbnail = VirtualPathUtility
+                        if (string.IsNullOrEmpty(filmInfo.Thumbnail))
+                            filmInfo.Thumbnail = VirtualPathUtility
                                 .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                         else
-                            filmInfo.thumbnail = VirtualPathUtility
-                                .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                            filmInfo.Thumbnail = VirtualPathUtility
+                                .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                        Rating rating = new Rating(filmInfo.upvote, filmInfo.downvote);
-                        filmInfo.scoreRating = rating.SolveScore();
-                        filmInfo.url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.name.TextToUrl(), id = filmInfo.ID });
+                        Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
+                        filmInfo.ScoreRating = rating.SolveScore();
+                        filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
                     }
                 }
             }

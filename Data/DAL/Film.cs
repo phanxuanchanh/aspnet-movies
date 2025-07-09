@@ -5,19 +5,18 @@ namespace Data.DAL
     public class Film
     {
         public string ID { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public int countryId { get; set; }
-        public string productionCompany { get; set; }
-        public string thumbnail { get; set; }
-        public int languageId { get; set; }
-        public string releaseDate { get; set; }
-        public long upvote { get; set; }
-        public long downvote { get; set; }
-        public long views { get; set; }
-        public string duration { get; set; }
-        public string source { get; set; }
-        public DateTime createAt { get; set; }
-        public DateTime updateAt { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ProductionCompany { get; set; }
+        public string Thumbnail { get; set; }
+        public string ReleaseDate { get; set; }
+        public long Upvote { get; set; }
+        public long Downvote { get; set; }
+        public long Views { get; set; }
+        public string Duration { get; set; }
+        public string Source { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public DateTime DeletedAt { get; set; }
     }
 }

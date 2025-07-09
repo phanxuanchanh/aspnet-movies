@@ -68,6 +68,8 @@ namespace Web.App_Start
 
             kernel.Bind<FilmMetadataService>().To<FilmMetadataService>().InRequestScope();
             kernel.Bind<PeopleService>().To<PeopleService>().InRequestScope();
+            kernel.Bind<TaxonomyService>().To<TaxonomyService>().InRequestScope();
+            kernel.Bind<FilmService>().To<FilmService>().InRequestScope();
         }
     }
 }

@@ -87,21 +87,21 @@ namespace Web.Admin.FilmManagement
             }
             else
             {
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(id);
+                FilmDto filmInfo = await filmBLL.GetFilmAsync(id);
                 if (filmInfo == null)
                 {
                     Response.RedirectToRoute("Admin_FilmList", null);
                 }
                 else
                 {
-                    if(string.IsNullOrEmpty(filmInfo.thumbnail))
+                    if(string.IsNullOrEmpty(filmInfo.Thumbnail))
                         filmThumbnail = VirtualPathUtility
                         .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                     else
                         filmThumbnail = VirtualPathUtility
-                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.thumbnail));
+                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                    filmName = filmInfo.name;
+                    filmName = filmInfo.Name;
                     enableShowDetail = true;
                 }
             }
@@ -131,8 +131,8 @@ namespace Web.Admin.FilmManagement
                 else
                 {
                     string filmId = GetFilmId();
-                    FilmInfo film = await filmBLL.GetFilmAsync(filmId);
-                    if (!string.IsNullOrEmpty(film.thumbnail))
+                    FilmDto film = await filmBLL.GetFilmAsync(filmId);
+                    if (!string.IsNullOrEmpty(film.Thumbnail))
                     {
                         stateString = "Failed";
                         stateDetail = "Phim này đã có hình ảnh. Cần xóa hình ảnh đang dùng hiện tại để thêm mới hình ảnh khác";
@@ -188,8 +188,8 @@ namespace Web.Admin.FilmManagement
             try
             {
                 string filmId = GetFilmId();
-                FilmInfo film = await filmBLL.GetFilmAsync(filmId);
-                if (string.IsNullOrEmpty(film.thumbnail))
+                FilmDto film = await filmBLL.GetFilmAsync(filmId);
+                if (string.IsNullOrEmpty(film.Thumbnail))
                 {
                     stateString = "Failed";
                     stateDetail = "Phim này hiện chưa có hình ảnh. Hình ảnh bạn đang thấy là ảnh được gán mặc định";
@@ -200,7 +200,7 @@ namespace Web.Admin.FilmManagement
                     if (state == UpdateState.Success)
                     {   
                         FileUpload fileUpload = new FileUpload();
-                        if (fileUpload.RemoveImage(film.thumbnail))
+                        if (fileUpload.RemoveImage(film.Thumbnail))
                         {
                             stateString = "Success";
                             stateDetail = "Đã xóa hình ảnh của phim thành công";

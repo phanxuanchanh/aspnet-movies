@@ -13,7 +13,7 @@ namespace Web.Admin.FilmManagement
     public partial class UpdateFilm : System.Web.UI.Page
     {
         private FilmBLL filmBLL;
-        protected FilmInfo filmInfo;
+        protected FilmDto filmInfo;
         private CustomValidation customValidation;
         protected bool enableShowResult;
         protected string stateString;
@@ -96,7 +96,7 @@ namespace Web.Admin.FilmManagement
             {
                 filmBLL.IncludeLanguage = true;
                 filmBLL.IncludeCountry = true;
-                FilmInfo filmInfo = await filmBLL.GetFilmAsync(id);
+                FilmDto filmInfo = await filmBLL.GetFilmAsync(id);
                 if (filmInfo == null)
                 {
                     Response.RedirectToRoute("Admin_FilmList", null);
@@ -104,10 +104,10 @@ namespace Web.Admin.FilmManagement
                 else
                 {
                     hdFilmId.Value = filmInfo.ID.ToString();
-                    txtFilmName.Text = filmInfo.name;
-                    txtFilmDescription.Text = filmInfo.description;
-                    txtProductionCompany.Text = filmInfo.productionCompany;
-                    txtReleaseDate.Text = filmInfo.releaseDate;
+                    txtFilmName.Text = filmInfo.Name;
+                    txtFilmDescription.Text = filmInfo.Description;
+                    txtProductionCompany.Text = filmInfo.ProductionCompany;
+                    txtReleaseDate.Text = filmInfo.ReleaseDate;
 
                     drdlFilmCountry.Items.Clear();
                     List<CountryDto> countryInfos = null;// await new CountryBLL(filmBLL).GetCountriesAsync();

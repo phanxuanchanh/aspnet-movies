@@ -5,6 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
+using System.Text;
 
 namespace Data.BLL
 {
@@ -20,6 +23,20 @@ namespace Data.BLL
         public async Task<People> GetAsync(long id)
         {
             return await _context.People.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<People>> GetsByIdsAsync(List<long> ids)
+        {
+            StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM People WHERE Id IN (");
+            SqlParameter[] parameters = new SqlParameter[ids.Count];
+            for (int i = 0; i < ids.Count; i++)
+            {
+                commandTextBuilder.Append($"@Id{i}, ");
+                parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+            }
+            commandTextBuilder.Append(")").Replace(", )", " )");
+
+            return await _context.Execute_ToListAsync<People>(commandTextBuilder.ToString(), CommandType.Text, parameters);
         }
 
         public async Task<SqlPagedList<People>> GetsAsync(string type = "director", long pageIndex = 1, long pageSize = 10)

@@ -25,23 +25,23 @@
                 <div class="slick-multiItemSlider">
                     <% if (latestFilms != null)
                         {
-                            foreach (FilmInfo filmInfo in latestFilms)
+                            foreach (FilmDto film in latestFilms)
                             { %>
                     <div class="movie-item">
                         <div class="mv-img">
-                            <a href="<% = filmInfo.url %>">
-                                <img src="<%= filmInfo.thumbnail %>" alt="<% = filmInfo.name %>"" style="width:285px; height:437px;">
+                            <a href="<% = film.Url %>">
+                                <img src="<%= film.Thumbnail %>" alt="<% = film.Name %>"" style="width:285px; height:437px;">
                             </a>
                         </div>
                         <div class="title-in">
                             <div class="cate">
-                                <% foreach (CategoryDto categoryOfFilm in filmInfo.Categories)
+                                <% foreach (CategoryDto categoryOfFilm in film.Categories)
                                     { %>
                                 <span class="blue"><a href="#"><%= categoryOfFilm.Name %></a></span>
                                 <%} %>
                             </div>
-                            <h6><a href="<% = filmInfo.url %>"><% = filmInfo.name %></a></h6>
-                            <p><i class="ion-android-star"></i><span><% = string.Format("{0:0.00}", filmInfo.scoreRating) %></span> /10</p>
+                            <h6><a href="<% = film.Url %>"><% = film.Name %></a></h6>
+                            <p><i class="ion-android-star"></i><span><% = string.Format("{0:0.00}", film.ScoreRating) %></span> /10</p>
                         </div>
                     </div>
                     <% }
@@ -54,7 +54,7 @@
         <div class="container">
             <div class="row ipad-width">
                 <div class="col-md-8">
-                    <% foreach (KeyValuePair<CategoryDto, List<FilmInfo>> filmOfCategory in films_CategoryDict)
+                    <% foreach (KeyValuePair<CategoryDto, List<FilmDto>> filmOfCategory in films_CategoryDict)
                         { %>
                     <div class="title-hd">
                         <h2><% = filmOfCategory.Key.Name %></h2>
@@ -68,19 +68,19 @@
                             <div class="tab active">
                                 <div class="row">
                                     <div class="slick-multiItem">
-                                        <% foreach (FilmInfo filmInfo in filmOfCategory.Value)
+                                        <% foreach (FilmDto film in filmOfCategory.Value)
                                             { %>
                                         <div class="slide-it">
                                             <div class="movie-item">
                                                 <div class="mv-img">
-                                                    <img src="<% = filmInfo.thumbnail %>" alt="<% = filmInfo.name %>" width="185" height="284">
+                                                    <img src="<% = film.Thumbnail %>" alt="<% = film.Name %>" width="185" height="284">
                                                 </div>
                                                 <div class="hvr-inner">
-                                                    <a href="<% = filmInfo.url %>">Xem thêm <i class="ion-android-arrow-dropright"></i></a>
+                                                    <a href="<% = film.Url %>">Xem thêm <i class="ion-android-arrow-dropright"></i></a>
                                                 </div>
                                                 <div class="title-in">
-                                                    <h6><a href="<% = filmInfo.url %>"><% = filmInfo.name %></a></h6>
-                                                    <p><i class="ion-android-star"></i><span><% = string.Format("{0:0.00}", filmInfo.scoreRating) %></span> /10</p>
+                                                    <h6><a href="<% = film.Url %>"><% = film.Name %></a></h6>
+                                                    <p><i class="ion-android-star"></i><span><% = string.Format("{0:0.00}", film.ScoreRating) %></span> /10</p>
                                                 </div>
                                             </div>
                                         </div>
