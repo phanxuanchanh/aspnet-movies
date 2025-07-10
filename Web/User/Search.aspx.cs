@@ -2,17 +2,20 @@
 using Common.Upload;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.User
 {
     public partial class Search : System.Web.UI.Page
     {
-        protected List<FilmDto> filmInfos;
+        protected List<FilmDto> films;
         protected string keyword;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -31,31 +34,29 @@ namespace Web.User
 
         public async Task SearchFilms(string searchContent)
         {
-            
             if (string.IsNullOrEmpty(searchContent))
             {
                 Response.RedirectToRoute("User_Home", null);
+                return;
             }
-            else
+
+            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
             {
-                using(FilmBLL filmBLL = new FilmBLL())
-                {
-                    filmInfos = await filmBLL.SeachFilmsAsync(searchContent);
-                }
+                films = new List<FilmDto>();// await filmBLL.SeachFilmsAsync(searchContent);
+            }
 
-                foreach(FilmDto filmInfo in filmInfos)
-                {
-                    if (string.IsNullOrEmpty(filmInfo.Thumbnail))
-                        filmInfo.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
-                    else
-                        filmInfo.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
+            foreach (FilmDto film in films)
+            {
+                if (string.IsNullOrEmpty(film.Thumbnail))
+                    film.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
+                else
+                    film.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
 
-                    Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
-                    filmInfo.ScoreRating = rating.SolveScore();
-                    filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
-                }
+                Rating rating = new Rating(film.Upvote, film.Downvote);
+                film.ScoreRating = rating.SolveScore();
+                film.Url = GetRouteUrl("User_FilmDetail", new { slug = film.Name.TextToUrl(), id = film.ID });
             }
         }
     }

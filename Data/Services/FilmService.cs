@@ -198,6 +198,27 @@ namespace Data.Services
             };
         }
 
+        public async Task<PagedList<FilmDto>> GetFilmsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)
+        {
+            SqlPagedList<Film> data = await _filmDao.GetsByCategoryIdAsync(categoryId, pageIndex, pageSize);
+
+            List<FilmDto> films = data.Items.Select(s => new FilmDto
+            {
+                ID = s.ID,
+                Name = s.Name,
+                Description = s.Description,
+                Thumbnail = s.Thumbnail,
+                CreatedAt = s.CreatedAt,
+                UpdatedAt = s.UpdatedAt
+            }).ToList();
+
+            return new PagedList<FilmDto>
+            {
+                Items = films,
+                PageNumber = data.PageNumber,
+                CurrentPage = data.CurrentPage,
+            };
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -220,6 +241,16 @@ namespace Data.Services
         }
 
         public async Task<ExecResult> DeleteAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ExecResult<FilmDto>> AddFilmAsync(CreateFilmDto film)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ExecResult<FilmDto>> UpdateFilmAsync(UpdateFilmDto film)
         {
             throw new NotImplementedException();
         }

@@ -14,9 +14,10 @@ namespace Web.App_Start
             routes.MapPageRoute("Account_Confirm", "account/confirm/{userId}/{confirmToken}/{type}", "~/Account/Confirm.aspx");
 
             routes.MapPageRoute("Admin_Overview", "admin/overview", "~/Admin/Index.aspx");
+            
             routes.MapPageRoute("Admin_FilmList", "admin/film/list", "~/Admin/FilmManagement/FilmList.aspx");
             routes.MapPageRoute("Admin_FilmDetail", "admin/film/detail/{id}", "~/Admin/FilmManagement/FilmDetail.aspx");
-            routes.MapPageRoute("Admin_CreateFilm", "admin/film/create", "~/Admin/FilmManagement/CreateFilm.aspx");
+            routes.MapPageRoute("Admin_EditFilm", "admin/film/edit", "~/Admin/FilmManagement/EditFilm.aspx");
             routes.MapPageRoute("Admin_EditCategory_Film", "admin/film/edit-category/{id}", "~/Admin/FilmManagement/EditCategory.aspx");
             routes.MapPageRoute("Admin_EditTag_Film", "admin/film/edit-tag/{id}", "~/Admin/FilmManagement/EditTag.aspx");
             routes.MapPageRoute("Admin_EditDirector_Film", "admin/film/edit-director/{id}", "~/Admin/FilmManagement/EditDirector.aspx");

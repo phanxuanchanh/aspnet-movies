@@ -30,20 +30,19 @@ namespace Data.DTO
         public List<ActorDto> Actors { get; set; }
     }
 
-    public class FilmCreation
+    public class CreateFilmDto
     {
-        public string name { get; set; }
-        public string description { get; set; }
-        public string duration { get; set; }
-        public int countryId { get; set; }
-        public string productionCompany { get; set; }
-        public string thumbnail { get; set; }
-        public int languageId { get; set; }
-        public string releaseDate { get; set; }
-        public string source { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Duration { get; set; }
+        public int CountryId { get; set; }
+        public string ProductionCompany { get; set; }
+        public string Thumbnail { get; set; }
+        public string ReleaseDate { get; set; }
+        public string Source { get; set; }
     }
 
-    public class FilmUpdate : FilmCreation
+    public class UpdateFilmDto : CreateFilmDto
     {
         public string ID { get; set; }
     }

@@ -1,25 +1,26 @@
 ﻿using Common;
 using Common.Upload;
-using Data.BLL;
+using Common.Web;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.User
 {
     public partial class FilmsByCategory : System.Web.UI.Page
     {
-        private FilmBLL filmBLL;
-        protected List<FilmDto> filmInfos;
+        protected List<FilmDto> films;
         protected string categoryName;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            filmBLL = new FilmBLL();
             try
             {
                 await GetFilmsByCategoryId();
@@ -29,7 +30,6 @@ namespace Web.User
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            filmBLL.Dispose();
         }
 
         private int GetCategoryId()
@@ -46,32 +46,42 @@ namespace Web.User
             if (id <= 0)
             {
                 Response.RedirectToRoute("User_Home", null);
+                return;
             }
-            else
-            {
-                CategoryDto categoryInfo = new CategoryDto();//  await new CategoryBLL(filmBLL).GetCategoryAsync(id);
-                if(categoryInfo == null)
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                }
-                else
-                {
-                    categoryName = categoryInfo.Name;
-                    filmInfos = await filmBLL.GetFilmsByCategoryIdAsync(id, 24);
-                    foreach (FilmDto filmInfo in filmInfos)
-                    {
-                        if (string.IsNullOrEmpty(filmInfo.Thumbnail))
-                            filmInfo.Thumbnail = VirtualPathUtility
-                                .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
-                        else
-                            filmInfo.Thumbnail = VirtualPathUtility
-                                .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
 
-                        Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
-                        filmInfo.ScoreRating = rating.SolveScore();
-                        filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
-                    }
-                }
+            CategoryDto category = null;
+            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            {
+                ExecResult<CategoryDto> result = await taxonomyService.GetCategoryAsync(id);
+                if (result.Status == ExecStatus.Success)
+                    category = result.Data;
+            }
+
+            if (category == null)
+            {
+                Response.RedirectToRoute("User_Home", null);
+                return;
+            }
+
+            categoryName = category.Name;
+            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
+            {
+                PagedList<FilmDto> result = await filmService.GetFilmsByCategoryIdAsync(id, 24);
+                films = result.Items;
+            }
+
+            foreach (FilmDto film in films)
+            {
+                if (string.IsNullOrEmpty(film.Thumbnail))
+                    film.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
+                else
+                    film.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
+
+                Rating rating = new Rating(film.Upvote, film.Downvote);
+                film.ScoreRating = rating.SolveScore();
+                film.Url = GetRouteUrl("User_FilmDetail", new { slug = film.Name.TextToUrl(), id = film.ID });
             }
         }
     }

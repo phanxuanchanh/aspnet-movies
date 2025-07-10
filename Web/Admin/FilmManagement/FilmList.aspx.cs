@@ -28,7 +28,7 @@ namespace Web.Admin.FilmManagement
             toolDetail = null;
             try
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateFilm", null);
+                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { action = "create" });
 
                 if (!CheckLoggedIn())
                 {
@@ -130,7 +130,7 @@ namespace Web.Admin.FilmManagement
                 hyplnkEdit_Cast.NavigateUrl = GetRouteUrl("Admin_EditCast_Film", new { id = filmInfo.ID });
                 hyplnkEdit_Image.NavigateUrl = GetRouteUrl("Admin_EditImage_Film", new { id = filmInfo.ID });
                 hyplnkEdit_Source.NavigateUrl = GetRouteUrl("Admin_EditSource_Film", new { id = filmInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateFilm", new { id = filmInfo.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { id = filmInfo.ID, action = "update" });
                 hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteFilm", new { id = filmInfo.ID });
                 enableTool = true;
             }

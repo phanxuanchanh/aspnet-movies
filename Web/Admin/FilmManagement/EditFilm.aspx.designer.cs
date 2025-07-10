@@ -15,6 +15,15 @@ namespace Web.Admin.FilmManagement
     {
 
         /// <summary>
+        /// hdFilmId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdFilmId;
+
+        /// <summary>
         /// lbFilmName control.
         /// </summary>
         /// <remarks>
@@ -42,24 +51,6 @@ namespace Web.Admin.FilmManagement
         protected global::System.Web.UI.WebControls.CustomValidator cvFilmName;
 
         /// <summary>
-        /// lbFilmCountry control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbFilmCountry;
-
-        /// <summary>
-        /// drdlFilmCountry control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdlFilmCountry;
-
-        /// <summary>
         /// lbProductionCompany control.
         /// </summary>
         /// <remarks>
@@ -85,24 +76,6 @@ namespace Web.Admin.FilmManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator cvProductionCompany;
-
-        /// <summary>
-        /// lbFilmLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbFilmLanguage;
-
-        /// <summary>
-        /// drdlFilmLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdlFilmLanguage;
 
         /// <summary>
         /// lbReleaseDate control.

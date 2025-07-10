@@ -1,19 +1,22 @@
-﻿using Common.Upload;
-using Data.BLL;
+﻿using Common;
+using Common.Upload;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.User
 {
     public partial class Watch : System.Web.UI.Page
     {
-        protected FilmDto filmInfo;
+        protected FilmDto film;
         protected string title_HeadTag;
         protected string keywords_MetaTag;
         protected string description_MetaTag;
@@ -24,10 +27,10 @@ namespace Web.User
             try
             {
                 hyplnkIncreaseView = GetRouteUrl("User_IncreaseView", null);
-                await GetFilmInfo();
+                await GetFilm();
                 GenerateHeadTag();
                 object obj = Session["userSession"];
-                if (obj != null && filmInfo != null)
+                if (obj != null && film != null)
                 {
                     UserSession userSession = (UserSession)obj;
                     if (userSession.Histories == null)
@@ -36,10 +39,10 @@ namespace Web.User
                     }
                     userSession.Histories.Add(new History
                     {
-                        filmId = filmInfo.ID,
-                        name = filmInfo.Name,
-                        thumbnail = filmInfo.Thumbnail,
-                        url = filmInfo.Url,
+                        filmId = film.ID,
+                        name = film.Name,
+                        thumbnail = film.Thumbnail,
+                        url = film.Url,
                         timestamp = DateTime.Now
                     });
                 }
@@ -59,57 +62,56 @@ namespace Web.User
             return obj.ToString();
         }
 
-        private async Task GetFilmInfo()
+        private async Task GetFilm()
         {
             string id = GetFilmId();
             if (id == null)
             {
                 Response.RedirectToRoute("User_Home", null);
+                return;
             }
-            else
+
+            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
             {
-                using(FilmBLL filmBLL = new FilmBLL())
-                {
-                    filmBLL.IncludeTag = true;
-                    filmInfo = await filmBLL.GetFilmAsync(id);
-                }
-
-                if (filmInfo == null)
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(filmInfo.Thumbnail))
-                        filmInfo.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
-                    else
-                        filmInfo.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
-
-                    if (string.IsNullOrEmpty(filmInfo.Source))
-                        filmInfo.Source = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/Default/default.mp4", FileUpload.VideoFilePath));
-                    else
-                        filmInfo.Source = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.VideoFilePath, filmInfo.Source));
-
-                    filmInfo.Url = GetRouteUrl("User_FilmDetail", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
-                }
+                ExecResult<FilmDto> resutl = await filmService.GetFilmAsync(id);
+                if (resutl.Status == ExecStatus.Success)
+                    film = resutl.Data;
             }
+
+            if (film == null)
+            {
+                Response.RedirectToRoute("User_Home", null);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(film.Thumbnail))
+                film.Thumbnail = VirtualPathUtility
+                    .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
+            else
+                film.Thumbnail = VirtualPathUtility
+                    .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
+
+            if (string.IsNullOrEmpty(film.Source))
+                film.Source = VirtualPathUtility
+                    .ToAbsolute(string.Format("{0}/Default/default.mp4", FileUpload.VideoFilePath));
+            else
+                film.Source = VirtualPathUtility
+                    .ToAbsolute(string.Format("{0}/{1}", FileUpload.VideoFilePath, film.Source));
+
+            film.Url = GetRouteUrl("User_FilmDetail", new { slug = film.Name.TextToUrl(), id = film.ID });
         }
 
         private void GenerateHeadTag()
         {
-            if (filmInfo != null)
+            if (film != null)
             {
-                title_HeadTag = filmInfo.Name;
-                description_MetaTag = (string.Format("{0}...", filmInfo.Description.TakeStr(100))).Replace("\n", " ");
+                title_HeadTag = film.Name;
+                description_MetaTag = (string.Format("{0}...", film.Description.TakeStr(100))).Replace("\n", " ");
 
                 StringBuilder stringBuilder = new StringBuilder();
-                foreach (TagDto tagInfo in filmInfo.Tags)
+                foreach (TagDto tag in film.Tags)
                 {
-                    stringBuilder.Append(string.Format("{0}, ", tagInfo.Name));
+                    stringBuilder.Append(string.Format("{0}, ", tag.Name));
                 }
                 keywords_MetaTag = stringBuilder.ToString().TrimEnd(' ').TrimEnd(',');
             }

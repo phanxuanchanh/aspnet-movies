@@ -27,18 +27,18 @@
             <div class="row ipad-width2">
                 <div class="col-md-4 col-sm-12 col-xs-12">
                     <div class="movie-img sticky-sb">
-                        <img src="<% = filmInfo.thumbnail %>" alt="">
+                        <img src="<% = film.Thumbnail %>" alt="">
                         <div class="movie-btn">
                             <div class="btn-transform transform-vertical red">
                                 <div><a href="#" class="item item-1 redbtn"><i class="ion-play"></i>Xem phim</a></div>
-                                <div><a href="<% = filmInfo.url %>" class="item item-2 redbtn"><i class="ion-play"></i>Xem ngay</a></div>
+                                <div><a href="<% = film.Url %>" class="item item-2 redbtn"><i class="ion-play"></i>Xem ngay</a></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8 col-sm-12 col-xs-12">
                     <div class="movie-single-ct main-content">
-                        <h1 class="bd-hd"><% = filmInfo.name %><span><% = filmInfo.releaseDate %></span></h1>
+                        <h1 class="bd-hd"><% = film.Name %><span><% = film.ReleaseDate %></span></h1>
                         <div class="social-btn">
                             <% if (userId != null)
                                 { %>
@@ -59,17 +59,17 @@
                             <div class="rate">
                                 <i class="ion-android-star"></i>
                                 <p>
-                                    <span><% = string.Format("{0:0.00}", filmInfo.scoreRating) %></span> /10<br>
-                                    <span class="rv"><% = filmInfo.views %> lượt xem</span>
+                                    <span><% = string.Format("{0:0.00}", film.ScoreRating) %></span> /10<br>
+                                    <span class="rv"><% = film.Views %> lượt xem</span>
                                 </p>
                             </div>
                             <div class="rate-star">
                                 <p>Đánh giá: </p>
-                                <% for (int i = 0; i < filmInfo.starRating; i++)
+                                <% for (int i = 0; i < film.StarRating; i++)
                                     { %>
                                 <i class="ion-ios-star"></i>
                                 <% } %>
-                                <% for (int i = 0; i < 10 - filmInfo.starRating; i++)
+                                <% for (int i = 0; i < 10 - film.StarRating; i++)
                                     { %>
                                 <i class="ion-ios-star-outline"></i>
                                 <%} %>
@@ -85,18 +85,18 @@
                                     <div id="overview" class="tab active">
                                         <div class="row">
                                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                                <p class="text-justif"><% = filmInfo.description %></p>
+                                                <p class="text-justif"><% = film.Description %></p>
                                                 <div class="title-hd-sm">
                                                     <h4>Đạo diễn</h4>
                                                     <a href="#" class="time">Xem chi tiết<i class="ion-ios-arrow-right"></i></a>
                                                 </div>
                                                 <div class="mvcast-item">
-                                                    <% foreach (DirectorInfo directorInfo in filmInfo.Directors)
+                                                    <% foreach (DirectorDto director in film.Directors)
                                                         { %>
                                                     <div class="cast-it">
                                                         <div class="cast-left">
                                                             <%--<img src="images/uploads/cast1.jpg" alt="">--%>
-                                                            <a href="#"><% = directorInfo.name %></a>
+                                                            <a href="#"><% = director.Name %></a>
                                                         </div>
                                                     </div>
                                                     <%} %>
@@ -106,12 +106,12 @@
                                                     <a href="#" class="time">Xem chi tiết<i class="ion-ios-arrow-right"></i></a>
                                                 </div>
                                                 <div class="mvcast-item">
-                                                    <% foreach (CastInfo castInfo in filmInfo.Casts)
+                                                    <% foreach (ActorDto actor in filmDto.Actors)
                                                         { %>
                                                     <div class="cast-it">
                                                         <div class="cast-left">
                                                             <%--<img src="images/uploads/cast1.jpg" alt="">--%>
-                                                            <a href="#"><% = castInfo.name %></a>
+                                                            <a href="#"><% = actor.Name %></a>
                                                         </div>
                                                     </div>
                                                     <%} %>
@@ -121,44 +121,44 @@
                                                 <div class="sb-it">
                                                     <h6>Thể loại:</h6>
                                                     <p>
-                                                        <% foreach (CategoryInfo categoryInfo in filmInfo.Categories)
+                                                        <% foreach (CategoryDto category in film.Categories)
                                                             {
                                                         %>
-                                                        <a href="#"><% = categoryInfo.name %> </a>,   
+                                                        <a href="#"><% = category.Name %> </a>,   
                                                         <%} %>
                                                     </p>
                                                 </div>
                                                 <div class="sb-it">
                                                     <h6>Ngày phát hành:</h6>
                                                     <p>
-                                                        <% = filmInfo.releaseDate %>
+                                                        <% = film.ReleaseDate %>
                                                     </p>
                                                 </div>
                                                 <div class="sb-it">
                                                     <h6>Công ty sản xuất:</h6>
                                                     <p>
-                                                        <% = filmInfo.productionCompany %>
+                                                        <% = film.ProductionCompany %>
                                                     </p>
                                                 </div>
                                                 <div class="sb-it">
                                                     <h6>Ngôn ngữ:</h6>
                                                     <p>
-                                                        <% = filmInfo.Language.name %>
+                                                        <% = film.Language.Name %>
                                                     </p>
                                                 </div>
                                                 <div class="sb-it">
                                                     <h6>Quốc gia:</h6>
                                                     <p>
-                                                        <% = filmInfo.Country.name %>
+                                                        <% = film.Country.Name %>
                                                     </p>
                                                 </div>
                                                 <div class="sb-it">
                                                     <h6>Thẻ tag:</h6>
                                                     <p class="tags">
-                                                        <% foreach (TagInfo tagInfo in filmInfo.Tags)
+                                                        <% foreach (TagDto tag in film.Tags)
                                                             {
                                                         %>
-                                                        <span class="time"><a href="#"><% = tagInfo.name %> </a></span>,
+                                                        <span class="time"><a href="#"><% = tag.Name %> </a></span>,
                                                         <%} %>
                                                     </p>
                                                 </div>
@@ -222,13 +222,13 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">
-    <% if (filmInfo != null && hyplnkUpvote != null && hyplnkDownvote != null && userId != null)
+    <% if (film != null && hyplnkUpvote != null && hyplnkDownvote != null && userId != null)
         { %>
     <script type="text/javascript">
         function upvote() {
             $(document).ready(function (e) {
                 $.post("<% = hyplnkUpvote %>", {
-                    filmId: "<% = filmInfo.ID %>",
+                    filmId: "<% = film.ID %>",
                     userId: "<% = userId %>",
                 }, function (data) {
                     alert(data);
@@ -239,7 +239,7 @@
         function downvote() {
             $(document).ready(function (e) {
                 $.post("<% = hyplnkDownvote %>", {
-                    filmId: "<% = filmInfo.ID %>",
+                    filmId: "<% = film.ID %>",
                     userId: "<% = userId %>",
                 }, function (data) {
                     alert(data);

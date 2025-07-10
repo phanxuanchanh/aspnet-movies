@@ -1743,17 +1743,9 @@
     <Content Include="Admin\DirectorManagement\EditDirector.aspx" />
     <Content Include="Admin\DirectorManagement\DirectorDetail.aspx" />
     <Content Include="Admin\DirectorManagement\DirectorList.aspx" />
-    <Content Include="Admin\FilmManagement\CreateFilm.aspx" />
-    <Content Include="Admin\FilmManagement\DeleteFilm.aspx" />
-    <Content Include="Admin\FilmManagement\EditCast.aspx" />
-    <Content Include="Admin\FilmManagement\EditCategory.aspx" />
-    <Content Include="Admin\FilmManagement\EditDirector.aspx" />
-    <Content Include="Admin\FilmManagement\EditImage.aspx" />
-    <Content Include="Admin\FilmManagement\EditSource.aspx" />
-    <Content Include="Admin\FilmManagement\EditTag.aspx" />
+    <Content Include="Admin\FilmManagement\EditFilm.aspx" />
     <Content Include="Admin\FilmManagement\FilmDetail.aspx" />
     <Content Include="Admin\FilmManagement\FilmList.aspx" />
-    <Content Include="Admin\FilmManagement\UpdateFilm.aspx" />
     <Content Include="Admin\LanguageManagement\EditLanguage.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageDetail.aspx" />
     <Content Include="Admin\RoleManagement\CreateRole.aspx" />
@@ -1977,61 +1969,12 @@
     <Compile Include="Admin\DirectorManagement\DirectorList.aspx.designer.cs">
       <DependentUpon>DirectorList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\FilmManagement\CreateFilm.aspx.cs">
-      <DependentUpon>CreateFilm.aspx</DependentUpon>
+    <Compile Include="Admin\FilmManagement\EditFilm.aspx.cs">
+      <DependentUpon>EditFilm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\FilmManagement\CreateFilm.aspx.designer.cs">
-      <DependentUpon>CreateFilm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\DeleteFilm.aspx.cs">
-      <DependentUpon>DeleteFilm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\DeleteFilm.aspx.designer.cs">
-      <DependentUpon>DeleteFilm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditCast.aspx.cs">
-      <DependentUpon>EditCast.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditCast.aspx.designer.cs">
-      <DependentUpon>EditCast.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditCategory.aspx.cs">
-      <DependentUpon>EditCategory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditCategory.aspx.designer.cs">
-      <DependentUpon>EditCategory.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditDirector.aspx.cs">
-      <DependentUpon>EditDirector.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditDirector.aspx.designer.cs">
-      <DependentUpon>EditDirector.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditImage.aspx.cs">
-      <DependentUpon>EditImage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditImage.aspx.designer.cs">
-      <DependentUpon>EditImage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditSource.aspx.cs">
-      <DependentUpon>EditSource.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditSource.aspx.designer.cs">
-      <DependentUpon>EditSource.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditTag.aspx.cs">
-      <DependentUpon>EditTag.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\EditTag.aspx.designer.cs">
-      <DependentUpon>EditTag.aspx</DependentUpon>
+    <Compile Include="Admin\FilmManagement\EditFilm.aspx.designer.cs">
+      <DependentUpon>EditFilm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\FilmManagement\FilmDetail.aspx.cs">
       <DependentUpon>FilmDetail.aspx</DependentUpon>
@@ -2046,13 +1989,6 @@
     </Compile>
     <Compile Include="Admin\FilmManagement\FilmList.aspx.designer.cs">
       <DependentUpon>FilmList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\UpdateFilm.aspx.cs">
-      <DependentUpon>UpdateFilm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\FilmManagement\UpdateFilm.aspx.designer.cs">
-      <DependentUpon>UpdateFilm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\LanguageManagement\EditLanguage.aspx.cs">
       <DependentUpon>EditLanguage.aspx</DependentUpon>

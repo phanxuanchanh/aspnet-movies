@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="hero-ct">
-                        <h1>Bạn đang xem: <% = filmInfo.name %></h1>
+                        <h1>Bạn đang xem: <% = film.name %></h1>
                         <%--<ul class="breadcumb">
                             <li class="active"><a href="#">Home</a></li>
                             <li><span class="ion-ios-arrow-right"></span>movie listing</li>
@@ -35,7 +35,7 @@
         <div class="container">
             <div class="col-lg-12 col-md-12 col-sm-12" style="height: 600px;">
                 <video id="vid" class="video-js vjs-default-skin" controls preload="auto" data-setup="{}">
-                    <source src="<% = filmInfo.source %>" type="video/mp4">
+                    <source src="<% = film.Source %>" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -51,7 +51,7 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">
-    <% if (hyplnkIncreaseView != null && filmInfo != null)
+    <% if (hyplnkIncreaseView != null && film != null)
         { %>
     <script type="text/javascript">
         setTimeout(function () {

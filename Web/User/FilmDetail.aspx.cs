@@ -8,12 +8,15 @@ using Data.DTO;
 using Common.Upload;
 using Common;
 using System.Text;
+using Data.Services;
+using Web.App_Start;
+using Ninject;
 
 namespace Web.User
 {
     public partial class FilmDetail : System.Web.UI.Page
     {
-        protected FilmDto filmInfo;
+        protected FilmDto film;
         protected string title_HeadTag;
         protected string keywords_MetaTag;
         protected string description_MetaTag;
@@ -62,53 +65,47 @@ namespace Web.User
             if (id == null)
             {
                 Response.RedirectToRoute("User_Home", null);
+                return;
             }
-            else
+
+            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
             {
-                using(FilmBLL filmBLL = new FilmBLL())
-                {
-                    filmBLL.IncludeCategory = true;
-                    filmBLL.IncludeTag = true;
-                    filmBLL.IncludeCountry = true;
-                    filmBLL.IncludeLanguage = true;
-                    filmBLL.IncludeDirector = true;
-                    filmBLL.IncludeCast = true;
-                    filmInfo = await filmBLL.GetFilmAsync(id);
-                }
-
-                if(filmInfo == null)
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                }
-                else
-                {
-                    Rating rating = new Rating(filmInfo.Upvote, filmInfo.Downvote);
-                    filmInfo.StarRating = rating.SolveStar();
-                    filmInfo.ScoreRating = rating.SolveScore();
-
-                    if (string.IsNullOrEmpty(filmInfo.Thumbnail))
-                        filmInfo.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
-                    else
-                        filmInfo.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, filmInfo.Thumbnail));
-
-                    filmInfo.Url = GetRouteUrl("User_Watch", new { slug = filmInfo.Name.TextToUrl(), id = filmInfo.ID });
-                }
+                ExecResult<FilmDto> result = await filmService.GetFilmAsync(id, includeMetadata: true, includeTaxonomy: true, includePeople: true);
+                if(result.Status == ExecStatus.Success)
+                    film = result.Data;
             }
+
+            if (film == null)
+            {
+                Response.RedirectToRoute("User_Home", null);
+                return;
+            }
+
+            Rating rating = new Rating(film.Upvote, film.Downvote);
+            film.StarRating = rating.SolveStar();
+            film.ScoreRating = rating.SolveScore();
+
+            if (string.IsNullOrEmpty(film.Thumbnail))
+                film.Thumbnail = VirtualPathUtility
+                    .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
+            else
+                film.Thumbnail = VirtualPathUtility
+                    .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
+
+            film.Url = GetRouteUrl("User_Watch", new { slug = film.Name.TextToUrl(), id = film.ID });
         }
 
         private void GenerateHeadTag()
         {
-            if (filmInfo != null)
+            if (film != null)
             {
-                title_HeadTag = filmInfo.Name;
-                description_MetaTag = (string.Format("{0}...", filmInfo.Description.TakeStr(100))).Replace("\n", " ");
+                title_HeadTag = film.Name;
+                description_MetaTag = (string.Format("{0}...", film.Description.TakeStr(100))).Replace("\n", " ");
 
                 StringBuilder stringBuilder = new StringBuilder();
-                foreach (TagDto tagInfo in filmInfo.Tags)
+                foreach (TagDto tag in film.Tags)
                 {
-                    stringBuilder.Append(string.Format("{0}, ", tagInfo.Name));
+                    stringBuilder.Append(string.Format("{0}, ", tag.Name));
                 }
                 keywords_MetaTag = stringBuilder.ToString().TrimEnd(' ').TrimEnd(',');
             }

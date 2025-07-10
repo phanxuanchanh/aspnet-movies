@@ -19,7 +19,7 @@ namespace Web.User.Layout
         protected string hyplnkLiteVersion;
         protected string hyplnkHome;
 
-        protected async void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -36,9 +36,8 @@ namespace Web.User.Layout
                 }
                 hyplnkSearch = GetRouteUrl("User_Search", null);
                 hyplnkWatchedList = GetRouteUrl("User_WatchedList", null);
-                hyplnkLiteVersion = GetRouteUrl("User_Home_Lite", null);
                 hyplnkHome = GetRouteUrl("User_Home", null);
-                await GetCategoriesAsync();
+                GetCategories();
             }
             catch(Exception ex)
             {
@@ -47,11 +46,11 @@ namespace Web.User.Layout
             }
         }
 
-        private async Task GetCategoriesAsync()
+        private void GetCategories()
         {
             using(TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                categories = (await taxonomyService.GetCategoriesAsync(1, 30)).Items
+                categories = new List<CategoryDto>()// (taxonomyService.GetCategoriesAsync(1, 30).Result).Items
                 .Select(s => {
                     s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID }); 
                     return s;

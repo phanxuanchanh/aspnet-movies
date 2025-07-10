@@ -35,19 +35,19 @@
                     { %>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="topbar-filter">
-                        <p>Tìm thấy:  <span><% = filmInfos.Count %></span> phim với từ khóa này "<% = keyword %>"</p>
+                        <p>Tìm thấy:  <span><% = films.Count %></span> phim với từ khóa này "<% = keyword %>"</p>
                     </div>
                     <div class="flex-wrap-movielist">
-                        <% foreach (FilmInfo filmInfo in filmInfos)
+                        <% foreach (FilmDto film in films)
                             {%>
                         <div class="movie-item-style-2 movie-item-style-1">
-                            <img src="<% = filmInfo.thumbnail %>" alt="<% = filmInfo.name %>">
+                            <img src="<% = film.Thumbnail %>" alt="<% = film.Name %>">
                             <div class="hvr-inner">
-                                <a href="<% = filmInfo.url %>">Xem chi tiết <i class="ion-android-arrow-dropright"></i></a>
+                                <a href="<% = film.Url %>">Xem chi tiết <i class="ion-android-arrow-dropright"></i></a>
                             </div>
                             <div class="mv-item-infor">
-                                <h6><a href="<% = filmInfo.url %>"><% = filmInfo.name %></a></h6>
-                                <p class="rate"><i class="ion-android-star"></i><span><% = string.Format("{0:0.00}", filmInfo.scoreRating) %></span> /10</p>
+                                <h6><a href="<% = film.Url %>"><% = film.Name %></a></h6>
+                                <p class="rate"><i class="ion-android-star"></i><span><% = string.Format("{0:0.00}", film.ScoreRating) %></span> /10</p>
                             </div>
                         </div>
                         <% }%>

@@ -1,30 +1,33 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="CreateFilm.aspx.cs" Inherits="Web.Admin.FilmManagement.CreateFilm" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditFilm.aspx.cs" Inherits="Web.Admin.FilmManagement.CreateFilm" %>
+<%@ Import Namespace="Common" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Tạo mới phim - Trang quản trị</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
     <% if (enableShowResult)
-        { %>
-    <h5 class="mt-2">Trạng thái thêm phim</h5>
+    { %>
+    <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
     <a class="anchor" name="alerts"></a>
     <div class="row grid-responsive">
         <div class="column">
-            <%if (stateString == "Success")
-                { %>
-            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = stateDetail %></div>
+            <%if (commandResult.Status == ExecStatus.Success)
+        { %>
+            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = commandResult.Message %></div>
             <%}
-                else if (stateString == "AlreadyExists")
-                { %>
-            <div class="alert background-warning"><em class="fa fa-warning"></em><% = stateDetail %></div>
+        else if (commandResult.Status == ExecStatus.AlreadyExists)
+        { %>
+            <div class="alert background-warning"><em class="fa fa-warning"></em><% = commandResult.Message %></div>
             <%}
-                else
-                { %>
-            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = stateDetail %></div>
+        else
+        { %>
+            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = commandResult.Message %></div>
             <%} %>
         </div>
     </div>
     <%} %>
+
     <h5 class="mt-2">Tạo mới phim</h5>
     <a class="anchor" name="forms"></a>
     <div class="row grid-responsive">
@@ -36,16 +39,17 @@
                 <div class="card-block">
                     <div>
                         <fieldset>
+                            <asp:HiddenField ID="hdFilmId" runat="server" />
                             <asp:Label ID="lbFilmName" runat="server" Text="Tên phim" AssociatedControlID="txtFilmName"></asp:Label>
                             <asp:TextBox ID="txtFilmName" placeholder="Nhập vào tên phim" runat="server"></asp:TextBox>
                             <asp:CustomValidator ID="cvFilmName" CssClass="text-red" runat="server"></asp:CustomValidator>
-                            <asp:Label ID="lbFilmCountry" runat="server" Text="Quốc gia" AssociatedControlID="drdlFilmCountry"></asp:Label>
-                            <asp:DropDownList ID="drdlFilmCountry" runat="server"></asp:DropDownList>
+                            <%--<asp:Label ID="lbFilmCountry" runat="server" Text="Quốc gia" AssociatedControlID="drdlFilmCountry"></asp:Label>
+                            <asp:DropDownList ID="drdlFilmCountry" runat="server"></asp:DropDownList>--%>
                             <asp:Label ID="lbProductionCompany" runat="server" Text="Tên công ty sản xuất" AssociatedControlID="txtProductionCompany"></asp:Label>
                             <asp:TextBox ID="txtProductionCompany" placeholder="Nhập vào tên công ty sản xuất" runat="server"></asp:TextBox>
                             <asp:CustomValidator ID="cvProductionCompany" CssClass="text-red" runat="server"></asp:CustomValidator>
-                            <asp:Label ID="lbFilmLanguage" runat="server" Text="Ngôn ngữ" AssociatedControlID="drdlFilmLanguage"></asp:Label>
-                            <asp:DropDownList ID="drdlFilmLanguage" runat="server"></asp:DropDownList>
+                            <%--<asp:Label ID="lbFilmLanguage" runat="server" Text="Ngôn ngữ" AssociatedControlID="drdlFilmLanguage"></asp:Label>
+                            <asp:DropDownList ID="drdlFilmLanguage" runat="server"></asp:DropDownList>--%>
                             <asp:Label ID="lbReleaseDate" runat="server" Text="Năm phát hành" AssociatedControlID="txtReleaseDate"></asp:Label>
                             <asp:TextBox ID="txtReleaseDate" placeholder="Nhập vào năm phát hành" runat="server"></asp:TextBox>
                             <asp:CustomValidator ID="cvReleaseDate" CssClass="text-red" runat="server"></asp:CustomValidator>

@@ -1,6 +1,9 @@
 ﻿using Data.BLL;
+using Data.Services;
+using Ninject;
 using System;
 using System.Data;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.User
@@ -11,9 +14,9 @@ namespace Web.User
         {
             try
             {
-                using (FilmBLL filmBLL = new FilmBLL())
+                using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
                 {
-                    object obj = await filmBLL.CountFilmByCategoryAsync();
+                    object obj = new { };// await filmBLL.CountFilmByCategoryAsync();
                     if (obj is DataSet)
                     {
                         DataSet dataSet = (DataSet)obj;

@@ -1,6 +1,9 @@
 ﻿using Data.BLL;
+using Data.Services;
+using Ninject;
 using System;
 using System.Web;
+using Web.App_Start;
 
 namespace Web.User
 {
@@ -20,17 +23,16 @@ namespace Web.User
                 if (string.IsNullOrEmpty(filmId))
                 {
                     context.Response.Write("Không thể thực hiện. Lý do: Dữ liệu đầu vào không hợp lệ");
+                    return;
                 }
-                else
+
+                using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
                 {
-                    using (FilmBLL filmBLL = new FilmBLL())
-                    {
-                        UpdateState state = filmBLL.IncreaseView(filmId);
-                        if (state == UpdateState.Success)
-                            context.Response.Write("Đã tăng lượt xem");
-                        else
-                            context.Response.Write("Lỗi tăng lượt xem");
-                    }
+                    UpdateState state = UpdateState.Failed;// filmBLL.IncreaseView(filmId);
+                    if (state == UpdateState.Success)
+                        context.Response.Write("Đã tăng lượt xem");
+                    else
+                        context.Response.Write("Lỗi tăng lượt xem");
                 }
             }
             catch (Exception ex)

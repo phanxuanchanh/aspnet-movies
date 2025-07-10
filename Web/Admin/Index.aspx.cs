@@ -9,7 +9,6 @@ namespace Web.Admin
 {
     public partial class Index : System.Web.UI.Page
     {
-        private FilmBLL filmBLL;
         protected SystemInfo systemInfo;
         protected long pageVisitor;
         protected long movieNumber;
@@ -19,7 +18,6 @@ namespace Web.Admin
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            filmBLL = new FilmBLL();
             pageVisitor = PageVisitor.Views;
             enableShowDetail = false;
             try
@@ -40,7 +38,6 @@ namespace Web.Admin
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            filmBLL.Dispose();
         }
 
         private bool CheckLoggedIn()
@@ -55,7 +52,7 @@ namespace Web.Admin
 
         private async Task LoadOverview()
         {
-            movieNumber = await filmBLL.CountAllAsync();
+            movieNumber = 0;// await filmBLL.CountAllAsync();
             categoryNumber = 0;// await new CategoryBLL(filmBLL).CountAllAsync();
             tagNumber = 0; // await new TagBLL(filmBLL).CountAllAsync();
         }
