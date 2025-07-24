@@ -22,7 +22,7 @@ namespace Data.BLL
 
         public async Task<FilmMetadata> GetAsync(int id)
         {
-            return await _context.FilmMetadata.SingleOrDefaultAsync(x => x.Id == id);
+            return await _context.FilmMetadata.nFirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<FilmMetadata>> GetsByIdsAsync(List<int> ids)
@@ -59,7 +59,9 @@ namespace Data.BLL
         public async Task<int> UpdateAsync(FilmMetadata metadata)
         {
             metadata.UpdatedAt = DateTime.Now;
-            return await _context.FilmMetadata.UpdateAsync(metadata, s => new { s.Name, s.Description, s.UpdatedAt }, x => x.Id == metadata.Id);
+            return await _context.FilmMetadata
+                .Where(x => x.Id == metadata.Id)
+                .UpdateAsync(metadata, s => new { s.Name, s.Description, s.UpdatedAt });
         }
 
         public async Task<int> DeleteAsync(int id, bool forceDelete = false)
@@ -72,7 +74,9 @@ namespace Data.BLL
                 return await _context.FilmMetadata.DeleteAsync(x => x.Id == id);
 
             metadata.DeletedAt = DateTime.Now;
-            return await _context.FilmMetadata.UpdateAsync(metadata, s => new { s.DeletedAt }, x => x.Id == id);
+            return await _context.FilmMetadata
+                .Where(x => x.Id == id)
+                .UpdateAsync(metadata, s => new { s.DeletedAt });
         }
     }
 }

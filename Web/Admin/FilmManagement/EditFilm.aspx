@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditFilm.aspx.cs" Inherits="Web.Admin.FilmManagement.CreateFilm" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditFilm.aspx.cs" Inherits="Web.Admin.FilmManagement.EditFilm" %>
 <%@ Import Namespace="Common" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -8,7 +8,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
     <% if (enableShowResult)
     { %>
-    <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
+    <h5 class="mt-2">Trạng thái thêm/sửa thông tin phim</h5>
     <a class="anchor" name="alerts"></a>
     <div class="row grid-responsive">
         <div class="column">

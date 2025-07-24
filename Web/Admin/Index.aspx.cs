@@ -1,13 +1,12 @@
 ﻿using Common.SystemInformation;
 using System;
 using System.Threading.Tasks;
-using Data.BLL;
 using Common.Web;
 using Web.Models;
 
 namespace Web.Admin
 {
-    public partial class Index : System.Web.UI.Page
+    public partial class Index : AdminPage
     {
         protected SystemInfo systemInfo;
         protected long pageVisitor;
@@ -22,32 +21,21 @@ namespace Web.Admin
             enableShowDetail = false;
             try
             {
-                if (CheckLoggedIn())
-                {
-                    systemInfo = new SystemInfo();
-                    await LoadOverview();
-                    enableShowDetail = true;
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
+                    return;                  
                 }
+
+                systemInfo = new SystemInfo();
+                await LoadOverview();
+                enableShowDetail = true;
             }
             catch(Exception ex)
             {
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         private async Task LoadOverview()

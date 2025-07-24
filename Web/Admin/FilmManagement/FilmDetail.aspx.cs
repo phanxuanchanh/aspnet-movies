@@ -12,7 +12,7 @@ using Web.Models;
 
 namespace Web.Admin.FilmManagement
 {
-    public partial class FilmDetail : System.Web.UI.Page
+    public partial class FilmDetail : AdminPage
     {
         protected FilmDto film;
         protected ExecResult commandResult;
@@ -44,16 +44,6 @@ namespace Web.Admin.FilmManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         private string GetFilmId()

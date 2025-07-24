@@ -49,30 +49,34 @@ namespace Data.BLL
             return pagedList;
         }
 
-        public async Task<int> AddAsync(Taxonomy Taxonomy)
+        public async Task<int> AddAsync(Taxonomy taxonomy)
         {
-            Taxonomy.CreatedAt = DateTime.Now;
+            taxonomy.CreatedAt = DateTime.Now;
 
-            return await _context.Taxonomies.InsertAsync(Taxonomy, new List<string> { "Id", "UpdatedAt", "DeletedAt" });
+            return await _context.Taxonomies.InsertAsync(taxonomy, new List<string> { "Id", "UpdatedAt", "DeletedAt" });
         }
 
-        public async Task<int> UpdateAsync(Taxonomy Taxonomy)
+        public async Task<int> UpdateAsync(Taxonomy taxonomy)
         {
-            Taxonomy.UpdatedAt = DateTime.Now;
-            return await _context.Taxonomies.UpdateAsync(Taxonomy, s => new { s.Name, s.Description, s.UpdatedAt }, x => x.Id == Taxonomy.Id);
+            taxonomy.UpdatedAt = DateTime.Now;
+            return await _context.Taxonomies
+                .Where(x => x.Id == taxonomy.Id)
+                .UpdateAsync(taxonomy, s => new { s.Name, s.Description, s.UpdatedAt });
         }
 
         public async Task<int> DeleteAsync(int id, bool forceDelete = false)
         {
-            Taxonomy Taxonomy = await GetAsync(id);
-            if (Taxonomy == null)
+            Taxonomy taxonomy = await GetAsync(id);
+            if (taxonomy == null)
                 return 0;
 
             if (forceDelete)
                 return await _context.Taxonomies.DeleteAsync(x => x.Id == id);
 
-            Taxonomy.DeletedAt = DateTime.Now;
-            return await _context.Taxonomies.UpdateAsync(Taxonomy, s => new { s.DeletedAt }, x => x.Id == id);
+            taxonomy.DeletedAt = DateTime.Now;
+            return await _context.Taxonomies
+                .Where(x => x.Id == id)
+                .UpdateAsync(taxonomy, s => new { s.DeletedAt });
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Common;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -11,12 +10,10 @@ using Web.Validation;
 
 namespace Web.Admin.DirectorManagement
 {
-    public partial class CreateDirector : System.Web.UI.Page
+    public partial class EditDirector : AdminPage
     {
         private CustomValidation customValidation;
-        protected ExecResult<DirectorDto> commandResult;
         protected bool isCreateAction;
-        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -33,7 +30,6 @@ namespace Web.Admin.DirectorManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             customValidation = new CustomValidation();
-            enableShowResult = false;
             try
             {
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_DirectorList", null);
@@ -89,16 +85,6 @@ namespace Web.Admin.DirectorManagement
             }
         }
 
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
-        }
-
         private void InitValidation()
         {
             customValidation.Init(
@@ -149,10 +135,9 @@ namespace Web.Admin.DirectorManagement
             CreateDirectorDto director = InitCreateDirectorDto();
             using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
             {
-                commandResult = await peopleService.AddDirectorAsync(director);
+                ExecResult<DirectorDto> commandResult = await peopleService.AddDirectorAsync(director);
+                notifControl.Set<DirectorDto>(commandResult);
             }
-
-            enableShowResult = true;
         }
 
         private async Task Update()
@@ -163,10 +148,9 @@ namespace Web.Admin.DirectorManagement
             UpdateDirectorDto director = InitUpdateDirectorDto();
             using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
             {
-                commandResult = await peopleService.UpdateDirectorAsync(director);
+                ExecResult<DirectorDto> commandResult = await peopleService.UpdateDirectorAsync(director);
+                notifControl.Set<DirectorDto>(commandResult);
             }
-
-            enableShowResult = true;
         }
     }
 }

@@ -70,6 +70,8 @@ namespace Web.App_Start
             kernel.Bind<PeopleService>().To<PeopleService>().InRequestScope();
             kernel.Bind<TaxonomyService>().To<TaxonomyService>().InRequestScope();
             kernel.Bind<FilmService>().To<FilmService>().InRequestScope();
+            kernel.Bind<RoleService>().To<RoleService>().InRequestScope();
+            kernel.Bind<UserService>().To<UserService>().InRequestScope();
         }
     }
 }

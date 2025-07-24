@@ -1,32 +1,13 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="CategoryDetail.aspx.cs" Inherits="Web.Admin.CategoryManagement.CategoryDetail" %>
-<%@ Import Namespace="Common" %>
+<%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Chi tiết thể loại - Trang quản trị</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
-    <% if (enableShowResult)
-    { %>
-    <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
-    <a class="anchor" name="alerts"></a>
-    <div class="row grid-responsive">
-        <div class="column">
-            <%if (commandResult.Status == ExecStatus.Success)
-            { %>
-            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = commandResult.Message %></div>
-            <%}
-            else if (commandResult.Status == ExecStatus.AlreadyExists)
-            { %>
-            <div class="alert background-warning"><em class="fa fa-warning"></em><% = commandResult.Message %></div>
-            <%}
-            else
-            { %>
-            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = commandResult.Message %></div>
-            <%} %>
-        </div>
-    </div>
-    <%} %>
+    
+    <uc:NotifControl ID="notifControl" runat="server" />
 
     <% if (enableShowDetail)
         { %>

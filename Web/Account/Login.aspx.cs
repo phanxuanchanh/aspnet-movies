@@ -1,8 +1,11 @@
-﻿using Common.Web;
-using Data.BLL;
+﻿using Common;
+using Common.Web;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 using Web.Validation;
 
@@ -26,13 +29,12 @@ namespace Web.Account
                 if (CheckLoggedIn())
                 {
                     Response.RedirectToRoute("User_Home", null);
+                    return;
                 }
-                else
+
+                if (IsPostBack)
                 {
-                    if (IsPostBack)
-                    {
-                        await LoginToAccount();
-                    }
+                    await LoginToAccount();
                 }
             }
             catch (Exception ex)
@@ -92,56 +94,54 @@ namespace Web.Account
         {
             return new UserLogin
             {
-                userName = Request.Form["txtUsername"],
-                password = Request.Form["txtPassword"]
+                UserName = Request.Form["txtUsername"],
+                Password = Request.Form["txtPassword"]
             };
         }
 
         private async Task LoginToAccount()
         {
-            if (IsValidData())
+            if (!IsValidData())
+                return;
+
+            UserLogin userLogin = GetUserLogin();
+            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
             {
-                UserLogin userLogin = GetUserLogin();
-                using (UserBLL userBLL = new UserBLL())
+                ExecResult result = await userService.LoginAsync(userLogin);
+                if(result.Status != ExecStatus.Success)
                 {
-                    UserBLL.LoginState loginState = await userBLL.LoginAsync(userLogin);
-                    if (loginState == UserBLL.LoginState.NotExists || loginState == UserBLL.LoginState.WrongPassword)
-                    {
-                        if (loginState == UserBLL.LoginState.NotExists)
-                            stateDetail = "Không tồn tại tài khoản";
-                        else
-                            stateDetail = "Mật khẩu bạn nhập vào không đúng";
-
-                        enableShowResult = true;
-                    }
-                    else
-                    {
-                        userBLL.IncludeRole = true;
-                        UserInfo userInfo = await userBLL.GetUserByUserNameAsync(userLogin.userName);
-                        if (loginState == UserBLL.LoginState.Success)
-                        {
-                            Session["userSession"] = new UserSession { userId = userInfo.ID, username = userInfo.userName, role = userInfo.Role.name };
-                            if (userInfo.Role.name == "User")
-                                Response.RedirectToRoute("User_Home", null);
-                            else
-                                Response.RedirectToRoute("Admin_Overview", null);
-                        }
-                        else
-                        {
-                            ConfirmCode confirmCode = new ConfirmCode();
-                            Session["confirmCode"] = confirmCode.Send(userInfo.email);
-                            string confirmToken = confirmCode.CreateToken();
-                            Session["confirmToken"] = confirmToken;
-
-                            Response.RedirectToRoute("Account_Confirm", new
-                            {
-                                userId = userInfo.ID,
-                                confirmToken = confirmToken,
-                                type = "login_unconfirmed"
-                            });
-                        }
-                    }
+                    //Chèn uc thông báo
+                    return;
                 }
+
+                UserDto user = (await userService.GetUserAsync(userLogin.UserName)).Data;
+
+                Session["userSession"] = new UserSession
+                {
+                    userId = user.ID,
+                    username = user.UserName,
+                    role = user.Role.Name
+                };
+
+                if (!user.Activated)
+                {
+                    ConfirmCode confirmCode = new ConfirmCode();
+                    Session["confirmCode"] = confirmCode.Send(user.Email);
+                    string confirmToken = confirmCode.CreateToken();
+                    Session["confirmToken"] = confirmToken;
+
+                    Response.RedirectToRoute("Account_Confirm", new
+                    {
+                        userId = user.ID,
+                        confirmToken = confirmToken,
+                        type = "login_unconfirmed"
+                    });
+                }
+
+                if (user.Role.Name == "User")
+                    Response.RedirectToRoute("User_Home", null);
+                else
+                    Response.RedirectToRoute("Admin_Overview", null);
             }
         }
 

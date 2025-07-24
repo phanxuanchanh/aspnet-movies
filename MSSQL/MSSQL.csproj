@@ -51,6 +51,10 @@
     <Compile Include="Access\SqlAccessAsync.cs" />
     <Compile Include="Access\SqlContext.cs" />
     <Compile Include="Access\SqlData.cs" />
+    <Compile Include="AsyncSqlExecHelper.cs" />
+    <Compile Include="Attributes\SqlColumn.cs" />
+    <Compile Include="Attributes\SqlTable.cs" />
+    <Compile Include="Cache\ReflectionCache.cs" />
     <Compile Include="Config\SqlConfig.cs" />
     <Compile Include="Connection\SqlConnectInfo.cs" />
     <Compile Include="Execution\SqlExecution.cs" />
@@ -58,15 +62,21 @@
     <Compile Include="LambdaExpression\ExpressionData.cs" />
     <Compile Include="LambdaExpression\ExpressionTree.cs" />
     <Compile Include="LambdaExpression\ExpressionExtension.cs" />
+    <Compile Include="Mapper\SqlMapper.cs" />
     <Compile Include="Mapping\SqlConvert.cs" />
     <Compile Include="Mapping\SqlMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryBuilder\SqlQueryBuilder.cs" />
+    <Compile Include="QueryBuilder\SqlQueryBuilderBase.cs" />
     <Compile Include="Query\SqlOrderByOptions.cs" />
     <Compile Include="Query\SqlQueryParameter.cs" />
     <Compile Include="Query\SqlQuery.cs" />
     <Compile Include="Query\SqlQueryBase.cs" />
     <Compile Include="Query\SqlQueryData.cs" />
     <Compile Include="Reflection\ObjReflection.cs" />
+    <Compile Include="SqlDataReaderExtensions.cs" />
+    <Compile Include="SqlExecHelper.cs" />
+    <Compile Include="SqlTable.cs" />
     <Compile Include="String\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup />

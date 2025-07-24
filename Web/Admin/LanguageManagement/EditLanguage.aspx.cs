@@ -10,14 +10,10 @@ using Web.Validation;
 
 namespace Web.Admin.LanguageManagement
 {
-    public partial class CreateLanguage : System.Web.UI.Page
+    public partial class EditLanguage : AdminPage
     {
         private CustomValidation customValidation;
-        protected ExecResult<LanguageDto> commandResult;
         protected bool isCreateAction;
-        protected bool enableShowResult;
-        protected string stateString;
-        protected string stateDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -34,9 +30,6 @@ namespace Web.Admin.LanguageManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             customValidation = new CustomValidation();
-            enableShowResult = false;
-            stateString = null;
-            stateDetail = null;
             try
             {
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_LanguageList", null);
@@ -93,16 +86,6 @@ namespace Web.Admin.LanguageManagement
             }
         }
 
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
-        }
-
         private void InitValidation()
         {
             customValidation.Init(
@@ -153,10 +136,9 @@ namespace Web.Admin.LanguageManagement
             CreateLanguageDto language = InitCreateLanguageDto();
             using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
             {
-                commandResult = await filmMetadataService.AddLanguageAsync(language);
+                ExecResult<LanguageDto> commandResult = await filmMetadataService.AddLanguageAsync(language);
+                notifControl.Set<LanguageDto>(commandResult);
             }
-
-            enableShowResult = true;
         }
 
         public async Task Update()
@@ -167,9 +149,9 @@ namespace Web.Admin.LanguageManagement
             UpdateLanguageDto language = InitUpdateLanguageDto();
             using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
             {
-                commandResult = await filmMetadataService.UpdateLanguageAsync(language);
+                ExecResult<LanguageDto> commandResult = await filmMetadataService.UpdateLanguageAsync(language);
+                notifControl.Set<LanguageDto>(commandResult);
             }
-            enableShowResult = true;
         }
     }
 }

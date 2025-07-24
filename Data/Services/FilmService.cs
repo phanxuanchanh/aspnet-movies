@@ -247,7 +247,45 @@ namespace Data.Services
 
         public async Task<ExecResult<FilmDto>> AddFilmAsync(CreateFilmDto film)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(film.Name) || string.IsNullOrEmpty(film.ProductionCompany) || string.IsNullOrEmpty(film.ReleaseDate))
+            {
+                return new ExecResult<FilmDto>
+                {
+                    Status = ExecStatus.Invalid,
+                    Message = "Film name, production company, and release date are required."
+                };
+            }
+
+            Film newFilm = new Film
+            {
+                ID = Guid.NewGuid().ToString(),
+                Name = film.Name,
+                Description = film.Description,
+                ProductionCompany = film.ProductionCompany,
+                Thumbnail = film.Thumbnail,
+                ReleaseDate = film.ReleaseDate,
+                Source = film.Source
+            };
+
+            int affected = await _filmDao.AddAsync(newFilm);
+            if (affected <= 0)
+                return new ExecResult<FilmDto> { Status = ExecStatus.Failure, Message = "Failed to add film." };
+
+            return new ExecResult<FilmDto>
+            {
+                Status = ExecStatus.Success,
+                Message = "Film added successfully.",
+                Data = new FilmDto
+                {
+                    ID = newFilm.ID,
+                    Name = newFilm.Name,
+                    Description = newFilm.Description,
+                    ProductionCompany = newFilm.ProductionCompany,
+                    Thumbnail = newFilm.Thumbnail,
+                    ReleaseDate = newFilm.ReleaseDate,
+                    CreatedAt = newFilm.CreatedAt
+                }
+            };
         }
 
         public async Task<ExecResult<FilmDto>> UpdateFilmAsync(UpdateFilmDto film)

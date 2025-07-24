@@ -63,5 +63,12 @@ namespace Data.BLL
 
             return pagedList;
         }
+
+        public async Task<int> AddAsync(Film film)
+        {
+            film.CreatedAt = DateTime.Now;
+
+            return await _context.Films.InsertAsync(film, new List<string> { "UpdatedAt", "DeletedAt" });
+        }
     }
 }

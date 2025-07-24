@@ -9,7 +9,7 @@ namespace Web.Admin.RoleManagement
 {
     public partial class DeleteRole : System.Web.UI.Page
     {
-        protected RoleInfo roleInfo;
+        protected RoleDto roleInfo;
         protected bool enableShowInfo;
         protected bool enableShowResult;
         protected string stateString;
@@ -71,10 +71,10 @@ namespace Web.Admin.RoleManagement
             }
             else
             {
-                using (RoleBLL roleBLL = new RoleBLL())
-                {
-                    roleInfo = await roleBLL.GetRoleAsync(id);
-                }
+                //using (RoleDao roleBLL = new RoleDao())
+                //{
+                //    roleInfo = await roleBLL.GetRoleAsync(id);
+                //}
 
                 if (roleInfo == null)
                     Response.RedirectToRoute("Admin_RoleList", null);
@@ -86,11 +86,11 @@ namespace Web.Admin.RoleManagement
         private async Task DeleteRoleInfo()
         {
             string id = GetRoleId();
-            DeletionState state;
-            using (RoleBLL roleBLL = new RoleBLL())
-            {
-                state = await roleBLL.DeleteRoleAsync(id);
-            }
+            DeletionState state = DeletionState.Success;
+            //using (RoleDao roleBLL = new RoleDao())
+            //{
+            //    state = await roleBLL.DeleteRoleAsync(id);
+            //}
 
             if (state == DeletionState.Success)
             {

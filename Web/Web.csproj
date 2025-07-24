@@ -80,7 +80,6 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Logout.aspx" />
     <Content Include="Account\NewPassword.aspx" />
-    <Content Include="Account\Register.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="account_assets\css\logout.css" />
     <Content Include="account_assets\fonts\fontawesome\css\all.css" />
@@ -1734,6 +1733,7 @@
     <Content Include="Admin\ActorManagement\ActorDetail.aspx" />
     <Content Include="Admin\ActorManagement\ActorList.aspx" />
     <Content Include="Admin\ActorManagement\EditActor.aspx" />
+    <Content Include="Admin\Base\Notification.ascx" />
     <Content Include="Admin\CategoryManagement\CategoryDetail.aspx" />
     <Content Include="Admin\CategoryManagement\CategoryList.aspx" />
     <Content Include="Admin\CategoryManagement\EditCategory.aspx" />
@@ -1748,13 +1748,12 @@
     <Content Include="Admin\FilmManagement\FilmList.aspx" />
     <Content Include="Admin\LanguageManagement\EditLanguage.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageDetail.aspx" />
-    <Content Include="Admin\RoleManagement\CreateRole.aspx" />
+    <Content Include="Admin\RoleManagement\EditRole.aspx" />
     <Content Include="Admin\Index.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageList.aspx" />
     <Content Include="Admin\RoleManagement\DeleteRole.aspx" />
     <Content Include="Admin\RoleManagement\RoleDetail.aspx" />
     <Content Include="Admin\RoleManagement\RoleList.aspx" />
-    <Content Include="Admin\RoleManagement\UpdateRole.aspx" />
     <Content Include="Admin\TagManagement\EditTag.aspx" />
     <Content Include="Admin\TagManagement\TagDetail.aspx" />
     <Content Include="Admin\TagManagement\TagList.aspx" />
@@ -1871,13 +1870,6 @@
     <Compile Include="Account\NewPassword.aspx.designer.cs">
       <DependentUpon>NewPassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Account\Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Register.aspx.designer.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Account\ResetPassword.aspx.cs">
       <DependentUpon>ResetPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1905,6 +1897,12 @@
     </Compile>
     <Compile Include="Admin\ActorManagement\EditActor.aspx.designer.cs">
       <DependentUpon>EditActor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Base\AdminPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Base\Notification.ascx.designer.cs">
+      <DependentUpon>Notification.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\CategoryManagement\CategoryDetail.aspx.cs">
       <DependentUpon>CategoryDetail.aspx</DependentUpon>
@@ -2004,12 +2002,16 @@
     <Compile Include="Admin\LanguageManagement\LanguageDetail.aspx.designer.cs">
       <DependentUpon>LanguageDetail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\RoleManagement\CreateRole.aspx.cs">
-      <DependentUpon>CreateRole.aspx</DependentUpon>
+    <Compile Include="Admin\Base\Notification.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Notification.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\RoleManagement\EditRole.aspx.cs">
+      <DependentUpon>EditRole.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\RoleManagement\CreateRole.aspx.designer.cs">
-      <DependentUpon>CreateRole.aspx</DependentUpon>
+    <Compile Include="Admin\RoleManagement\EditRole.aspx.designer.cs">
+      <DependentUpon>EditRole.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
@@ -2052,13 +2054,6 @@
     </Compile>
     <Compile Include="Admin\RoleManagement\RoleList.aspx.designer.cs">
       <DependentUpon>RoleList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\RoleManagement\UpdateRole.aspx.cs">
-      <DependentUpon>UpdateRole.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\RoleManagement\UpdateRole.aspx.designer.cs">
-      <DependentUpon>UpdateRole.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\TagManagement\EditTag.aspx.cs">
       <DependentUpon>EditTag.aspx</DependentUpon>

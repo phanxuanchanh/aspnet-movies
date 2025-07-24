@@ -9,7 +9,7 @@ using Web.Models;
 
 namespace Web.Admin.CountryManagement
 {
-    public partial class CountryList : System.Web.UI.Page
+    public partial class CountryList : AdminPage
     {
         private FilmMetadataService _filmMetadataService;
         protected long currentPage;
@@ -52,16 +52,6 @@ namespace Web.Admin.CountryManagement
                 _filmMetadataService.Dispose();
                 _filmMetadataService = null;
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)

@@ -10,8 +10,8 @@ namespace Data.BLL.Migration
         public static List<PaymentMethod> AddData()
         {
             List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
-            paymentMethods.Add(new PaymentMethod { name = "Visa", createAt = DateTime.Now, updateAt = DateTime.Now });
-            paymentMethods.Add(new PaymentMethod { name = "Mastercard", createAt = DateTime.Now, updateAt = DateTime.Now });
+            paymentMethods.Add(new PaymentMethod { Name = "Visa", CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
+            paymentMethods.Add(new PaymentMethod { Name = "Mastercard", CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
             return paymentMethods;
         }
 

@@ -2,20 +2,20 @@
 
 namespace Data.DTO
 {
-    public class PaymentMethodInfo
+    public class PaymentMethodDto
     {
         public int ID { get; set; }
-        public string name { get; set; }
-        public DateTime createAt { get; set; }
-        public DateTime updateAt { get; set; }
+        public string Name { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
-    public class PaymentMethodCreation
+    public class CreatePaymentMethodDto
     {
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 
-    public class PaymentMethodUpdate : PaymentMethodCreation
+    public class UpdatePaymentMethodDto : CreatePaymentMethodDto
     {
         public int ID { get; set; }
     }

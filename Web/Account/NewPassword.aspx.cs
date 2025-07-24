@@ -1,7 +1,10 @@
-﻿using Data.BLL;
+﻿using Common;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 using Web.Validation;
 
@@ -86,24 +89,24 @@ namespace Web.Account
 
         private async Task CreateNewPassword()
         {
-            if (IsValidData())
-            {
-                string userId = GetUserId();
-                string password = GetNewPassword();
-                UserBLL.CreateNewPasswordState createNewPasswordState;
-                using(UserBLL userBLL = new UserBLL())
-                {
-                    createNewPasswordState = await userBLL.CreateNewPasswordAsync(userId, password);
-                }
+            if (!IsValidData())
+                return;
 
-                Session["newPasswordToken"] = null;
-                if (createNewPasswordState == UserBLL.CreateNewPasswordState.Success)
-                    Response.RedirectToRoute("Account_Login", null);
-                else if (createNewPasswordState == UserBLL.CreateNewPasswordState.NotExists)
-                    Response.RedirectToRoute("User_Home", null);
-                else
-                    Response.RedirectToRoute("Notification_Error", null);
+            string userId = GetUserId();
+            string password = GetNewPassword();
+            ExecResult commandResult = null;
+            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
+            {
+                commandResult = await userService.CreateNewPasswordAsync(userId, password);
             }
+
+            Session["newPasswordToken"] = null;
+            if (commandResult.Status == ExecStatus.Success)
+                Response.RedirectToRoute("Account_Login", null);
+            else if (commandResult.Status == ExecStatus.NotFound)
+                Response.RedirectToRoute("User_Home", null);
+            else
+                Response.RedirectToRoute("Notification_Error", null);
         }
     }
 }

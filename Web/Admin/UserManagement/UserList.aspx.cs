@@ -1,15 +1,19 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.UserManagement
 {
-    public partial class UserList : System.Web.UI.Page
+    public partial class UserList : AdminPage
     {
-        private UserBLL userBLL;
+        private UserService _userService;
+        private UserDao userBLL;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -17,44 +21,39 @@ namespace Web.Admin.UserManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            userBLL = new UserBLL();
+            _userService = NinjectWebCommon.Kernel.Get<UserService>();
             enableTool = false;
             toolDetail = null;
             try
             {
                 hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateUser", null);
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvUser();
-                        SetDrdlPage();
-                        userBLL.Dispose();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    userBLL.Dispose();
+                    return;                  
+                }
+
+                if (!IsPostBack)
+                {
+                    await SetGrvUser();
+                    SetDrdlPage();
                 }
             }
             catch (Exception ex)
             {
-                userBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
         }
-
-        private bool CheckLoggedIn()
+        
+        protected void Page_Unload(object sender, EventArgs e)
         {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin");
+            if(_userService != null)
+            {
+                _userService.Dispose();
+                _userService = null;
+            }
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
@@ -69,13 +68,11 @@ namespace Web.Admin.UserManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            userBLL.Dispose();
         }
 
         private async Task SetGrvUser()
         {
-            userBLL.IncludeTimestamp = true;
-            PagedList<UserInfo> users = await userBLL
+            PagedList<UserDto> users = await _userService
                 .GetUsersAsync(drdlPage.SelectedIndex, 20);
             grvUser.DataSource = users.Items;
             grvUser.DataBind();
@@ -104,11 +101,11 @@ namespace Web.Admin.UserManagement
             try
             {
                 string key = (string)grvUser.DataKeys[grvUser.SelectedIndex].Value;
-                UserInfo userInfo = await userBLL.GetUserAsync(key);
-                toolDetail = string.Format("{0} -- {1}", userInfo.ID, userInfo.name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_UserDetail", new { id = userInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateUser", new { id = userInfo.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteUser", new { id = userInfo.ID });
+                UserDto user = (await _userService.GetUserAsync(key)).Data;
+                toolDetail = string.Format("{0} -- {1}", user.ID, user.Name);
+                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_UserDetail", new { id = user.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateUser", new { id = user.ID });
+                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteUser", new { id = user.ID });
                 enableTool = true;
             }
             catch (Exception ex)
@@ -116,7 +113,6 @@ namespace Web.Admin.UserManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            userBLL.Dispose();
         }
     }
 }

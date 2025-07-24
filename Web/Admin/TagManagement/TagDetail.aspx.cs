@@ -12,7 +12,7 @@ using Web.Models;
 
 namespace Web.Admin.TagManagement
 {
-    public partial class TagDetail : System.Web.UI.Page
+    public partial class TagDetail : AdminPage
     {
         protected TagDto tag;
         protected ExecResult commandResult;

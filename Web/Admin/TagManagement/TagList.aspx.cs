@@ -9,7 +9,7 @@ using Web.Models;
 
 namespace Web.Admin.TagManagement
 {
-    public partial class TagList : System.Web.UI.Page
+    public partial class TagList : AdminPage
     {
         private TaxonomyService _taxonomyService;
         protected long currentPage;
@@ -52,16 +52,6 @@ namespace Web.Admin.TagManagement
                 _taxonomyService.Dispose();
                 _taxonomyService = null;
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)

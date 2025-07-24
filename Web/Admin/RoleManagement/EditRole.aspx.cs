@@ -1,13 +1,17 @@
-﻿using Data.BLL;
+﻿using Common;
+using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 using Web.Validation;
 
 namespace Web.Admin.RoleManagement
 {
-    public partial class CreateRole : System.Web.UI.Page
+    public partial class EditRole : AdminPage
     {
         private CustomValidation customValidation;
         protected bool enableShowResult;
@@ -25,16 +29,15 @@ namespace Web.Admin.RoleManagement
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_RoleList", null);
                 InitValidation();
 
-                if (CheckLoggedIn())
-                {
-                    if (IsPostBack)
-                    {
-                        await Create();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
+                    return;   
+                }
+
+                if (IsPostBack)
+                {
+                    await Create();
                 }
             }
             catch (Exception ex)
@@ -42,16 +45,6 @@ namespace Web.Admin.RoleManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin");
         }
 
         private void InitValidation()
@@ -77,41 +70,45 @@ namespace Web.Admin.RoleManagement
             return cvRoleName.IsValid;
         }
 
-        private RoleCreation GetRoleCreation()
+        private CreateRoleDto InitCreateRoleDto()
         {
-            return new RoleCreation
+            return new CreateRoleDto
             {
-                name = Request.Form[txtRoleName.UniqueID],
+                Name = Request.Form[txtRoleName.UniqueID],
+            };
+        }
+
+        private UpdateRoleDto InitUpdateRoleDto()
+        {
+            return new UpdateRoleDto
+            {
+                Name = Request.Form[txtRoleName.UniqueID],
             };
         }
 
         public async Task Create()
         {
-            if (IsValidData())
-            {
-                RoleCreation role = GetRoleCreation();
-                CreationState state;
-                using(RoleBLL roleBLL = new RoleBLL())
-                {
-                    state = await roleBLL.CreateRoleAsync(role);
-                }
+            if (!IsValidData())
+                return;
 
-                if (state == CreationState.Success)
-                {
-                    stateString = "Success";
-                    stateDetail = "Đã thêm vai trò thành công";
-                }
-                else if (state == CreationState.AlreadyExists)
-                {
-                    stateString = "AlreadyExists";
-                    stateDetail = "Thêm vài trò thất bại. Lý do: Đã tồn tại vai trò này";
-                }
-                else
-                {
-                    stateString = "Failed";
-                    stateDetail = "Thêm vai trò thất bại";
-                }
-                enableShowResult = true;
+            CreateRoleDto createRoleDto = InitCreateRoleDto();
+            using (RoleService roleService = NinjectWebCommon.Kernel.Get<RoleService>())
+            {
+                ExecResult<RoleDto> commandResult = await roleService.CreateAsync(createRoleDto);
+                notifControl.Set<RoleDto>(commandResult);
+            }
+        }
+
+        public async Task Update()
+        {
+            if (!IsValidData())
+                return;
+
+            CreateRoleDto createRoleDto = InitUpdateRoleDto();
+            using (RoleService roleService = NinjectWebCommon.Kernel.Get<RoleService>())
+            {
+                ExecResult<RoleDto> commandResult = await roleService.UpdateAsync(createRoleDto);
+                notifControl.Set<RoleDto>(commandResult);
             }
         }
     }

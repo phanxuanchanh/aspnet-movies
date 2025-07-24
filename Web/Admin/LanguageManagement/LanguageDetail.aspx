@@ -1,9 +1,14 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="LanguageDetail.aspx.cs" Inherits="Web.Admin.LanguageManagement.LanguageDetail" %>
+<%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Chi tiết ngôn ngữ - Trang quản trị</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
+
+    <uc:NotifControl ID="notifControl" runat="server" />
+
     <% if (enableShowDetail)
         { %>
     <h5 class="mt-2">Chi tiết ngôn ngữ</h5>

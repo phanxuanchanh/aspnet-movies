@@ -1,15 +1,18 @@
 ﻿using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.RoleManagement
 {
     public partial class RoleDetail : System.Web.UI.Page
     {
-        protected RoleInfo roleInfo;
+        protected RoleDto role;
         protected bool enableShowDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -57,20 +60,18 @@ namespace Web.Admin.RoleManagement
             if (String.IsNullOrEmpty(id))
             {
                 Response.RedirectToRoute("Admin_RoleList", null);
+                return;
             }
-            else
-            {
-                using(RoleBLL roleBLL = new RoleBLL())
-                {
-                    roleBLL.IncludeTimestamp = true;
-                    roleInfo = await roleBLL.GetRoleAsync(id);
-                }
 
-                if (roleInfo == null)
-                    Response.RedirectToRoute("Admin_RoleList", null);
-                else
-                    enableShowDetail = true;
+            using (RoleService roleService = NinjectWebCommon.Kernel.Get<RoleService>())
+            {
+                role = await roleService.GetRoleAsync(id);
             }
+
+            if (role == null)
+                Response.RedirectToRoute("Admin_RoleList", null);
+            else
+                enableShowDetail = true;
         }
     }
 }

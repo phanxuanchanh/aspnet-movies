@@ -14,19 +14,19 @@ namespace Data.BLL.Migration
 
             return new User
             {
-                ID = Guid.NewGuid().ToString(),
-                userName = "systemadmin",
-                surName = "System",
-                middleName = "",
-                name = "Admin",
-                description = "Tài khoản quản trị cấp cao",
-                email = "systemadmin@admin.com",
-                phoneNumber = "00000000",
-                password = hash.PBKDF2_Hash("admin12341234", salt, 30),
-                salt = salt,
-                activated = true,
-                createAt = DateTime.Now,
-                updateAt = DateTime.Now
+                //ID = Guid.NewGuid().ToString(),
+                //userName = "systemadmin",
+                //surName = "System",
+                //middleName = "",
+                //name = "Admin",
+                //description = "Tài khoản quản trị cấp cao",
+                //email = "systemadmin@admin.com",
+                //phoneNumber = "00000000",
+                //password = hash.PBKDF2_Hash("admin12341234", salt, 30),
+                //salt = salt,
+                //activated = true,
+                //createAt = DateTime.Now,
+                //updateAt = DateTime.Now
             };
         }
 
@@ -38,11 +38,10 @@ namespace Data.BLL.Migration
                 if(recordNumber == 0)
                 {
                     User user = AddData();
-                    Role role = db.Roles.SingleOrDefault(r => new { r.ID }, r => r.name == "Admin");
-                    user.roleId = role.ID;
+                    Role role = db.Roles.Select(s => new { s.Id }).SingleOrDefault(x => x.Name == "Admin");
+                    user.RoleId = role.Id;
 
                     int affected = db.Users.Insert(user);
-
                 }
             }
         }
@@ -55,8 +54,8 @@ namespace Data.BLL.Migration
                 if (recordNumber == 0)
                 {
                     User user = AddData();
-                    Role role = db.Roles.SingleOrDefault(r => new { r.ID }, r => r.name == "Admin");
-                    user.roleId = role.ID;
+                    Role role = db.Roles.Select(s => new { s.Id }).SingleOrDefault(x => x.Name == "Admin");
+                    user.RoleId = role.Id;
 
                     int affected = await db.Users.InsertAsync(user);
 

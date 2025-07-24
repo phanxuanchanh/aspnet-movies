@@ -57,6 +57,7 @@ namespace MSSQL.Access
         }
 
         public async Task<T> Execute_ToAsync<T>(string commandText, CommandType commandType, params SqlParameter[] sqlParameters)
+            where T : ISqlTable, new()
         {
             if (string.IsNullOrEmpty(commandText))
                 throw new Exception("@'commandText' must not be null or empty");
@@ -73,6 +74,7 @@ namespace MSSQL.Access
         }
 
         public async Task<List<T>> Execute_ToListAsync<T>(string commandText, CommandType commandType, params SqlParameter[] sqlParameters)
+            where T : ISqlTable, new()
         {
             if (string.IsNullOrEmpty(commandText))
                 throw new Exception("@'commandText' must not be null or empty");

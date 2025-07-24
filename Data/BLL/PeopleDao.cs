@@ -59,7 +59,9 @@ namespace Data.BLL
         public async Task<int> UpdateAsync(People people)
         {
             people.UpdatedAt = DateTime.Now;
-            return await _context.People.UpdateAsync(people, s => new { s.Name, s.Description, s.UpdatedAt }, x => x.Id == people.Id);
+            return await _context.People
+                .Where(x => x.Id == people.Id)
+                .UpdateAsync(people, s => new { s.Name, s.Description, s.UpdatedAt });
         }
 
         public async Task<int> DeleteAsync(long id, bool forceDelete = false)
@@ -72,7 +74,9 @@ namespace Data.BLL
                 return await _context.People.DeleteAsync(x => x.Id == id);
 
             people.DeletedAt = DateTime.Now;
-            return await _context.People.UpdateAsync(people, s => new { s.DeletedAt }, x => x.Id == id);
+            return await _context.People
+                .Where(x => x.Id == id)
+                .UpdateAsync(people, s => new { s.DeletedAt });
         }
     }
 }

@@ -13,7 +13,7 @@ using Web.Models;
 
 namespace Web.Admin.FilmManagement
 {
-    public partial class FilmList : System.Web.UI.Page
+    public partial class FilmList : AdminPage
     {
         private FilmService _filmService;
         protected long currentPage;
@@ -56,16 +56,6 @@ namespace Web.Admin.FilmManagement
                 _filmService.Dispose();
                 _filmService = null;
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)

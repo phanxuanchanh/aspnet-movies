@@ -11,7 +11,7 @@ namespace Web.Admin.FilmManagement
 {
 
 
-    public partial class CreateFilm
+    public partial class EditFilm
     {
 
         /// <summary>

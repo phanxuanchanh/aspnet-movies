@@ -11,8 +11,17 @@ namespace Web.Admin.CountryManagement
 {
 
 
-    public partial class CreateCountry
+    public partial class EditCountry
     {
+
+        /// <summary>
+        /// notifControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Web.Admin.Base.Notification notifControl;
 
         /// <summary>
         /// hdCountryId control.

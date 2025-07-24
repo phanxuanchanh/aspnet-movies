@@ -10,12 +10,10 @@ using Web.Validation;
 
 namespace Web.Admin.TagManagement
 {
-    public partial class CreateTag : System.Web.UI.Page
+    public partial class EditTag : AdminPage
     {
         private CustomValidation customValidation;
-        protected ExecResult<TagDto> commandResult;
         protected bool isCreateAction;
-        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -32,7 +30,6 @@ namespace Web.Admin.TagManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             customValidation = new CustomValidation();
-            enableShowResult = false;
             try
             {
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
@@ -88,16 +85,6 @@ namespace Web.Admin.TagManagement
             }
         }
 
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
-        }
-
         private void InitValidation()
         {
             customValidation.Init(
@@ -148,10 +135,9 @@ namespace Web.Admin.TagManagement
             CreateTagDto tag = InitCreateTagDto();
             using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                commandResult = await taxonomyService.AddTagAsync(tag);
+                ExecResult<TagDto> commandResult = await taxonomyService.AddTagAsync(tag);
+                notifControl.Set<TagDto>(commandResult);
             }
-
-            enableShowResult = true;
         }
 
         public async Task Update()
@@ -162,10 +148,9 @@ namespace Web.Admin.TagManagement
             UpdateTagDto tag = InitUpdateTagDto();
             using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                commandResult = await taxonomyService.UpdateTagAsync(tag);
+                ExecResult<TagDto> commandResult = await taxonomyService.UpdateTagAsync(tag);
+                notifControl.Set<TagDto>(commandResult);
             }
-
-            enableShowResult = true;
         }
     }
 }

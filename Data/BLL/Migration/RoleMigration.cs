@@ -28,9 +28,9 @@ namespace Data.BLL.Migration
             }
 
             List<Role> roles = new List<Role>();
-            roles.Add(new Role { ID = IDs[0], name = "Admin", createAt = DateTime.Now, updateAt = DateTime.Now });
-            roles.Add(new Role { ID = IDs[1], name = "Editor", createAt = DateTime.Now, updateAt = DateTime.Now });
-            roles.Add(new Role { ID = IDs[2], name = "User", createAt = DateTime.Now, updateAt = DateTime.Now });
+            roles.Add(new Role { Id = IDs[0], Name = "Admin", CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
+            roles.Add(new Role { Id = IDs[1], Name = "Editor", CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
+            roles.Add(new Role { Id = IDs[2], Name = "User", CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
 
             return roles;
         }

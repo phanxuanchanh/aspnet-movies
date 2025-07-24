@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MSSQL;
+using System;
 
 namespace Data.DAL
 {
-    public class UserReaction
+    public class UserReaction : ISqlTable
     {
         public string filmId { get; set; }
         public string userId { get; set; }

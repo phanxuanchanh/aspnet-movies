@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSSQL.Connection;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,10 +10,12 @@ namespace MSSQL.Access
     {
         private bool disposedValue;
         private SqlData sqlData;
+        private SqlExecHelper _sqlExecHelper;
 
         public SqlContext()
         {
             sqlData = new SqlData();
+            _sqlExecHelper = new SqlExecHelper(SqlConnectInfo.GetConnectionString());
             try
             {
                 sqlData.Connect();
@@ -27,14 +30,14 @@ namespace MSSQL.Access
             disposedValue = false;
         }
 
-        protected SqlAccess<T> InitSqlAccess<T>(ref SqlAccess<T> sqlAccess)
+        protected SqlAccess<T> InitSqlAccess<T>(ref SqlAccess<T> sqlAccess) where T : ISqlTable, new()
         {
             if (sqlAccess == null)
-                sqlAccess = new SqlAccess<T>(sqlData);
+                sqlAccess = new SqlAccess<T>(sqlData, _sqlExecHelper);
             return sqlAccess;
         }
 
-        protected void DisposeSqlAccess<T>(ref SqlAccess<T> sqlAccess)
+        protected void DisposeSqlAccess<T>(ref SqlAccess<T> sqlAccess) where T : ISqlTable, new()
         {
             if (sqlAccess != null)
             {
@@ -90,7 +93,7 @@ namespace MSSQL.Access
             }
         }
 
-        public T Execute_To<T>(string commandText, CommandType commandType, params SqlParameter[] sqlParameters)
+        public T Execute_To<T>(string commandText, CommandType commandType, params SqlParameter[] sqlParameters) where T : ISqlTable, new()
         {
             if (string.IsNullOrEmpty(commandText))
                 throw new Exception("@'commandText' must not be null or empty");

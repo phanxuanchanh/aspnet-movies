@@ -15,6 +15,9 @@ namespace Data.BLL
         private TaxonomyDao _taxonomyDao;
         private TaxonomyLinkDao _taxonomyLinkDao;
         private FilmDao _filmDao;
+        private RoleDao _roleDao;
+        private UserDao _userDao;
+        private PaymentMethodDao _paymentMethodDao;
 
         public GeneralDao() {
             _context = new DBContext();
@@ -26,6 +29,9 @@ namespace Data.BLL
             _taxonomyDao = new TaxonomyDao(_context);
             _taxonomyLinkDao = new TaxonomyLinkDao(_context);
             _filmDao = new FilmDao(_context);
+            _roleDao = new RoleDao(_context);
+            _userDao = new UserDao(_context);
+            _paymentMethodDao = new PaymentMethodDao(_context);
         }
 
         public FilmMetadataDao FilmMetadataDao { get { return _filmMetadataDao; } }
@@ -35,6 +41,9 @@ namespace Data.BLL
         public TaxonomyDao TaxonomyDao { get { return _taxonomyDao; } }
         public TaxonomyLinkDao TaxonomyLinkDao { get { return _taxonomyLinkDao; } }
         public FilmDao FilmDao { get { return _filmDao; } }
+        public RoleDao RoleDao { get { return _roleDao; } }
+        public UserDao UserDao { get { return _userDao; } }
+        public PaymentMethodDao PaymentMethodDao { get { return _paymentMethodDao; } }
 
         protected virtual void Dispose(bool disposing)
         {

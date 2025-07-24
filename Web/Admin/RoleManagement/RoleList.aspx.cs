@@ -1,15 +1,18 @@
 ﻿using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 
 namespace Web.Admin.RoleManagement
 {
-    public partial class RoleList : System.Web.UI.Page
+    public partial class RoleList : AdminPage
     {
-        private RoleBLL roleBLL;
+        private RoleService _roleService;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -17,44 +20,39 @@ namespace Web.Admin.RoleManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            roleBLL = new RoleBLL();
+            _roleService = NinjectWebCommon.Kernel.Get<RoleService>();
             enableTool = false;
             toolDetail = null;
             try
             {
                 hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateRole", null);
 
-                if (CheckLoggedIn())
-                {
-                    if (!IsPostBack)
-                    {
-                        await SetGrvRole();
-                        SetDrdlPage();
-                        roleBLL.Dispose();
-                    }
-                }
-                else
+                if (!CheckLoggedIn())
                 {
                     Response.RedirectToRoute("Account_Login", null);
-                    roleBLL.Dispose();
+                    return;   
+                }
+
+                if (!IsPostBack)
+                {
+                    await SetGrvRole();
+                    SetDrdlPage();
                 }
             }
             catch (Exception ex)
             {
-                roleBLL.Dispose();
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
         }
 
-        private bool CheckLoggedIn()
+        protected void Page_Unload(object sender, EventArgs e)
         {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin");
+            if (_roleService != null)
+            {
+                _roleService.Dispose();
+                _roleService = null;
+            }
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
@@ -69,13 +67,11 @@ namespace Web.Admin.RoleManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            roleBLL.Dispose();
         }
 
         private async Task SetGrvRole()
         {
-            roleBLL.IncludeTimestamp = true;
-            PagedList<RoleInfo> roles = await roleBLL
+            PagedList<RoleDto> roles = await _roleService
                 .GetRolesAsync(drdlPage.SelectedIndex, 20);
             grvRole.DataSource = roles.Items;
             grvRole.DataBind();
@@ -104,11 +100,11 @@ namespace Web.Admin.RoleManagement
             try
             {
                 string key = (string)grvRole.DataKeys[grvRole.SelectedIndex].Value;
-                RoleInfo roleInfo = await roleBLL.GetRoleAsync(key);
-                toolDetail = string.Format("{0} -- {1}", roleInfo.ID, roleInfo.name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = roleInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateRole", new { id = roleInfo.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteRole", new { id = roleInfo.ID });
+                RoleDto role = (await _roleService.GetRoleAsync(key));
+                toolDetail = string.Format("{0} -- {1}", role.ID, role.Name);
+                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = role.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateRole", new { id = role.ID });
+                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteRole", new { id = role.ID });
                 enableTool = true;
             }
             catch (Exception ex)
@@ -116,7 +112,6 @@ namespace Web.Admin.RoleManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-            roleBLL.Dispose();
         }
     }
 }

@@ -11,8 +11,17 @@ namespace Web.Admin.DirectorManagement
 {
 
 
-    public partial class CreateDirector
+    public partial class EditDirector
     {
+
+        /// <summary>
+        /// notifControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Web.Admin.Base.Notification notifControl;
 
         /// <summary>
         /// hdDirectorId control.

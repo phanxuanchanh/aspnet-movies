@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MSSQL;
+using System;
 
 namespace Data.DAL
 {
-    public class PaymentInfo
+    public class PaymentInfo : ISqlTable
     {
         public string userId { get; set; }
         public int paymentMethodId { get; set; }

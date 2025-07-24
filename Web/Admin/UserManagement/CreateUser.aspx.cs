@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace Web.Admin.UserManagement
 {
-    public partial class CreateUser : System.Web.UI.Page
+    public partial class CreateUser : AdminPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

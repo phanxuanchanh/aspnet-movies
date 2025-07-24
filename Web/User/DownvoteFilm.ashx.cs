@@ -14,7 +14,7 @@ namespace Web.User
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
-            UserReactionBLL userReactionBLL = new UserReactionBLL();
+            //UserReactionBLL userReactionBLL = new UserReactionBLL();
 
             try
             {
@@ -26,29 +26,29 @@ namespace Web.User
                     return;
                 }
 
-                UserInfo userInfo = new UserBLL(userReactionBLL).GetUser(userId);
-                //FilmBLL filmBLL = new FilmBLL(userReactionBLL);
-                FilmDto filmInfo = null;//filmBLL.GetFilm(filmId);
+                //UserInfo userInfo = new UserDao(userReactionBLL).GetUser(userId);
+                ////FilmBLL filmBLL = new FilmBLL(userReactionBLL);
+                //FilmDto filmInfo = null;//filmBLL.GetFilm(filmId);
 
-                if (userInfo == null || filmInfo == null)
-                {
-                    context.Response.Write("Người dùng hoặc có thể là phim không tồn tại");
-                    return;
-                }
+                //if (userInfo == null || filmInfo == null)
+                //{
+                //    context.Response.Write("Người dùng hoặc có thể là phim không tồn tại");
+                //    return;
+                //}
 
-                bool upvoteResult = userReactionBLL.Downvote(filmId, userId);
-                if (upvoteResult)
-                {
-                    UpdateState state = UpdateState.Failed;  //filmBLL.Downvote(filmId);
-                    if (state == UpdateState.Success)
-                        context.Response.Write("Đánh giá (không thích) phim thành công");
-                    else
-                        context.Response.Write("Đánh giá (không thích) phim thành công, tuy nhiên đã xảy lỗi nhỏ");
-                }
-                else
-                {
-                    context.Response.Write("Đánh giá (không thích) phim thất bại");
-                }
+                //bool upvoteResult = userReactionBLL.Downvote(filmId, userId);
+                //if (upvoteResult)
+                //{
+                //    UpdateState state = UpdateState.Failed;  //filmBLL.Downvote(filmId);
+                //    if (state == UpdateState.Success)
+                //        context.Response.Write("Đánh giá (không thích) phim thành công");
+                //    else
+                //        context.Response.Write("Đánh giá (không thích) phim thành công, tuy nhiên đã xảy lỗi nhỏ");
+                //}
+                //else
+                //{
+                //    context.Response.Write("Đánh giá (không thích) phim thất bại");
+                //}
             }
             catch (Exception ex)
             {

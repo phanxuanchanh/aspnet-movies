@@ -1,8 +1,12 @@
-﻿using Common.Web;
+﻿using Common;
+using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.App_Start;
 using Web.Models;
 using Web.Validation;
 
@@ -25,7 +29,7 @@ namespace Web.Account
                     await ResetPwd();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
@@ -35,11 +39,11 @@ namespace Web.Account
         private void InitValidation()
         {
             customValidation.Init(
-                cvEmail, 
-                "txtEmail", 
-                "Địa chỉ Email không hợp lệ", 
-                true, 
-                null, 
+                cvEmail,
+                "txtEmail",
+                "Địa chỉ Email không hợp lệ",
+                true,
+                null,
                 customValidation.ValidateEmail
             );
         }
@@ -62,34 +66,31 @@ namespace Web.Account
 
         private async Task ResetPwd()
         {
-            if (IsValidData())
-            {
-                string email = GetEmailAddress();
-                UserInfo userInfo;
-                using(UserBLL userBLL = new UserBLL())
-                {
-                    userInfo = await userBLL.GetUserByEmailAsync(email);
-                }
+            if (!IsValidData())
+                return;
 
-                if(userInfo == null)
+            string email = GetEmailAddress();
+            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
+            {
+                ExecResult<UserDto> result = await userService.GetUserByEmailAsync(email);
+                if (result.Status != ExecStatus.Success)
                 {
                     enableShowResult = true;
-                    stateDetail = "Không tồn tại tài khoản có địa chỉ Email này";
+                    stateDetail = result.Message;
+                    return;
                 }
-                else
-                {
-                    ConfirmCode confirmCode = new ConfirmCode();
-                    Session["confirmCode"] = confirmCode.Send(userInfo.email);
-                    string confirmToken = confirmCode.CreateToken();
-                    Session["confirmToken"] = confirmToken;
 
-                    Response.RedirectToRoute("Account_Confirm", new
-                    {
-                        userId = userInfo.ID,
-                        confirmToken = confirmToken,
-                        type = "reset-password"
-                    });
-                }
+                ConfirmCode confirmCode = new ConfirmCode();
+                Session["confirmCode"] = confirmCode.Send(result.Data.Email);
+                string confirmToken = confirmCode.CreateToken();
+                Session["confirmToken"] = confirmToken;
+
+                Response.RedirectToRoute("Account_Confirm", new
+                {
+                    userId = result.Data.ID,
+                    confirmToken = confirmToken,
+                    type = "reset-password"
+                });
             }
         }
     }

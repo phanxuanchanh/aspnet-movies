@@ -11,12 +11,10 @@ using Web.Validation;
 
 namespace Web.Admin.CategoryManagement
 {
-    public partial class CreateCategory : System.Web.UI.Page
+    public partial class EditCategory : AdminPage
     {
         private CustomValidation customValidation;
-        protected ExecResult<CategoryDto> commandResult;
         protected bool isCreateAction;
-        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -33,7 +31,7 @@ namespace Web.Admin.CategoryManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             customValidation = new CustomValidation();
-            enableShowResult = false;
+            //enableShowResult = false;
             try
             {
                 hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
@@ -89,16 +87,6 @@ namespace Web.Admin.CategoryManagement
             }
         }
 
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
-        }
-
         private void InitValidation()
         {
             customValidation.Init(
@@ -149,10 +137,9 @@ namespace Web.Admin.CategoryManagement
             CreateCategoryDto category = InitCreateCategoryDto();
             using(TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                commandResult = await taxonomyService.AddCategoryAsync(category);
+                ExecResult<CategoryDto> commandResult = await taxonomyService.AddCategoryAsync(category);
+                notifControl.Set<CategoryDto>(commandResult);
             }
-
-            enableShowResult = true;
         }
 
         public async Task Update()
@@ -163,10 +150,9 @@ namespace Web.Admin.CategoryManagement
             UpdateCategoryDto category = InitUpdateCategoryDto();
             using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                commandResult = await taxonomyService.UpdateCategoryAsync(category);
+                ExecResult<CategoryDto> commandResult = await taxonomyService.UpdateCategoryAsync(category);
+                notifControl.Set<CategoryDto>(commandResult);
             }
-
-            enableShowResult = true;
         }
     }
 }

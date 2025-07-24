@@ -11,17 +11,17 @@ namespace Web.Admin.RoleManagement
 {
 
 
-    public partial class UpdateRole
+    public partial class EditRole
     {
 
         /// <summary>
-        /// hdRoleId control.
+        /// notifControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdRoleId;
+        protected global::Web.Admin.Base.Notification notifControl;
 
         /// <summary>
         /// lbRoleName control.
@@ -67,23 +67,5 @@ namespace Web.Admin.RoleManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
-
-        /// <summary>
-        /// hyplnkDetail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDetail;
-
-        /// <summary>
-        /// hyplnkDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkDelete;
     }
 }

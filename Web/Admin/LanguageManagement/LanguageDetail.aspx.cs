@@ -11,12 +11,10 @@ using Web.Models;
 
 namespace Web.Admin.LanguageManagement
 {
-    public partial class LanguageDetail : System.Web.UI.Page
+    public partial class LanguageDetail : AdminPage
     {
         protected LanguageDto language;
-        protected ExecResult commandResult;
         protected bool enableShowDetail;
-        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -37,16 +35,6 @@ namespace Web.Admin.LanguageManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         private int GetLanguageId()
@@ -104,7 +92,7 @@ namespace Web.Admin.LanguageManagement
 
             using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
             {
-                commandResult = await filmMetadataService.DeleteAsync(id); ;
+                 ExecResult commandResult = await filmMetadataService.DeleteAsync(id); ;
                 if (commandResult.Status == ExecStatus.Success)
                 {
                     Response.RedirectToRoute("Admin_CountryList", null);

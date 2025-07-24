@@ -12,14 +12,14 @@ namespace Web.Account
 {
     public partial class Register : System.Web.UI.Page
     {
-        private UserBLL userBLL;
+        private UserDao userBLL;
         private CustomValidation customValidation;
         protected bool enableShowResult;
         protected string stateDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            userBLL = new UserBLL();
+            userBLL = new UserDao();
             customValidation = new CustomValidation();
             enableShowResult = false;
             stateDetail = null;
@@ -206,11 +206,11 @@ namespace Web.Account
             if (IsValidData())
             {
                 UserCreation userCreation = GetUserRegister();
-                UserBLL.RegisterState registerState = await userBLL.RegisterAsync(userCreation);
+                UserDao.RegisterState registerState = await userBLL.RegisterAsync(userCreation);
 
-                if (registerState == UserBLL.RegisterState.Failed || registerState == UserBLL.RegisterState.AlreadyExist)
+                if (registerState == UserDao.RegisterState.Failed || registerState == UserDao.RegisterState.AlreadyExist)
                 {
-                    if (registerState == UserBLL.RegisterState.Failed)
+                    if (registerState == UserDao.RegisterState.Failed)
                         stateDetail = "Đăng ký tài khoản thất bại";
                     else
                         stateDetail = "Đã tồn tại tài khoản có thông tin này";
@@ -226,7 +226,7 @@ namespace Web.Account
 
                     UserInfo userInfo = await userBLL.GetUserByUserNameAsync(userCreation.userName);
 
-                    if (registerState == UserBLL.RegisterState.Success)
+                    if (registerState == UserDao.RegisterState.Success)
                         Response.RedirectToRoute("Account_Confirm", new
                         {
                             userId = userInfo.ID,

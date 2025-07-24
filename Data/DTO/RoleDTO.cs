@@ -2,21 +2,21 @@
 
 namespace Data.DTO
 {
-    public class RoleInfo
+    public class RoleDto
     {
         public string ID { get; set; }
-        public string name { get; set; }
-        public DateTime createAt { get; set; }
-        public DateTime updateAt { get; set; }
+        public string Name { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
-    public class RoleCreation
+    public class CreateRoleDto
     {
         public string ID { get; set; }
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 
-    public class RoleUpdate: RoleCreation
+    public class UpdateRoleDto: CreateRoleDto
     {
 
     }

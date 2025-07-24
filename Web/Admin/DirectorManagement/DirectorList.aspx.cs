@@ -10,7 +10,7 @@ using Web.Models;
 
 namespace Web.Admin.DirectorManagement
 {
-    public partial class DirectorList : System.Web.UI.Page
+    public partial class DirectorList : AdminPage
     {
         private PeopleService _peopleService;
         protected long currentPage;
@@ -54,16 +54,6 @@ namespace Web.Admin.DirectorManagement
                 _peopleService.Dispose();
                 _peopleService = null;
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)

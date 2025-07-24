@@ -9,7 +9,7 @@ using Web.Models;
 
 namespace Web.Admin.CategoryManagement
 {
-    public partial class CategoryList : System.Web.UI.Page
+    public partial class CategoryList : AdminPage
     {
         private TaxonomyService _taxonomyService;
         protected long currentPage;
@@ -53,16 +53,6 @@ namespace Web.Admin.CategoryManagement
                 _taxonomyService.Dispose();
                 _taxonomyService = null;
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)

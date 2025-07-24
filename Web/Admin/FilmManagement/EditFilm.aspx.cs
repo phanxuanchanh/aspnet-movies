@@ -13,7 +13,7 @@ using Web.Validation;
 
 namespace Web.Admin.FilmManagement
 {
-    public partial class CreateFilm : System.Web.UI.Page
+    public partial class EditFilm : AdminPage
     {
         private FilmMetadataService _filmMetaService;
         protected ExecResult<FilmDto> commandResult;
@@ -104,16 +104,6 @@ namespace Web.Admin.FilmManagement
                 _filmMetaService.Dispose();
                 _filmMetaService = null;
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         private async Task LoadFilmCountries()

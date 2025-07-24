@@ -1,13 +1,16 @@
-﻿using MSSQL.Query;
+﻿using MSSQL.Mapper;
+using MSSQL.Query;
+using MSSQL.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MSSQL.Access
 {
-    public partial class SqlAccess<T>
+    public partial class SqlAccess<T> where T : ISqlTable, new()
     {
         public async Task<List<T>> ToListAsync()
         {
@@ -337,76 +340,94 @@ namespace MSSQL.Access
             }
         }
 
-        public async Task<int> DeleteAsync()
+
+        public async Task<List<T>> nToListAsync(Expression<Func<T, object>> selector)
         {
-            using (SqlCommand sqlCommand = sqlQuery.Delete<T>())
-            {
-                return await sqlData.ExecuteNonQueryAsync(sqlCommand);
-            }
+            if (_select.Count == 0)
+                _queryBuilder = SqlQueryBuilder<T>.Select();
+            else
+                _queryBuilder = SqlQueryBuilder<T>.Select(_select[0]);
+
+            foreach (Expression<Func<T, bool>> where in _where)
+                _queryBuilder.Where(where);
+
+            List<T> list = await _sqlExecHelper.ExecuteReaderAsync<T>(_queryBuilder, reader => SqlMapper.MapRow<T>(reader));
+            return list;
         }
 
-        public async Task<int> DeleteAsync(Expression<Func<T, bool>> where)
+        public async Task<T> nSingleOrDefaultAsync(Expression<Func<T, object>> selector = null)
         {
-            using (SqlCommand sqlCommand = sqlQuery.Delete<T>(where))
-            {
-                return await sqlData.ExecuteNonQueryAsync(sqlCommand);
-            }
+            if (_select.Count == 0)
+                _queryBuilder = SqlQueryBuilder<T>.Select();
+            else
+                _queryBuilder = SqlQueryBuilder<T>.Select(_select[0]);
+
+            foreach (Expression<Func<T, bool>> where in _where)
+                _queryBuilder.Where(where);
+
+            List<T> list = await _sqlExecHelper.ExecuteReaderAsync<T>(_queryBuilder, reader => SqlMapper.MapRow<T>(reader));
+
+            return list.SingleOrDefault();
         }
 
-        public async Task<int> UpdateAsync(T model, Expression<Func<T, object>> set)
+        public async Task<T> nFirstOrDefaultAsync(Expression<Func<T, bool>> expression = null)
         {
-            using (SqlCommand sqlCommand = sqlQuery.Update<T>(model, set))
-            {
-                return await sqlData.ExecuteNonQueryAsync(sqlCommand);
-            }
+            if(_select.Count == 0)
+                _queryBuilder = SqlQueryBuilder<T>.Select();
+            else
+                _queryBuilder = SqlQueryBuilder<T>.Select(_select[0]);
+
+            
+            foreach (Expression<Func<T, bool>> where in _where)
+                _queryBuilder.Where(where);
+
+            _queryBuilder.Where(expression);
+
+            List<T> list = await _sqlExecHelper.ExecuteReaderAsync<T>(_queryBuilder, reader => SqlMapper.MapRow<T>(reader));
+
+            return list.FirstOrDefault();
         }
 
-        public async Task<int> UpdateAsync(T model, Expression<Func<T, object>> set, Expression<Func<T, bool>> where)
+        public async Task<int> InsertAsync(T record, List<string> excludeProperties = null)
         {
-            using (SqlCommand sqlCommand = sqlQuery.Update<T>(model, set, where))
-            {
-                return await sqlData.ExecuteNonQueryAsync(sqlCommand);
-            }
+            _queryBuilder = SqlQueryBuilder<T>.Insert(record);
+            return await _sqlExecHelper.ExecuteNonQueryAsync(_queryBuilder);
         }
 
-        public async Task<int> InsertAsync(T model)
+        public async Task<int> UpdateAsync(T record, Expression<Func<T, object>> selector)
         {
-            using (SqlCommand sqlCommand = sqlQuery.Insert<T>(model))
-            {
-                return await sqlData.ExecuteNonQueryAsync(sqlCommand);
-            }
+            _queryBuilder = SqlQueryBuilder<T>.Update(record, selector);
+
+            foreach (Expression<Func<T, bool>> where in _where)
+                _queryBuilder.Where(where);
+
+            return await _sqlExecHelper.ExecuteNonQueryAsync(_queryBuilder);
         }
 
-        public async Task<int> InsertAsync(T model, List<string> excludeProperties)
+
+        public async Task<int> DeleteAsync(Expression<Func<T, bool>> expression)
         {
-            using (SqlCommand sqlCommand = sqlQuery.Insert<T>(model, excludeProperties))
-            {
-                return await sqlData.ExecuteNonQueryAsync(sqlCommand);
-            }
+            _queryBuilder = SqlQueryBuilder<T>.Delete();
+
+            foreach (Expression<Func<T, bool>> where in _where)
+                _queryBuilder.Where(where);
+
+            _queryBuilder.Where(expression);
+
+            return await _sqlExecHelper.ExecuteNonQueryAsync(_queryBuilder);
         }
 
-        public async Task<long> CountAsync()
+        public async Task<long> CountAsync(Expression<Func<T, bool>> expression = null)
         {
-            using (SqlCommand sqlCommand = sqlQuery.Count<T>())
-            {
-                return long.Parse((string)await sqlData.ExecuteScalarAsync(sqlCommand));
-            }
-        }
+            _queryBuilder = SqlQueryBuilder<T>.Count();
 
-        public async Task<long> CountAsync(Expression<Func<T, bool>> where)
-        {
-            using (SqlCommand sqlCommand = sqlQuery.Count<T>(where))
-            {
-                return long.Parse((string)await sqlData.ExecuteScalarAsync(sqlCommand));
-            }
-        }
+            foreach (Expression<Func<T, bool>> where in _where)
+                _queryBuilder.Where(where);
 
-        public async Task<long> CountAsync(string propertyName, Expression<Func<T, bool>> where)
-        {
-            using (SqlCommand sqlCommand = sqlQuery.Count<T>(propertyName, where))
-            {
-                return long.Parse((string)await sqlData.ExecuteScalarAsync(sqlCommand));
-            }
+            if(expression != null)
+                _queryBuilder.Where(expression);
+
+            return await _sqlExecHelper.ExecuteScalarQueryAsync<long>(_queryBuilder);
         }
     }
 }

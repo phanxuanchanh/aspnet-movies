@@ -1,15 +1,21 @@
-﻿using System;
+﻿using MSSQL;
+using MSSQL.Attributes;
+using System;
 
 namespace Data.DAL
 {
-    public class People
+    public class People : SqlTableWithTimestamp
     {
+        [SqlColumn("id", PrimaryKey = true)]
         public long Id { get; set; }
+
+        [SqlColumn("name")]
         public string Name { get; set; }
+
+        [SqlColumn("description")]
         public string Description { get; set; }
+
+        [SqlColumn("createdAt")]
         public string Type { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
     }
 }

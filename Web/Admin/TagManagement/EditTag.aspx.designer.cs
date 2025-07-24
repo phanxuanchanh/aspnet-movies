@@ -11,8 +11,17 @@ namespace Web.Admin.TagManagement
 {
 
 
-    public partial class CreateTag
+    public partial class EditTag
     {
+
+        /// <summary>
+        /// notifControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Web.Admin.Base.Notification notifControl;
 
         /// <summary>
         /// hdTagId control.

@@ -4,27 +4,13 @@ using System.Threading.Tasks;
 
 namespace Data.BLL
 {
-    public class UserReactionBLL : BusinessLogicLayer
+    public class UserReactionDao
     {
-        private bool disposed;
+        private readonly DBContext _context;
 
-        public UserReactionBLL()
-            : base()
+        public UserReactionDao(DBContext context)
         {
-            InitDAL();
-            disposed = false;
-        }
-
-        public UserReactionBLL(BusinessLogicLayer bll)
-            : base()
-        {
-            InitDAL(bll.db);
-            disposed = false;
-        }
-
-        public override void SetDefault()
-        {
-            base.SetDefault();
+            _context = context;
         }
 
         public bool Upvote(string filmId, string userId)
@@ -142,30 +128,11 @@ namespace Data.BLL
                 userReaction.downvoted = true;
             }
 
-            int affected = db.UserReactions.Update(
-                userReaction, ur => new { ur.upvoted, ur.downvoted, ur.updateAt },
-                ur => ur.filmId == filmId && ur.userId == userId);
+            int affected = db.UserReactions
+                .Where(x => x.filmId == filmId && x.userId == userId)
+                .Update(userReaction, ur => new { ur.upvoted, ur.downvoted, ur.updateAt });
 
             return (affected == 0) ? UpdateState.Failed : UpdateState.Success;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                try
-                {
-                    if (disposing)
-                    {
-
-                    }
-                    this.disposed = true;
-                }
-                finally
-                {
-                    base.Dispose(disposing);
-                }
-            }
         }
     }
 }

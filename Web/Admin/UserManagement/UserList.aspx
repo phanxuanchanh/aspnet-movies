@@ -18,9 +18,9 @@
                         <AlternatingRowStyle BackColor="White" />
                         <Columns>
                             <asp:BoundField DataField="ID" HeaderText="ID" />
-                            <asp:BoundField DataField="userName" HeaderText="Tên người dùng" />
-                            <asp:BoundField DataField="createAt" HeaderText="Ngày tạo" />
-                            <asp:BoundField DataField="updateAt" HeaderText="Ngày cập nhật" />
+                            <asp:BoundField DataField="UserName" HeaderText="Tên người dùng" />
+                            <asp:BoundField DataField="CreatedAt" HeaderText="Ngày tạo" />
+                            <asp:BoundField DataField="UpdatedAt" HeaderText="Ngày cập nhật" />
                             <asp:CommandField AccessibleHeaderText="Chọn" ShowSelectButton="True" SelectText="Chọn người dùng" />
                         </Columns>
                         <EditRowStyle BackColor="#2461BF" />

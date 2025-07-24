@@ -19,8 +19,8 @@ namespace Data.DTO
         public int StarRating { get; set; }
         public string Duration { get; set; }
         public string Source { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public LanguageDto Language { get; set; }
         public CountryDto Country { get; set; }
@@ -35,7 +35,6 @@ namespace Data.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public string Duration { get; set; }
-        public int CountryId { get; set; }
         public string ProductionCompany { get; set; }
         public string Thumbnail { get; set; }
         public string ReleaseDate { get; set; }

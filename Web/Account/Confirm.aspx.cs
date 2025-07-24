@@ -1,9 +1,13 @@
-﻿using Common.Web;
+﻿using Common;
+using Common.Web;
 using Data.BLL;
 using Data.DTO;
+using Data.Services;
+using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
+using Web.App_Start;
 using Web.Models;
 using Web.Validation;
 
@@ -23,18 +27,19 @@ namespace Web.Account
                 if (Session["confirmCode"] == null || Session["confirmToken"] == null)
                 {
                     Response.RedirectToRoute("User_Home", null);
+                    return;
                 }
-                else if (!IsValidConfirmToken())
+                
+                if (!IsValidConfirmToken())
                 {
                     Response.RedirectToRoute("User_Home", null);
+                    return;
                 }
+
+                if (IsPostBack)
+                    await ConfirmAccount();
                 else
-                {
-                    if (IsPostBack)
-                        await ConfirmAccount();
-                    else
-                        await ReSendConfirmCode();
-                }
+                    await ReSendConfirmCode();
             }
             catch (Exception ex)
             {
@@ -90,18 +95,19 @@ namespace Web.Account
 
         private async Task ReSendConfirmCode()
         {
-            if (IsReConfirm())
+            if (!IsReConfirm())
+                return;
+
+            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
             {
-                UserInfo userInfo;
-                using(UserBLL userBLL = new UserBLL())
+                ExecResult<UserDto> result = await userService.GetUserAsync(GetUserId());
+                if (result.Status != ExecStatus.Success)
                 {
-                    userInfo = await userBLL.GetUserAsync(GetUserId());
+                    Response.RedirectToRoute("Notification_Error");
+                    return;
                 }
 
-                if (userInfo == null)
-                    Response.RedirectToRoute("Notification_Error");
-                else
-                    Session["confirmCode"] = new ConfirmCode().Send(userInfo.email);
+                Session["confirmCode"] = new ConfirmCode().Send(result.Data.Email);
             }
         }
 
@@ -131,35 +137,37 @@ namespace Web.Account
             if (IsValidData() && CheckConfirmCode())
             {
                 string userId = GetUserId();
-                UserBLL.ActiveUserState activeUserState;
-                using(UserBLL userBLL = new UserBLL())
+                ExecResult commandResult = null;
+                using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
                 {
-                    activeUserState = await userBLL.ActiveUserAsync(userId);
+                    commandResult = await userService.ActiveUserAsync(userId);
                 }
 
                 Session["confirmCode"] = null;
                 Session["confirmToken"] = null;
-                if (activeUserState == UserBLL.ActiveUserState.Success)
-                {
-                    if (IsResetPassword())
-                    {
-                        ConfirmCode confirmCode = new ConfirmCode();
-                        string newPasswordToken = confirmCode.CreateToken();
-                        Session["newPasswordToken"] = newPasswordToken;
-                        Response.RedirectToRoute("Account_NewPassword", new { userId = userId, newPasswordToken = newPasswordToken });
-                    }
-                    else
-                    {
-                        Response.RedirectToRoute("Account_Login", null);
-                    }
-                }
-                else if (activeUserState == UserBLL.ActiveUserState.NotExists)
+
+                if (commandResult.Status == ExecStatus.NotFound)
                 {
                     Response.RedirectToRoute("User_Home", null);
+                    return;
+                }
+
+                if(commandResult.Status != ExecStatus.Success)
+                {
+                    Response.RedirectToRoute("Notification_Error", null);
+                    return;
+                }
+
+                if (IsResetPassword())
+                {
+                    ConfirmCode confirmCode = new ConfirmCode();
+                    string newPasswordToken = confirmCode.CreateToken();
+                    Session["newPasswordToken"] = newPasswordToken;
+                    Response.RedirectToRoute("Account_NewPassword", new { userId = userId, newPasswordToken = newPasswordToken });
                 }
                 else
                 {
-                    Response.RedirectToRoute("Notification_Error", null);
+                    Response.RedirectToRoute("Account_Login", null);
                 }
             }
             else if (IsResetPassword())

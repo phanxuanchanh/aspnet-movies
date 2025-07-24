@@ -1,16 +1,24 @@
-﻿using System;
+﻿using MSSQL;
+using MSSQL.Attributes;
 
 namespace Data.DAL
 {
-    public class FilmMetadata
+    [SqlTable("FilmMetadata")]
+    public class FilmMetadata : SqlTableWithTimestamp
     {
+        [SqlColumn("id", PrimaryKey = true)]
         public int Id { get; set; }
+
+        [SqlColumn("name")]
         public string Name { get; set; }
+
+        [SqlColumn("description")]
         public string Description { get; set; }
+
+        [SqlColumn("createdAt")]
         public string Custom { get; set; }
+
+        [SqlColumn("updatedAt")]
         public string Type { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
     }
 }

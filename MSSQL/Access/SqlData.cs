@@ -1,6 +1,7 @@
 ﻿using MSSQL.Config;
 using MSSQL.Connection;
 using MSSQL.Execution;
+using MSSQL.Mapper;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -49,19 +50,24 @@ namespace MSSQL.Access
             }
         }
 
-        public T To<T>(SqlCommand sqlCommand)
+        public T To<T>(SqlCommand sqlCommand) where T : ISqlTable, new()
         {
             if (SqlConfig.objectReceivingData == ObjectReceivingData.SqlDataReader)
             {
                 using (SqlDataReader sqlDataReader = ExecuteReader<SqlDataReader>(sqlCommand))
                 {
-                    return sqlConvert.To<T>(sqlDataReader);
+                    return SqlMapper.MapRow<T>(sqlDataReader);
+                    //return sqlConvert.To<T>(sqlDataReader);
                 }
             }
 
             using (DataSet dataSet = ExecuteReader<DataSet>(sqlCommand))
             {
-                return sqlConvert.To<T>(dataSet);
+                if (dataSet.Tables[0].Rows[0] == null || dataSet.Tables[0].Rows.Count == 0)
+                    return default(T);
+
+                return SqlMapper.MapRow<T>(dataSet.Tables[0].Rows[0]);
+                //return sqlConvert.To<T>(dataSet);
             }
         }
 

@@ -10,7 +10,7 @@ using Web.Models;
 
 namespace Web.Admin.LanguageManagement
 {
-    public partial class LanguageList : System.Web.UI.Page
+    public partial class LanguageList : AdminPage
     {
         private FilmMetadataService _filmMetadataService;
         protected long currentPage;
@@ -54,16 +54,6 @@ namespace Web.Admin.LanguageManagement
                 _filmMetadataService.Dispose();
                 _filmMetadataService = null;
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         private async Task SetGrvLanguage(int pageIndex)

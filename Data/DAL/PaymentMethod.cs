@@ -1,12 +1,16 @@
-﻿using System;
+﻿using MSSQL;
+using MSSQL.Attributes;
+using System;
 
 namespace Data.DAL
 {
-    public class PaymentMethod
+    [SqlTable("PaymentMethod")]
+    public class PaymentMethod : SqlTableWithTimestamp
     {
-        public int ID { get; set; }
-        public string name { get; set; }
-        public DateTime createAt { get; set; }
-        public DateTime updateAt { get; set; }
+        [SqlColumn("ID", PrimaryKey = true)]
+        public int Id { get; set; }
+
+        [SqlColumn("name")]
+        public string Name { get; set; }
     }
 }

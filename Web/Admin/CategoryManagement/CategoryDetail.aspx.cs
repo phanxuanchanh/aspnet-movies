@@ -1,5 +1,4 @@
 ﻿using Common;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -10,12 +9,10 @@ using Web.Models;
 
 namespace Web.Admin.CategoryManagement
 {
-    public partial class CategoryDetail : System.Web.UI.Page
+    public partial class CategoryDetail : AdminPage
     {
         protected CategoryDto category;
-        protected ExecResult commandResult;
         protected bool enableShowDetail;
-        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -36,16 +33,6 @@ namespace Web.Admin.CategoryManagement
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
             }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
         }
 
         private int GetCategoryId()
@@ -103,7 +90,7 @@ namespace Web.Admin.CategoryManagement
 
             using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
-                commandResult = await taxonomyService.DeleteAsync(id); ;
+                ExecResult commandResult = await taxonomyService.DeleteAsync(id); ;
                 if (commandResult.Status == ExecStatus.Success)
                 {
                     Response.RedirectToRoute("Admin_CategoryList", null);
