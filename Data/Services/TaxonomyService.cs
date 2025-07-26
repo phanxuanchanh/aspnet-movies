@@ -67,7 +67,7 @@ namespace Data.Services
 
         public async Task<PagedList<CategoryDto>> GetCategoriesAsync(long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<Taxonomy> data = await _taxonomyDao.GetsAsync("category", pageIndex, pageSize);
+            PagedList<Taxonomy> data = await _taxonomyDao.GetsAsync("category", pageIndex, pageSize);
 
             List<CategoryDto> categories = data.Items.Select(s => new CategoryDto
             {
@@ -88,7 +88,7 @@ namespace Data.Services
 
         public async Task<PagedList<TagDto>> GetTagsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<Taxonomy> data = await _taxonomyDao.GetsAsync("tag", pageIndex, pageSize);
+            PagedList<Taxonomy> data = await _taxonomyDao.GetsAsync("tag", pageIndex, pageSize);
 
             List<TagDto> Tags = data.Items.Select(s => new TagDto
             {

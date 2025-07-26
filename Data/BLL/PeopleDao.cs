@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
+using Common.Web;
 
 namespace Data.BLL
 {
@@ -39,14 +40,19 @@ namespace Data.BLL
             return await _context.Execute_ToListAsync<People>(commandTextBuilder.ToString(), CommandType.Text, parameters);
         }
 
-        public async Task<SqlPagedList<People>> GetsAsync(string type = "director", long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<People>> GetsAsync(string type = "director", long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<People> pagedList = null;
-            Expression<Func<People, object>> orderBy = c => new { c.Id };
+            long skip = (pageIndex - 1) * pageSize;
+            List<People> people = await _context.People
+                .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
 
-            pagedList = await _context.People.ToPagedListAsync(x => x.Type == type, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+            long count = await _context.People.CountAsync(x => x.Type == type);
 
-            return pagedList;
+            return new PagedList<People>
+            {
+                Items = people,
+                CurrentPage = pageIndex,
+            };
         }
 
         public async Task<int> AddAsync(People people)

@@ -15,7 +15,8 @@ namespace Data.BLL
 
         public async Task<List<TaxonomyLink>> GetsByFilmIdAsync(string filmId)
         {
-            return await _context.TaxonomyLinks.ToListAsync(x => x.FilmId == filmId);
+            return await _context.TaxonomyLinks
+                .Where(x => x.FilmId == filmId).ToListAsync();
         }
 
         public async Task<int> AddAsync(string filmId, int taxonomyId)

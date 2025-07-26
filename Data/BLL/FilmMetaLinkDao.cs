@@ -16,7 +16,8 @@ namespace Data.BLL
 
         public async Task<List<FilmMetaLink>> GetsByFilmIdAsync(string filmId)
         {
-            return await _context.FilmMetaLinks.ToListAsync(x => x.FilmId == filmId);
+            return await _context.FilmMetaLinks
+                .Where(x => x.FilmId == filmId).ToListAsync();
         }
 
         public async Task<int> AddAsync(string filmId, int metaId)

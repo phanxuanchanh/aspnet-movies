@@ -15,7 +15,8 @@ namespace Data.BLL
 
         public async Task<List<PeopleLink>> GetsByFilmIdAsync(string filmId)
         {
-            return await _context.PeopleLinks.ToListAsync(x => x.FilmId == filmId);
+            return await _context.PeopleLinks
+                .Where(x => x.FilmId == filmId).ToListAsync();
         }
 
         public async Task<int> AddAsync(string filmId, long personId)

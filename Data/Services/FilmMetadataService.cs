@@ -66,7 +66,7 @@ namespace Data.Services
 
         public async Task<PagedList<CountryDto>> GetCountriesAsync(long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<FilmMetadata> data =  await _filmMetadataDao.GetsAsync("country", pageIndex, pageSize);
+            PagedList<FilmMetadata> data =  await _filmMetadataDao.GetsAsync("country", pageIndex, pageSize);
 
             List<CountryDto> countries = data.Items.Select(s => new CountryDto
             {
@@ -87,7 +87,7 @@ namespace Data.Services
 
         public async Task<PagedList<LanguageDto>> GetLanguagesAsync(long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<FilmMetadata> data = await _filmMetadataDao.GetsAsync("language", pageIndex, pageSize);
+            PagedList<FilmMetadata> data = await _filmMetadataDao.GetsAsync("language", pageIndex, pageSize);
 
             List<LanguageDto> languages = data.Items.Select(s => new LanguageDto
             {

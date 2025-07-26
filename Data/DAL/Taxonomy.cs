@@ -3,6 +3,7 @@ using MSSQL.Attributes;
 
 namespace Data.DAL
 {
+    [SqlTable("Taxonomy")]
     public class Taxonomy : SqlTableWithTimestamp
     {
         [SqlColumn("id", PrimaryKey = true)]

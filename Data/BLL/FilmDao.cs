@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
+using Common.Web;
 
 namespace Data.BLL
 {
@@ -24,14 +25,19 @@ namespace Data.BLL
             return await _context.Films.SingleOrDefaultAsync(x => x.ID == id);
         }
 
-        public async Task<SqlPagedList<Film>> GetsAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<Film>> GetsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<Film> pagedList = null;
-            Expression<Func<Film, object>> orderBy = c => new { c.ID };
+            long skip = (pageIndex - 1) * pageSize;
+            List<Film> films = await _context.Films
+                .OrderBy(o => new { o.ID }).ToListAsync();
 
-            pagedList = await _context.Films.ToPagedListAsync(orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+            //long count = await _context.Films.CountAsync();
 
-            return pagedList;
+            return new PagedList<Film>
+            {
+                Items = films,
+                CurrentPage = pageIndex,
+            };
         }
 
         public async Task<SqlPagedList<Film>> GetsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)

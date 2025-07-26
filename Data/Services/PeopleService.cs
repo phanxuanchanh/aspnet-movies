@@ -66,7 +66,7 @@ namespace Data.Services
 
         public async Task<PagedList<DirectorDto>> GetDirectorsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<People> data = await _peopleDao.GetsAsync("director", pageIndex, pageSize);
+            PagedList<People> data = await _peopleDao.GetsAsync("director", pageIndex, pageSize);
 
             List<DirectorDto> directors = data.Items.Select(s => new DirectorDto
             {
@@ -87,7 +87,7 @@ namespace Data.Services
 
         public async Task<PagedList<ActorDto>> GetActorsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<People> data = await _peopleDao.GetsAsync("actor", pageIndex, pageSize);
+            PagedList<People> data = await _peopleDao.GetsAsync("actor", pageIndex, pageSize);
 
             List<ActorDto> actors = data.Items.Select(s => new ActorDto
             {

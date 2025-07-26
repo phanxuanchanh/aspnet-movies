@@ -13,11 +13,13 @@ namespace Data.Services
     {
         private readonly GeneralDao _generalDao;
         private readonly UserDao _userDao;
+        private readonly RoleDao _roleDao;
         private bool disposedValue;
 
         public UserService(GeneralDao generalDao) {
             _generalDao = generalDao;
             _userDao = generalDao.UserDao;
+            _roleDao = generalDao.RoleDao;
         }
 
         public async Task<ExecResult> LoginAsync(UserLogin userLogin)
@@ -28,7 +30,7 @@ namespace Data.Services
             if (userLogin.UserName == null || userLogin.Password == null)
                 throw new Exception("");
 
-            User user = await _userDao.GetAsync(userLogin.UserName);
+            User user = await _userDao.GetByUserNameAsync(userLogin.UserName);
             if (user == null)
                 return ExecResult.NotFound("User does not exist");
 
@@ -123,6 +125,10 @@ namespace Data.Services
             if (user == null)
                 return new ExecResult<UserDto> { Status = ExecStatus.NotFound, Message = "User not found" };
 
+            Role role = await _roleDao.GetAsync(user.RoleId);
+            if (role == null)
+                return new ExecResult<UserDto> { Status = ExecStatus.NotFound, Message = "Role not found" };
+
             return new ExecResult<UserDto>
             {
                 Status = ExecStatus.Success,
@@ -133,6 +139,11 @@ namespace Data.Services
                     UserName = user.UserName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
+                    Role = new RoleDto
+                    {
+                        ID = role.Id,
+                        Name = role.Name
+                    },
                     CreatedAt = user.CreatedAt,
                     UpdatedAt = user.UpdatedAt
                 }

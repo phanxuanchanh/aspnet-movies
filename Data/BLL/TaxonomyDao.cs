@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
+using Common.Web;
 
 namespace Data.BLL
 {
@@ -39,14 +40,19 @@ namespace Data.BLL
             return await _context.Execute_ToListAsync<Taxonomy>(commandTextBuilder.ToString(), CommandType.Text, parameters);
         }
 
-        public async Task<SqlPagedList<Taxonomy>> GetsAsync(string type = "category", long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<Taxonomy>> GetsAsync(string type = "category", long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<Taxonomy> pagedList = null;
-            Expression<Func<Taxonomy, object>> orderBy = c => new { c.Id };
+            long skip = (pageIndex - 1) * pageSize;
+            List<Taxonomy> taxonomies = await _context.Taxonomies
+                .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
 
-            pagedList = await _context.Taxonomies.ToPagedListAsync(x => x.Type == type, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+            //long count = await _context.Taxonomies.CountAsync(x => x.Type == type);
 
-            return pagedList;
+            return new PagedList<Taxonomy>
+            {
+                Items = taxonomies,
+                CurrentPage = pageIndex,
+            };
         }
 
         public async Task<int> AddAsync(Taxonomy taxonomy)

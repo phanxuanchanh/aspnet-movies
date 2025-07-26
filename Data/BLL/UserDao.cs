@@ -1,12 +1,9 @@
-﻿using Common.Hash;
-using Common.Web;
+﻿using Common.Web;
 using Data.DAL;
-using Data.DTO;
 using MSSQL.Access;
 using MSSQL.Query;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -21,14 +18,19 @@ namespace Data.BLL
             _context = context;
         }
 
-        public async Task<SqlPagedList<User>> GetsAsync(long pageIndex, long pageSize)
+        public async Task<PagedList<User>> GetsAsync(long pageIndex, long pageSize)
         {
-            SqlPagedList<User> pagedList = null;
-            Expression<Func<User, object>> orderBy = c => new { c.Id };
+            long skip = (pageIndex - 1) * pageSize;
+            List<User> users = await _context.Users
+                .OrderBy(o => new { o.Id }).ToListAsync();
 
-            pagedList = await _context.Users.ToPagedListAsync(orderBy, SqlOrderByOptions.Desc, pageIndex, pageSize);
+            long count = await _context.Users.CountAsync();
 
-            return pagedList;
+            return new PagedList<User>
+            {
+                Items = users,
+                CurrentPage = pageIndex,
+            };
         }
 
         public async Task<User> GetAsync(string userId)

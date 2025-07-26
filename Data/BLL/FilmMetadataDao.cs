@@ -22,7 +22,7 @@ namespace Data.BLL
 
         public async Task<FilmMetadata> GetAsync(int id)
         {
-            return await _context.FilmMetadata.nFirstOrDefaultAsync(x => x.Id == id);
+            return await _context.FilmMetadata.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<FilmMetadata>> GetsByIdsAsync(List<int> ids)
@@ -39,14 +39,19 @@ namespace Data.BLL
             return await _context.Execute_ToListAsync<FilmMetadata>(commandTextBuilder.ToString(), CommandType.Text, parameters);
         }
 
-        public async Task<SqlPagedList<FilmMetadata>> GetsAsync(string type = "language", long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<FilmMetadata>> GetsAsync(string type = "language", long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<FilmMetadata> pagedList = null;
-            Expression<Func<FilmMetadata, object>> orderBy = c => new { c.Id };
+            long skip = (pageIndex - 1) * pageSize;
+            List<FilmMetadata> filmMetadata = await _context.FilmMetadata
+                .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
 
-            pagedList = await _context.FilmMetadata.ToPagedListAsync(x => x.Type == type, orderBy, SqlOrderByOptions.Asc, pageIndex, pageSize);
+            long count = await _context.FilmMetadata.CountAsync(x => x.Type == type);
 
-            return pagedList;
+            return new PagedList<FilmMetadata>
+            {
+                Items = filmMetadata,
+                CurrentPage = pageIndex,
+            };
         }
 
         public async Task<int> AddAsync(FilmMetadata metadata)

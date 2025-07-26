@@ -114,7 +114,7 @@ namespace Web.Account
                     return;
                 }
 
-                UserDto user = (await userService.GetUserAsync(userLogin.UserName)).Data;
+                UserDto user = (await userService.GetUserByUsernameAsync(userLogin.UserName)).Data;
 
                 Session["userSession"] = new UserSession
                 {

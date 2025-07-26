@@ -158,19 +158,47 @@ namespace MSSQL.QueryBuilder
                     throw new NotSupportedException($"Operator {nodeType} not supported");
             }
         }
+
+        /*** 
+         * 
+         * @return SqlQueryBuilder
+         */
+        public SqlQueryBuilder<T> OrderBy(Expression<Func<T, object>> orderBy, bool descending = false)
+        {
+            if (orderBy == null)
+                throw new ArgumentNullException(nameof(orderBy));
+
+            if (_instance == null)
+                throw new NullReferenceException(nameof(_instance));
+
+            (Type, string) cacheKey = (_ttype ?? throw new NullReferenceException(nameof(_ttype)), orderBy.ToString());
+            string cacheValue = null;
+            if (SqlQueryCache.OrderByClauseCache.TryGetValue(cacheKey, out cacheValue))
+            {
+                _orderClause.Add(cacheValue);
+                return this;
+            }
+
+            object orderByObject = orderBy.Compile().Invoke(_instance);
+            IEnumerable<string> columnEnumrable = orderByObject.GetType().GetProperties().Select(p => p.Name);
+            if (!columnEnumrable.Any())
+                throw new ArgumentException("No columns selected for ordering");
+
+            if(columnEnumrable.Count() > 1)
+                throw new ArgumentException("OrderBy expression should select only one column");
+
+            string selectedColumn = columnEnumrable.SingleOrDefault();
+
+            string orderClause = (descending) ? $"[{selectedColumn}] DESC" : $"[{selectedColumn}] ASC";
+            _orderClause.Append(orderClause);
+            SqlQueryCache.OrderByClauseCache.AddOrUpdate(cacheKey, orderClause, (key, oldvalue) => orderClause);
+
+            return this;
+        }
     }
 
     public partial class SqlQueryBuilder<T>
     {
-        private static readonly ConcurrentDictionary<(Type, string), string> _selectStatementCache
-            = new ConcurrentDictionary<(Type, string), string>();
-
-        private static readonly ConcurrentDictionary<(Type, string), string> _updateStatementCache
-            = new ConcurrentDictionary<(Type, string), string>();
-
-        private static readonly ConcurrentDictionary<Type, string> _insertStatementCache
-            = new ConcurrentDictionary<Type, string>();
-
         private static void Selector(SqlQueryBuilder<T> builder, Expression<Func<T, object>> selector, out object selectorObject, out string[] selectorColumnList, out (Type, string) cacheKey)
         {
             selectorObject = null;
@@ -179,7 +207,7 @@ namespace MSSQL.QueryBuilder
 
             if (selector != null)
             {
-                if(builder._instance == null)
+                if (builder._instance == null)
                     throw new NullReferenceException(nameof(builder._instance));
 
                 selectorObject = selector.Compile().Invoke(builder._instance);
@@ -199,7 +227,7 @@ namespace MSSQL.QueryBuilder
             Selector(builder, selector, out object selectorObject, out string[] selectorColumnList, out (Type, string) cacheKey);
 
             string cacheValue = null;
-            if (_selectStatementCache.TryGetValue(cacheKey, out cacheValue))
+            if (SqlQueryCache.SelectStatementCache.TryGetValue(cacheKey, out cacheValue))
             {
                 builder.query.Append(cacheValue);
 
@@ -211,7 +239,7 @@ namespace MSSQL.QueryBuilder
             if (selectorObject is null)
             {
                 builder.query.Append($"SELECT * FROM [{builder._tableName}]");
-                _selectStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
+                SqlQueryCache.SelectStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
 
                 return builder;
             }
@@ -235,7 +263,7 @@ namespace MSSQL.QueryBuilder
             }
 
             builder.query.Append($"SELECT {string.Join(", ", columnList)} FROM [{builder._tableName}]");
-            _selectStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
+            SqlQueryCache.SelectStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
 
             return builder;
         }
@@ -250,7 +278,7 @@ namespace MSSQL.QueryBuilder
             SqlQueryBuilder<T> builder = new SqlQueryBuilder<T>(getType: true);
             PropertyInfo[] recordProperties = ReflectionCache.GetProperties<T>();
 
-            if (_insertStatementCache.TryGetValue(builder._ttype ?? throw new NullReferenceException(nameof(builder._ttype)), out string cacheValue))
+            if (SqlQueryCache.InsertStatementCache.TryGetValue(builder._ttype ?? throw new NullReferenceException(nameof(builder._ttype)), out string cacheValue))
             {
                 builder.query.Append(cacheValue);
                 return builder;
@@ -292,7 +320,7 @@ namespace MSSQL.QueryBuilder
             insertColumnBuilder.Length -= 2;
             setValueBuilder.Length -= 2;
             builder.query.Append($"INSERT INTO [{builder._tableName}] ({insertColumnBuilder}) VALUES ({setValueBuilder})");
-            _insertStatementCache.AddOrUpdate(builder._ttype, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
+            SqlQueryCache.InsertStatementCache.AddOrUpdate(builder._ttype, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
 
             return builder;
         }
@@ -320,7 +348,7 @@ namespace MSSQL.QueryBuilder
             }
 
             string cacheValue = null;
-            if (_updateStatementCache.TryGetValue(cacheKey, out cacheValue))
+            if (SqlQueryCache.UpdateStatementCache.TryGetValue(cacheKey, out cacheValue))
             {
                 builder.query.Append(cacheValue);
                 return builder;
@@ -369,7 +397,7 @@ namespace MSSQL.QueryBuilder
             }
             setValueBuilder.Length -= 2;
             builder.query.Append($"UPDATE [{builder._tableName}] SET {setValueBuilder}");
-            _updateStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
+            SqlQueryCache.UpdateStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
 
             return builder;
         }
@@ -401,5 +429,6 @@ namespace MSSQL.QueryBuilder
 
             return builder;
         }
+
     }
 }

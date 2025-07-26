@@ -22,7 +22,7 @@ namespace Data.BLL
 
         public async Task<Role> GetAsync(string roleId)
         {
-            return await _context.Roles.nFirstOrDefaultAsync(x => x.Id == roleId);
+            return await _context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
         }
 
         public async Task<int> AddAsync(Role role)

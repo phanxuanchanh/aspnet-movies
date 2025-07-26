@@ -13,6 +13,8 @@ namespace MSSQL.QueryBuilder
         protected readonly List<string> columns;
         protected readonly List<string> conditions;
 
+        protected readonly List<string> _orderClause;
+
         protected SqlQueryBuilderBase()
         {
             _tableName = null;
@@ -20,6 +22,7 @@ namespace MSSQL.QueryBuilder
             _parameters = new List<SqlParameter>();
             columns = new List<string>();
             conditions = new List<string>();
+            _orderClause = new List<string>();
         }
 
         public string BuildQuery()
@@ -30,7 +33,13 @@ namespace MSSQL.QueryBuilder
                 whereClause = "WHERE " + string.Join(" AND ", conditions);
             }
 
-            return $"{query.ToString()} {whereClause}";
+            string orderByClause = "";
+            if (_orderClause.Count > 0)
+            {
+                orderByClause = " ORDER BY " + string.Join(", ", _orderClause);
+            }
+
+            return $"{query.ToString()} {whereClause} {orderByClause}";
         }
 
         public List<SqlParameter> GetParameters()
