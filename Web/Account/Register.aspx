@@ -1,6 +1,7 @@
 ﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" MasterPageFile="~/Account/Layouts/AccountLayout.Master" CodeBehind="Register.aspx.cs" Inherits="Web.Account.Register" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <title>Đăng ký</title>
     <style>
         body {
             background-color: #f8f9fa;

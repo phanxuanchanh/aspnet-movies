@@ -1,6 +1,7 @@
 ﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" MasterPageFile="~/Account/Layouts/AccountLayout.Master" CodeBehind="Login.aspx.cs" Inherits="Web.Account.Login" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <title>Đăng nhập</title>
     <style>
         body {
             background-color: #f8f9fa;
