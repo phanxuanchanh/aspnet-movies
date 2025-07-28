@@ -80,7 +80,10 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Logout.aspx" />
     <Content Include="Account\NewPassword.aspx" />
+    <Content Include="Account\Register.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
+    <Content Include="account_assets\css\bootstrap.min.css" />
+    <Content Include="account_assets\css\login.css" />
     <Content Include="account_assets\css\logout.css" />
     <Content Include="account_assets\fonts\fontawesome\css\all.css" />
     <Content Include="account_assets\fonts\fontawesome\css\all.min.css" />
@@ -1729,7 +1732,7 @@
     <Content Include="account_assets\fonts\fontawesome\webfonts\fa-regular-400.svg" />
     <Content Include="account_assets\fonts\fontawesome\webfonts\fa-solid-900.svg" />
     <Content Include="account_assets\images\favicon.png" />
-    <Content Include="account_assets\videos\Puples-33590.mp4" />
+    <Content Include="account_assets\js\bootstrap.bundle.min.js" />
     <Content Include="Admin\ActorManagement\ActorDetail.aspx" />
     <Content Include="Admin\ActorManagement\ActorList.aspx" />
     <Content Include="Admin\ActorManagement\EditActor.aspx" />
@@ -1751,7 +1754,6 @@
     <Content Include="Admin\RoleManagement\EditRole.aspx" />
     <Content Include="Admin\Index.aspx" />
     <Content Include="Admin\LanguageManagement\LanguageList.aspx" />
-    <Content Include="Admin\RoleManagement\DeleteRole.aspx" />
     <Content Include="Admin\RoleManagement\RoleDetail.aspx" />
     <Content Include="Admin\RoleManagement\RoleList.aspx" />
     <Content Include="Admin\TagManagement\EditTag.aspx" />
@@ -1794,7 +1796,6 @@
     <Content Include="user_assets\js\plugins2.js" />
     <Content Include="account_assets\css\common.css" />
     <Content Include="account_assets\css\confirm.css" />
-    <Content Include="account_assets\css\login.css" />
     <Content Include="account_assets\css\register.css" />
     <Content Include="account_assets\css\reset-password.css" />
     <Content Include="admin_assets\css\font-awesome.min.css" />
@@ -1849,6 +1850,13 @@
     <Compile Include="Account\Confirm.aspx.designer.cs">
       <DependentUpon>Confirm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account\Layouts\AccountLayout.Master.cs">
+      <DependentUpon>AccountLayout.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Layouts\AccountLayout.Master.designer.cs">
+      <DependentUpon>AccountLayout.Master</DependentUpon>
+    </Compile>
     <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1869,6 +1877,13 @@
     </Compile>
     <Compile Include="Account\NewPassword.aspx.designer.cs">
       <DependentUpon>NewPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\ResetPassword.aspx.cs">
       <DependentUpon>ResetPassword.aspx</DependentUpon>
@@ -2033,13 +2048,6 @@
     </Compile>
     <Compile Include="Admin\Layout\AdminLayout.Master.designer.cs">
       <DependentUpon>AdminLayout.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\RoleManagement\DeleteRole.aspx.cs">
-      <DependentUpon>DeleteRole.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\RoleManagement\DeleteRole.aspx.designer.cs">
-      <DependentUpon>DeleteRole.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\RoleManagement\RoleDetail.aspx.cs">
       <DependentUpon>RoleDetail.aspx</DependentUpon>
@@ -2262,6 +2270,7 @@
     <Content Include="user_assets\fonts\fontawesome-webfont.eot" />
     <Content Include="user_assets\fonts\fontawesome-webfont.ttf" />
     <Content Include="user_assets\fonts\fontawesome-webfont.woff" />
+    <Content Include="Account\Layouts\AccountLayout.Master" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

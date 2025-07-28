@@ -1,5 +1,4 @@
 ﻿using Common.Web;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -25,7 +24,7 @@ namespace Web.Admin.RoleManagement
             toolDetail = null;
             try
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateRole", null);
+                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditRole", new { action = "create" });
 
                 if (!CheckLoggedIn())
                 {
@@ -103,8 +102,7 @@ namespace Web.Admin.RoleManagement
                 RoleDto role = (await _roleService.GetRoleAsync(key));
                 toolDetail = string.Format("{0} -- {1}", role.ID, role.Name);
                 hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = role.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateRole", new { id = role.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteRole", new { id = role.ID });
+                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditRole", new { id = role.ID, action = "update" });
                 enableTool = true;
             }
             catch (Exception ex)

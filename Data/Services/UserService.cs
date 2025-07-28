@@ -113,6 +113,7 @@ namespace Data.Services
                     UserName = user.UserName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
+                    Activated = user.Activated,
                     CreatedAt = user.CreatedAt,
                     UpdatedAt = user.UpdatedAt
                 }
@@ -144,6 +145,7 @@ namespace Data.Services
                         ID = role.Id,
                         Name = role.Name
                     },
+                    Activated = user.Activated,
                     CreatedAt = user.CreatedAt,
                     UpdatedAt = user.UpdatedAt
                 }

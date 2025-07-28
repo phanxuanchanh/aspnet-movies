@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Text;
 using Common.Web;
+using MSSQL.Mapper;
 
 namespace Data.BLL
 {
@@ -29,15 +30,18 @@ namespace Data.BLL
         public async Task<List<Taxonomy>> GetsByIdsAsync(List<int> ids)
         {
             StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM Taxonomy WHERE Id IN (");
-            SqlParameter[] parameters = new SqlParameter[ids.Count];
+            //SqlParameter[] parameters = new SqlParameter[ids.Count];
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
             for (int i = 0; i < ids.Count; i++)
             {
                 commandTextBuilder.Append($"@Id{i}, ");
-                parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+                //parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+                parameters.Add($"@Id{i}", ids[i]);
             }
             commandTextBuilder.Append(")").Replace(", )", " )");
 
-            return await _context.Execute_ToListAsync<Taxonomy>(commandTextBuilder.ToString(), CommandType.Text, parameters);
+            return await _context.GetHelper()
+                .ExecuteReaderAsync<Taxonomy>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<Taxonomy>(r));
         }
 
         public async Task<PagedList<Taxonomy>> GetsAsync(string type = "category", long pageIndex = 1, long pageSize = 10)
@@ -46,7 +50,7 @@ namespace Data.BLL
             List<Taxonomy> taxonomies = await _context.Taxonomies
                 .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
 
-            //long count = await _context.Taxonomies.CountAsync(x => x.Type == type);
+            long count = await _context.Taxonomies.CountAsync(x => x.Type == type);
 
             return new PagedList<Taxonomy>
             {

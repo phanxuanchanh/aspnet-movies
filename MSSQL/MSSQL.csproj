@@ -43,14 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Access\ObjectReceivingData.cs" />
     <Compile Include="Access\SqlContextAsync.cs" />
-    <Compile Include="Access\SqlDataAsync.cs" />
     <Compile Include="Access\SqlPagedList.cs" />
     <Compile Include="Access\SqlAccess.cs" />
     <Compile Include="Access\SqlAccessAsync.cs" />
     <Compile Include="Access\SqlContext.cs" />
-    <Compile Include="Access\SqlData.cs" />
     <Compile Include="AsyncSqlExecHelper.cs" />
     <Compile Include="Attributes\SqlColumn.cs" />
     <Compile Include="Attributes\SqlTable.cs" />

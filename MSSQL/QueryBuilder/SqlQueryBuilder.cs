@@ -15,7 +15,6 @@ namespace MSSQL.QueryBuilder
     /*** SqlQueryBuilder class
     * 
     * This class is used to build SQL queries
-    * Authors: OmniSciLab
     * Author: Phan Xuân Chánh { Chinese Charater: 潘春正, EnglishName1: Chanh Xuan Phan, EnglishName2: StevePhan }
     *  - www.phanxuanchanh.com
     *  
@@ -425,7 +424,7 @@ namespace MSSQL.QueryBuilder
             SqlQueryBuilder<T> builder = new SqlQueryBuilder<T>(getType: true);
 
             builder.SetTableName();
-            builder.query.Append($"SELECT COUNT(*) FROM [{builder._tableName}]");
+            builder.query.Append($"SELECT CAST(COUNT(*) AS BIGINT) FROM [{builder._tableName}]");
 
             return builder;
         }

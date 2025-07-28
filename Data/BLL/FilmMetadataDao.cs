@@ -1,12 +1,8 @@
 ﻿using Common.Web;
 using Data.DAL;
-using MSSQL.Access;
-using MSSQL.Query;
+using MSSQL.Mapper;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,15 +24,18 @@ namespace Data.BLL
         public async Task<List<FilmMetadata>> GetsByIdsAsync(List<int> ids)
         {
             StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM FilmMetadata WHERE Id IN (");
-            SqlParameter[] parameters = new SqlParameter[ids.Count];
-            for(int i = 0; i < ids.Count; i++)
+            //SqlParameter[] parameters = new SqlParameter[ids.Count];
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            for (int i = 0; i < ids.Count; i++)
             {
                 commandTextBuilder.Append($"@Id{i}, ");
-                parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+                //parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+                parameters.Add($"@Id{i}", ids[i]);
             }
             commandTextBuilder.Append(")").Replace(", )", " )");
 
-            return await _context.Execute_ToListAsync<FilmMetadata>(commandTextBuilder.ToString(), CommandType.Text, parameters);
+            return await _context.GetHelper()
+                .ExecuteReaderAsync<FilmMetadata>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<FilmMetadata>(r));
         }
 
         public async Task<PagedList<FilmMetadata>> GetsAsync(string type = "language", long pageIndex = 1, long pageSize = 10)
@@ -45,7 +44,7 @@ namespace Data.BLL
             List<FilmMetadata> filmMetadata = await _context.FilmMetadata
                 .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
 
-            long count = await _context.FilmMetadata.CountAsync(x => x.Type == type);
+            //long count = await _context.FilmMetadata.CountAsync(x => x.Type == type);
 
             return new PagedList<FilmMetadata>
             {

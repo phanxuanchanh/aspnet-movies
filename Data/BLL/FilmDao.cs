@@ -1,13 +1,10 @@
 ﻿using Data.DAL;
 using MSSQL.Access;
-using MSSQL.Query;
-using System.Linq.Expressions;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
 using Common.Web;
+using MSSQL.Mapper;
 
 namespace Data.BLL
 {
@@ -43,14 +40,13 @@ namespace Data.BLL
         public async Task<SqlPagedList<Film>> GetsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)
         {
             string countCommand = @"
-                SELECT COUNT(*)
+                SELECT CAST(COUNT(*) AS BIGINT)
                 FROM [Film]
                 INNER JOIN [TaxonomyLink] tl ON [Film].[ID] = tl.FilmId
                 WHERE tl.TaxonomyId = @categoryId";
 
-            long totalRecord = Convert.ToInt64(
-                await _context.ExecuteScalarAsync(countCommand, CommandType.Text, new SqlParameter("@categoryId", categoryId))
-            );
+            long totalRecord = await _context.GetHelper()
+                .ExecuteScalarQueryAsync<long>(countCommand, new Dictionary<string, object> { { "@categoryId", categoryId } });
 
             string command = @"
                 SELECT [Film].*
@@ -62,9 +58,18 @@ namespace Data.BLL
 
             long offest = ((pageIndex - 1) * pageSize);
 
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@categoryId", categoryId },
+                { "@offset", offest },
+                { "@pageSize", pageSize }
+            };
+
             SqlPagedList<Film> pagedList = new SqlPagedList<Film>();
 
-            pagedList.Items = await _context.Execute_ToListAsync<Film>(command, CommandType.Text, new SqlParameter("@categoryId", categoryId), new SqlParameter("@offset", offest), new SqlParameter("@pageSize", pageSize));
+            pagedList.Items = await _context.GetHelper()
+                .ExecuteReaderAsync<Film>(command, parameters, r => SqlMapper.MapRow<Film>(r));
+
             pagedList.Solve(totalRecord, pageIndex - 1, pageSize);
 
             return pagedList;

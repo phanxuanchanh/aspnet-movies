@@ -3,7 +3,6 @@ using Common.Web;
 using Data.BLL;
 using Data.DAL;
 using Data.DTO;
-using MSSQL.Access;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,9 +65,10 @@ namespace Data.Services
 
         public async Task<PagedList<DirectorDto>> GetDirectorsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            PagedList<People> data = await _peopleDao.GetsAsync("director", pageIndex, pageSize);
+            long skip = (pageIndex - 1) * pageSize;
+            List<People> people = await _peopleDao.GetsAsync("director", skip, pageSize);
 
-            List<DirectorDto> directors = data.Items.Select(s => new DirectorDto
+            List<DirectorDto> directors = people.Select(s => new DirectorDto
             {
                 ID = s.Id,
                 Name = s.Name,
@@ -80,16 +80,17 @@ namespace Data.Services
             return new PagedList<DirectorDto>
             {
                 Items = directors,
-                PageNumber = data.PageNumber,
-                CurrentPage = data.CurrentPage,
+                //PageNumber = data.PageNumber,
+                CurrentPage = pageIndex,
             };
         }
 
         public async Task<PagedList<ActorDto>> GetActorsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            PagedList<People> data = await _peopleDao.GetsAsync("actor", pageIndex, pageSize);
+            long skip = (pageIndex - 1) * pageSize;
+            List<People> people = await _peopleDao.GetsAsync("actor", skip, pageSize);
 
-            List<ActorDto> actors = data.Items.Select(s => new ActorDto
+            List<ActorDto> actors = people.Select(s => new ActorDto
             {
                 ID = s.Id,
                 Name = s.Name,
@@ -101,8 +102,8 @@ namespace Data.Services
             return new PagedList<ActorDto>
             {
                 Items = actors,
-                PageNumber = data.PageNumber,
-                CurrentPage = data.CurrentPage,
+                //PageNumber = data.PageNumber,
+                CurrentPage = pageIndex,
             };
         }
 

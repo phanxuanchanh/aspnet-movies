@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Text;
 using Common.Web;
+using MSSQL.Mapper;
 
 namespace Data.BLL
 {
@@ -29,30 +30,25 @@ namespace Data.BLL
         public async Task<List<People>> GetsByIdsAsync(List<long> ids)
         {
             StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM People WHERE Id IN (");
-            SqlParameter[] parameters = new SqlParameter[ids.Count];
+/*            SqlParameter[] parameters = new SqlParameter[ids.Count]*/;
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
             for (int i = 0; i < ids.Count; i++)
             {
                 commandTextBuilder.Append($"@Id{i}, ");
-                parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+                //parameters[i] = new SqlParameter($"@Id{i}", ids[i]);
+                parameters.Add($"@Id{i}", ids[i]);
             }
             commandTextBuilder.Append(")").Replace(", )", " )");
 
-            return await _context.Execute_ToListAsync<People>(commandTextBuilder.ToString(), CommandType.Text, parameters);
+            return await _context.GetHelper().ExecuteReaderAsync<People>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<People>(r));
         }
 
-        public async Task<PagedList<People>> GetsAsync(string type = "director", long pageIndex = 1, long pageSize = 10)
+        public async Task<List<People>> GetsAsync(string type = "director", long skip = 0, long take = 0)
         {
-            long skip = (pageIndex - 1) * pageSize;
-            List<People> people = await _context.People
+            return await _context.People
                 .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
 
-            long count = await _context.People.CountAsync(x => x.Type == type);
-
-            return new PagedList<People>
-            {
-                Items = people,
-                CurrentPage = pageIndex,
-            };
+            //long count = await _context.People.CountAsync(x => x.Type == type);
         }
 
         public async Task<int> AddAsync(People people)

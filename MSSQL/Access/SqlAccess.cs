@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace MSSQL.Access
 {
@@ -17,7 +18,7 @@ namespace MSSQL.Access
         private List<Expression<Func<T, object>>> _select;
         private List<Expression<Func<T, object>>> _orderBy;
 
-        internal SqlAccess(SqlData sqlData, SqlExecHelper sqlExecHelper)
+        internal SqlAccess(SqlExecHelper sqlExecHelper)
         {
             _sqlExecHelper = sqlExecHelper;
             _queryBuilder = null;
@@ -25,6 +26,14 @@ namespace MSSQL.Access
             _where = new List<Expression<Func<T, bool>>>();
             _select = new List<Expression<Func<T, object>>>();
             _orderBy = new List<Expression<Func<T, object>>>();
+        }
+
+        internal void Reset()
+        {
+            _queryBuilder = null;
+            _where.Clear();
+            _select.Clear();
+            _orderBy.Clear();
         }
 
         public SqlAccess<T> Where(Expression<Func<T, bool>> expression)

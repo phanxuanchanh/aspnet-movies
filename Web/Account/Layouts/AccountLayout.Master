@@ -1,0 +1,27 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AccountLayout.Master.cs" Inherits="Web.Account.Layout.AccountLayout" %>
+
+<%@ Import Namespace="Data.DTO" %>
+
+<!DOCTYPE html>
+<html lang="vi" class="no-js">
+<head runat="server">
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+
+    <link rel="stylesheet" href="<%= ResolveUrl("~/account_assets/css/bootstrap.min.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/account_assets/css/style.css") %>">
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="frmAccountLayout" runat="server">
+        <asp:ContentPlaceHolder ID="mainContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
+    <script src="<%= ResolveUrl("~/account_assets/js/bootstrap.bundle.min.js") %>"></script>
+    <asp:ContentPlaceHolder ID="foot" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>

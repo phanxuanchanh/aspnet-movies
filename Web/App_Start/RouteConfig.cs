@@ -33,7 +33,7 @@ namespace Web.App_Start
             
             routes.MapPageRoute("Admin_RoleList", "admin/role/list", "~/Admin/RoleManagement/RoleList.aspx");
             routes.MapPageRoute("Admin_RoleDetail", "admin/role/detail/{id}", "~/Admin/RoleManagement/RoleDetail.aspx");
-            routes.MapPageRoute("Admin_EditRole", "admin/role/create", "~/Admin/RoleManagement/EditRole.aspx");
+            routes.MapPageRoute("Admin_EditRole", "admin/role/edit", "~/Admin/RoleManagement/EditRole.aspx");
 
             routes.MapPageRoute("Admin_CountryList", "admin/country/list", "~/Admin/CountryManagement/CountryList.aspx");
             routes.MapPageRoute("Admin_CountryDetail", "admin/country/detail/{id}", "~/Admin/CountryManagement/CountryDetail.aspx");

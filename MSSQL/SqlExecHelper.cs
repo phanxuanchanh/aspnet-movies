@@ -66,7 +66,9 @@ namespace MSSQL
                 foreach (KeyValuePair<string, object> pair in parameters)
                     cmd.Parameters.AddWithValue(pair.Key, pair.Value);
 
-                return (Tscalar)cmd.ExecuteScalar();
+                object val = cmd.ExecuteScalar();
+
+                return val is null ? default : (Tscalar)Convert.ChangeType(val, typeof(Tscalar));
             }
         }
 
@@ -132,7 +134,9 @@ namespace MSSQL
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddRange(builder.GetParameters().ToArray());
 
-                return (Tscalar)cmd.ExecuteScalar();
+                object val = cmd.ExecuteScalar();
+
+                return val is null ? default : (Tscalar)Convert.ChangeType(val, typeof(Tscalar));
             }
         }
 

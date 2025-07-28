@@ -48,9 +48,6 @@ namespace Web.Account
         {
             hylnkResetPassword.NavigateUrl = GetRouteUrl("Account_ResetPassword", null);
             hylnkRegister.NavigateUrl = GetRouteUrl("Account_Register", null);
-            hylnkFeedback.NavigateUrl = "#";
-            hylnkContact.NavigateUrl = "#";
-            hylnkTermOfUse.NavigateUrl = "#";
         }
 
         private void InitValidation()
@@ -94,8 +91,8 @@ namespace Web.Account
         {
             return new UserLogin
             {
-                UserName = Request.Form["txtUsername"],
-                Password = Request.Form["txtPassword"]
+                UserName = txtUsername.Text,
+                Password = txtPassword.Text
             };
         }
 

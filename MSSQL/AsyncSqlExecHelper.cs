@@ -62,7 +62,7 @@ namespace MSSQL
 
                 object val = await cmd.ExecuteScalarAsync();
 
-                return val is null ? default : (Tscalar)val;
+                return val is null ? default : (Tscalar)Convert.ChangeType(val, typeof(Tscalar));
             }
         }
 
@@ -114,7 +114,7 @@ namespace MSSQL
 
                 object val = await cmd.ExecuteScalarAsync();
 
-                return val is null ? default : (Tscalar)val;
+                return val is null ? default : (Tscalar)Convert.ChangeType(val, typeof(Tscalar));
             }; 
         }
 

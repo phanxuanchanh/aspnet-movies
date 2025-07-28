@@ -1,7 +1,6 @@
 ﻿using Data.DAL;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace Data.BLL.Installation
                 {
                     if (!string.IsNullOrWhiteSpace(commandString.Trim()))
                     {
-                        db.ExecuteNonQuery(commandString, CommandType.Text);
+                        db.GetHelper().ExecuteNonQuery(commandString);
                     }
                 }
             }
@@ -44,7 +43,7 @@ namespace Data.BLL.Installation
                 {
                     if (!string.IsNullOrWhiteSpace(commandString.Trim()))
                     {
-                        await db.ExecuteNonQueryAsync(commandString, CommandType.Text);
+                        await db.GetHelper().ExecuteNonQueryAsync(commandString);
                     }
                 }
             }
