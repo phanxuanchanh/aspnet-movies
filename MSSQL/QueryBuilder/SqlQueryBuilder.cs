@@ -226,7 +226,7 @@ namespace MSSQL.QueryBuilder
             Selector(builder, selector, out object selectorObject, out string[] selectorColumnList, out (Type, string) cacheKey);
 
             string cacheValue = null;
-            if (SqlQueryCache.SelectStatementCache.TryGetValue(cacheKey, out cacheValue))
+            if (SqlQueryCache.TryGetSelectStatement(cacheKey, out cacheValue))
             {
                 builder.query.Append(cacheValue);
 
@@ -238,7 +238,7 @@ namespace MSSQL.QueryBuilder
             if (selectorObject is null)
             {
                 builder.query.Append($"SELECT * FROM [{builder._tableName}]");
-                SqlQueryCache.SelectStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
+                SqlQueryCache.AddOrUpdateSelectStatement(cacheKey, builder.query.ToString());
 
                 return builder;
             }
@@ -262,7 +262,7 @@ namespace MSSQL.QueryBuilder
             }
 
             builder.query.Append($"SELECT {string.Join(", ", columnList)} FROM [{builder._tableName}]");
-            SqlQueryCache.SelectStatementCache.AddOrUpdate(cacheKey, builder.query.ToString(), (key, oldvalue) => builder.query.ToString());
+            SqlQueryCache.AddOrUpdateSelectStatement(cacheKey, builder.query.ToString());
 
             return builder;
         }

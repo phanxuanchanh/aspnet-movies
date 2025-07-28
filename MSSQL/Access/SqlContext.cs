@@ -27,17 +27,13 @@ namespace MSSQL.Access
         protected void DisposeSqlAccess<T>(ref SqlAccess<T> sqlAccess) where T : ISqlTable, new()
         {
             if (sqlAccess != null)
-            {
                 sqlAccess = null;
-            }
         }
 
         public SqlExecHelper GetHelper()
         {
             return _sqlExecHelper;
         }
-
-        
 
         protected virtual void Dispose(bool disposing)
         {

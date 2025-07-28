@@ -5,7 +5,7 @@ namespace MSSQL.Connection
 {
     public class SqlConnectInfo
     {
-        private static string connectionString;
+        private static string _connectionString;
 
         public static void CreateConnectionString(string dataSource, string initialCatalog, string userId, string password)
         {
@@ -15,17 +15,17 @@ namespace MSSQL.Connection
             sqlConnectionStringBuilder.UserID = userId;
             sqlConnectionStringBuilder.Password = password;
 
-            connectionString = sqlConnectionStringBuilder.ConnectionString;
+            _connectionString = sqlConnectionStringBuilder.ConnectionString;
         }
 
         public static void ReadFromConfigFile(string connectionStringName)
         {
-            connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
         public static string GetConnectionString()
         {
-            return connectionString;
+            return _connectionString;
         }
     }
 }

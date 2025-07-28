@@ -1,12 +1,6 @@
-﻿using Common.Web;
-using Data.DAL;
-using Data.DTO;
-using MSSQL.Access;
-using MSSQL.Query;
+﻿using Data.DAL;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Data.BLL

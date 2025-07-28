@@ -1,14 +1,8 @@
 ﻿using Data.DAL;
-using MSSQL.Access;
-using MSSQL.Query;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
 using System.Text;
-using Common.Web;
 using MSSQL.Mapper;
 
 namespace Data.BLL

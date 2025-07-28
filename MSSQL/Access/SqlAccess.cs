@@ -1,11 +1,9 @@
 ﻿using MSSQL.Mapper;
-using MSSQL.Query;
 using MSSQL.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 
 namespace MSSQL.Access
 {
@@ -145,15 +143,6 @@ namespace MSSQL.Access
             IEnumerable<T> enumrable = _sqlExecHelper.ExecuteReader<T>(_queryBuilder, reader => SqlMapper.MapRow<T>(reader));
 
             return enumrable.FirstOrDefault();
-        }
-
-        public SqlPagedList<T> ToPagedList(Expression<Func<T, bool>> where, Expression<Func<T, object>> orderBy, SqlOrderByOptions sqlOrderByOptions, long pageIndex, long pageSize)
-        {
-            long totalRecord = 0;// Count(where);
-            SqlPagedList<T> pagedList = new SqlPagedList<T>();
-            pagedList.Solve(totalRecord, pageIndex, pageSize);
-            pagedList.Items = new List<T>(); //ToList(where, orderBy, sqlOrderByOptions, pagedList.Skip, pagedList.Take);
-            return pagedList;
         }
     }
 }
