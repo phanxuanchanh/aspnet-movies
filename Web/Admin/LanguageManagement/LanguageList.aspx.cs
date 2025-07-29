@@ -23,27 +23,18 @@ namespace Web.Admin.LanguageManagement
             _filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
             enableTool = false;
             toolDetail = null;
-            try
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { action = "create" });
+
+            if (!CheckLoggedIn())
             {
-
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { action = "create" });
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvLanguage(0);
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvLanguage(0);
+                SetDrdlPage();
             }
         }
 
@@ -84,34 +75,18 @@ namespace Web.Admin.LanguageManagement
 
         protected async void grvLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                int key = (int)grvLanguage.DataKeys[grvLanguage.SelectedIndex].Value;
-                LanguageDto language = (await _filmMetadataService.GetLanguageAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", language.ID, language.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_LanguageDetail", new { id = language.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { id = language.ID, action = "update" });
-                enableTool = true;
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            int key = (int)grvLanguage.DataKeys[grvLanguage.SelectedIndex].Value;
+            LanguageDto language = (await _filmMetadataService.GetLanguageAsync(key)).Data;
+            toolDetail = string.Format("{0} -- {1}", language.ID, language.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_LanguageDetail", new { id = language.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { id = language.ID, action = "update" });
+            enableTool = true;
         }
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                await SetGrvLanguage(drdlPage.SelectedIndex);
-                SetDrdlPage();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await SetGrvLanguage(drdlPage.SelectedIndex);
+            SetDrdlPage();
         }
     }
 }

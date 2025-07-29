@@ -22,26 +22,19 @@ namespace Web.Admin.CountryManagement
             _filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
             enableTool = false;
             toolDetail = null;
-            try
+
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { action = "create" });
+
+            if (!CheckLoggedIn())
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { action = "create" });
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvCountry();
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch(Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvCountry();
+                SetDrdlPage();
             }
         }
 
@@ -56,16 +49,8 @@ namespace Web.Admin.CountryManagement
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                await SetGrvCountry();
-                SetDrdlPage();
-            }
-            catch(Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await SetGrvCountry();
+            SetDrdlPage();
         }
 
         private async Task SetGrvCountry()
@@ -96,20 +81,12 @@ namespace Web.Admin.CountryManagement
 
         protected async void grvCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                int key = (int)grvCountry.DataKeys[grvCountry.SelectedIndex].Value;
-                CountryDto country = (await _filmMetadataService.GetCountryAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", country.ID, country.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = country.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = country.ID, action = "update" });
-                enableTool = true;
-            }
-            catch(Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            int key = (int)grvCountry.DataKeys[grvCountry.SelectedIndex].Value;
+            CountryDto country = (await _filmMetadataService.GetCountryAsync(key)).Data;
+            toolDetail = string.Format("{0} -- {1}", country.ID, country.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = country.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = country.ID, action = "update" });
+            enableTool = true;
         }
     }
 }

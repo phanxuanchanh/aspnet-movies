@@ -22,26 +22,18 @@ namespace Web.Admin.TagManagement
             _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
             enableTool = false;
             toolDetail = null;
-            try
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditTag", new { action = "create" });
+
+            if (!CheckLoggedIn())
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditTag", new { action = "create" });
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvTag();
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvTag();
+                SetDrdlPage();
             }
         }
 
@@ -56,16 +48,8 @@ namespace Web.Admin.TagManagement
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                await SetGrvTag();
-                SetDrdlPage();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await SetGrvTag();
+            SetDrdlPage();
         }
 
         private async Task SetGrvTag()
@@ -96,20 +80,12 @@ namespace Web.Admin.TagManagement
 
         protected async void grvTag_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                int key = (int)grvTag.DataKeys[grvTag.SelectedIndex].Value;
-                TagDto tag = (await _taxonomyService.GetTagAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", tag.ID, tag.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_TagDetail", new { id = tag.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = tag.ID, action = "update" });
-                enableTool = true;
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            int key = (int)grvTag.DataKeys[grvTag.SelectedIndex].Value;
+            TagDto tag = (await _taxonomyService.GetTagAsync(key)).Data;
+            toolDetail = string.Format("{0} -- {1}", tag.ID, tag.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_TagDetail", new { id = tag.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = tag.ID, action = "update" });
+            enableTool = true;
         }
     }
 }

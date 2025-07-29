@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone-no">
     <link rel="icon" type="image/png" href="<% = ResolveUrl("~/account_assets/images/favicon.png") %>"/>
-    <link rel="stylesheet" href="<%= ResolveUrl("~/account_assets/css/bootstrap.min.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/common_assets/bootstrap/bootstrap.min.css") %>">
     <link rel="stylesheet" href="<%= ResolveUrl("~/account_assets/css/style.css") %>">
 
     <asp:ContentPlaceHolder ID="head" runat="server">
@@ -20,7 +20,7 @@
         <asp:ContentPlaceHolder ID="mainContent" runat="server">
         </asp:ContentPlaceHolder>
     </form>
-    <script src="<%= ResolveUrl("~/account_assets/js/bootstrap.bundle.min.js") %>"></script>
+    <script src="<%= ResolveUrl("~/common_assets/bootstrap/bootstrap.bundle.min.js") %>"></script>
     <asp:ContentPlaceHolder ID="foot" runat="server">
     </asp:ContentPlaceHolder>
 </body>

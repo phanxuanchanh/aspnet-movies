@@ -28,11 +28,11 @@ namespace Web.User
 
                 using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
                 {
-                    UpdateState state = UpdateState.Failed;// filmBLL.IncreaseView(filmId);
-                    if (state == UpdateState.Success)
-                        context.Response.Write("Đã tăng lượt xem");
-                    else
-                        context.Response.Write("Lỗi tăng lượt xem");
+                    //UpdateState state = UpdateState.Failed;// filmBLL.IncreaseView(filmId);
+                    //if (state == UpdateState.Success)
+                    //    context.Response.Write("Đã tăng lượt xem");
+                    //else
+                    //    context.Response.Write("Lỗi tăng lượt xem");
                 }
             }
             catch (Exception ex)

@@ -23,26 +23,18 @@ namespace Web.Admin.RoleManagement
             enableShowResult = false;
             stateString = null;
             stateDetail = null;
-            try
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_RoleList", null);
+            InitValidation();
+
+            if (!CheckLoggedIn())
             {
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_RoleList", null);
-                InitValidation();
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;   
-                }
-
-                if (IsPostBack)
-                {
-                    await Create();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await Create();
             }
         }
 

@@ -17,22 +17,14 @@ namespace Web.Admin.CategoryManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             enableShowDetail = false;
-            try
-            {
-                int id = GetCategoryId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = id, action = "update" });
+            int id = GetCategoryId();
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = id, action = "update" });
 
-                if (CheckLoggedIn())
-                    await GetCategory(id);
-                else
-                    Response.RedirectToRoute("Account_Login", null);
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            if (CheckLoggedIn())
+                await GetCategory(id);
+            else
+                Response.RedirectToRoute("Account_Login", null);
         }
 
         private int GetCategoryId()
@@ -68,15 +60,7 @@ namespace Web.Admin.CategoryManagement
 
         protected async void btnDelete_Click(object sender, EventArgs e)
         {
-            try
-            {
-                await DeleteCategory();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await DeleteCategory();
         }
 
         private async Task DeleteCategory()

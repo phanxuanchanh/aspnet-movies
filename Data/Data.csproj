@@ -48,17 +48,11 @@
     <Compile Include="BLL\FilmMetadataDao.cs" />
     <Compile Include="BLL\FilmMetaLinkDao.cs" />
     <Compile Include="BLL\GeneralDao.cs" />
-    <Compile Include="BLL\Installation\DBInstallation.cs" />
     <Compile Include="BLL\PeopleDao.cs" />
     <Compile Include="BLL\PeopleLinkDao.cs" />
     <Compile Include="BLL\TaxonomyDao.cs" />
     <Compile Include="BLL\TaxonomyLinkDao.cs" />
     <Compile Include="DAL\FilmMetaLink.cs" />
-    <Compile Include="BLL\Migration\UserMigration.cs" />
-    <Compile Include="Config\DatabaseConfig.cs" />
-    <Compile Include="Config\MigrationConfig.cs" />
-    <Compile Include="BLL\Migration\PaymentMethodMigration.cs" />
-    <Compile Include="BLL\Migration\RoleMigration.cs" />
     <Compile Include="BLL\PaymentInfoBLL.cs" />
     <Compile Include="BLL\PaymentMethodDao.cs" />
     <Compile Include="BLL\RoleDao.cs" />

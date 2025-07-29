@@ -1,12 +1,10 @@
 ﻿using Common.Web;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.DirectorManagement
 {
@@ -23,27 +21,20 @@ namespace Web.Admin.DirectorManagement
             _peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
             enableTool = false;
             toolDetail = null;
-            try
+
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { action = "create" });
+
+            if (!CheckLoggedIn())
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { action = "create" });
+                Response.RedirectToRoute("Account_Login", null);
+                return;
 
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                    
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvDirector();
-                    SetDrdlPage();
-                }
             }
-            catch (Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvDirector();
+                SetDrdlPage();
             }
         }
 
@@ -58,16 +49,8 @@ namespace Web.Admin.DirectorManagement
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                await SetGrvDirector();
-                SetDrdlPage();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await SetGrvDirector();
+            SetDrdlPage();
         }
 
         private async Task SetGrvDirector()
@@ -98,20 +81,12 @@ namespace Web.Admin.DirectorManagement
 
         protected async void grvDirector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                long key = (long)grvDirector.DataKeys[grvDirector.SelectedIndex].Value;
-                DirectorDto director = (await _peopleService.GetDirectorAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", director.ID, director.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_DirectorDetail", new { id = director.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = director.ID, action = "update" });
-                enableTool = true;
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            long key = (long)grvDirector.DataKeys[grvDirector.SelectedIndex].Value;
+            DirectorDto director = (await _peopleService.GetDirectorAsync(key)).Data;
+            toolDetail = string.Format("{0} -- {1}", director.ID, director.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_DirectorDetail", new { id = director.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = director.ID, action = "update" });
+            enableTool = true;
         }
     }
 }

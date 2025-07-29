@@ -1,8 +1,10 @@
 ﻿using Common.Web;
-using Data.Config;
+using MSSQL.Connection;
 using System;
 using System.Web.Routing;
 using Web.App_Start;
+using Web.Install;
+using Web.Models;
 
 namespace Web
 {
@@ -12,9 +14,8 @@ namespace Web
         protected void Application_Start(object sender, EventArgs e)
         {
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            DatabaseConfig.ReadFromConfigFile("MovieDB");
-            DatabaseConfig.OtherSettings();
-            //MigrationConfig.Migrate();
+            SqlConnectInfo.ReadFromConfigFile("MovieDB");
+
             EmailConfig.RegisterEmail();
         }
 
@@ -25,7 +26,7 @@ namespace Web
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            
+            Installer.RunIfNotInstalled(Context);
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
@@ -35,7 +36,11 @@ namespace Web
 
         protected void Application_Error(object sender, EventArgs e)
         {
+            Exception ex = Server.GetLastError();
+            Server.ClearError();
+            Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
 
+            Response.RedirectToRoute("Notification_Error", null);
         }
 
         protected void Session_End(object sender, EventArgs e)

@@ -1,5 +1,4 @@
-﻿using Data.BLL;
-using Data.DTO;
+﻿using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
@@ -18,23 +17,15 @@ namespace Web.Admin.RoleManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             enableShowDetail = false;
-            try
-            {
-                string id = GetRoleId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_RoleList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateRole", new { id = id });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteRole", new { id = id });
+            string id = GetRoleId();
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_RoleList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateRole", new { id = id });
+            hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteRole", new { id = id });
 
-                if (CheckLoggedIn())
-                    await GetRoleInfo(id);
-                else
-                    Response.RedirectToRoute("Account_Login", null);
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            if (CheckLoggedIn())
+                await GetRoleInfo(id);
+            else
+                Response.RedirectToRoute("Account_Login", null);
         }
 
         private bool CheckLoggedIn()

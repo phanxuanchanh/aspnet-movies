@@ -1,11 +1,9 @@
-﻿using Data.BLL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using Data.DTO;
 using Common.Upload;
-using Web.Models;
 using System.Linq;
 using Common;
 using Data.Services;
@@ -25,18 +23,11 @@ namespace Web.User
         protected async void Page_Load(object sender, EventArgs e)
         {
             films_CategoryDict = new Dictionary<CategoryDto, List<FilmDto>>();
-            try
-            {
-                hyplnkCategoryList = GetRouteUrl("User_CategoryList", null);
-                await GetLatestFilm();
-                await GetCategories();
-                await GetFilmsByCategory();
-            }
-            catch(Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+
+            hyplnkCategoryList = GetRouteUrl("User_CategoryList", null);
+            await GetLatestFilm();
+            await GetCategories();
+            await GetFilmsByCategory();
         }
 
         private async Task GetLatestFilm()
@@ -73,11 +64,11 @@ namespace Web.User
 
         private async Task GetFilmsByCategory()
         {
-            foreach(CategoryDto category in categories)
+            foreach (CategoryDto category in categories)
             {
 
                 List<FilmDto> films = null;
-                using(FilmService filmBLL = NinjectWebCommon.Kernel.Get<FilmService>())
+                using (FilmService filmBLL = NinjectWebCommon.Kernel.Get<FilmService>())
                 {
                     PagedList<FilmDto> result = await filmBLL.GetFilmsByCategoryIdAsync(category.ID, 24);
                     films = result.Items;

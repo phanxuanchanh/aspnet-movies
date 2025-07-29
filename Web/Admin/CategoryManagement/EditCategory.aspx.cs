@@ -32,34 +32,27 @@ namespace Web.Admin.CategoryManagement
 
             customValidation = new CustomValidation();
             //enableShowResult = false;
-            try
+
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
+            InitValidation();
+
+            if (!CheckLoggedIn())
             {
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
-                InitValidation();
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (IsPostBack)
-                {
-                    if (isCreateAction)
-                        await Create();
-                    else
-                        await Update();
-                }
-                else
-                {
-                    if (!isCreateAction)
-                        await LoadCategory(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : int.Parse(Request.QueryString["Id"]));
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                if (isCreateAction)
+                    await Create();
+                else
+                    await Update();
+            }
+            else
+            {
+                if (!isCreateAction)
+                    await LoadCategory(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : int.Parse(Request.QueryString["Id"]));
             }
         }
 
@@ -135,7 +128,7 @@ namespace Web.Admin.CategoryManagement
                 return;
 
             CreateCategoryDto category = InitCreateCategoryDto();
-            using(TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
                 ExecResult<CategoryDto> commandResult = await taxonomyService.AddCategoryAsync(category);
                 notifControl.Set<CategoryDto>(commandResult);

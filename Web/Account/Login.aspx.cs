@@ -22,25 +22,18 @@ namespace Web.Account
             customValidation = new CustomValidation();
             enableShowResult = false;
             stateDetail = null;
-            try
-            {
-                InitHyperLink();
-                InitValidation();
-                if (CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                    return;
-                }
 
-                if (IsPostBack)
-                {
-                    await LoginToAccount();
-                }
-            }
-            catch (Exception ex)
+            InitHyperLink();
+            InitValidation();
+            if (CheckLoggedIn())
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                Response.RedirectToRoute("User_Home", null);
+                return;
+            }
+
+            if (IsPostBack)
+            {
+                await LoginToAccount();
             }
         }
 
@@ -105,7 +98,7 @@ namespace Web.Account
             using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
             {
                 ExecResult result = await userService.LoginAsync(userLogin);
-                if(result.Status != ExecStatus.Success)
+                if (result.Status != ExecStatus.Success)
                 {
                     //Chèn uc thông báo
                     return;

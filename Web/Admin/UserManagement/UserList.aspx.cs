@@ -1,19 +1,16 @@
 ﻿using Common.Web;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.UserManagement
 {
     public partial class UserList : AdminPage
     {
         private UserService _userService;
-        private UserDao userBLL;
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -24,32 +21,24 @@ namespace Web.Admin.UserManagement
             _userService = NinjectWebCommon.Kernel.Get<UserService>();
             enableTool = false;
             toolDetail = null;
-            try
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateUser", null);
+
+            if (!CheckLoggedIn())
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateUser", null);
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;                  
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvUser();
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvUser();
+                SetDrdlPage();
             }
         }
-        
+
         protected void Page_Unload(object sender, EventArgs e)
         {
-            if(_userService != null)
+            if (_userService != null)
             {
                 _userService.Dispose();
                 _userService = null;
@@ -58,16 +47,8 @@ namespace Web.Admin.UserManagement
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                await SetGrvUser();
-                SetDrdlPage();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await SetGrvUser();
+            SetDrdlPage();
         }
 
         private async Task SetGrvUser()
@@ -98,21 +79,13 @@ namespace Web.Admin.UserManagement
 
         protected async void grvUser_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                string key = (string)grvUser.DataKeys[grvUser.SelectedIndex].Value;
-                UserDto user = (await _userService.GetUserAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", user.ID, user.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_UserDetail", new { id = user.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateUser", new { id = user.ID });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteUser", new { id = user.ID });
-                enableTool = true;
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            string key = (string)grvUser.DataKeys[grvUser.SelectedIndex].Value;
+            UserDto user = (await _userService.GetUserAsync(key)).Data;
+            toolDetail = string.Format("{0} -- {1}", user.ID, user.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_UserDetail", new { id = user.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateUser", new { id = user.ID });
+            hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteUser", new { id = user.ID });
+            enableTool = true;
         }
     }
 }

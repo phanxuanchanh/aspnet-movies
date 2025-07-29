@@ -18,22 +18,15 @@ namespace Web.Admin.CountryManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             enableShowDetail = false;
-            try
-            {
-                int id = GetCountryId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = id, action = "update" });
 
-                if (CheckLoggedIn())
-                    await GetCountry(id);
-                else
-                    Response.RedirectToRoute("Account_Login", null);
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            int id = GetCountryId();
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = id, action = "update" });
+
+            if (CheckLoggedIn())
+                await GetCountry(id);
+            else
+                Response.RedirectToRoute("Account_Login", null);
         }
 
         private int GetCountryId()
@@ -70,15 +63,7 @@ namespace Web.Admin.CountryManagement
 
         protected async void btnDelete_Click(object sender, EventArgs e)
         {
-            try
-            {
-                await DeleteCountry();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await DeleteCountry();
         }
 
         private async Task DeleteCountry()

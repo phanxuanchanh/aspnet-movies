@@ -22,27 +22,18 @@ namespace Web.Admin.CategoryManagement
             _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
             enableTool = false;
             toolDetail = null;
-            try
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { action = "create" });
+
+            if (!CheckLoggedIn())
             {
-                
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { action = "create" });
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;               
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvCategory();
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch(Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvCategory();
+                SetDrdlPage();
             }
         }
 
@@ -62,7 +53,7 @@ namespace Web.Admin.CategoryManagement
                 await SetGrvCategory();
                 SetDrdlPage();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
                 Response.RedirectToRoute("Notification_Error", null);
@@ -97,20 +88,12 @@ namespace Web.Admin.CategoryManagement
 
         protected async void grvCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                int key = (int)grvCategory.DataKeys[grvCategory.SelectedIndex].Value;
-                CategoryDto category = (await _taxonomyService.GetCategoryAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", category.ID, category.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CategoryDetail", new { id = category.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = category.ID, action = "update" });
-                enableTool = true;
-            }
-            catch(Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            int key = (int)grvCategory.DataKeys[grvCategory.SelectedIndex].Value;
+            CategoryDto category = (await _taxonomyService.GetCategoryAsync(key)).Data;
+            toolDetail = string.Format("{0} -- {1}", category.ID, category.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CategoryDetail", new { id = category.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = category.ID, action = "update" });
+            enableTool = true;
         }
     }
 }

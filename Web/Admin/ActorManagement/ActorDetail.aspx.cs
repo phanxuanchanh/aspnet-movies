@@ -1,5 +1,4 @@
 ﻿using Common;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -21,22 +20,15 @@ namespace Web.Admin.ActorManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             enableShowDetail = false;
-            try
-            {
-                long id = GetActorId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditActor", new { id = id, action = "update" });
 
-                if (CheckLoggedIn())
-                    await GetActor(id);
-                else
-                    Response.RedirectToRoute("Account_Login", null);
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            long id = GetActorId();
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditActor", new { id = id, action = "update" });
+
+            if (CheckLoggedIn())
+                await GetActor(id);
+            else
+                Response.RedirectToRoute("Account_Login", null);
         }
 
         private bool CheckLoggedIn()
@@ -82,15 +74,7 @@ namespace Web.Admin.ActorManagement
 
         protected async void btnDelete_Click(object sender, EventArgs e)
         {
-            try
-            {
-                await DeleteCountry();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await DeleteCountry();
         }
 
         private async Task DeleteCountry()

@@ -30,35 +30,28 @@ namespace Web.Admin.CountryManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             customValidation = new CustomValidation();
-            try
+
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
+            InitValidation();
+
+            if (!CheckLoggedIn())
             {
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
-                InitValidation();
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (IsPostBack)
-                {
-                    if (isCreateAction)
-                        await Create();
-                    else
-                        await Update();
-                }
-                else
-                {
-                    if (!isCreateAction)
-                        await LoadCountry(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : int.Parse(Request.QueryString["Id"]));
-
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                if (isCreateAction)
+                    await Create();
+                else
+                    await Update();
+            }
+            else
+            {
+                if (!isCreateAction)
+                    await LoadCountry(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : int.Parse(Request.QueryString["Id"]));
+
             }
         }
 
@@ -70,7 +63,7 @@ namespace Web.Admin.CountryManagement
                 return;
             }
 
-            using(FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
             {
                 ExecResult<CountryDto> result = await filmMetadataService.GetCountryAsync(id);
                 if (result.Status == ExecStatus.Success)
@@ -147,7 +140,7 @@ namespace Web.Admin.CountryManagement
                 return;
 
             UpdateCountryDto countryUpdate = InitUpdateCountryDto();
-            using(FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
             {
                 ExecResult<CountryDto> commandResult = await filmMetadataService.UpdateCountryAsync(countryUpdate);
                 notifControl.Set<CountryDto>(commandResult);

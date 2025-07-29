@@ -22,26 +22,18 @@ namespace Web.Admin.ActorManagement
             _peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
             enableTool = false;
             toolDetail = null;
-            try
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditActor", new { action = "create" });
+
+            if (!CheckLoggedIn())
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditActor", new { action = "create" });
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;                
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvActor();
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvActor();
+                SetDrdlPage();
             }
         }
 
@@ -66,16 +58,8 @@ namespace Web.Admin.ActorManagement
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                await SetGrvActor();
-                SetDrdlPage();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await SetGrvActor();
+            SetDrdlPage();
         }
 
         private async Task SetGrvActor()
@@ -106,20 +90,12 @@ namespace Web.Admin.ActorManagement
 
         protected async void grvActor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                long key = (long)grvActor.DataKeys[grvActor.SelectedIndex].Value;
-                ActorDto actor = (await _peopleService.GetActorAsync(key)).Data;
-                toolDetail = string.Format("{0} -- {1}", actor.ID, actor.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_ActorDetail", new { id = actor.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditActor", new { id = actor.ID, action = "update" });
-                enableTool = true;
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            long key = (long)grvActor.DataKeys[grvActor.SelectedIndex].Value;
+            ActorDto actor = (await _peopleService.GetActorAsync(key)).Data;
+            toolDetail = string.Format("{0} -- {1}", actor.ID, actor.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_ActorDetail", new { id = actor.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditActor", new { id = actor.ID, action = "update" });
+            enableTool = true;
         }
     }
 }

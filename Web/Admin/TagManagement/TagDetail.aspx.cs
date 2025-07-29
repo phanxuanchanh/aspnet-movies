@@ -22,32 +22,14 @@ namespace Web.Admin.TagManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             enableShowDetail = false;
-            try
-            {
-                int id = GetTagId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = id, action = "update" });
+            int id = GetTagId();
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = id, action = "update" });
 
-                if (CheckLoggedIn())
-                    await GetTag(id);
-                else
-                    Response.RedirectToRoute("Account_Login", null);
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
-        }
-
-        private bool CheckLoggedIn()
-        {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
-
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
+            if (CheckLoggedIn())
+                await GetTag(id);
+            else
+                Response.RedirectToRoute("Account_Login", null);
         }
 
         private int GetTagId()
@@ -83,15 +65,7 @@ namespace Web.Admin.TagManagement
 
         protected async void btnDelete_Click(object sender, EventArgs e)
         {
-            try
-            {
-                await DeleteTag();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await DeleteTag();
         }
 
         private async Task DeleteTag()

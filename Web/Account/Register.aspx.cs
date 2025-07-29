@@ -18,25 +18,18 @@ namespace Web.Account
             customValidation = new CustomValidation();
             enableShowResult = false;
             stateDetail = null;
-            try
-            {
-                InitHyperLink();
-                InitValidation(); 
-                if (CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                    return;
-                }
 
-                if (IsPostBack)
-                {
-                    await RegisterAccount();
-                }
-            }
-            catch(Exception ex)
+            InitHyperLink();
+            InitValidation();
+            if (CheckLoggedIn())
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                Response.RedirectToRoute("User_Home", null);
+                return;
+            }
+
+            if (IsPostBack)
+            {
+                await RegisterAccount();
             }
         }
 
@@ -63,29 +56,29 @@ namespace Web.Account
             );
 
             customValidation.Init(
-                cvEmail, 
-                "txtEmail", 
-                "Không được để trống và phải hợp lệ", 
-                true, 
-                null, 
+                cvEmail,
+                "txtEmail",
+                "Không được để trống và phải hợp lệ",
+                true,
+                null,
                 customValidation.ValidateEmail
             );
 
             customValidation.Init(
-                cvPhoneNumber, 
-                "txtPhoneNumber", 
-                "Số điện thoại không hợp lệ", 
+                cvPhoneNumber,
+                "txtPhoneNumber",
+                "Số điện thoại không hợp lệ",
                 false,
-                null, 
+                null,
                 customValidation.ValidatePhoneNumber
             );
 
             customValidation.Init(
-                cvPassword, 
-                "txtPassword", 
-                "Tối thiểu 6 ký tự, tối đa 20 ký tự", 
-                true, 
-                null, 
+                cvPassword,
+                "txtPassword",
+                "Tối thiểu 6 ký tự, tối đa 20 ký tự",
+                true,
+                null,
                 customValidation.ValidatePassword
             );
 

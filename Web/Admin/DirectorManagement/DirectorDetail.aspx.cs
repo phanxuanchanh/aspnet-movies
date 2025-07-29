@@ -18,22 +18,15 @@ namespace Web.Admin.DirectorManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             enableShowDetail = false;
-            try
-            {
-                long id = GetDirectorId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_DirectorList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = id, action = "update" });
 
-                if (CheckLoggedIn())
-                    await GetDirectorInfo(id);
-                else
-                    Response.RedirectToRoute("Account_Login", null);
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            long id = GetDirectorId();
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_DirectorList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = id, action = "update" });
+
+            if (CheckLoggedIn())
+                await GetDirectorInfo(id);
+            else
+                Response.RedirectToRoute("Account_Login", null);
         }
 
         private long GetDirectorId()
@@ -69,15 +62,7 @@ namespace Web.Admin.DirectorManagement
 
         protected async void btnDelete_Click(object sender, EventArgs e)
         {
-            try
-            {
-                await DeleteDirector();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await DeleteDirector();
         }
 
         private async Task DeleteDirector()

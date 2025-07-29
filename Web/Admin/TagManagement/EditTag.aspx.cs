@@ -30,34 +30,26 @@ namespace Web.Admin.TagManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             customValidation = new CustomValidation();
-            try
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
+            InitValidation();
+
+            if (!CheckLoggedIn())
             {
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
-                InitValidation();
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (IsPostBack)
-                {
-                    if (isCreateAction)
-                        await Create();
-                    else
-                        await Update();
-                }
-                else
-                {
-                    if (!isCreateAction)
-                        await LoadTag(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : int.Parse(Request.QueryString["Id"]));
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                if (isCreateAction)
+                    await Create();
+                else
+                    await Update();
+            }
+            else
+            {
+                if (!isCreateAction)
+                    await LoadTag(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : int.Parse(Request.QueryString["Id"]));
             }
         }
 

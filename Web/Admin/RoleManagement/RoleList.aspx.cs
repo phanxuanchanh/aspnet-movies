@@ -22,26 +22,18 @@ namespace Web.Admin.RoleManagement
             _roleService = NinjectWebCommon.Kernel.Get<RoleService>();
             enableTool = false;
             toolDetail = null;
-            try
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditRole", new { action = "create" });
+
+            if (!CheckLoggedIn())
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditRole", new { action = "create" });
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;   
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvRole();
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await SetGrvRole();
+                SetDrdlPage();
             }
         }
 
@@ -56,16 +48,8 @@ namespace Web.Admin.RoleManagement
 
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                await SetGrvRole();
-                SetDrdlPage();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await SetGrvRole();
+            SetDrdlPage();
         }
 
         private async Task SetGrvRole()
@@ -96,20 +80,12 @@ namespace Web.Admin.RoleManagement
 
         protected async void grvRole_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                string key = (string)grvRole.DataKeys[grvRole.SelectedIndex].Value;
-                RoleDto role = (await _roleService.GetRoleAsync(key));
-                toolDetail = string.Format("{0} -- {1}", role.ID, role.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = role.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditRole", new { id = role.ID, action = "update" });
-                enableTool = true;
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            string key = (string)grvRole.DataKeys[grvRole.SelectedIndex].Value;
+            RoleDto role = (await _roleService.GetRoleAsync(key));
+            toolDetail = string.Format("{0} -- {1}", role.ID, role.Name);
+            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = role.ID });
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditRole", new { id = role.ID, action = "update" });
+            enableTool = true;
         }
     }
 }

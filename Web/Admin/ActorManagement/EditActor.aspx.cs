@@ -34,34 +34,27 @@ namespace Web.Admin.ActorManagement
 
             customValidation = new CustomValidation();
             enableShowResult = false;
-            try
+
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
+            InitValidation();
+
+            if (!CheckLoggedIn())
             {
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
-                InitValidation();
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (IsPostBack)
-                {
-                    if (isCreateAction)
-                        await Create();
-                    else
-                        await Update();
-                }
-                else
-                {
-                    if (!isCreateAction)
-                        await LoadActor(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : long.Parse(Request.QueryString["Id"]));
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            if (IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                if (isCreateAction)
+                    await Create();
+                else
+                    await Update();
+            }
+            else
+            {
+                if (!isCreateAction)
+                    await LoadActor(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : long.Parse(Request.QueryString["Id"]));
             }
         }
 
@@ -147,7 +140,7 @@ namespace Web.Admin.ActorManagement
                 return;
 
             CreateActorDto actor = InitCreateActorDto();
-            using(PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
+            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
             {
                 commandResult = await peopleService.AddActorAsync(actor);
             }
