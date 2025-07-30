@@ -80,7 +80,7 @@ namespace Data.Services
             return new PagedList<CountryDto>
             {
                 Items = countries,
-                PageNumber = data.PageNumber,
+                PageSize = data.PageSize,
                 CurrentPage = data.CurrentPage,
             };
         }
@@ -101,7 +101,7 @@ namespace Data.Services
             return new PagedList<LanguageDto>
             {
                 Items = languages,
-                PageNumber = data.PageNumber,
+                PageSize = data.PageSize,
                 CurrentPage = data.CurrentPage,
             };
         }

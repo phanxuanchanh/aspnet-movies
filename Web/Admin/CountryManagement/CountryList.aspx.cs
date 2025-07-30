@@ -60,7 +60,7 @@ namespace Web.Admin.CountryManagement
             grvCountry.DataSource = countries.Items;
             grvCountry.DataBind();
 
-            pageNumber = countries.PageNumber;
+            pageNumber = countries.PageSize;
             currentPage = countries.CurrentPage;
         }
 

@@ -24,13 +24,13 @@ namespace Web.Admin.CategoryManagement
         protected global::System.Web.UI.WebControls.GridView grvCategory;
 
         /// <summary>
-        /// drdlPage control.
+        /// pagination control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdlPage;
+        protected global::Web.Admin.Base.Pagination pagination;
 
         /// <summary>
         /// hyplnkDetail control.

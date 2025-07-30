@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ListSection.ascx.cs" Inherits="Web.Admin.Base.Notification" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Notification.ascx.cs" Inherits="Web.Admin.Base.Notification" %>
 <%@ Import Namespace="Common" %>
 
 <% if (enableShowResult)
@@ -22,4 +22,3 @@
     </div>
 </div>
 <%} %>
-

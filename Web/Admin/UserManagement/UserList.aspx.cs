@@ -58,7 +58,7 @@ namespace Web.Admin.UserManagement
             grvUser.DataSource = users.Items;
             grvUser.DataBind();
 
-            pageNumber = users.PageNumber;
+            pageNumber = users.PageSize;
             currentPage = users.CurrentPage;
         }
 

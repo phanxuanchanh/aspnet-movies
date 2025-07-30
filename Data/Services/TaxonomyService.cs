@@ -67,9 +67,10 @@ namespace Data.Services
 
         public async Task<PagedList<CategoryDto>> GetCategoriesAsync(long pageIndex = 1, long pageSize = 10)
         {
-            PagedList<Taxonomy> data = await _taxonomyDao.GetsAsync("category", pageIndex, pageSize);
+            long skip = (pageIndex - 1) * pageSize;
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("category", skip, take: pageSize);
 
-            List<CategoryDto> categories = data.Items.Select(s => new CategoryDto
+            List<CategoryDto> categories = taxonomies.Select(s => new CategoryDto
             {
                 ID = s.Id,
                 Name = s.Name,
@@ -78,19 +79,22 @@ namespace Data.Services
                 UpdatedAt = s.UpdatedAt
             }).ToList();
 
+            long totalItems = await _taxonomyDao.CountAsync("category");
+
             return new PagedList<CategoryDto>
             {
                 Items = categories,
-                PageNumber = data.PageNumber,
-                CurrentPage = data.CurrentPage,
+                PageSize = pageSize,
+                CurrentPage = pageIndex,
+                TotalItems = totalItems
             };
         }
 
         public async Task<PagedList<TagDto>> GetTagsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            PagedList<Taxonomy> data = await _taxonomyDao.GetsAsync("tag", pageIndex, pageSize);
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("tag", pageIndex, pageSize);
 
-            List<TagDto> Tags = data.Items.Select(s => new TagDto
+            List<TagDto> tags = taxonomies.Select(s => new TagDto
             {
                 ID = s.Id,
                 Name = s.Name,
@@ -99,11 +103,14 @@ namespace Data.Services
                 UpdatedAt = s.UpdatedAt
             }).ToList();
 
+            long totalItems = await _taxonomyDao.CountAsync("tag");
+
             return new PagedList<TagDto>
             {
-                Items = Tags,
-                PageNumber = data.PageNumber,
-                CurrentPage = data.CurrentPage,
+                Items = tags,
+                PageSize = pageSize,
+                CurrentPage = pageIndex,
+                TotalItems = totalItems
             };
         }
 

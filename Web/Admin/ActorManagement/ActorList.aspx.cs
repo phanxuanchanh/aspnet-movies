@@ -69,7 +69,7 @@ namespace Web.Admin.ActorManagement
             grvActor.DataSource = actors.Items;
             grvActor.DataBind();
 
-            pageNumber = actors.PageNumber;
+            pageNumber = actors.PageSize;
             currentPage = actors.CurrentPage;
         }
 

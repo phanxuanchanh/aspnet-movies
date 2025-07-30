@@ -4,8 +4,9 @@ namespace Common.Web
 {
     public class PagedList<T>
     {
-        public long PageNumber { get; set; }
+        public long PageSize { get; set; }
         public long CurrentPage { get; set; }
+        public long TotalItems { get; set; }
         public List<T> Items { get; set; }
     }
 }

@@ -60,7 +60,7 @@ namespace Web.Admin.DirectorManagement
             grvDirector.DataSource = directors.Items;
             grvDirector.DataBind();
 
-            pageNumber = directors.PageNumber;
+            pageNumber = directors.PageSize;
             currentPage = directors.CurrentPage;
         }
 

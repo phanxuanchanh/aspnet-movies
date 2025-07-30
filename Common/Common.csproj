@@ -39,9 +39,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xabe.FFmpeg">
-      <HintPath>..\..\..\Xabe.FFmpeg.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExecResult.cs" />

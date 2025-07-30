@@ -59,7 +59,7 @@ namespace Web.Admin.TagManagement
             grvTag.DataSource = tags.Items;
             grvTag.DataBind();
 
-            pageNumber = tags.PageNumber;
+            pageNumber = tags.PageSize;
             currentPage = tags.CurrentPage;
         }
 

@@ -87,7 +87,7 @@ namespace Web.Admin.FilmManagement
             grvFilm.DataSource = films.Items;
             grvFilm.DataBind();
 
-            pageNumber = films.PageNumber;
+            pageNumber = films.PageSize;
             currentPage = films.CurrentPage;
         }
 

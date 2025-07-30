@@ -193,7 +193,7 @@ namespace Data.Services
             return new PagedList<FilmDto>
             {
                 Items = films,
-                PageNumber = data.PageNumber,
+                PageSize = data.PageSize,
                 CurrentPage = data.CurrentPage,
             };
         }
@@ -215,7 +215,7 @@ namespace Data.Services
             return new PagedList<FilmDto>
             {
                 Items = films,
-                PageNumber = data.PageNumber,
+                PageSize = data.PageNumber,
                 CurrentPage = data.CurrentPage,
             };
         }

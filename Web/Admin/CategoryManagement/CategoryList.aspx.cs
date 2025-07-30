@@ -63,27 +63,29 @@ namespace Web.Admin.CategoryManagement
         private async Task SetGrvCategory()
         {
             PagedList<CategoryDto> categories = await _taxonomyService
-                .GetCategoriesAsync(drdlPage.SelectedIndex, 20);
+                .GetCategoriesAsync(1/*drdlPage.SelectedIndex*/, 20);
             grvCategory.DataSource = categories.Items;
             grvCategory.DataBind();
 
-            pageNumber = categories.PageNumber;
+            pageNumber = categories.PageSize;
             currentPage = categories.CurrentPage;
+
+            pagination.SetAndRender(categories);
         }
 
         private void SetDrdlPage()
         {
-            int selectedIndex = drdlPage.SelectedIndex;
-            drdlPage.Items.Clear();
-            for (int i = 0; i < pageNumber; i++)
-            {
-                string item = (i + 1).ToString();
-                if (i == currentPage)
-                    drdlPage.Items.Add(string.Format("{0}*", item));
-                else
-                    drdlPage.Items.Add(item);
-            }
-            drdlPage.SelectedIndex = selectedIndex;
+            //int selectedIndex = drdlPage.SelectedIndex;
+            //drdlPage.Items.Clear();
+            //for (int i = 0; i < pageNumber; i++)
+            //{
+            //    string item = (i + 1).ToString();
+            //    if (i == currentPage)
+            //        drdlPage.Items.Add(string.Format("{0}*", item));
+            //    else
+            //        drdlPage.Items.Add(item);
+            //}
+            //drdlPage.SelectedIndex = selectedIndex;
         }
 
         protected async void grvCategory_SelectedIndexChanged(object sender, EventArgs e)

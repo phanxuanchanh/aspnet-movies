@@ -39,19 +39,17 @@ namespace Data.BLL
                 .ExecuteReaderAsync<Taxonomy>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<Taxonomy>(r));
         }
 
-        public async Task<PagedList<Taxonomy>> GetsAsync(string type = "category", long pageIndex = 1, long pageSize = 10)
+        public async Task<List<Taxonomy>> GetsAsync(string type = "category", long skip = 0, long take = 0)
         {
-            long skip = (pageIndex - 1) * pageSize;
             List<Taxonomy> taxonomies = await _context.Taxonomies
                 .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
 
-            long count = await _context.Taxonomies.CountAsync(x => x.Type == type);
+            return taxonomies;
+        }
 
-            return new PagedList<Taxonomy>
-            {
-                Items = taxonomies,
-                CurrentPage = pageIndex,
-            };
+        public async Task<long> CountAsync(string type = "category")
+        {
+            return await _context.Taxonomies.CountAsync(x => x.Type == type);
         }
 
         public async Task<int> AddAsync(Taxonomy taxonomy)

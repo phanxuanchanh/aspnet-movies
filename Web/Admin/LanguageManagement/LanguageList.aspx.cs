@@ -54,7 +54,7 @@ namespace Web.Admin.LanguageManagement
             grvLanguage.DataSource = languages.Items;
             grvLanguage.DataBind();
 
-            pageNumber = languages.PageNumber;
+            pageNumber = languages.PageSize;
             currentPage = languages.CurrentPage;
         }
 

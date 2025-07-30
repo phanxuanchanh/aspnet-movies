@@ -1,4 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="CategoryList.aspx.cs" Inherits="Web.Admin.CategoryManagement.CategoryList" MaintainScrollPositionOnPostback="true" %>
+<%@ Register TagPrefix="uc" TagName="PaginationControl" Src="~/Admin/Base/Pagination.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Danh sách thể loại - Trang quản trị</title>
@@ -36,7 +37,8 @@
                       
                     </asp:GridView>
                 </div>
-                <div class="row ml-2 mr-2">
+                <uc:PaginationControl ID="pagination" runat="server"></uc:PaginationControl>
+                <%--<div class="row ml-2 mr-2">
                     <div class="column column-20">
                         <p>Trang bạn đang xem: <% = currentPage + 1 %></p>
                     </div>
@@ -47,7 +49,7 @@
                     <div class="column column-20">
                         <p>Tổng số trang: <% = pageNumber %></p>
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>

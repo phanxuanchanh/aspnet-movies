@@ -5,7 +5,6 @@ using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.RoleManagement
 {
@@ -59,7 +58,7 @@ namespace Web.Admin.RoleManagement
             grvRole.DataSource = roles.Items;
             grvRole.DataBind();
 
-            pageNumber = roles.PageNumber;
+            pageNumber = roles.PageSize;
             currentPage = roles.CurrentPage;
         }
 
