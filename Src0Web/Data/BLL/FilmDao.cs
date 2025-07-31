@@ -22,19 +22,18 @@ namespace Data.BLL
             return await _context.Films.SingleOrDefaultAsync(x => x.ID == id);
         }
 
-        public async Task<PagedList<Film>> GetsAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<List<Film>> GetsAsync(long skip = 0, long take = 0)
         {
-            long skip = (pageIndex - 1) * pageSize;
-            List<Film> films = await _context.Films
+            string a = "princess";
+            List<Film> films = await _context.Films.Where(x => x.DeletedAt == null)
                 .OrderBy(o => new { o.ID }).ToListAsync();
 
-            //long count = await _context.Films.CountAsync();
+            return films;
+        }
 
-            return new PagedList<Film>
-            {
-                Items = films,
-                CurrentPage = pageIndex,
-            };
+        public async Task<long> CountAsync()
+        {
+            return await _context.Films.CountAsync();
         }
 
         public async Task<SqlPagedList<Film>> GetsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)

@@ -8,76 +8,137 @@
     <meta name="robots" content="noindex">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700" rel="stylesheet">
 
-    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/bootstrap3-custom.css") %>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">--%>
+    <%--<link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/bootstrap3-custom.css") %>">--%>
     <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/font-awesome.min.css") %>">
-    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/normalize.css") %>">
-    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/milligram.min.css") %>">
+    <%--<link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/normalize.css") %>">--%>
+    <%--<link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/milligram.min.css") %>">--%>
     <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/styles.css") %>">
-    <link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/addition.css") %>" />
+    <%--<link rel="stylesheet" href="<%= ResolveUrl("~/admin_assets/css/addition.css") %>" />--%>
 
     <script type="text/javascript" src="<%= ResolveUrl("~/admin_assets/js/jquery.js") %>"></script>
-    <link rel="icon" type="image/png" href="<% = ResolveUrl("~/admin_assets/images/favicon.png") %>"/>
+    <link rel="icon" type="image/png" href="<% = ResolveUrl("~/admin_assets/images/favicon.png") %>" />
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="frmAdminLayout" runat="server">
-        <div class="navbar">
-            <div class="row">
-                <div class="column column-30 col-site-title"><a href="#" class="site-title float-left">Trang quản trị</a></div>
-                <div class="column column-40 col-search">
-                    <a href="#" class="search-btn fa fa-search"></a>
-                    <input type="text" name="" value="" placeholder="Tìm kiếm chức năng..." />
-                </div>
-                <div class="column column-30">
-                    <div class="user-section">
-                        <a href="#">
-                            <img src="<% = ResolveUrl("~/admin_assets/images/avatar.png") %>" alt="profile photo" class="circle float-left profile-photo" width="50" height="50">
-                            <div class="username">
-                                <h4 id="txtUsername" runat="server">Phan Xuân Chánh</h4>
-                                <p id="txtRole" runat="server">Quản trị viên</p>
-                            </div>
-                        </a>
+    <div class="container-fluid bg-secondary p-0">
+        <form id="frmAdminLayout" runat="server">
+            <nav class="navbar navbar-expand-lg bg-white text-dark px-4" style="margin-left: 250px;">
+                <div class="container-fluid">
+                    <!-- Left: Logo -->
+                    <a class="navbar-brand text-dark" href="#">Trang quản trị</a>
+
+                    <!-- Center: Search -->
+                    <input class="form-control me-2 w-50" type="search" placeholder="Search" aria-label="Search">
+
+                    <!-- Right: User -->
+                    <div class="d-flex align-items-center">
+                        <span class="me-2" id="txtUsername" runat="server"></span>
+                        <img src="<% = ResolveUrl("~/admin_assets/images/avatar.png") %>" class="rounded-circle" alt="Avatar" width="50" height="50">
                     </div>
                 </div>
+            </nav>
+
+            <div class="d-flex">
+                <!-- Sidebar -->
+                <div class="bg-dark text-white p-3 vh-100 position-fixed top-0 start-0" style="width: 250px; overflow-y: auto; z-index: 1000;">
+                    <h5 class="mb-4 text-center mt-2">CÔNG CỤ QUẢN LÝ</h5>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="<% = hyplnkOverview %>">Dashboard</a>
+                        </li>
+
+                        <!-- Collapsible Menu Item -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" data-bs-toggle="collapse" href="#submenu1" role="button" aria-expanded="false" aria-controls="submenu1">
+                                <em class="fa fa-film"></em><span>Quản lý phim</span>
+                            </a>
+                            <div class="collapse ms-3" id="submenu1">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<% = hyplnkFilmList %>">Danh sách</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="#">Thêm mới</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Collapsible Menu Item -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" data-bs-toggle="collapse" href="#submenu2" role="button" aria-expanded="false" aria-controls="submenu2">
+                                <em class="fa fa-video-camera"></em>METADATA
+                            </a>
+                            <div class="collapse ms-3" id="submenu2">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<% = hyplnkCountryList %>">Quốc gia</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<% = hyplnkLanguageList %>">Ngôn ngữ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<% = hyplnkDirectorList %>">Đạo diễn</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<% = hyplnkCastList %>">Diễn viên</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Collapsible Menu Item -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" data-bs-toggle="collapse" href="#submenu3" role="button" aria-expanded="false" aria-controls="submenu3">
+                                <em class="fa fa-tags"></em>TAXONOMY
+                            </a>
+                            <div class="collapse ms-3" id="submenu3">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<% = hyplnkCategoryList %>">Thể loại</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<%= hyplnkTagList %>">Thẻ tag</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Another collapsible item -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" data-bs-toggle="collapse" href="#submenu4" role="button" aria-expanded="false" aria-controls="submenu4">
+                                <em class="fa fa-users"></em>Người dùng và quyền
+                            </a>
+                            <div class="collapse ms-3" id="submenu4">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<%= hyplnkUserList %>">Người dùng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="<%= hyplnkRoleList %>">Quyền</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Nội dung chính -->
+                <div class="p-4 flex-grow-1 bg-white my-2 ms-250" style="margin-left: 250px;">
+                    <!-- Content goes here -->
+                    <asp:ContentPlaceHolder ID="mainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div id="sidebar" class="column">
-                <h5>Công cụ</h5>
-                <ul>
-                    <li><a href="<% = hyplnkOverview %>"><em class="fa fa-tasks"></em>Tổng quan</a></li>
-                    <hr style ="margin:0px" />
-                    <li>
-                        <a href="<% = hyplnkFilmList %>"><em class="fa fa-film"></em>Quản lý phim</a>
-                        <h6 style="padding-left:25px; font-size:10px">Metadata</h6>
-                        <ul style="margin-left:10px;">
-                            <li><a href="<% = hyplnkCountryList %>"><em class="fa fa fa-map"></em>Quản lý quốc gia</a></li>
-                            <li><a href="<% = hyplnkLanguageList %>"><em class="fa fa fa-language"></em>Quản lý ngôn ngữ</a></li>
-                        </ul>
-                        <h6 style="padding-left:25px; font-size:10px">People</h6>
-                        <ul style="margin-left:10px;">
-                            <li><a href="<% = hyplnkDirectorList %>"><em class="fa fa-video-camera"></em>Quản lý đạo diễn</a></li>
-                            <li><a href="<% = hyplnkCastList %>"><em class="fa fa-video-camera"></em>Quản lý diễn viên</a></li>
-                        </ul>
-                    </li>
-                    <hr style ="margin:0px" />
-                    <li><a href="<% = hyplnkCategoryList %>"><em class="fa fa fa-list"></em>Quản lý thể loại</a></li>
-                    <li><a href="<% = hyplnkTagList %>"><em class="fa fa-tags"></em>Quản lý thẻ tag</a></li>
-                    
-                    <hr style ="margin:0px" />
-                    <li><a href="<% = hyplnkRoleList %>"><em class="fa fa-list"></em>Quản lý vai trò</a></li>
-                    <li><a href="<% = hyplnkUserList %>"><em class="fa fa-users"></em>Quản lý người dùng</a></li>
-                </ul>
-            </div>
-            <section id="main-content" class="column column-offset-20">
-                <asp:ContentPlaceHolder ID="mainContent" runat="server">
-                </asp:ContentPlaceHolder>
-            </section>
-        </div>
-    </form>
+        </form>
+    </div>
     <asp:ContentPlaceHolder ID="foot" runat="server">
     </asp:ContentPlaceHolder>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

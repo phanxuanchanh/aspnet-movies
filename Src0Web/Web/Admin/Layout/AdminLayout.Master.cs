@@ -35,13 +35,13 @@ namespace Web.Admin.Layout
                 if (obj == null)
                 {
                     txtUsername.InnerText = "Anonymous";
-                    txtRole.InnerText = "N/A";
+                    //txtRole.InnerText = "N/A";
                 }
                 else
                 {
                     UserSession userSession = (UserSession)obj;
                     txtUsername.InnerText = userSession.username;
-                    txtRole.InnerText = userSession.role;
+                    //txtRole.InnerText = userSession.role;
                 }
             }
             catch(Exception ex)

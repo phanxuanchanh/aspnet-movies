@@ -1,5 +1,6 @@
 ﻿using Common.Web;
 using Data.DAL;
+using MSSQL.Access;
 using MSSQL.Mapper;
 using System;
 using System.Collections.Generic;
@@ -38,19 +39,29 @@ namespace Data.BLL
                 .ExecuteReaderAsync<FilmMetadata>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<FilmMetadata>(r));
         }
 
-        public async Task<PagedList<FilmMetadata>> GetsAsync(string type = "language", long pageIndex = 1, long pageSize = 10)
+        public async Task<List<FilmMetadata>> GetsAsync(string type = "language", long skip = 1, long take = 10, string searchText = null)
         {
-            long skip = (pageIndex - 1) * pageSize;
-            List<FilmMetadata> filmMetadata = await _context.FilmMetadata
-                .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
+            SqlAccess<FilmMetadata> access = _context.FilmMetadata
+                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
 
-            //long count = await _context.FilmMetadata.CountAsync(x => x.Type == type);
+            if(string.IsNullOrEmpty(searchText))
+                access.Where(x => x.Type == type);
+            else
+                access.Where(x => x.Type == type && x.Name.Contains(searchText));
 
-            return new PagedList<FilmMetadata>
-            {
-                Items = filmMetadata,
-                CurrentPage = pageIndex,
-            };
+            return await access.ToListAsync();
+        }
+
+        public async Task<long> CountAsync(string type = "language", string searchText = null)
+        {
+            SqlAccess<FilmMetadata> access = _context.FilmMetadata
+                .Where(x => x.DeletedAt == null);
+            if (string.IsNullOrEmpty(searchText))
+                access.Where(x => x.Type == type);
+            else
+                access.Where(x => x.Type == type && x.Name.Contains(searchText));
+
+            return await access.CountAsync();
         }
 
         public async Task<int> AddAsync(FilmMetadata metadata)

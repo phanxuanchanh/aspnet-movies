@@ -119,6 +119,28 @@ namespace MSSQL.QueryBuilder
                     paramKeys.Add(paramKey);
 
                     return paramKey;
+                case MethodCallExpression methodCallExpression:
+                    if (methodCallExpression.Method.Name != "Contains" || !(methodCallExpression.Object is MemberExpression))
+                        throw new Exception($"Method {methodCallExpression.Method.Name} is not supported in this context");
+
+                    MemberExpression member = methodCallExpression.Object as MemberExpression;
+                    PropertyInfo property2 = properties.FirstOrDefault(p => p.Name == member.Member.Name);
+                    if (property2 is null)
+                        throw new Exception($"Property {member.Member.Name} not found in type {typeof(T).Name}");
+
+                    var valueExpr = methodCallExpression.Arguments[0];
+                    object val2 = null;
+                    if (valueExpr is ConstantExpression constExpr)
+                        val2 = $"%{constExpr.Value}%";
+                    else
+                        val2 = $"%{Expression.Lambda(valueExpr).Compile().DynamicInvoke()}%";
+
+                    paramKey = $"@contains{member.Member.Name}";
+                    _parameters.Add(new SqlParameter(paramKey, val2 ?? DBNull.Value));
+
+                    SqlColumnAttribute columnAttribute2 = property2.GetCustomAttribute<SqlColumnAttribute>();
+                    return columnAttribute2 is null ?
+                        $"[{member.Member.Name}] LIKE %@{member.Member.Name}%" : $"[{columnAttribute2.ColumnName}] LIKE @contains{member.Member.Name}";
                 default:
                     throw new NotSupportedException($"Expression type {expression.GetType()} is not supported");
             }

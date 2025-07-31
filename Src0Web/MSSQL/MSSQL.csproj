@@ -62,6 +62,7 @@
     <Compile Include="Extensions\SqlDataReaderExtensions.cs" />
     <Compile Include="Helpers\SqlExecHelper.cs" />
     <Compile Include="Models\SqlTable.cs" />
+    <Compile Include="QueryBuilder\WhereClauseBuilder.cs" />
     <Compile Include="String\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup />

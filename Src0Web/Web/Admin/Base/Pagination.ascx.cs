@@ -8,12 +8,15 @@ namespace Web.Admin.Base
         protected long pageSize;
         protected long currentPage;
         protected long totalPages;
+        protected long totalItems;
         protected long prevPage;
         protected long nextPage;
         protected long startPage;
         protected long endPage;
         protected bool showPrev;
         protected bool showNext;
+
+        protected string routeName;
 
         public int MaxVisiblePages { get; set; } = 5;
 
@@ -22,20 +25,24 @@ namespace Web.Admin.Base
 
         }
 
+        public void SetUrl(string routeName)
+        {
+            this.routeName = routeName;
+        }
+
         public void SetAndRender<T>(PagedList<T> pagedList)
         {
             pageSize = (int)pagedList.PageSize;
             currentPage = pagedList.CurrentPage;
-            totalPages = (int)Math.Ceiling((double)pagedList.TotalItems / pagedList.PageSize);
+            totalPages = pagedList.TotalPages;
+            totalItems = pagedList.TotalItems;
             prevPage = Math.Max(1, currentPage - 1);
             nextPage = Math.Min(totalPages, currentPage + 1);
 
             int half = MaxVisiblePages / 2;
 
             startPage = Math.Max(1, currentPage - half);
-            endPage = startPage + MaxVisiblePages - 1;//Math.Min(totalPages, startPage + 2);
-            //if (endPage - startPage < 2)
-            //    startPage = Math.Max(1, endPage - 2);
+            endPage = startPage + MaxVisiblePages - 1;
 
             if(endPage > totalPages)
             {

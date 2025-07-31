@@ -64,11 +64,12 @@ namespace Data.Services
             };
         }
 
-        public async Task<PagedList<CountryDto>> GetCountriesAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<CountryDto>> GetCountriesAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
-            PagedList<FilmMetadata> data =  await _filmMetadataDao.GetsAsync("country", pageIndex, pageSize);
+            long skip = (pageIndex - 1) * pageSize;
+            List<FilmMetadata> metadata =  await _filmMetadataDao.GetsAsync("country", skip, take: pageSize, searchText);
 
-            List<CountryDto> countries = data.Items.Select(s => new CountryDto
+            List<CountryDto> countries = metadata.Select(s => new CountryDto
             {
                 ID = s.Id,
                 Name = s.Name,
@@ -76,20 +77,24 @@ namespace Data.Services
                 CreatedAt = s.CreatedAt,
                 UpdatedAt = s.UpdatedAt
             }).ToList();
+
+            long totalItems = await _filmMetadataDao.CountAsync("country", searchText);
 
             return new PagedList<CountryDto>
             {
                 Items = countries,
-                PageSize = data.PageSize,
-                CurrentPage = data.CurrentPage,
+                PageSize = pageSize,
+                CurrentPage = pageIndex,
+                TotalItems = totalItems
             };
         }
 
-        public async Task<PagedList<LanguageDto>> GetLanguagesAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<LanguageDto>> GetLanguagesAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
-            PagedList<FilmMetadata> data = await _filmMetadataDao.GetsAsync("language", pageIndex, pageSize);
-
-            List<LanguageDto> languages = data.Items.Select(s => new LanguageDto
+            long skip = (pageIndex - 1) * pageSize;
+            List<FilmMetadata> metadata = await _filmMetadataDao.GetsAsync("language", pageIndex, pageSize, searchText);
+            
+            List<LanguageDto> languages = metadata.Select(s => new LanguageDto
             {
                 ID = s.Id,
                 Name = s.Name,
@@ -98,11 +103,14 @@ namespace Data.Services
                 UpdatedAt = s.UpdatedAt
             }).ToList();
 
+            long totalItems = await _filmMetadataDao.CountAsync("language", searchText);
+
             return new PagedList<LanguageDto>
             {
                 Items = languages,
-                PageSize = data.PageSize,
-                CurrentPage = data.CurrentPage,
+                PageSize = pageSize,
+                CurrentPage = pageIndex,
+                TotalItems = totalItems
             };
         }
 

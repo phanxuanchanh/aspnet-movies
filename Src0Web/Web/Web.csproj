@@ -83,7 +83,6 @@
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="Admin\Base\Pagination.ascx" />
-    <Content Include="admin_assets\css\bootstrap3-custom.css" />
     <Content Include="common_assets\bootstrap\bootstrap.min.css" />
     <Content Include="account_assets\css\login.css" />
     <Content Include="account_assets\css\logout.css" />
@@ -118,7 +117,6 @@
     <Content Include="Admin\UserManagement\CreateUser.aspx" />
     <Content Include="Admin\UserManagement\DeleteUser.aspx" />
     <Content Include="Admin\UserManagement\UserList.aspx" />
-    <Content Include="admin_assets\css\addition.css" />
     <Content Include="admin_assets\images\avatar.png" />
     <Content Include="admin_assets\images\favicon.png" />
     <Content Include="admin_assets\js\jquery.js" />
@@ -154,14 +152,11 @@
     <Content Include="account_assets\css\register.css" />
     <Content Include="account_assets\css\reset-password.css" />
     <Content Include="admin_assets\css\font-awesome.min.css" />
-    <Content Include="admin_assets\css\milligram.min.css" />
-    <Content Include="admin_assets\css\normalize.css" />
     <Content Include="admin_assets\css\styles.css" />
     <Content Include="admin_assets\fonts\fontawesome\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="account_assets\js\confirm.js" />
     <Content Include="account_assets\js\login.js" />
-    <Content Include="admin_assets\js\chart-data.js" />
     <Content Include="admin_assets\js\chart.min.js" />
     <Content Include="common_assets\css\styles.css" />
     <Content Include="common_assets\js\video.js" />

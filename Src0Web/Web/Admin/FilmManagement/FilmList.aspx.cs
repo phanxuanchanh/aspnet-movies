@@ -1,51 +1,38 @@
-﻿using Common.Upload;
+﻿using Common;
+using Common.Upload;
 using Common.Web;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.FilmManagement
 {
     public partial class FilmList : AdminPage
     {
         private FilmService _filmService;
-        protected long currentPage;
-        protected long pageNumber;
-        protected bool enableTool;
-        protected string toolDetail;
+        protected PagedList<FilmDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             _filmService = NinjectWebCommon.Kernel.Get<FilmService>();
-            enableTool = false;
-            toolDetail = null;
-            try
+            hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { action = "create" });
+            paged = new PagedList<FilmDto>();
+            if (!CheckLoggedIn())
             {
-                hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { action = "create" });
-
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
-                if (!IsPostBack)
-                {
-                    await SetGrvFilm();
-                    SetDrdlPage();
-                }
+                Response.RedirectToRoute("Account_Login", null);
+                return;
             }
-            catch (Exception ex)
+
+            GetPagnationQuery();  
+
+            if (!IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                txtPageSize.Text = paged.PageSize.ToString();
+                await SetFilmTable();
             }
         }
 
@@ -58,77 +45,82 @@ namespace Web.Admin.FilmManagement
             }
         }
 
-        protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
+        private void GetPagnationQuery()
         {
-            try
+            string pageQuery = Request.QueryString["page"];
+            string sizeQuery = Request.QueryString["pageSize"];
+
+            if (string.IsNullOrEmpty(pageQuery))
+                paged.CurrentPage = 1;
+            else
             {
-                await SetGrvFilm();
-                SetDrdlPage();
+                if (long.TryParse(pageQuery, out long page))
+                    paged.CurrentPage = Math.Max(1, page);
+                else
+                    paged.CurrentPage = 1;
             }
-            catch (Exception ex)
+
+            if (string.IsNullOrEmpty(sizeQuery))
+                paged.PageSize = 20;
+            else
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                if (long.TryParse(sizeQuery, out long size))
+                    paged.PageSize = Math.Max(1, size);
+                else
+                    paged.PageSize = 20;
             }
         }
 
-        private async Task SetGrvFilm()
+        private async Task SetFilmTable()
         {
-            PagedList<FilmDto> films = await _filmService.GetFilmsAsync(drdlPage.SelectedIndex, 20);
-            foreach(FilmDto film in films.Items)
+            paged = await _filmService.GetFilmsAsync(paged.CurrentPage, paged.PageSize);
+            foreach (FilmDto film in paged.Items)
             {
-                if(string.IsNullOrEmpty(film.Thumbnail))
+                if (string.IsNullOrEmpty(film.Thumbnail))
                     film.Thumbnail = VirtualPathUtility
                         .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                 else
                     film.Thumbnail = VirtualPathUtility
                         .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
             }
-            grvFilm.DataSource = films.Items;
-            grvFilm.DataBind();
 
-            pageNumber = films.PageSize;
-            currentPage = films.CurrentPage;
+            rptFilms.DataSource = paged.Items;
+            rptFilms.DataBind();
+
+            pagination.SetAndRender(paged);
+            pagination.SetUrl("Admin_FilmList");
         }
 
-        private void SetDrdlPage()
+        protected async void lnkDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
         {
-            int selectedIndex = drdlPage.SelectedIndex;
-            drdlPage.Items.Clear();
-            for (int i = 0; i < pageNumber; i++)
-            {
-                string item = (i + 1).ToString();
-                if (i == currentPage)
-                    drdlPage.Items.Add(string.Format("{0}*", item));
-                else
-                    drdlPage.Items.Add(item);
-            }
-            drdlPage.SelectedIndex = selectedIndex;
+            string id = e.CommandArgument.ToString();
+            if (string.IsNullOrEmpty(id))
+                return;
+
+            ExecResult commandResult = await _filmService.DeleteAsync(id);
+            notifControl.Set(commandResult);
         }
 
-        protected async void grvFilm_SelectedIndexChanged(object sender, EventArgs e)
+        protected async void txtPageSize_TextChanged(object sender, EventArgs e)
         {
-            try
+            if (long.TryParse(txtPageSize.Text, out long size))
             {
-                string key = (string)grvFilm.DataKeys[grvFilm.SelectedIndex].Value;
-                FilmDto filmInfo = (await _filmService.GetFilmAsync(key, false, false)).Data;
-                toolDetail = string.Format("{0} -- {1}", filmInfo.ID, filmInfo.Name);
-                hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_FilmDetail", new { id = filmInfo.ID });
-                hyplnkEdit_Category.NavigateUrl = GetRouteUrl("Admin_EditCategory_Film", new { id = filmInfo.ID });
-                hyplnkEdit_Tag.NavigateUrl = GetRouteUrl("Admin_EditTag_Film", new { id = filmInfo.ID });
-                hyplnkEdit_Director.NavigateUrl = GetRouteUrl("Admin_EditDirector_Film", new { id = filmInfo.ID });
-                hyplnkEdit_Cast.NavigateUrl = GetRouteUrl("Admin_EditCast_Film", new { id = filmInfo.ID });
-                hyplnkEdit_Image.NavigateUrl = GetRouteUrl("Admin_EditImage_Film", new { id = filmInfo.ID });
-                hyplnkEdit_Source.NavigateUrl = GetRouteUrl("Admin_EditSource_Film", new { id = filmInfo.ID });
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { id = filmInfo.ID, action = "update" });
-                hyplnkDelete.NavigateUrl = GetRouteUrl("Admin_DeleteFilm", new { id = filmInfo.ID });
-                enableTool = true;
+                Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
+                //paged.PageSize = Math.Max(1, size);
+                //paged.CurrentPage = 1;
+                //await SetFilmTable();
             }
-            catch (Exception ex)
+            else
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                notifControl.Set(ExecResult.Failure("Invalid page size."));
             }
+        }
+
+        protected async void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtSearch.Text.Trim();
+            Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText });
+            //await SetFilmTable();
         }
     }
 }

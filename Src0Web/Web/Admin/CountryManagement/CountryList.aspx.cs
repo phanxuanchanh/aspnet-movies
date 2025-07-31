@@ -1,29 +1,25 @@
-﻿using Common.Web;
+﻿using Common;
+using Common.Web;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.CountryManagement
 {
     public partial class CountryList : AdminPage
     {
         private FilmMetadataService _filmMetadataService;
-        protected long currentPage;
-        protected long pageNumber;
-        protected bool enableTool;
-        protected string toolDetail;
+        protected PagedList<CountryDto> paged;
+        protected string searchText;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             _filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
-            enableTool = false;
-            toolDetail = null;
-
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { action = "create" });
+            paged = new PagedList<CountryDto>();
 
             if (!CheckLoggedIn())
             {
@@ -31,10 +27,12 @@ namespace Web.Admin.CountryManagement
                 return;
             }
 
+            GetPagnationQuery();
+
             if (!IsPostBack)
             {
-                await SetGrvCountry();
-                SetDrdlPage();
+                txtPageSize.Text = paged.PageSize.ToString();
+                await SetCountryTable();
             }
         }
 
@@ -47,46 +45,76 @@ namespace Web.Admin.CountryManagement
             }
         }
 
-        protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
+        private void GetPagnationQuery()
         {
-            await SetGrvCountry();
-            SetDrdlPage();
-        }
+            string pageQuery = Request.QueryString["page"];
+            string sizeQuery = Request.QueryString["pageSize"];
 
-        private async Task SetGrvCountry()
-        {
-            PagedList<CountryDto> countries = await _filmMetadataService
-                .GetCountriesAsync(drdlPage.SelectedIndex, 20);
-            grvCountry.DataSource = countries.Items;
-            grvCountry.DataBind();
-
-            pageNumber = countries.PageSize;
-            currentPage = countries.CurrentPage;
-        }
-
-        private void SetDrdlPage()
-        {
-            int selectedIndex = drdlPage.SelectedIndex;
-            drdlPage.Items.Clear();
-            for (int i = 0; i < pageNumber; i++)
+            if (string.IsNullOrEmpty(pageQuery))
+                paged.CurrentPage = 1;
+            else
             {
-                string item = (i + 1).ToString();
-                if (i == currentPage)
-                    drdlPage.Items.Add(string.Format("{0}*", item));
+                if (long.TryParse(pageQuery, out long page))
+                    paged.CurrentPage = Math.Max(1, page);
                 else
-                    drdlPage.Items.Add(item);
+                    paged.CurrentPage = 1;
             }
-            drdlPage.SelectedIndex = selectedIndex;
+
+            if (string.IsNullOrEmpty(sizeQuery))
+                paged.PageSize = 20;
+            else
+            {
+                if (long.TryParse(sizeQuery, out long size))
+                    paged.PageSize = Math.Max(1, size);
+                else
+                    paged.PageSize = 20;
+            }
+
+            searchText = Request.QueryString["searchText"];
         }
 
-        protected async void grvCategory_SelectedIndexChanged(object sender, EventArgs e)
+        private async Task SetCountryTable()
         {
-            int key = (int)grvCountry.DataKeys[grvCountry.SelectedIndex].Value;
-            CountryDto country = (await _filmMetadataService.GetCountryAsync(key)).Data;
-            toolDetail = string.Format("{0} -- {1}", country.ID, country.Name);
-            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CountryDetail", new { id = country.ID });
-            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = country.ID, action = "update" });
-            enableTool = true;
+            paged = await _filmMetadataService
+                .GetCountriesAsync(paged.CurrentPage, paged.PageSize);
+
+            rptCountries.DataSource = paged.Items;
+            rptCountries.DataBind();
+
+            pagination.SetAndRender(paged);
+            pagination.SetUrl("Admin_CountryList");
+        }
+
+        protected async void lnkDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
+        {
+            string strId = e.CommandArgument.ToString();
+            if (string.IsNullOrEmpty(strId))
+                return;
+
+            if (int.TryParse(strId, out int id))
+            {
+                ExecResult commandResult = await _filmMetadataService.DeleteAsync(id);
+                notifControl.Set(commandResult);   
+            }
+            else
+            {
+                notifControl.Set(ExecResult.Failure("Invalid country ID."));
+                return;
+            }
+        }
+
+        protected void txtPageSize_TextChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(txtPageSize.Text, out long size))
+                Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
+            else
+                notifControl.Set(ExecResult.Failure("Invalid page size."));
+        }
+
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            searchText = txtSearch.Text.Trim();
+            Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText });
         }
     }
 }

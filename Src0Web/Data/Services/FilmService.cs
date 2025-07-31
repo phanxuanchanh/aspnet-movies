@@ -178,9 +178,10 @@ namespace Data.Services
 
         public async Task<PagedList<FilmDto>> GetFilmsAsync(long pageIndex = 1, long pageSize = 10)
         {
-            PagedList<Film> data = await _filmDao.GetsAsync(pageIndex, pageSize);
+            long skip = (pageIndex - 1) * pageSize;
+            List<Film> films = await _filmDao.GetsAsync(skip, take: pageSize);
 
-            List<FilmDto> films = data.Items.Select(s => new FilmDto
+            List<FilmDto> filmDtos = films.Select(s => new FilmDto
             {
                 ID = s.ID,
                 Name = s.Name,
@@ -190,11 +191,14 @@ namespace Data.Services
                 UpdatedAt = s.UpdatedAt
             }).ToList();
 
+            long totalItems = await _filmDao.CountAsync();
+
             return new PagedList<FilmDto>
             {
-                Items = films,
-                PageSize = data.PageSize,
-                CurrentPage = data.CurrentPage,
+                Items = filmDtos,
+                PageSize = pageSize,
+                CurrentPage = pageIndex,
+                TotalItems = totalItems,
             };
         }
 
