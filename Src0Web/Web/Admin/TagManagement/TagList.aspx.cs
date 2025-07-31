@@ -1,4 +1,5 @@
-﻿using Common.Web;
+﻿using Common;
+using Common.Web;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -12,17 +13,13 @@ namespace Web.Admin.TagManagement
     public partial class TagList : AdminPage
     {
         private TaxonomyService _taxonomyService;
-        protected long currentPage;
-        protected long pageNumber;
-        protected bool enableTool;
-        protected string toolDetail;
+        protected PagedList<TagDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
-            enableTool = false;
-            toolDetail = null;
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditTag", new { action = "create" });
+            paged = new PagedList<TagDto>();
 
             if (!CheckLoggedIn())
             {
@@ -30,10 +27,12 @@ namespace Web.Admin.TagManagement
                 return;
             }
 
+            GetPagnationQuery();
+
             if (!IsPostBack)
             {
-                await SetGrvTag();
-                SetDrdlPage();
+                txtPageSize.Text = paged.PageSize.ToString();
+                await SetTagTable();
             }
         }
 
@@ -46,46 +45,76 @@ namespace Web.Admin.TagManagement
             }
         }
 
-        protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
+        private void GetPagnationQuery()
         {
-            await SetGrvTag();
-            SetDrdlPage();
-        }
+            string pageQuery = Request.QueryString["page"];
+            string sizeQuery = Request.QueryString["pageSize"];
 
-        private async Task SetGrvTag()
-        {
-            PagedList<TagDto> tags = await _taxonomyService
-                .GetTagsAsync(drdlPage.SelectedIndex, 20);
-            grvTag.DataSource = tags.Items;
-            grvTag.DataBind();
-
-            pageNumber = tags.PageSize;
-            currentPage = tags.CurrentPage;
-        }
-
-        private void SetDrdlPage()
-        {
-            int selectedIndex = drdlPage.SelectedIndex;
-            drdlPage.Items.Clear();
-            for (int i = 0; i < pageNumber; i++)
+            if (string.IsNullOrEmpty(pageQuery))
+                paged.CurrentPage = 1;
+            else
             {
-                string item = (i + 1).ToString();
-                if (i == currentPage)
-                    drdlPage.Items.Add(string.Format("{0}*", item));
+                if (long.TryParse(pageQuery, out long page))
+                    paged.CurrentPage = Math.Max(1, page);
                 else
-                    drdlPage.Items.Add(item);
+                    paged.CurrentPage = 1;
             }
-            drdlPage.SelectedIndex = selectedIndex;
+
+            if (string.IsNullOrEmpty(sizeQuery))
+                paged.PageSize = 20;
+            else
+            {
+                if (long.TryParse(sizeQuery, out long size))
+                    paged.PageSize = Math.Max(1, size);
+                else
+                    paged.PageSize = 20;
+            }
+
+            txtSearch.Text = Request.QueryString["searchText"] ?? string.Empty;
         }
 
-        protected async void grvTag_SelectedIndexChanged(object sender, EventArgs e)
+
+        private async Task SetTagTable()
         {
-            int key = (int)grvTag.DataKeys[grvTag.SelectedIndex].Value;
-            TagDto tag = (await _taxonomyService.GetTagAsync(key)).Data;
-            toolDetail = string.Format("{0} -- {1}", tag.ID, tag.Name);
-            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_TagDetail", new { id = tag.ID });
-            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = tag.ID, action = "update" });
-            enableTool = true;
+            paged = await _taxonomyService
+                .GetTagsAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
+
+            rptTags.DataSource = paged.Items;
+            rptTags.DataBind();
+
+            pagination.SetAndRender(paged);
+            pagination.SetUrl("Admin_TagList");
+        }
+
+        protected async void lnkDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
+        {
+            string strId = e.CommandArgument.ToString();
+            if (string.IsNullOrEmpty(strId))
+                return;
+
+            if (int.TryParse(strId, out int id))
+            {
+                ExecResult commandResult = await _taxonomyService.DeleteAsync(id);
+                notifControl.Set(commandResult);
+            }
+            else
+            {
+                notifControl.Set(ExecResult.Failure("ID không hợp lệ!"));
+                return;
+            }
+        }
+
+        protected void txtPageSize_TextChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(txtPageSize.Text, out long size))
+                Response.RedirectToRoute("Admin_TagList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
+            else
+                notifControl.Set(ExecResult.Failure("PageSize không hợp lệ!"));
+        }
+
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            Response.RedirectToRoute("Admin_TagList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText = txtSearch.Text });
         }
     }
 }

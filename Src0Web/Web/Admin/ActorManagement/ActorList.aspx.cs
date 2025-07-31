@@ -1,39 +1,37 @@
-﻿using Common.Web;
+﻿using Common;
+using Common.Web;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.ActorManagement
 {
-    public partial class ActorList : System.Web.UI.Page
+    public partial class ActorList : AdminPage
     {
         private PeopleService _peopleService;
-        protected long currentPage;
-        protected long pageNumber;
-        protected bool enableTool;
-        protected string toolDetail;
+        protected PagedList<ActorDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             _peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
-            enableTool = false;
-            toolDetail = null;
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditActor", new { action = "create" });
-
+            paged = new PagedList<ActorDto>();
+            
             if (!CheckLoggedIn())
             {
                 Response.RedirectToRoute("Account_Login", null);
                 return;
             }
 
+            GetPagnationQuery();
+
             if (!IsPostBack)
             {
-                await SetGrvActor();
-                SetDrdlPage();
+                txtPageSize.Text = paged.PageSize.ToString();
+                await SetActorTable();
             }
         }
 
@@ -46,56 +44,75 @@ namespace Web.Admin.ActorManagement
             }
         }
 
-        private bool CheckLoggedIn()
+        private void GetPagnationQuery()
         {
-            object obj = Session["userSession"];
-            if (obj == null)
-                return false;
+            string pageQuery = Request.QueryString["page"];
+            string sizeQuery = Request.QueryString["pageSize"];
 
-            UserSession userSession = (UserSession)obj;
-            return (userSession.role == "Admin" || userSession.role == "Editor");
-        }
-
-        protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            await SetGrvActor();
-            SetDrdlPage();
-        }
-
-        private async Task SetGrvActor()
-        {
-            PagedList<ActorDto> actors = await _peopleService
-                .GetActorsAsync(drdlPage.SelectedIndex, 20);
-            grvActor.DataSource = actors.Items;
-            grvActor.DataBind();
-
-            pageNumber = actors.PageSize;
-            currentPage = actors.CurrentPage;
-        }
-
-        private void SetDrdlPage()
-        {
-            int selectedIndex = drdlPage.SelectedIndex;
-            drdlPage.Items.Clear();
-            for (int i = 0; i < pageNumber; i++)
+            if (string.IsNullOrEmpty(pageQuery))
+                paged.CurrentPage = 1;
+            else
             {
-                string item = (i + 1).ToString();
-                if (i == currentPage)
-                    drdlPage.Items.Add(string.Format("{0}*", item));
+                if (long.TryParse(pageQuery, out long page))
+                    paged.CurrentPage = Math.Max(1, page);
                 else
-                    drdlPage.Items.Add(item);
+                    paged.CurrentPage = 1;
             }
-            drdlPage.SelectedIndex = selectedIndex;
+
+            if (string.IsNullOrEmpty(sizeQuery))
+                paged.PageSize = 20;
+            else
+            {
+                if (long.TryParse(sizeQuery, out long size))
+                    paged.PageSize = Math.Max(1, size);
+                else
+                    paged.PageSize = 20;
+            }
+
+            txtSearch.Text = Request.QueryString["searchText"] ?? string.Empty;
         }
 
-        protected async void grvActor_SelectedIndexChanged(object sender, EventArgs e)
+        private async Task SetActorTable()
         {
-            long key = (long)grvActor.DataKeys[grvActor.SelectedIndex].Value;
-            ActorDto actor = (await _peopleService.GetActorAsync(key)).Data;
-            toolDetail = string.Format("{0} -- {1}", actor.ID, actor.Name);
-            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_ActorDetail", new { id = actor.ID });
-            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditActor", new { id = actor.ID, action = "update" });
-            enableTool = true;
+            paged = await _peopleService
+                .GetActorsAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
+
+            rptActors.DataSource = paged.Items;
+            rptActors.DataBind();
+
+            pagination.SetAndRender(paged);
+            pagination.SetUrl("Admin_ActorList");
+        }
+
+        protected async void lnkDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
+        {
+            string strId = e.CommandArgument.ToString();
+            if (string.IsNullOrEmpty(strId))
+                return;
+
+            if (int.TryParse(strId, out int id))
+            {
+                ExecResult commandResult = await _peopleService.DeleteAsync(id);
+                notifControl.Set(commandResult);
+            }
+            else
+            {
+                notifControl.Set(ExecResult.Failure("ID không hợp lệ!"));
+                return;
+            }
+        }
+
+        protected void txtPageSize_TextChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(txtPageSize.Text, out long size))
+                Response.RedirectToRoute("Admin_ActorList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
+            else
+                notifControl.Set(ExecResult.Failure("PageSize không hợp lệ!"));
+        }
+
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            Response.RedirectToRoute("Admin_ActorList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText = txtSearch.Text });
         }
     }
 }

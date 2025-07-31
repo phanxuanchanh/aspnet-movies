@@ -1,75 +1,91 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="LanguageList.aspx.cs" Inherits="Web.Admin.LanguageManagement.LanguageList" MaintainScrollPositionOnPostback="true" %>
+
+<%@ Import Namespace="Common" %>
+<%@ Import Namespace="Data.DTO" %>
+<%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
+<%@ Register TagPrefix="uc" TagName="PaginationControl" Src="~/Admin/Base/Pagination.ascx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Danh sách ngôn ngữ - Trang quản trị</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
+    <uc:NotifControl ID="notifControl" runat="server" />
+
     <h5 class="mt-2"></h5>
-    <a class="anchor" name="tables"></a>
     <div class="row grid-responsive">
-        <div class="column ">
+        <div class="col-12">
             <div class="card">
-                <div class="card-title">
-                    <h3>Danh sách ngôn ngữ</h3>
-                </div>
-                <div class="card-block">
-                    <asp:GridView ID="grvLanguage" runat="server" BorderColor="Silver" BorderStyle="Solid" AutoGenerateColumns="False" DataKeyNames="ID" OnSelectedIndexChanged="grvLanguage_SelectedIndexChanged">
-                        <AlternatingRowStyle BackColor="White" />
-                        <Columns>
-                            <asp:BoundField DataField="ID" HeaderText="ID" />
-                            <asp:BoundField DataField="Name" HeaderText="Tên ngôn ngữ" />
-                            <asp:BoundField DataField="CreatedAt" HeaderText="Ngày tạo" />
-                            <asp:BoundField DataField="UpdatedAt" HeaderText="Ngày cập nhật" />
-                            <asp:CommandField AccessibleHeaderText="Chọn" ShowSelectButton="True" SelectText="Chọn ngôn ngữ" />
-                        </Columns>
-                        <EditRowStyle BackColor="#2461BF" />
-                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                        <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" VerticalAlign="Middle" />
-                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" VerticalAlign="Middle" />
-                        <RowStyle BackColor="#EFF3FB" />
-                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                      
-                    </asp:GridView>
-                </div>
-                <div class="row ml-2 mr-2">
-                    <div class="column column-20">
-                        <p>Trang bạn đang xem: <% = currentPage + 1 %></p>
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <div class="d-flex gap-2">
+                        <span>Danh sách ngôn ngữ</span> | 
+                    <asp:HyperLink ID="hyplnkCreate" CssClass="btn btn-sm btn-success" runat="server">Thêm</asp:HyperLink>
                     </div>
-                    <div class="column column-33 redirect-to-page">
-                        <p>Chuyển tới trang: </p>
-                        <asp:DropDownList ID="drdlPage" runat="server" OnSelectedIndexChanged="drdlPage_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
+
+                    <div class="d-flex gap-2">
+                        <asp:TextBox CssClass="form-control" ID="txtSearch" TextMode="SingleLine" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true" runat="server" placeholder="Tìm kiếm"></asp:TextBox>
                     </div>
-                    <div class="column column-20">
-                        <p>Tổng số trang: <% = pageNumber %></p>
+                </div>
+                <div class="card-body">
+                    <div class="my-3">
+                        <label class="d-inline-block me-2">Số trang: <%= paged.TotalPages %></label>
+                        | 
+                <label class="d-inline-block me-2">Số bản ghi: <%= paged.TotalItems %></label>
+                        | 
+                <label class="d-inline-block">Số bản ghi/trang:</label>
+                        <asp:TextBox CssClass="form-control d-inline-block w-25 me-2" ID="txtPageSize" TextMode="Number" OnTextChanged="txtPageSize_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="">
+                                <tr>
+                                    <th scope="col" class="text-center">
+                                        <input type="checkbox" id="selectAll">
+                                    </th>
+                                    <th scope="col">Tên quốc gia</th>
+                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col">Công cụ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <asp:Repeater ID="rptLanguages" runat="server">
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" name="selected_ids[]" value="<%# Eval("ID") %>">
+                                            </td>
+                                            <td><%# Eval("Name") %></td>
+                                            <td></td>
+                                            <td>
+                                                <a class="btn btn-sm btn-success" href="<%# GetRouteUrl("Admin_LanguageDetail", new { id = Eval("ID") }) %>">Chi tiết</a> | 
+                                            <a class="btn btn-sm btn-warning" href="<%# GetRouteUrl("Admin_EditLanguage", new { id = Eval("ID"), action = "update"}) %>">Sửa</a> | 
+                                            <asp:LinkButton CssClass="btn btn-sm btn-danger" ID="lnkDelete" runat="server" OnCommand="lnkDelete_Command" CommandArgument='<%# Eval("ID").ToString() %>'>Xóa</asp:LinkButton>
+                                            </td>
+                                        </tr>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-2">
+                            <div class="dropdown d-none d-sm-block">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Hàng loạt
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item text-danger border-top" href="#" onclick="bulkDelete();">Xóa</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-sm btn-warning">Thùng rác</button>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <uc:PaginationControl ID="pagination" runat="server"></uc:PaginationControl>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <%if (enableTool)
-        { %>
-    <h5 class="mt-2">Công cụ chỉnh sửa ngôn ngữ</h5>
-    <a class="anchor" name="buttons"></a>
-    <p class="mt-2">Bạn đang thao tác trên ngôn ngữ: <% = toolDetail %></p>
-    <div class="row grid-responsive">
-        <div class="column">
-            <asp:HyperLink ID="hyplnkDetail" CssClass="button button-blue" runat="server">Xem chi tiết</asp:HyperLink>
-            <asp:HyperLink ID="hyplnkEdit" CssClass="button button-green" runat="server">Chỉnh sửa</asp:HyperLink>
-            <asp:HyperLink ID="hyplnkDelete" CssClass="button button-red" runat="server">Xóa</asp:HyperLink>
-        </div>
-    </div>
-    <%} %>
-
-    <h5 class="mt-2">Thêm mới ngôn ngữ</h5>
-    <a class="anchor" name="buttons"></a>
-    <div class="row grid-responsive">
-        <div class="column">
-            <asp:HyperLink ID="hyplnkCreate" CssClass="button" runat="server">Thêm mới</asp:HyperLink>
         </div>
     </div>
 </asp:Content>

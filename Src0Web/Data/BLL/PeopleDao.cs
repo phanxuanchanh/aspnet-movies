@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MSSQL.Mapper;
+using MSSQL.Access;
 
 namespace Data.BLL
 {
@@ -37,12 +38,30 @@ namespace Data.BLL
             return await _context.GetHelper().ExecuteReaderAsync<People>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<People>(r));
         }
 
-        public async Task<List<People>> GetsAsync(string type = "director", long skip = 0, long take = 0)
+        public async Task<List<People>> GetsAsync(string type = "director", long skip = 0, long take = 0, string searchText = null)
         {
-            return await _context.People
-                .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
+            SqlAccess<People> access = _context.People
+                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
 
-            //long count = await _context.People.CountAsync(x => x.Type == type);
+            if(string.IsNullOrEmpty(searchText))
+                access.Where(x => x.Type == type);
+            else
+                access.Where(x => x.Type == type && x.Name.Contains(searchText));
+
+            return await access.ToListAsync();
+        }
+
+        public async Task<long> CountAsync(string type = "director", string searchText = null)
+        {
+            SqlAccess<People> access = _context.People
+                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
+
+            if (string.IsNullOrEmpty(searchText))
+                access.Where(x => x.Type == type);
+            else
+                access.Where(x => x.Type == type && x.Name.Contains(searchText));
+
+            return await access.CountAsync();
         }
 
         public async Task<int> AddAsync(People people)

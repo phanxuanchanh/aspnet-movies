@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Common.Web;
 using MSSQL.Mapper;
+using MSSQL.Access;
 
 namespace Data.BLL
 {
@@ -39,17 +40,30 @@ namespace Data.BLL
                 .ExecuteReaderAsync<Taxonomy>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<Taxonomy>(r));
         }
 
-        public async Task<List<Taxonomy>> GetsAsync(string type = "category", long skip = 0, long take = 0)
+        public async Task<List<Taxonomy>> GetsAsync(string type = "category", long skip = 0, long take = 0, string searchText = null)
         {
-            List<Taxonomy> taxonomies = await _context.Taxonomies
-                .Where(x => x.Type == type).OrderBy(o => new { o.Id }).ToListAsync();
+            SqlAccess<Taxonomy> access = _context.Taxonomies
+                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
 
-            return taxonomies;
+            if(string.IsNullOrEmpty(searchText))
+                access.Where(x => x.Type == type);
+            else
+                access.Where(x => x.Type == type && x.Name.Contains(searchText));
+
+            return await access.ToListAsync();
         }
 
-        public async Task<long> CountAsync(string type = "category")
+        public async Task<long> CountAsync(string type = "category", string searchText = null)
         {
-            return await _context.Taxonomies.CountAsync(x => x.Type == type);
+            SqlAccess<Taxonomy> access = _context.Taxonomies
+                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
+
+            if (string.IsNullOrEmpty(searchText))
+                access.Where(x => x.Type == type);
+            else
+                access.Where(x => x.Type == type && x.Name.Contains(searchText));
+
+            return await access.CountAsync();
         }
 
         public async Task<int> AddAsync(Taxonomy taxonomy)

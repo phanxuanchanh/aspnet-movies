@@ -5,6 +5,7 @@ using Data.DAL;
 using Data.DTO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,10 +64,10 @@ namespace Data.Services
             };
         }
 
-        public async Task<PagedList<DirectorDto>> GetDirectorsAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<DirectorDto>> GetDirectorsAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
             long skip = (pageIndex - 1) * pageSize;
-            List<People> people = await _peopleDao.GetsAsync("director", skip, pageSize);
+            List<People> people = await _peopleDao.GetsAsync("director", skip, pageSize, searchText);
 
             List<DirectorDto> directors = people.Select(s => new DirectorDto
             {
@@ -77,18 +78,21 @@ namespace Data.Services
                 UpdatedAt = s.UpdatedAt
             }).ToList();
 
+            long totalItems = await _peopleDao.CountAsync("director", searchText);
+
             return new PagedList<DirectorDto>
             {
                 Items = directors,
-                //PageNumber = data.PageNumber,
+                PageSize = pageSize,
                 CurrentPage = pageIndex,
+                TotalItems = totalItems,
             };
         }
 
-        public async Task<PagedList<ActorDto>> GetActorsAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<ActorDto>> GetActorsAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
             long skip = (pageIndex - 1) * pageSize;
-            List<People> people = await _peopleDao.GetsAsync("actor", skip, pageSize);
+            List<People> people = await _peopleDao.GetsAsync("actor", skip, pageSize, searchText);
 
             List<ActorDto> actors = people.Select(s => new ActorDto
             {
@@ -99,11 +103,14 @@ namespace Data.Services
                 UpdatedAt = s.UpdatedAt
             }).ToList();
 
+            long totalItems = await _peopleDao.CountAsync("director", searchText);
+
             return new PagedList<ActorDto>
             {
                 Items = actors,
-                //PageNumber = data.PageNumber,
+                PageSize = pageSize,
                 CurrentPage = pageIndex,
+                TotalItems = totalItems,
             };
         }
 

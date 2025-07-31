@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                     <div class="d-flex gap-2">
-                        <span>Danh sách phim</span> | 
+                        <span>Danh sách quốc gia</span> | 
                         <asp:HyperLink ID="hyplnkCreate" CssClass="btn btn-sm btn-success" runat="server">Thêm</asp:HyperLink>
                     </div>
 

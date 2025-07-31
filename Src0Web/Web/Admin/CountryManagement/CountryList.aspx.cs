@@ -13,7 +13,6 @@ namespace Web.Admin.CountryManagement
     {
         private FilmMetadataService _filmMetadataService;
         protected PagedList<CountryDto> paged;
-        protected string searchText;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -70,13 +69,13 @@ namespace Web.Admin.CountryManagement
                     paged.PageSize = 20;
             }
 
-            searchText = Request.QueryString["searchText"];
+            txtSearch.Text = Request.QueryString["searchText"] ?? string.Empty;
         }
 
         private async Task SetCountryTable()
         {
             paged = await _filmMetadataService
-                .GetCountriesAsync(paged.CurrentPage, paged.PageSize);
+                .GetCountriesAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
 
             rptCountries.DataSource = paged.Items;
             rptCountries.DataBind();
@@ -98,7 +97,7 @@ namespace Web.Admin.CountryManagement
             }
             else
             {
-                notifControl.Set(ExecResult.Failure("Invalid country ID."));
+                notifControl.Set(ExecResult.Failure("ID không hợp lệ!"));
                 return;
             }
         }
@@ -106,15 +105,14 @@ namespace Web.Admin.CountryManagement
         protected void txtPageSize_TextChanged(object sender, EventArgs e)
         {
             if (long.TryParse(txtPageSize.Text, out long size))
-                Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
+                Response.RedirectToRoute("Admin_CountryList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
             else
-                notifControl.Set(ExecResult.Failure("Invalid page size."));
+                notifControl.Set(ExecResult.Failure("PageSize không hợp lệ!"));
         }
 
         protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            searchText = txtSearch.Text.Trim();
-            Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText });
+            Response.RedirectToRoute("Admin_CountryList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText = txtSearch.Text });
         }
     }
 }

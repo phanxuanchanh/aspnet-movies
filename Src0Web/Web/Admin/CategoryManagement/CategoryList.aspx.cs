@@ -1,28 +1,24 @@
-﻿using Common.Web;
+﻿using Common;
+using Common.Web;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.CategoryManagement
 {
     public partial class CategoryList : AdminPage
     {
         private TaxonomyService _taxonomyService;
-        protected long currentPage;
-        protected long pageNumber;
-        protected bool enableTool;
-        protected string toolDetail;
+        protected PagedList<CategoryDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
-            enableTool = false;
-            toolDetail = null;
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { action = "create" });
+            paged = new PagedList<CategoryDto>();
 
             if (!CheckLoggedIn())
             {
@@ -30,10 +26,12 @@ namespace Web.Admin.CategoryManagement
                 return;
             }
 
+            GetPagnationQuery();
+
             if (!IsPostBack)
             {
-                await SetGrvCategory();
-                SetDrdlPage();
+                txtPageSize.Text = paged.PageSize.ToString();
+                await SetCategoryTable();
             }
         }
 
@@ -46,56 +44,75 @@ namespace Web.Admin.CategoryManagement
             }
         }
 
-        protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
+        private void GetPagnationQuery()
         {
-            try
+            string pageQuery = Request.QueryString["page"];
+            string sizeQuery = Request.QueryString["pageSize"];
+
+            if (string.IsNullOrEmpty(pageQuery))
+                paged.CurrentPage = 1;
+            else
             {
-                await SetGrvCategory();
-                SetDrdlPage();
+                if (long.TryParse(pageQuery, out long page))
+                    paged.CurrentPage = Math.Max(1, page);
+                else
+                    paged.CurrentPage = 1;
             }
-            catch (Exception ex)
+
+            if (string.IsNullOrEmpty(sizeQuery))
+                paged.PageSize = 20;
+            else
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                if (long.TryParse(sizeQuery, out long size))
+                    paged.PageSize = Math.Max(1, size);
+                else
+                    paged.PageSize = 20;
+            }
+
+            txtSearch.Text = Request.QueryString["searchText"] ?? string.Empty;
+        }
+
+        private async Task SetCategoryTable()
+        {
+            paged = await _taxonomyService
+                .GetCategoriesAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
+
+            rptCategories.DataSource = paged.Items;
+            rptCategories.DataBind();
+
+            pagination.SetAndRender(paged);
+            pagination.SetUrl("Admin_CategoryList");
+        }
+
+        protected async void lnkDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
+        {
+            string strId = e.CommandArgument.ToString();
+            if (string.IsNullOrEmpty(strId))
+                return;
+
+            if (int.TryParse(strId, out int id))
+            {
+                ExecResult commandResult = await _taxonomyService.DeleteAsync(id);
+                notifControl.Set(commandResult);
+            }
+            else
+            {
+                notifControl.Set(ExecResult.Failure("ID không hợp lệ!"));
+                return;
             }
         }
 
-        private async Task SetGrvCategory()
+        protected void txtPageSize_TextChanged(object sender, EventArgs e)
         {
-            PagedList<CategoryDto> categories = await _taxonomyService
-                .GetCategoriesAsync(1/*drdlPage.SelectedIndex*/, 20);
-            grvCategory.DataSource = categories.Items;
-            grvCategory.DataBind();
-
-            pageNumber = categories.PageSize;
-            currentPage = categories.CurrentPage;
-
-            pagination.SetAndRender(categories);
+            if (long.TryParse(txtPageSize.Text, out long size))
+                Response.RedirectToRoute("Admin_CategoryList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
+            else
+                notifControl.Set(ExecResult.Failure("PageSize không hợp lệ!"));
         }
 
-        private void SetDrdlPage()
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            //int selectedIndex = drdlPage.SelectedIndex;
-            //drdlPage.Items.Clear();
-            //for (int i = 0; i < pageNumber; i++)
-            //{
-            //    string item = (i + 1).ToString();
-            //    if (i == currentPage)
-            //        drdlPage.Items.Add(string.Format("{0}*", item));
-            //    else
-            //        drdlPage.Items.Add(item);
-            //}
-            //drdlPage.SelectedIndex = selectedIndex;
-        }
-
-        protected async void grvCategory_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int key = (int)grvCategory.DataKeys[grvCategory.SelectedIndex].Value;
-            CategoryDto category = (await _taxonomyService.GetCategoryAsync(key)).Data;
-            toolDetail = string.Format("{0} -- {1}", category.ID, category.Name);
-            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_CategoryDetail", new { id = category.ID });
-            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = category.ID, action = "update" });
-            enableTool = true;
+            Response.RedirectToRoute("Admin_CategoryList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText = txtSearch.Text });
         }
     }
 }

@@ -101,26 +101,18 @@ namespace Web.Admin.FilmManagement
             notifControl.Set(commandResult);
         }
 
-        protected async void txtPageSize_TextChanged(object sender, EventArgs e)
+        protected void txtPageSize_TextChanged(object sender, EventArgs e)
         {
             if (long.TryParse(txtPageSize.Text, out long size))
-            {
                 Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
-                //paged.PageSize = Math.Max(1, size);
-                //paged.CurrentPage = 1;
-                //await SetFilmTable();
-            }
             else
-            {
                 notifControl.Set(ExecResult.Failure("Invalid page size."));
-            }
         }
 
-        protected async void txtSearch_TextChanged(object sender, EventArgs e)
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
             string searchText = txtSearch.Text.Trim();
             Response.RedirectToRoute("Admin_FilmList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText });
-            //await SetFilmTable();
         }
     }
 }

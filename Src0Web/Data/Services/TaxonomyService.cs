@@ -65,10 +65,10 @@ namespace Data.Services
             };
         }
 
-        public async Task<PagedList<CategoryDto>> GetCategoriesAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<CategoryDto>> GetCategoriesAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
             long skip = (pageIndex - 1) * pageSize;
-            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("category", skip, take: pageSize);
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("category", skip, take: pageSize, searchText);
 
             List<CategoryDto> categories = taxonomies.Select(s => new CategoryDto
             {
@@ -90,9 +90,9 @@ namespace Data.Services
             };
         }
 
-        public async Task<PagedList<TagDto>> GetTagsAsync(long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<TagDto>> GetTagsAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
-            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("tag", pageIndex, pageSize);
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("tag", pageIndex, pageSize, searchText);
 
             List<TagDto> tags = taxonomies.Select(s => new TagDto
             {

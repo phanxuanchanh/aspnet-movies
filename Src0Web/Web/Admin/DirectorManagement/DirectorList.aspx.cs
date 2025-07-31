@@ -1,4 +1,5 @@
-﻿using Common.Web;
+﻿using Common;
+using Common.Web;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -11,30 +12,26 @@ namespace Web.Admin.DirectorManagement
     public partial class DirectorList : AdminPage
     {
         private PeopleService _peopleService;
-        protected long currentPage;
-        protected long pageNumber;
-        protected bool enableTool;
-        protected string toolDetail;
+        protected PagedList<DirectorDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             _peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
-            enableTool = false;
-            toolDetail = null;
-
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { action = "create" });
+            paged = new PagedList<DirectorDto>();
 
             if (!CheckLoggedIn())
             {
                 Response.RedirectToRoute("Account_Login", null);
                 return;
-
             }
+
+            GetPagnationQuery();
 
             if (!IsPostBack)
             {
-                await SetGrvDirector();
-                SetDrdlPage();
+                txtPageSize.Text = paged.PageSize.ToString();
+                await SetDirectorTable();
             }
         }
 
@@ -47,46 +44,75 @@ namespace Web.Admin.DirectorManagement
             }
         }
 
-        protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
+        private void GetPagnationQuery()
         {
-            await SetGrvDirector();
-            SetDrdlPage();
-        }
+            string pageQuery = Request.QueryString["page"];
+            string sizeQuery = Request.QueryString["pageSize"];
 
-        private async Task SetGrvDirector()
-        {
-            PagedList<DirectorDto> directors = await _peopleService
-                .GetDirectorsAsync(drdlPage.SelectedIndex, 20);
-            grvDirector.DataSource = directors.Items;
-            grvDirector.DataBind();
-
-            pageNumber = directors.PageSize;
-            currentPage = directors.CurrentPage;
-        }
-
-        private void SetDrdlPage()
-        {
-            int selectedIndex = drdlPage.SelectedIndex;
-            drdlPage.Items.Clear();
-            for (int i = 0; i < pageNumber; i++)
+            if (string.IsNullOrEmpty(pageQuery))
+                paged.CurrentPage = 1;
+            else
             {
-                string item = (i + 1).ToString();
-                if (i == currentPage)
-                    drdlPage.Items.Add(string.Format("{0}*", item));
+                if (long.TryParse(pageQuery, out long page))
+                    paged.CurrentPage = Math.Max(1, page);
                 else
-                    drdlPage.Items.Add(item);
+                    paged.CurrentPage = 1;
             }
-            drdlPage.SelectedIndex = selectedIndex;
+
+            if (string.IsNullOrEmpty(sizeQuery))
+                paged.PageSize = 20;
+            else
+            {
+                if (long.TryParse(sizeQuery, out long size))
+                    paged.PageSize = Math.Max(1, size);
+                else
+                    paged.PageSize = 20;
+            }
+
+            txtSearch.Text = Request.QueryString["searchText"] ?? string.Empty;
         }
 
-        protected async void grvDirector_SelectedIndexChanged(object sender, EventArgs e)
+        private async Task SetDirectorTable()
         {
-            long key = (long)grvDirector.DataKeys[grvDirector.SelectedIndex].Value;
-            DirectorDto director = (await _peopleService.GetDirectorAsync(key)).Data;
-            toolDetail = string.Format("{0} -- {1}", director.ID, director.Name);
-            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_DirectorDetail", new { id = director.ID });
-            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = director.ID, action = "update" });
-            enableTool = true;
+            paged = await _peopleService
+                .GetDirectorsAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
+
+            rptDirectors.DataSource = paged.Items;
+            rptDirectors.DataBind();
+
+            pagination.SetAndRender(paged);
+            pagination.SetUrl("Admin_CountryList");
+        }
+
+        protected async void lnkDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
+        {
+            string strId = e.CommandArgument.ToString();
+            if (string.IsNullOrEmpty(strId))
+                return;
+
+            if (int.TryParse(strId, out int id))
+            {
+                ExecResult commandResult = await _peopleService.DeleteAsync(id);
+                notifControl.Set(commandResult);
+            }
+            else
+            {
+                notifControl.Set(ExecResult.Failure("ID không hợp lệ!"));
+                return;
+            }
+        }
+
+        protected void txtPageSize_TextChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(txtPageSize.Text, out long size))
+                Response.RedirectToRoute("Admin_DirectorList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
+            else
+                notifControl.Set(ExecResult.Failure("PageSize không hợp lệ!"));
+        }
+
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            Response.RedirectToRoute("Admin_DirectorList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText = txtSearch.Text });
         }
     }
 }

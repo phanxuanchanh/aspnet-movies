@@ -15,10 +15,10 @@ namespace Data.DAL
         [SqlColumn("description")]
         public string Description { get; set; }
 
-        [SqlColumn("createdAt")]
+        [SqlColumn("custom")]
         public string Custom { get; set; }
 
-        [SqlColumn("updatedAt")]
+        [SqlColumn("type")]
         public string Type { get; set; }
     }
 }

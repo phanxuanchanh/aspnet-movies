@@ -15,7 +15,7 @@ namespace Data.DAL
         [SqlColumn("description")]
         public string Description { get; set; }
 
-        [SqlColumn("createdAt")]
+        [SqlColumn("type")]
         public string Type { get; set; }
     }
 }
