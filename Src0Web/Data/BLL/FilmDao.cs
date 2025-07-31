@@ -36,7 +36,7 @@ namespace Data.BLL
             return await _context.Films.CountAsync();
         }
 
-        public async Task<SqlPagedList<Film>> GetsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)
+        public async Task<PagedList<Film>> GetsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)
         {
             string countCommand = @"
                 SELECT CAST(COUNT(*) AS BIGINT)
@@ -64,12 +64,12 @@ namespace Data.BLL
                 { "@pageSize", pageSize }
             };
 
-            SqlPagedList<Film> pagedList = new SqlPagedList<Film>();
+            PagedList<Film> pagedList = new PagedList<Film>();
 
             pagedList.Items = await _context.GetHelper()
                 .ExecuteReaderAsync<Film>(command, parameters, r => SqlMapper.MapRow<Film>(r));
 
-            pagedList.Solve(totalRecord, pageIndex - 1, pageSize);
+            //pagedList.Solve(totalRecord, pageIndex - 1, pageSize);
 
             return pagedList;
         }

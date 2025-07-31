@@ -204,7 +204,7 @@ namespace Data.Services
 
         public async Task<PagedList<FilmDto>> GetFilmsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)
         {
-            SqlPagedList<Film> data = await _filmDao.GetsByCategoryIdAsync(categoryId, pageIndex, pageSize);
+           PagedList<Film> data = await _filmDao.GetsByCategoryIdAsync(categoryId, pageIndex, pageSize);
 
             List<FilmDto> films = data.Items.Select(s => new FilmDto
             {
@@ -219,7 +219,7 @@ namespace Data.Services
             return new PagedList<FilmDto>
             {
                 Items = films,
-                PageSize = data.PageNumber,
+                PageSize = data.PageSize,
                 CurrentPage = data.CurrentPage,
             };
         }

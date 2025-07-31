@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\BLLState.cs" />
     <Compile Include="BLL\BusinessLogicLayer.cs" />
     <Compile Include="BLL\FilmDao.cs" />
     <Compile Include="BLL\FilmMetadataDao.cs" />
