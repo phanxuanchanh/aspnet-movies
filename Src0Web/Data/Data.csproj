@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Data</RootNamespace>
     <AssemblyName>Data</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -42,43 +42,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\BusinessLogicLayer.cs" />
-    <Compile Include="BLL\FilmDao.cs" />
-    <Compile Include="BLL\FilmMetadataDao.cs" />
-    <Compile Include="BLL\FilmMetaLinkDao.cs" />
-    <Compile Include="BLL\GeneralDao.cs" />
-    <Compile Include="BLL\PeopleDao.cs" />
-    <Compile Include="BLL\PeopleLinkDao.cs" />
-    <Compile Include="BLL\TaxonomyDao.cs" />
-    <Compile Include="BLL\TaxonomyLinkDao.cs" />
-    <Compile Include="DAL\FilmMetaLink.cs" />
-    <Compile Include="BLL\PaymentInfoBLL.cs" />
-    <Compile Include="BLL\PaymentMethodDao.cs" />
-    <Compile Include="BLL\RoleDao.cs" />
-    <Compile Include="BLL\UserDao.cs" />
-    <Compile Include="DAL\DBContext.cs" />
-    <Compile Include="DAL\Film.cs" />
-    <Compile Include="DAL\FilmMetadata.cs" />
-    <Compile Include="DAL\PaymentInfo.cs" />
-    <Compile Include="DAL\PaymentMethod.cs" />
-    <Compile Include="DAL\People.cs" />
-    <Compile Include="DAL\PeopleLink.cs" />
-    <Compile Include="DAL\Role.cs" />
-    <Compile Include="DAL\Taxonomy.cs" />
-    <Compile Include="DAL\TaxonomyLink.cs" />
-    <Compile Include="DAL\User.cs" />
-    <Compile Include="DAL\UserReaction.cs" />
-    <Compile Include="DTO\ActorDTO.cs" />
-    <Compile Include="DTO\CategoryDTO.cs" />
-    <Compile Include="DTO\CountryDTO.cs" />
-    <Compile Include="DTO\DirectorDTO.cs" />
-    <Compile Include="DTO\FilmDTO.cs" />
-    <Compile Include="DTO\LanguageDTO.cs" />
-    <Compile Include="DTO\PaymentInfoDTO.cs" />
-    <Compile Include="DTO\PaymentMethodDTO.cs" />
-    <Compile Include="DTO\RoleDTO.cs" />
-    <Compile Include="DTO\TagDTO.cs" />
-    <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="DAOs\FilmDao.cs" />
+    <Compile Include="DAOs\FilmMetadataDao.cs" />
+    <Compile Include="DAOs\FilmMetaLinkDao.cs" />
+    <Compile Include="DAOs\GeneralDao.cs" />
+    <Compile Include="DAOs\PeopleDao.cs" />
+    <Compile Include="DAOs\PeopleLinkDao.cs" />
+    <Compile Include="DAOs\TaxonomyDao.cs" />
+    <Compile Include="DAOs\TaxonomyLinkDao.cs" />
+    <Compile Include="Models\FilmMetaLink.cs" />
+    <Compile Include="DAOs\PaymentInfoBLL.cs" />
+    <Compile Include="DAOs\PaymentMethodDao.cs" />
+    <Compile Include="DAOs\RoleDao.cs" />
+    <Compile Include="DAOs\UserDao.cs" />
+    <Compile Include="Models\DBContext.cs" />
+    <Compile Include="Models\Film.cs" />
+    <Compile Include="Models\FilmMetadata.cs" />
+    <Compile Include="Models\PaymentInfo.cs" />
+    <Compile Include="Models\PaymentMethod.cs" />
+    <Compile Include="Models\People.cs" />
+    <Compile Include="Models\PeopleLink.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Taxonomy.cs" />
+    <Compile Include="Models\TaxonomyLink.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserReaction.cs" />
+    <Compile Include="DTOs\ActorDTO.cs" />
+    <Compile Include="DTOs\CategoryDTO.cs" />
+    <Compile Include="DTOs\CountryDTO.cs" />
+    <Compile Include="DTOs\DirectorDTO.cs" />
+    <Compile Include="DTOs\FilmDTO.cs" />
+    <Compile Include="DTOs\LanguageDTO.cs" />
+    <Compile Include="DTOs\PaymentInfoDTO.cs" />
+    <Compile Include="DTOs\PaymentMethodDTO.cs" />
+    <Compile Include="DTOs\RoleDTO.cs" />
+    <Compile Include="DTOs\TagDTO.cs" />
+    <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PeopleService.cs" />
     <Compile Include="Services\RoleService.cs" />

@@ -5,24 +5,14 @@ using System.Threading.Tasks;
 
 namespace Data.BLL
 {
-    public class PaymentInfoBLL : BusinessLogicLayer
+    public class PaymentInfoBLL : IDisposable
     {
         private bool disposed;
+        private bool disposedValue;
 
         public PaymentInfoBLL()
             : base()
         {
-            InitDAL();
-            SetDefault();
-            disposed = false;
-        }
-
-        public PaymentInfoBLL(BusinessLogicLayer bll)
-            : base()
-        {
-            InitDAL(bll.db);
-            SetDefault();
-            disposed = false;
         }
 
         private PaymentInfoDTO ToPaymentInfoDTO(PaymentInfo paymentInfo)
@@ -40,11 +30,11 @@ namespace Data.BLL
                 expirationDate = paymentInfo.expirationDate
             };
 
-            if (includeTimestamp)
-            {
-                paymentInfoDTO.createAt = paymentInfo.createAt;
-                paymentInfoDTO.updateAt = paymentInfo.updateAt;
-            }
+            //if (includeTimestamp)
+            //{
+            //    paymentInfoDTO.createAt = paymentInfo.createAt;
+            //    paymentInfoDTO.updateAt = paymentInfo.updateAt;
+            //}
 
             return paymentInfoDTO;
         }
@@ -82,6 +72,35 @@ namespace Data.BLL
                 expirationDate = paymentInfoUpdate.expirationDate,
                 updateAt = DateTime.Now,
             };
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~PaymentInfoBLL()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         //public async Task<CreationState> CreatePaymentInfoAsync(PaymentInfoCreation paymentInfoCreation)
@@ -138,24 +157,5 @@ namespace Data.BLL
         //    int affected = await db.PaymentInfos.DeleteAsync(p => p.paymentMethodId == paymentMethodId && p.userId == userId);
         //    return (affected == 0) ? DeletionState.Failed : DeletionState.Success;
         //}
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                try
-                {
-                    if (disposing)
-                    {
-
-                    }
-                    this.disposed = true;
-                }
-                finally
-                {
-                    base.Dispose(disposing);
-                }
-            }
-        }
     }
 }

@@ -7,6 +7,7 @@ using System.Web;
 using System.IO;
 using Common.Hash;
 using System.Linq;
+using System.Text;
 
 namespace Web.Install
 {
@@ -45,12 +46,8 @@ namespace Web.Install
 
         private static void CreateDatabase()
         {
-            string sqlFilePath = HttpContext.Current.Server.MapPath("~/Install/Movie.sql");
-
-            if (string.IsNullOrEmpty(sqlFilePath))
-                throw new Exception("@'sqlFilePath' must not be null");
-
-            string sql = File.ReadAllText(sqlFilePath);
+            byte[] rawSql = InstallationResource.movie;
+            string sql = Encoding.UTF8.GetString(rawSql);
             IEnumerable<string> commandStrings = Regex.Split(sql, @"^\s*GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
             using (DBContext db = new DBContext())
             {

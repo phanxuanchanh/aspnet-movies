@@ -24,7 +24,6 @@ namespace Data.BLL
 
         public async Task<List<Film>> GetsAsync(long skip = 0, long take = 0)
         {
-            string a = "princess";
             List<Film> films = await _context.Films.Where(x => x.DeletedAt == null)
                 .OrderBy(o => new { o.ID }).ToListAsync();
 
