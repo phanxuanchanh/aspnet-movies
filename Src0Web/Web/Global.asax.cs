@@ -16,7 +16,7 @@ namespace Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             SqlConnectInfo.ReadFromConfigFile("MovieDB");
 
-            EmailConfig.RegisterEmail();
+            //EmailConfig.RegisterEmail();
         }
 
         protected void Session_Start(object sender, EventArgs e)

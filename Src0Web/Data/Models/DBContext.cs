@@ -1,4 +1,5 @@
-﻿using MSSQL.Access;
+﻿using Data.Models;
+using MSSQL.Access;
 using MSSQL.Connection;
 
 namespace Data.DAL
@@ -6,6 +7,7 @@ namespace Data.DAL
     public class DBContext : SqlContext
     {
         private bool disposed;
+        private SqlAccess<AppSetting> appSettings;
         private SqlAccess<Role> roles;
         private SqlAccess<User> users;
         private SqlAccess<PaymentMethod> paymentMethods;
@@ -22,6 +24,7 @@ namespace Data.DAL
         public DBContext()
             : base()
         {
+            appSettings = null;
             roles = null;
             users = null;
             paymentInfos = null;
@@ -37,6 +40,7 @@ namespace Data.DAL
             disposed = false;
         }
 
+        public SqlAccess<AppSetting> AppSettings { get { return InitSqlAccess<AppSetting>(ref appSettings); } }
         public SqlAccess<Role> Roles { get { return InitSqlAccess<Role>(ref roles); } }
         public SqlAccess<User> Users { get { return InitSqlAccess<User>(ref users); } }
         public SqlAccess<PaymentMethod> PaymentMethods { get { return InitSqlAccess<PaymentMethod>(ref paymentMethods); } }

@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using System;
 using System.Threading;
 using System.Web;
-using System.IO;
 using Common.Hash;
 using System.Linq;
 using System.Text;
@@ -13,22 +12,30 @@ namespace Web.Install
 {
     public class Installer
     {
+        public static bool Completed = false;
+
         public static void RunIfNotInstalled(HttpContext httpContext)
         {
-            if (HasAnyTable())
+            if (Completed)
                 return;
 
-            CreateDatabase();
-            Thread.Sleep(500);
-            MigrateRole();
-            MigrateUser();
-
-            string currentUrl = httpContext.Request.Url.AbsolutePath;
-
-            if (!currentUrl.EndsWith("/Install/AppSettings.aspx"))
+            if (!HasAnyTable())
             {
-                httpContext.Response.Redirect("~/Install/AppSettings.aspx", false);
-                httpContext.ApplicationInstance.CompleteRequest();
+                CreateDatabase();
+                Thread.Sleep(500);
+                MigrateRole();
+                MigrateUser();
+            }
+
+            if(!HasAppSettings())
+            {
+                string currentUrl = httpContext.Request.Url.AbsolutePath;
+
+                if (!currentUrl.EndsWith("/Install/AppSettings.aspx"))
+                {
+                    httpContext.Response.Redirect("~/Install/AppSettings.aspx", false);
+                    httpContext.ApplicationInstance.CompleteRequest();
+                }
             }
         }
 
@@ -41,6 +48,11 @@ namespace Web.Install
 
                 return tableNumbers > 0;
             }
+        }
+
+        private static bool HasAppSettings()
+        {
+            return false;
         }
 
 
