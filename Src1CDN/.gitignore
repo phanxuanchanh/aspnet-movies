@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Custom
 /MovieCDN/appsettings.Development.json
+/MovieCDN.ApiKeyGenerator/appsettings.Development.json

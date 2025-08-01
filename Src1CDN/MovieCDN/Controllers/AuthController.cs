@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MovieCDN.Database;
 
 namespace MovieCDN.Controllers;
 
@@ -7,17 +7,26 @@ namespace MovieCDN.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly TokenService _tokenService;
+    private readonly MovieCdnContext _context;
 
-    public AuthController(TokenService tokenService)
+    public AuthController(TokenService tokenService, MovieCdnContext context)
     {
         _tokenService = tokenService;
+        _context = context;
     }
 
     [Route("")]
-    [HttpGet]
-    public IActionResult Authenticate()
+    [HttpPost]
+    public async Task<ActionResult> Authenticate([FromBody]ApiKey apiKey)
     {
-        string token = _tokenService.GenerateToken("mainClient");
+        ApiKey? apiKeyFromDb = await _context.ApiKeys.FindAsync(apiKey.ClientId);
+        if (apiKeyFromDb is null)
+            return NotFound();
+
+        if(apiKeyFromDb.SecretKey != apiKey.SecretKey)
+            return Unauthorized("Invalid API key or secret key");
+
+        string token = _tokenService.GenerateToken(apiKeyFromDb.ClientId);
         return Ok(new { token });
     }
 }

@@ -1,6 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MovieCDN;
+using MovieCDN.Database;
 using MovieCDN.Queues;
 using System.Text;
 
@@ -67,6 +70,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<IVideoProcessingQueue, VideoProcessingQueue>();
 builder.Services.AddHostedService<VideoProcessingService>();
+
+builder.Services.AddDbContextPool<MovieCdnContext>(o =>
+    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
