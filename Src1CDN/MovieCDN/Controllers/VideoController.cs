@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieCDN.Queues;
 
 namespace MovieCDN.Controllers;
 
@@ -8,16 +9,18 @@ namespace MovieCDN.Controllers;
 public class VideoController : ControllerBase
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IVideoProcessingQueue _videoProcessingQueue;
     private readonly ILogger<VideoController> _logger;
     private readonly StoragePath _storagePath;
     private readonly FileManager _fileManager;
 
-    public VideoController(ILogger<VideoController> logger, StoragePath storagePath, IWebHostEnvironment webHostEnvironment)
+    public VideoController(ILogger<VideoController> logger, StoragePath storagePath, IWebHostEnvironment webHostEnvironment, IVideoProcessingQueue videoProcessingQueue)
     {
         _logger = logger;
         _storagePath = storagePath;
         _fileManager = new FileManager(_storagePath.VideoStoragePath);
         _webHostEnvironment = webHostEnvironment;
+        _videoProcessingQueue = videoProcessingQueue;
     }
 
     [Route("default")]
@@ -56,6 +59,8 @@ public class VideoController : ControllerBase
         string path = _fileManager.GetFilePath(partitionKey, filename);
         if (!_fileManager.FileExists(path))
             return NotFound();
+
+        _videoProcessingQueue.Enqueue((path, filename));
 
         FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         return File(stream, "video/mp4", enableRangeProcessing: true);

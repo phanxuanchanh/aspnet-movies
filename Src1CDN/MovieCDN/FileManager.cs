@@ -34,33 +34,10 @@ public class FileManager
         return File.Exists(fullFilePath);
     }
 
-    public string GetDirectory(string quality)
+    public string GetFolderPath(string folderName)
     {
-        string datePath = DateTime.Now.ToString("yyyy/MM/dd");
-        string fullPath = Path.Combine(_basePath, quality, datePath);
-        EnsureDirectoryExists(fullPath);
-        return fullPath;
-    }
-
-    public string SaveFile(string quality, string filename, byte[] content)
-    {
-        string dir = GetDirectory(quality);
-        string fullPath = Path.Combine(dir, filename);
-        File.WriteAllBytes(fullPath, content);
-        return fullPath;
-    }
-
-
-
-    public bool DeleteFile(string quality, string filename)
-    {
-        string dir = GetDirectory(quality);
-        string fullPath = Path.Combine(dir, filename);
-        if (File.Exists(fullPath))
-        {
-            File.Delete(fullPath);
-            return true;
-        }
-        return false;
+        string folderPath = Path.Combine(_basePath, folderName);
+        EnsureDirectoryExists(folderPath);
+        return folderPath;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MovieCDN;
+using MovieCDN.Queues;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -64,6 +65,8 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<IVideoProcessingQueue, VideoProcessingQueue>();
+builder.Services.AddHostedService<VideoProcessingService>();
 
 var app = builder.Build();
 
