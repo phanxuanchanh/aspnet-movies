@@ -120,8 +120,6 @@
     <Content Include="admin_assets\images\avatar.png" />
     <Content Include="admin_assets\images\favicon.png" />
     <Content Include="admin_assets\js\jquery.js" />
-    <Content Include="FileUpload\Images\Default\default.png" />
-    <Content Include="FileUpload\Videos\Default\default.mp4" />
     <Content Include="Install\AppSettings.aspx" />
     <Content Include="User\CategoryList.aspx" />
     <Content Include="User\FilmDetail.aspx" />
