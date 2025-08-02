@@ -15,6 +15,15 @@ namespace Web.Admin.FilmManagement
     {
 
         /// <summary>
+        /// notifControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Web.Admin.Base.Notification notifControl;
+
+        /// <summary>
         /// hyplnkList control.
         /// </summary>
         /// <remarks>
@@ -22,6 +31,24 @@ namespace Web.Admin.FilmManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
+
+        /// <summary>
+        /// hyplnkEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkEdit;
+
+        /// <summary>
+        /// btnDelete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDelete;
 
         /// <summary>
         /// hyplnkEdit_Category control.
@@ -76,23 +103,5 @@ namespace Web.Admin.FilmManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hyplnkEdit_Source;
-
-        /// <summary>
-        /// hyplnkEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkEdit;
-
-        /// <summary>
-        /// btnDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDelete;
     }
 }

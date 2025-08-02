@@ -15,6 +15,24 @@ namespace Web.Admin.FilmManagement
     {
 
         /// <summary>
+        /// notifControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Web.Admin.Base.Notification notifControl;
+
+        /// <summary>
+        /// hyplnkList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
+
+        /// <summary>
         /// hdFilmId control.
         /// </summary>
         /// <remarks>
@@ -49,6 +67,24 @@ namespace Web.Admin.FilmManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator cvFilmName;
+
+        /// <summary>
+        /// lbFilmDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbFilmDescription;
+
+        /// <summary>
+        /// txtFilmDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFilmDescription;
 
         /// <summary>
         /// lbProductionCompany control.
@@ -105,24 +141,6 @@ namespace Web.Admin.FilmManagement
         protected global::System.Web.UI.WebControls.CustomValidator cvReleaseDate;
 
         /// <summary>
-        /// lbFilmDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbFilmDescription;
-
-        /// <summary>
-        /// txtFilmDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFilmDescription;
-
-        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>
@@ -130,14 +148,5 @@ namespace Web.Admin.FilmManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
-
-        /// <summary>
-        /// hyplnkList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
     }
 }

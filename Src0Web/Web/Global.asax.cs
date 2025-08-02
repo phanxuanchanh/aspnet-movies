@@ -26,7 +26,7 @@ namespace Web
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            Installer.RunIfNotInstalled(Context);
+            //Installer.RunIfNotInstalled(Context);
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

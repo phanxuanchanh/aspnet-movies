@@ -587,6 +587,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="common_assets\fonts\" />
   </ItemGroup>
   <ItemGroup>
