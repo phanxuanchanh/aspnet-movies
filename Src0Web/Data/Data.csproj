@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MSSQL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\MSSQL.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -91,10 +95,6 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{2bafd121-9a00-48e8-921a-fb250b8f81ca}</Project>
       <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MSSQL\MSSQL.csproj">
-      <Project>{d7c08863-5fbb-4131-b72c-2ca0e9ed3fe8}</Project>
-      <Name>MSSQL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
