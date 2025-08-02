@@ -45,6 +45,8 @@ namespace Data.BLL
         public UserDao UserDao { get { return _userDao; } }
         public PaymentMethodDao PaymentMethodDao { get { return _paymentMethodDao; } }
 
+        public DBContext Context => _context;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

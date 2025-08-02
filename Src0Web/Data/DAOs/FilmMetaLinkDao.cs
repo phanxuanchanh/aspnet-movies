@@ -14,7 +14,7 @@ namespace Data.BLL
             _context = context;
         }
 
-        public async Task<List<FilmMetaLink>> GetsByFilmIdAsync(string filmId)
+        public async Task<List<FilmMetaLink>> GetManyByFilmIdAsync(string filmId)
         {
             return await _context.FilmMetaLinks
                 .Where(x => x.FilmId == filmId).ToListAsync();
@@ -29,6 +29,11 @@ namespace Data.BLL
         public async Task<int> DeleteAsync(string filmId, int metaId)
         {
            return await _context.FilmMetaLinks.DeleteAsync(x => x.FilmId == filmId && x.MetaId == metaId);
+        }
+
+        public async Task<int> DeleteManyByFilmIdAsync(string filmId)
+        {
+            return await _context.FilmMetaLinks.DeleteAsync(x => x.FilmId == filmId);
         }
     }
 }

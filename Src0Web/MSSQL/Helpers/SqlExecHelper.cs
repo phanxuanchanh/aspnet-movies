@@ -10,12 +10,14 @@ namespace MSSQL
     {
         private readonly string _connectionString;
         private readonly SqlConnection _connection;
+        private SqlTransaction _transaction;
         private bool disposedValue;
 
         public SqlExecHelper(string connectionString)
         {
             _connectionString = connectionString;
             _connection = new SqlConnection(_connectionString);
+            _transaction = null;
         }
 
         public void Connect()
@@ -30,10 +32,57 @@ namespace MSSQL
                 _connection.Close();
         }
 
+        public void BeginTransaction()
+        {
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+
+            _transaction = _connection.BeginTransaction();
+        }
+
+        public void CommitTransaction()
+        {
+            if (_transaction == null)
+                throw new InvalidOperationException("No transaction is currently active.");
+
+            try
+            {
+                _transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                _transaction.Rollback();
+                throw new Exception("Transaction commit failed.", ex);
+            }
+            finally
+            {
+                _transaction.Dispose();
+                _transaction = null;
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            if (_transaction == null)
+                throw new InvalidOperationException("No transaction is currently active.");
+
+            try
+            {
+                _transaction.Rollback();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Transaction rollback failed.", ex);
+            }
+            finally
+            {
+                _transaction.Dispose();
+                _transaction = null;
+            }
+        }
+
         public IEnumerable<T> ExecuteReader<T>(string sql, Dictionary<string, object> parameters, Func<SqlDataReader, T> mapper)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(sql, _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -54,8 +103,6 @@ namespace MSSQL
 
         public Tscalar ExecuteScalarQuery<Tscalar>(string sql, Dictionary<string, object> parameters = null)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(sql, _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -74,8 +121,6 @@ namespace MSSQL
 
         public int ExecuteNonQuery(string sql, Dictionary<string, object> parameters = null)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(sql, _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -92,8 +137,6 @@ namespace MSSQL
 
         public DataTable GetDataTable(string sql)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(sql, _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -110,8 +153,6 @@ namespace MSSQL
 
         public IEnumerable<T> ExecuteReader<T>(SqlQueryBuilderBase builder, Func<SqlDataReader, T> mapper)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(builder.BuildQuery(), _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -127,8 +168,6 @@ namespace MSSQL
 
         public Tscalar ExecuteScalarQuery<Tscalar>(SqlQueryBuilderBase builder)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(builder.BuildQuery(), _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -142,8 +181,6 @@ namespace MSSQL
 
         public int ExecuteNonQuery(SqlQueryBuilderBase builder)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(builder.BuildQuery(), _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -155,8 +192,6 @@ namespace MSSQL
 
         public DataTable GetDataTable(SqlQueryBuilderBase builder)
         {
-            Connect();
-
             using (SqlCommand cmd = new SqlCommand(builder.BuildQuery(), _connection))
             {
                 cmd.CommandType = CommandType.Text;

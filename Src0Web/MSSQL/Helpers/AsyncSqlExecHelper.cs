@@ -23,8 +23,6 @@ namespace MSSQL
 
         public async Task<List<T>> ExecuteReaderAsync<T>(string sql, Dictionary<string, object> parameters, Func<SqlDataReader, T> mapper)
         {
-            await ConnectAsync();
-
             using (SqlCommand cmd = new SqlCommand(sql, _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -48,8 +46,6 @@ namespace MSSQL
 
         public async Task<Tscalar> ExecuteScalarQueryAsync<Tscalar>(string sql, Dictionary<string, object> parameters = null)
         {
-            await ConnectAsync();
-
             using (SqlCommand cmd = new SqlCommand(sql, _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -68,8 +64,6 @@ namespace MSSQL
 
         public async Task<int> ExecuteNonQueryAsync(string sql, Dictionary<string, object> parameters = null)
         {
-            await ConnectAsync();
-
             using (SqlCommand cmd = new SqlCommand(sql, _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -86,8 +80,6 @@ namespace MSSQL
 
         public async Task<List<T>> ExecuteReaderAsync<T>(SqlQueryBuilderBase builder, Func<SqlDataReader, T> mapper)
         {
-            await ConnectAsync();
-
             using (SqlCommand cmd = new SqlCommand(builder.BuildQuery(), _connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -106,8 +98,6 @@ namespace MSSQL
 
         public async Task<Tscalar> ExecuteScalarQueryAsync<Tscalar>(SqlQueryBuilderBase builder)
         {
-            await ConnectAsync();
-
             using (SqlCommand cmd = new SqlCommand(builder.BuildQuery(), _connection)) {
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddRange(builder.GetParameters().ToArray());
@@ -120,8 +110,6 @@ namespace MSSQL
 
         public async Task<int> ExecuteNonQueryAsync(SqlQueryBuilderBase builder)
         {
-            await ConnectAsync();
-
             using (SqlCommand cmd = new SqlCommand(builder.BuildQuery(), _connection))
             {
                 cmd.CommandType = CommandType.Text;

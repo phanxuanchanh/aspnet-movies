@@ -143,7 +143,7 @@ namespace Data.Services
 
         private async Task<List<FilmMetadata>> GetMetadataByFilmIdAsync(string filmId)
         {
-            List<FilmMetaLink> links = await _filmMetaLinkDao.GetsByFilmIdAsync(filmId);
+            List<FilmMetaLink> links = await _filmMetaLinkDao.GetManyByFilmIdAsync(filmId);
             if (links == null || links.Count == 0)
                 return new List<FilmMetadata>();
 
@@ -155,7 +155,7 @@ namespace Data.Services
 
         private async Task<List<Taxonomy>> GetTaxonomiesByFilmIdAsync(string filmId)
         {
-            List<TaxonomyLink> links = await _taxonomyLinkDao.GetsByFilmIdAsync(filmId);
+            List<TaxonomyLink> links = await _taxonomyLinkDao.GetManyByFilmIdAsync(filmId);
             if (links == null || links.Count == 0)
                 return new List<Taxonomy>();
 
@@ -166,7 +166,7 @@ namespace Data.Services
 
         private async Task<List<People>> GetPeoplesByFilmIdAsync(string filmId)
         {
-            List<PeopleLink> links = await _peopleLinkDao.GetsByFilmIdAsync(filmId);
+            List<PeopleLink> links = await _peopleLinkDao.GetManyByFilmIdAsync(filmId);
             if (links == null || links.Count == 0)
                 return new List<People>();
 
@@ -223,31 +223,6 @@ namespace Data.Services
             };
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-
-                }
-
-                _generalDao.Dispose();
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
-        public async Task<ExecResult> DeleteAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ExecResult<FilmDto>> AddFilmAsync(CreateFilmDto film)
         {
             if (string.IsNullOrEmpty(film.Name) || string.IsNullOrEmpty(film.ProductionCompany) || string.IsNullOrEmpty(film.ReleaseDate))
@@ -294,6 +269,74 @@ namespace Data.Services
         public async Task<ExecResult<FilmDto>> UpdateFilmAsync(UpdateFilmDto film)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ExecResult> DeleteAsync(string id, bool forceDelete = false)
+        {
+            Film existingFilm = await _filmDao.GetAsync(id);
+            if (existingFilm == null)
+                return new ExecResult { Status = ExecStatus.NotFound, Message = "Film not found." };
+
+            int affected = 0;
+
+            if (!forceDelete)
+            {
+                if (existingFilm.DeletedAt != null)
+                    return new ExecResult { Status = ExecStatus.Invalid, Message = "Film already deleted." };
+
+                existingFilm.DeletedAt = DateTime.Now;
+                affected = await _filmDao.UpdateAsync(existingFilm);
+                if (affected <= 0)
+                    return new ExecResult { Status = ExecStatus.Failure, Message = "Failed to mark film as deleted." };
+
+                return new ExecResult { Status = ExecStatus.Success, Message = "Film marked as deleted successfully." };
+            }
+
+            _generalDao.Context.BeginTransaction();
+
+            try
+            {
+                _ = await _filmMetaLinkDao.DeleteManyByFilmIdAsync(id);
+                _ = await _taxonomyLinkDao.DeleteManyByFilmIdAsync(id);
+                _ = await _peopleLinkDao.DeleteManyByFilmIdAsync(id);
+
+                affected = await _filmDao.DeleteAsync(id);
+
+                if (affected <= 0)
+                {
+                    _generalDao.Context.RollbackTransaction();
+                    return new ExecResult { Status = ExecStatus.Failure, Message = "Failed to delete film and its related data." };
+                }
+
+                _generalDao.Context.CommitTransaction();
+
+                return new ExecResult { Status = ExecStatus.Success, Message = "Country deleted successfully." };
+            }
+            catch (Exception ex)
+            {
+                _generalDao.Context.RollbackTransaction();
+                throw new Exception($"An error occurred while deleting film: {ex.Message}", ex);
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+
+                }
+
+                _generalDao.Dispose();
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

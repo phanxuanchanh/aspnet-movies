@@ -13,7 +13,7 @@ namespace Data.BLL
             _context = context;
         }
 
-        public async Task<List<TaxonomyLink>> GetsByFilmIdAsync(string filmId)
+        public async Task<List<TaxonomyLink>> GetManyByFilmIdAsync(string filmId)
         {
             return await _context.TaxonomyLinks
                 .Where(x => x.FilmId == filmId).ToListAsync();
@@ -28,6 +28,11 @@ namespace Data.BLL
         public async Task<int> DeleteAsync(string filmId, int taxonomyId)
         {
             return await _context.TaxonomyLinks.DeleteAsync(x => x.FilmId == filmId && x.TaxonomyId == taxonomyId);
+        }
+
+        public async Task<int> DeleteManyByFilmIdAsync(string filmId)
+        {
+            return await _context.TaxonomyLinks.DeleteAsync(x => x.FilmId == filmId);
         }
     }
 }

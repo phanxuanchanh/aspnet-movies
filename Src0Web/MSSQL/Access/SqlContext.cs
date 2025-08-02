@@ -11,6 +11,7 @@ namespace MSSQL.Access
         public SqlContext()
         {
             _sqlExecHelper = new SqlExecHelper(SqlConnectInfo.GetConnectionString());
+            _sqlExecHelper.Connect();
             disposedValue = false;
         }
 
@@ -33,6 +34,21 @@ namespace MSSQL.Access
         public SqlExecHelper GetHelper()
         {
             return _sqlExecHelper;
+        }
+
+        public void BeginTransaction()
+        {
+             _sqlExecHelper.BeginTransaction();
+        }
+
+        public void CommitTransaction()
+        {
+            _sqlExecHelper.CommitTransaction();
+        }
+
+        public void RollbackTransaction()
+        {
+            _sqlExecHelper.RollbackTransaction();
         }
 
         protected virtual void Dispose(bool disposing)

@@ -79,5 +79,15 @@ namespace Data.BLL
 
             return await _context.Films.InsertAsync(film, new List<string> { "UpdatedAt", "DeletedAt" });
         }
+
+        public async Task<int> UpdateAsync(Film existingFilm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> DeleteAsync(string id)
+        {
+            return await _context.Films.DeleteAsync(x => x.ID == id);
+        }
     }
 }
