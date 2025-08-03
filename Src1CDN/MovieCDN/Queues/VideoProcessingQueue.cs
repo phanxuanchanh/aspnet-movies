@@ -1,18 +1,19 @@
-﻿using System.Collections.Concurrent;
+﻿using MovieCDN.AppCodes;
+using System.Collections.Concurrent;
 
 namespace MovieCDN.Queues;
 
 public class VideoProcessingQueue : IVideoProcessingQueue
 {
-    private readonly ConcurrentQueue<(string VideoPath, string VideoName)> _queue = new();
+    private readonly ConcurrentQueue<FileLocation?> _queue = new();
 
-    public void Enqueue((string VideoPath, string VideoName) pathAndName)
+    public void Enqueue(FileLocation fileLocation)
     {
-        _queue.Enqueue(pathAndName);
+        _queue.Enqueue(fileLocation);
     }
 
-    public bool TryDequeue(out (string VideoPath, string VideoName) pathAndName)
+    public bool TryDequeue(out FileLocation? fileLocation)
     {
-        return _queue.TryDequeue(out pathAndName);
+        return _queue.TryDequeue(out fileLocation);
     }
 }

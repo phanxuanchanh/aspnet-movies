@@ -11,4 +11,5 @@ public class MovieCdnContext : DbContext
     }
 
     public DbSet<ApiKey> ApiKeys { get; set; }
+    public DbSet<File> Files { get; set; }
 }

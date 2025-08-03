@@ -10,6 +10,6 @@ public class ApiKey
     [Key]
     public string ClientId { get; set; } = string.Empty;
 
-    [Column("secretKey", TypeName = "nvarchar(500)")]
+    [Column("SecretKey", TypeName = "nvarchar(500)")]
     public string SecretKey { get; set; } = string.Empty;
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MovieCDN.AppCodes;
 
 namespace MovieCDN.Controllers;
 
@@ -29,7 +31,6 @@ public class ImageController : ControllerBase
 
     [Route("get/{partitionKey}/{filename}")]
     [HttpGet]
-    //[Authorize]
     public IActionResult Get(string partitionKey, string filename)
     {
         string path = _fileManager.GetFilePath(partitionKey, filename);
@@ -41,5 +42,36 @@ public class ImageController : ControllerBase
             contentType = "application/octet-stream";
 
         return PhysicalFile(path, contentType);
+    }
+
+    [Route("upload")]
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Upload(IFormFile formFile)
+    {
+        if (formFile == null || formFile.Length == 0)
+            return BadRequest("File is empty.");
+
+        string extension = Path.GetExtension(formFile.FileName).ToLowerInvariant();
+        string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
+        if (!allowedExtensions.Contains(extension))
+            return BadRequest("Unsupported file extension.");
+
+        string partitionKey = FileManager.GenerateParitionKey();
+        string fileName = FileManager.GenerateFileName(extension);
+        string filePath = _fileManager.GetFilePath(partitionKey, fileName);
+        while (true)
+        {
+            if (!_fileManager.FileExists(filePath))
+                break;
+
+            fileName = FileManager.GenerateFileName(extension);
+            filePath = _fileManager.GetFilePath(partitionKey, fileName);
+        }
+
+        using FileStream stream = new FileStream(filePath, FileMode.Create);
+        await formFile.CopyToAsync(stream);
+
+        return Ok(new { partitionKey, fileName });
     }
 }

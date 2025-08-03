@@ -1,4 +1,4 @@
-﻿namespace MovieCDN;
+﻿namespace MovieCDN.AppCodes;
 
 public class JwtSettings
 {

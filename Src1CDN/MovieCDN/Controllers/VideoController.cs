@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieCDN.AppCodes;
 using MovieCDN.Queues;
 
 namespace MovieCDN.Controllers;
@@ -33,7 +34,6 @@ public class VideoController : ControllerBase
 
     [Route("get/{partitionKey}/{filename}.m3u8")]
     [HttpGet]
-    //[Authorize]
     public IActionResult GetM3u8(string partitionKey, string filename)
     {
         if(filename.EndsWith(".m3u8"))
@@ -50,17 +50,13 @@ public class VideoController : ControllerBase
         return PhysicalFile(path, contentType);
     }
 
-    [Route("get-mp4/{partitionKey}/{fileName}.mp4")]
+    [Route("get-original-video/{partitionKey}/{fileName}")]
     [HttpGet]
-    public IActionResult GetMp4(string partitionKey, string filename)
+    public IActionResult GetOriginalVideo(string partitionKey, string filename)
     {
-        filename = filename.EndsWith(".mp4") ? filename : $"{filename}.mp4";
-
         string path = _fileManager.GetFilePath(partitionKey, filename);
         if (!_fileManager.FileExists(path))
             return NotFound();
-
-        _videoProcessingQueue.Enqueue((path, filename));
 
         FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         return File(stream, "video/mp4", enableRangeProcessing: true);
@@ -69,8 +65,35 @@ public class VideoController : ControllerBase
     [Route("upload")]
     [HttpPost]
     [Authorize]
-    public IActionResult Upload()
+    public async Task<IActionResult> Upload(IFormFile formFile)
     {
-        return Ok();
+        if (formFile == null || formFile.Length == 0)
+            return BadRequest("File is empty.");
+
+        string extension = Path.GetExtension(formFile.FileName).ToLowerInvariant();
+        string[] allowedExtensions = new[] { ".mp4", ".avi", ".mkv", ".webm", ".mov", ".mpeg" };
+        if (!allowedExtensions.Contains(extension))
+            return BadRequest("Unsupported file extension.");
+
+        string partitionKey = FileManager.GenerateParitionKey();
+        string fileName = FileManager.GenerateFileName(extension);
+        string filePath = _fileManager.GetFilePath(partitionKey, fileName);
+        while (true)
+        {
+            if (!_fileManager.FileExists(filePath))
+                break;
+
+            fileName = FileManager.GenerateFileName(extension);
+            filePath = _fileManager.GetFilePath(partitionKey, fileName);
+        }
+
+        using FileStream stream = new FileStream(filePath, FileMode.Create);
+        await formFile.CopyToAsync(stream);
+
+        _videoProcessingQueue.Enqueue(new FileLocation { 
+            PartitionKey = partitionKey, FilePath = filePath, FileName = fileName.Replace(extension, string.Empty)
+        });
+
+        return Ok(new { partitionKey, fileName });
     }
 }

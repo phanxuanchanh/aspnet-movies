@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MovieCDN;
+using MovieCDN.AppCodes;
 using MovieCDN.Database;
 using MovieCDN.Queues;
 using System.Text;
@@ -73,6 +74,11 @@ builder.Services.AddHostedService<VideoProcessingService>();
 
 builder.Services.AddDbContextPool<MovieCdnContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = long.MaxValue;
+});
 
 var app = builder.Build();
 

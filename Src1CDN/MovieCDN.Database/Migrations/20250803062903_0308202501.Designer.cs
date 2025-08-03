@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieCDN.Database;
 
@@ -10,9 +11,11 @@ using MovieCDN.Database;
 namespace MovieCDN.Database.Migrations
 {
     [DbContext(typeof(MovieCdnContext))]
-    partial class MovieCdnContextModelSnapshot : ModelSnapshot
+    [Migration("20250803062903_0308202501")]
+    partial class _0308202501
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

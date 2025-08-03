@@ -1,9 +1,19 @@
-﻿using System.Collections.Concurrent;
-
-namespace MovieCDN;
+﻿namespace MovieCDN.AppCodes;
 
 public class FileManager
 {
+    public static string GenerateFileName(string extension = "")
+    {
+        var fileName = $"{Guid.NewGuid():N}_{DateTime.UtcNow:yyyyMMddHHmmssfff}";
+        return string.IsNullOrEmpty(extension) ? fileName : $"{fileName}{extension}";
+    }
+
+    public static string GenerateParitionKey()
+    {
+        return DateTime.UtcNow.ToString("yyyyMMdd");
+    }
+
+
     private readonly string _basePath;
 
     public FileManager(string basePath)
