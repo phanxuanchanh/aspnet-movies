@@ -18,4 +18,10 @@ public class File
 
     [Column("Type", TypeName = "varchar(20)")]
     public string Type { get; set; } = default!;
+
+    [Column("Title", TypeName = "nvarchar(255)")]
+    public string Title { get; set; } = default!;
+
+    [Column("Description", TypeName = "nvarchar(1000)")]
+    public string? Description { get; set; }
 }

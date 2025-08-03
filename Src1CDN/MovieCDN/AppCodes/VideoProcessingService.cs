@@ -61,6 +61,16 @@ public class VideoProcessingService : BackgroundService
         process.Start();
 
         string errorLog = await process.StandardError.ReadToEndAsync();
+
+        await Task.Delay(1000);
+
+        string masterM3u8Content = File.ReadAllText(Path.Combine(outputDir, "master.m3u8"));
+        masterM3u8Content = masterM3u8Content.Replace("0/index.m3u8", $"{fileLocation.FileName}.m3u8/0/index.m3u8")
+            .Replace("1/index.m3u8", $"{fileLocation.FileName}.m3u8/0/index.m3u8")
+            .Replace("2/index.m3u8", $"{fileLocation.FileName}.m3u8/0/index.m3u8");
+
+        File.WriteAllText(Path.Combine(outputDir, "master-edited.m3u8"), masterM3u8Content);
+
         await process.WaitForExitAsync(stoppingToken);
     }
 }
