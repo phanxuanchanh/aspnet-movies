@@ -24,60 +24,6 @@ namespace Web.Install
         protected global::System.Web.UI.HtmlControls.HtmlForm frmAppSettings;
 
         /// <summary>
-        /// txtSMTPHost control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSMTPHost;
-
-        /// <summary>
-        /// cvSMTPHost control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvSMTPHost;
-
-        /// <summary>
-        /// txtSMTPPort control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSMTPPort;
-
-        /// <summary>
-        /// txtSMTPUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSMTPUser;
-
-        /// <summary>
-        /// txtSMTPPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSMTPPassword;
-
-        /// <summary>
-        /// checkBoxSSLTLS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox checkBoxSSLTLS;
-
-        /// <summary>
         /// txtAdminUsername control.
         /// </summary>
         /// <remarks>
@@ -148,6 +94,15 @@ namespace Web.Install
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCDNClientId;
+
+        /// <summary>
+        /// txtCDNSecretKey control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCDNSecretKey;
 
         /// <summary>
         /// btnSubmit control.

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Hash
 {
-    public class HashFunction
+    public static class HashFunction
     {
-        public string MD5_Hash(string text)
+        public static string MD5_Hash(string text)
         {
             MD5 md5 = MD5.Create();
             byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(text));
@@ -21,7 +17,7 @@ namespace Common.Hash
             return hashSb.ToString();
         }
 
-        public string PBKDF2_Hash(string input, string salt, int length)
+        public static string PBKDF2_Hash(string input, string salt, int length)
         {
 
             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, Encoding.ASCII.GetBytes(salt), iterations: 5000);

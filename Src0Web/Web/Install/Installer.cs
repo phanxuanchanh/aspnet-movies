@@ -24,7 +24,7 @@ namespace Web.Install
                 CreateDatabase();
                 Thread.Sleep(500);
                 MigrateRole();
-                MigrateUser();
+                //MigrateUser();
             }
 
             if(!HasAppSettings())
@@ -52,7 +52,13 @@ namespace Web.Install
 
         private static bool HasAppSettings()
         {
-            return false;
+            using (DBContext db = new DBContext())
+            {
+                long count1 = db.AppSettings.Count(x => x.Name == "cdn-server");
+                long count2 = db.Users.Count();
+
+                return count1 != 0 && count2 != 0;
+            }
         }
 
 
@@ -80,15 +86,13 @@ namespace Web.Install
             while (count < 3)
             {
                 Random random = new Random();
-                HashFunction hash = new HashFunction();
-                string id = hash.MD5_Hash(random.NextString(10));
+                string id = HashFunction.MD5_Hash(random.NextString(10));
                 if (IDs.Any(i => i.Equals(id)) == false)
                 {
                     IDs.Add(id);
                     count++;
                 }
                 random = null;
-                hash = null;
             }
 
             List<Role> roles = new List<Role>();
@@ -107,40 +111,6 @@ namespace Web.Install
                         if (affected == 0)
                             break;
                     }
-                }
-            }
-        }
-
-        private static void MigrateUser()
-        {
-            HashFunction hash = new HashFunction();
-            string salt = hash.MD5_Hash(new Random().NextString(25));
-
-            Data.DAL.User user = new Data.DAL.User
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserName = "systemadmin",
-                SurName = "System",
-                MiddleName = "",
-                Name = "Admin",
-                Description = "Tài khoản quản trị cấp cao",
-                Email = "systemadmin@admin.com",
-                PhoneNumber = "00000000",
-                Password = hash.PBKDF2_Hash("admin12341234", salt, 30),
-                Salt = salt,
-                Activated = true,
-                CreatedAt = DateTime.Now
-            };
-
-            using (DBContext db = new DBContext())
-            {
-                long recordNumber = db.Users.Count();
-                if (recordNumber == 0)
-                {
-                    Role role = db.Roles.Select(s => new { s.Id }).SingleOrDefault(x => x.Name == "Admin");
-                    user.RoleId = role.Id;
-
-                    int affected = db.Users.Insert(user);
                 }
             }
         }

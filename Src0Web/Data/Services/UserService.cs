@@ -34,8 +34,7 @@ namespace Data.Services
             if (user == null)
                 return ExecResult.NotFound("User does not exist");
 
-            HashFunction hash = new HashFunction();
-            string passwordHashed = hash.PBKDF2_Hash(userLogin.Password, user.Salt, 30);
+            string passwordHashed = HashFunction.PBKDF2_Hash(userLogin.Password, user.Salt, 30);
             if (user.Password != passwordHashed)
                 return ExecResult.Failure("Wrong password");
             if (!user.Activated)
@@ -83,10 +82,8 @@ namespace Data.Services
             if (user == null)
                 return ExecResult.NotFound("User does not exist");
 
-            HashFunction hash = new HashFunction();
-            string salt = hash.MD5_Hash(new Random().NextString(25));
-
-            user.Password = hash.PBKDF2_Hash(newPassword, salt, 30);
+            string salt = HashFunction.MD5_Hash(new Random().NextString(25));
+            user.Password = HashFunction.PBKDF2_Hash(newPassword, salt, 30);
             user.Salt = salt;
             user.UpdatedAt = DateTime.Now;
 

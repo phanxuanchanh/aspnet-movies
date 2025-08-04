@@ -1,4 +1,5 @@
 ﻿using Data.DAL;
+using Data.DAOs;
 using System;
 
 namespace Data.BLL
@@ -8,6 +9,7 @@ namespace Data.BLL
         private readonly DBContext _context;
         private bool disposedValue;
 
+        private AppSettingDao _appSettingDao;
         private FilmMetadataDao _filmMetadataDao;
         private FilmMetaLinkDao _filmMetaLinkDao;
         private PeopleDao _peopleDao;
@@ -22,6 +24,7 @@ namespace Data.BLL
         public GeneralDao() {
             _context = new DBContext();
 
+            _appSettingDao = new AppSettingDao(_context);
             _filmMetadataDao = new FilmMetadataDao(_context);
             _filmMetaLinkDao = new FilmMetaLinkDao(_context);
             _peopleDao = new PeopleDao(_context);
@@ -34,6 +37,7 @@ namespace Data.BLL
             _paymentMethodDao = new PaymentMethodDao(_context);
         }
 
+        public AppSettingDao AppSettingDao { get { return _appSettingDao; } }
         public FilmMetadataDao FilmMetadataDao { get { return _filmMetadataDao; } }
         public FilmMetaLinkDao FilmMetaLinkDao { get { return _filmMetaLinkDao; } }
         public PeopleDao PeopleDao { get { return _peopleDao; } }
