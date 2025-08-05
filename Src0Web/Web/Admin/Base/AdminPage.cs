@@ -2,7 +2,7 @@
 
 namespace Web.Admin
 {
-    public class AdminPage : System.Web.UI.Page
+    public class AdminPage : Web.App_Code.GeneralPage
     {
         
     }

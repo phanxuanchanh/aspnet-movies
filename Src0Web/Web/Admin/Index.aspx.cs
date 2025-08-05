@@ -2,13 +2,19 @@
 using System;
 using System.Threading.Tasks;
 using Common.Web;
-using Web.Models;
+using Data.Models;
+using System.Linq;
+using System.Text.Json;
+using System.Collections.Generic;
+using Data.Services;
+using Web.App_Code;
 
 namespace Web.Admin
 {
     public partial class Index : AdminPage
     {
         protected SystemInfo systemInfo;
+        protected Dictionary<string, object> mediaServerSetting;
         protected long pageVisitor;
         protected long movieNumber;
         protected long categoryNumber;
@@ -19,24 +25,37 @@ namespace Web.Admin
         {
             pageVisitor = PageVisitor.Views;
             enableShowDetail = false;
-            try
-            {
-                systemInfo = new SystemInfo();
-                await LoadOverview();
-                enableShowDetail = true;
-            }
-            catch(Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            systemInfo = new SystemInfo();
+
+            LoadMediaServerSetting();
+            await LoadOverview();
+            enableShowDetail = true;
+        }
+
+        private void LoadMediaServerSetting()
+        {
+            AppSetting appSetting = AppSettingValues.Get()
+                .Where(x => x.Name == "cdn-server").FirstOrDefault();
+
+            mediaServerSetting = JsonSerializer
+                .Deserialize<Dictionary<string, object>>(appSetting.Value);
+
+            mediaServerSetting.Remove("ClientId");
+            mediaServerSetting.Remove("SecretKey");
         }
 
         private async Task LoadOverview()
         {
-            movieNumber = 0;// await filmBLL.CountAllAsync();
-            categoryNumber = 0;// await new CategoryBLL(filmBLL).CountAllAsync();
-            tagNumber = 0; // await new TagBLL(filmBLL).CountAllAsync();
+            using (FilmService filmService = Inject<FilmService>())
+            {
+                movieNumber = 0;
+            }
+
+            using (TaxonomyService taxonomyService = Inject<TaxonomyService>())
+            {
+                categoryNumber = 0;
+                tagNumber = 0;
+            }
         }
     }
 }

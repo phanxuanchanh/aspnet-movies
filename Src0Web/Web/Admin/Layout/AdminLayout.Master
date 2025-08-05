@@ -124,11 +124,20 @@
                 </div>
 
                 <!-- Nội dung chính -->
-                <div class="p-4 flex-grow-1 my-0 ms-250" style="margin-left: 250px; background-color: #dee2e6;">
+                <div class="p-4 flex-grow-1 my-0 ms-250 min-vh-100" style="margin-left: 250px; background-color: #dee2e6;">
                     <!-- Content goes here -->
-                    <asp:ContentPlaceHolder ID="mainContent" runat="server">
-                    </asp:ContentPlaceHolder>
+                    <div class="mb-5">
+                        <asp:ContentPlaceHolder ID="mainContent" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+
+                    <footer class="footer ms-250 py-3 fixed-bottom" style="margin-left: 250px;">
+                        <div class="container text-center">
+                            <span class="text-muted">© 2025 Phan Xuân Chánh | aspnet-movies</span>
+                        </div>
+                    </footer>
                 </div>
+
             </div>
         </form>
     </div>

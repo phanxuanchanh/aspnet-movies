@@ -2,7 +2,7 @@
 using Data.Models;
 using System.Collections.Generic;
 
-namespace Web
+namespace Web.App_Code
 {
     public class AppSettingValues
     {

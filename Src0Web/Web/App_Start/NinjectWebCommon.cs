@@ -4,16 +4,21 @@
 namespace Web.App_Start
 {
     using System;
-    using System.Net.Http;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.Json;
     using System.Web;
     using Cdn;
+    using CdnService;
     using Data.BLL;
+    using Data.Models;
     using Data.Services;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
+    using Web.App_Code;
 
     public static class NinjectWebCommon 
     {
@@ -75,6 +80,19 @@ namespace Web.App_Start
             kernel.Bind<FilmService>().To<FilmService>().InRequestScope();
             kernel.Bind<RoleService>().To<RoleService>().InRequestScope();
             kernel.Bind<UserService>().To<UserService>().InRequestScope();
+
+            kernel.Bind<MediaServiceWrapper>()
+                .ToMethod(m =>
+                {
+                    AppSetting appSetting = AppSettingValues.Get().Where(x => x.Name == "cdn-server")
+                    .SingleOrDefault();
+
+                    Dictionary<string, string> mediaServerSetting = JsonSerializer
+                        .Deserialize<Dictionary<string, string>>(appSetting.Value);
+
+                    return MediaServiceWrapper.Init(mediaServerSetting["CdnHost"], mediaServerSetting["ClientId"], mediaServerSetting["SecretKey"]);
+                })
+                .InRequestScope();
         }
     }
 }
