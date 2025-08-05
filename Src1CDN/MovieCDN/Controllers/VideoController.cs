@@ -30,7 +30,7 @@ public class VideoController : ControllerBase
         _context = context;
     }
 
-    [Route("default")]
+    [Route("default-video")]
     [HttpGet]
     public IActionResult GetDefault()
     {
@@ -38,7 +38,7 @@ public class VideoController : ControllerBase
         return PhysicalFile(filePath, "video/mp4");
     }
 
-    [Route("get/{fileId}.m3u8")]
+    [Route("get-m3u8/{fileId}.m3u8")]
     [HttpGet]
     public IActionResult GetM3u8(string fileId)
     {
@@ -58,7 +58,7 @@ public class VideoController : ControllerBase
         return PhysicalFile(path, contentType);
     }
 
-    [Route("get/{fileId}.m3u8/{subIndex}/{subName}.m3u8")]
+    [Route("get-m3u8/{fileId}.m3u8/{subIndex}/{subName}.m3u8")]
     [HttpGet]
     public IActionResult GetSubM3u8(string fileId, string subIndex, string subName)
     {
@@ -79,7 +79,7 @@ public class VideoController : ControllerBase
         return PhysicalFile(path, contentType);
     }
 
-    [Route("get/{fileId}.m3u8/{subIndex}/{segment}.ts")]
+    [Route("get-ts/{fileId}.m3u8/{subIndex}/{segment}.ts")]
     [HttpGet]
     public IActionResult GetSegmentTs(string fileId, string subIndex, string segment)
     {
@@ -100,7 +100,7 @@ public class VideoController : ControllerBase
         return PhysicalFile(path, contentType);
     }
 
-    [Route("get/{fileId}")]
+    [Route("get-video/{fileId}")]
     [HttpGet]
     public IActionResult Get(string fileId)
     {
@@ -120,7 +120,7 @@ public class VideoController : ControllerBase
         return File(stream, contentType, enableRangeProcessing: true);
     }
 
-    [Route("get-meta/{fileId}")]
+    [Route("get-video-meta/{fileId}")]
     [HttpGet]
     public async Task<IActionResult> GetMeta(string fileId)
     {
@@ -140,7 +140,7 @@ public class VideoController : ControllerBase
         return Ok(fileMeta);
     }
 
-    [Route("get-list")]
+    [Route("get-video-list")]
     [HttpGet]
     public async Task<IActionResult> GetList(int maxRecords = 20, string search = "")
     {
@@ -164,7 +164,7 @@ public class VideoController : ControllerBase
         return Ok(await query.ToListAsync());
     }
 
-    [Route("upload")]
+    [Route("upload-video")]
     [HttpPost]
     //[Authorize]
     public async Task<IActionResult> Upload([FromForm]FileMetaInput metaInput, IFormFile formFile)
@@ -215,7 +215,7 @@ public class VideoController : ControllerBase
         return Ok(new { file.Id });
     }
 
-    [Route("delete/{fileId}")]
+    [Route("delete-video/{fileId}")]
     [HttpDelete]
     public async Task<IActionResult> Delete(string fileId)
     {

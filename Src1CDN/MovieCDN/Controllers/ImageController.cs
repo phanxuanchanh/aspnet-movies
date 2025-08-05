@@ -25,7 +25,7 @@ public class ImageController : ControllerBase
         _context = context;
     }
 
-    [Route("default")]
+    [Route("default-image")]
     [HttpGet]
     public IActionResult GetDefault()
     {
@@ -33,7 +33,7 @@ public class ImageController : ControllerBase
         return PhysicalFile(filePath, "image/png");
     }
 
-    [Route("get/{fileId}")]
+    [Route("get-image/{fileId}")]
     [HttpGet]
     public async Task<IActionResult> Get(string fileId)
     {
@@ -52,7 +52,7 @@ public class ImageController : ControllerBase
         return PhysicalFile(path, contentType);
     }
 
-    [Route("get-meta/{fileId}")]
+    [Route("get-image-meta/{fileId}")]
     [HttpGet]
     public async Task<IActionResult> GetMeta(string fileId)
     {
@@ -69,7 +69,7 @@ public class ImageController : ControllerBase
         });
     }
 
-    [Route("get-list")]
+    [Route("get-image-list")]
     [HttpGet]
     public async Task<IActionResult> GetList(int maxRecords = 20, string search = "")
     {
@@ -92,7 +92,7 @@ public class ImageController : ControllerBase
         return Ok(await query.ToListAsync());
     }
 
-    [Route("upload")]
+    [Route("upload-image")]
     [HttpPost]
     //[Authorize]
     public async Task<IActionResult> Upload([FromForm] FileMetaInput metaInput, IFormFile formFile)
@@ -139,7 +139,7 @@ public class ImageController : ControllerBase
         return Ok(new { file.Id });
     }
 
-    [Route("delete/{fileId}")]
+    [Route("delete-image/{fileId}")]
     [HttpDelete]
     public async Task<IActionResult> Delete(string fileId)
     {
