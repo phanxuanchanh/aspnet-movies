@@ -1,13 +1,11 @@
-﻿using Data.BLL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Data.DTO;
 using System.Linq;
-using Web.Models;
 using Data.Services;
 using Web.App_Start;
 using Ninject;
-using System.Threading.Tasks;
+using System.Web;
 
 namespace Web.User.Layout
 {
@@ -21,38 +19,31 @@ namespace Web.User.Layout
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            if (HttpContext.Current.User?.Identity?.IsAuthenticated != true)
             {
-                object obj = Session["userSession"];
-                if (obj == null)
-                {
-                    hyplnkAccount.HRef = GetRouteUrl("Account_Login", null);
-                    hyplnkAccount.InnerText = "Đăng nhập / Đăng ký";
-                }
-                else
-                {
-                    hyplnkAccount.HRef = GetRouteUrl("Account_Logout", null);
-                    hyplnkAccount.InnerText = "Đăng xuất";
-                }
-                hyplnkSearch = GetRouteUrl("User_Search", null);
-                hyplnkWatchedList = GetRouteUrl("User_WatchedList", null);
-                hyplnkHome = GetRouteUrl("User_Home", null);
-                GetCategories();
+                hyplnkAccount.HRef = GetRouteUrl("Account_Login", null);
+                hyplnkAccount.InnerText = "Đăng nhập / Đăng ký";
             }
-            catch(Exception ex)
+            else
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                hyplnkAccount.HRef = GetRouteUrl("Account_Logout", null);
+                hyplnkAccount.InnerText = "Đăng xuất";
             }
+
+            hyplnkSearch = GetRouteUrl("User_Search", null);
+            hyplnkWatchedList = GetRouteUrl("User_WatchedList", null);
+            hyplnkHome = GetRouteUrl("User_Home", null);
+            GetCategories();
         }
 
         private void GetCategories()
         {
-            using(TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
             {
                 categories = new List<CategoryDto>()// (taxonomyService.GetCategoriesAsync(1, 30).Result).Items
-                .Select(s => {
-                    s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID }); 
+                .Select(s =>
+                {
+                    s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID });
                     return s;
                 }).ToList();
             }
