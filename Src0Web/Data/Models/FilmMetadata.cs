@@ -6,19 +6,19 @@ namespace Data.DAL
     [SqlTable("FilmMetadata")]
     public class FilmMetadata : SqlTableWithTimestamp
     {
-        [SqlColumn("id", PrimaryKey = true)]
+        [SqlColumn("Id", PrimaryKey = true, AutoIncrement = true)]
         public int Id { get; set; }
 
-        [SqlColumn("name")]
+        [SqlColumn("Name")]
         public string Name { get; set; }
 
-        [SqlColumn("description")]
+        [SqlColumn("Description")]
         public string Description { get; set; }
 
-        [SqlColumn("custom")]
+        [SqlColumn("Custom")]
         public string Custom { get; set; }
 
-        [SqlColumn("type")]
+        [SqlColumn("Type")]
         public string Type { get; set; }
     }
 }

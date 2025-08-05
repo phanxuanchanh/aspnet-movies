@@ -19,6 +19,12 @@ namespace Web.Install
             if (Completed)
                 return;
 
+            if (HasAnyTable() && HasAppSettings())
+            {
+                Completed = true;
+                return;
+            }
+
             if (!HasAnyTable())
             {
                 CreateDatabase();

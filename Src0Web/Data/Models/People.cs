@@ -6,7 +6,7 @@ namespace Data.DAL
 {
     public class People : SqlTableWithTimestamp
     {
-        [SqlColumn("id", PrimaryKey = true)]
+        [SqlColumn("id", PrimaryKey = true, AutoIncrement = true)]
         public long Id { get; set; }
 
         [SqlColumn("name")]

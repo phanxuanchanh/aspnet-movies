@@ -6,37 +6,37 @@ namespace Data.DAL
     [SqlTable("Film")]
     public class Film : SqlTableWithTimestamp
     {
-        [SqlColumn("id", PrimaryKey = true)]
+        [SqlColumn("Id", PrimaryKey = true)]
         public string ID { get; set; }
 
-        [SqlColumn("name")]
+        [SqlColumn("Name")]
         public string Name { get; set; }
 
-        [SqlColumn("description")]
+        [SqlColumn("Description")]
         public string Description { get; set; }
 
-        [SqlColumn("productionCompany")]
+        [SqlColumn("ProductionCompany")]
         public string ProductionCompany { get; set; }
 
-        [SqlColumn("thumbnail")]
+        [SqlColumn("Thumbnail")]
         public string Thumbnail { get; set; }
 
-        [SqlColumn("releaseDate")]
+        [SqlColumn("ReleaseDate")]
         public string ReleaseDate { get; set; }
 
-        [SqlColumn("upvote")]
+        [SqlColumn("Upvote")]
         public long Upvote { get; set; }
 
-        [SqlColumn("downvote")]
+        [SqlColumn("Downvote")]
         public long Downvote { get; set; }
 
-        [SqlColumn("views")]
+        [SqlColumn("Views")]
         public long Views { get; set; }
 
-        [SqlColumn("duration")]
+        [SqlColumn("Duration")]
         public string Duration { get; set; }
 
-        [SqlColumn("source")]
+        [SqlColumn("Source")]
         public string Source { get; set; }
     }
 }

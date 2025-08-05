@@ -9,7 +9,7 @@ namespace Data.DAL
         [SqlColumn("ID")]
         public string Id { get; set; }
 
-        [SqlColumn("name")]
+        [SqlColumn("Name")]
         public string Name { get; set; }
     }
 }

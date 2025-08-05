@@ -24,6 +24,15 @@ namespace Web.Admin.DirectorManagement
         protected global::Web.Admin.Base.Notification notifControl;
 
         /// <summary>
+        /// hyplnkList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
+
+        /// <summary>
         /// hdDirectorId control.
         /// </summary>
         /// <remarks>
@@ -85,14 +94,5 @@ namespace Web.Admin.DirectorManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
-
-        /// <summary>
-        /// hyplnkList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hyplnkList;
     }
 }

@@ -1,64 +1,47 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditActor.aspx.cs" Inherits="Web.Admin.ActorManagement.EditActor" %>
+
 <%@ Import Namespace="Common" %>
+<%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <title>Tạo mới diễn viên - Trang quản trị</title>
+    <title>Tạo mới/sửa diễn viên - Trang quản trị</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
-    <% if (enableShowResult)
-    { %>
-    <h5 class="mt-2">Trạng thái thêm quốc gia</h5>
-    <a class="anchor" name="alerts"></a>
-    <div class="row grid-responsive">
-        <div class="column">
-            <%if (commandResult.Status == ExecStatus.Success)
-        { %>
-            <div class="alert background-success"><em class="fa fa-thumbs-up"></em><% = commandResult.Message %></div>
-            <%}
-        else if (commandResult.Status == ExecStatus.AlreadyExists)
-        { %>
-            <div class="alert background-warning"><em class="fa fa-warning"></em><% = commandResult.Message %></div>
-            <%}
-        else
-        { %>
-            <div class="alert background-danger"><em class="fa fa-times-circle"></em><% = commandResult.Message %></div>
-            <%} %>
-        </div>
-    </div>
-    <%} %>
+    <uc:NotifControl ID="notifControl" runat="server" />
 
-    <h5 class="mt-2">Tạo mới diễn viên</h5>
-    <a class="anchor" name="forms"></a>
-    <div class="row grid-responsive">
-        <div class="column ">
-            <div class="card">
-                <div class="card-title">
-                    <h3>Nhập dữ liệu vào các trường bên dưới để tạo mới 1 diễn viên</h3>
-                </div>
-                <div class="card-block">
-                    <div>
-                        <fieldset>
-                            <asp:HiddenField ID="hdActorId" runat="server" />
-                            <asp:Label ID="lbActorName" runat="server" Text="Tên diễn viên" AssociatedControlID="txtActorName"></asp:Label>
-                            <asp:TextBox ID="txtActorName" placeholder="Nhập vào tên diễn viên" runat="server"></asp:TextBox>
-                            <asp:CustomValidator ID="cvActorName" CssClass="text-red" runat="server"></asp:CustomValidator>
-                            <asp:Label ID="lbActorDescription" runat="server" Text="Mô tả diễn viên" AssociatedControlID="txtActorDescription"></asp:Label>
-                            <asp:TextBox ID="txtActorDescription" placeholder="Nhập vào mô tả diễn viên" CssClass="text-area" TextMode="MultiLine" runat="server"></asp:TextBox>
-                        </fieldset>
-                    </div>
-                </div>
-                <div class="card-block mt-0">
-                    <asp:Button ID="btnSubmit" CssClass="button-primary" runat="server" />
-                </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex gap-2">
+                <% if (isCreateAction)
+                    { %>
+                <span>Tạo mới diễn viên</span>
+                <% }
+                    else
+                    { %>
+                <span>Chỉnh sửa diễn viên <strong>{ <%= txtActorName.Text %> | <%= hdActorId.Value %> } </strong></span>
+                <% } %>
             </div>
-        </div>
-    </div>
 
-    <div class="row grid-responsive">
-        <div class="column page-heading">
-            <div class="large-card">
-                <asp:HyperLink ID="hyplnkList" CssClass="button button-blue" runat="server">Quay về trang danh sách</asp:HyperLink>
+            <div class="d-flex gap-2">
+                <asp:HyperLink ID="hyplnkList" CssClass="btn btn-sm btn-primary" runat="server">Quay về trang danh sách</asp:HyperLink>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <asp:HiddenField ID="hdActorId" runat="server" />
+            <div class="mb-3">
+                <asp:Label ID="lbActorName" runat="server" Text="Tên thể loại" AssociatedControlID="txtActorName"></asp:Label>
+                <asp:TextBox ID="txtActorName" CssClass="form-control" placeholder="Nhập vào tên thể loại" runat="server"></asp:TextBox>
+                <asp:CustomValidator ID="cvActorName" CssClass="text-red" runat="server"></asp:CustomValidator>
+            </div>
+            <div class="mb-3">
+                <asp:Label ID="lbActorDescription" runat="server" Text="Mô tả thể loại" AssociatedControlID="txtActorDescription"></asp:Label>
+                <asp:TextBox ID="txtActorDescription" placeholder="Nhập vào mô tả thể loại" CssClass="form-control text-area" TextMode="MultiLine" runat="server"></asp:TextBox>
+            </div>
+
+            <div class="mb-3 text-center">
+                <asp:Button ID="btnSubmit" CssClass="btn btn-success" runat="server" Text="Tạo mới" />
             </div>
         </div>
     </div>
