@@ -20,12 +20,6 @@ namespace Web.Admin.LanguageManagement
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { action = "create" });
             paged = new PagedList<LanguageDto>();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             GetPagnationQuery();
 
             if (!IsPostBack)

@@ -34,12 +34,6 @@ namespace Web.Admin.CountryManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
             InitValidation();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             if (IsPostBack)
             {
                 if (isCreateAction)

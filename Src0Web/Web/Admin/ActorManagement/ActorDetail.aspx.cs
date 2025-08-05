@@ -25,10 +25,7 @@ namespace Web.Admin.ActorManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditActor", new { id = id, action = "update" });
 
-            if (CheckLoggedIn())
-                await GetActor(id);
-            else
-                Response.RedirectToRoute("Account_Login", null);
+            await GetActor(id);
         }
 
         private bool CheckLoggedIn()

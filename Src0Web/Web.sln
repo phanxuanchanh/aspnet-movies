@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{D5E37BB2-C395-42AD-99E3-D2292AD493D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{2BAFD121-9A00-48E8-921A-FB250B8F81CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{9E3877F3-E094-4D4B-B954-A5D9F56FB1D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdnService", "CdnService\CdnService.csproj", "{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,18 @@ Global
 		{9E3877F3-E094-4D4B-B954-A5D9F56FB1D8}.Release|x64.Build.0 = Release|Any CPU
 		{9E3877F3-E094-4D4B-B954-A5D9F56FB1D8}.Release|x86.ActiveCfg = Release|Any CPU
 		{9E3877F3-E094-4D4B-B954-A5D9F56FB1D8}.Release|x86.Build.0 = Release|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Debug|x64.Build.0 = Debug|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Debug|x86.Build.0 = Debug|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Release|x64.ActiveCfg = Release|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Release|x64.Build.0 = Release|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Release|x86.ActiveCfg = Release|Any CPU
+		{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

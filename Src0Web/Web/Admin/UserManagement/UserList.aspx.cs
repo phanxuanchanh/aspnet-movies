@@ -23,12 +23,6 @@ namespace Web.Admin.UserManagement
             toolDetail = null;
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_CreateUser", null);
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             if (!IsPostBack)
             {
                 await SetGrvUser();

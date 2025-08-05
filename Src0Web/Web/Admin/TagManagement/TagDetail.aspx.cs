@@ -26,10 +26,7 @@ namespace Web.Admin.TagManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = id, action = "update" });
 
-            if (CheckLoggedIn())
-                await GetTag(id);
-            else
-                Response.RedirectToRoute("Account_Login", null);
+            await GetTag(id);
         }
 
         private int GetTagId()

@@ -32,12 +32,6 @@ namespace Web.Admin.DirectorManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_DirectorList", null);
             InitValidation();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             if (IsPostBack)
             {
                 if (isCreateAction)

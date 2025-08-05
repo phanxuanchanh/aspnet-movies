@@ -21,11 +21,6 @@ namespace Web.Admin.FilmManagement
             _filmService = NinjectWebCommon.Kernel.Get<FilmService>();
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { action = "create" });
             paged = new PagedList<FilmDto>();
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
 
             GetPagnationQuery();  
 

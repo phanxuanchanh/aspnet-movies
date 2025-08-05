@@ -26,12 +26,6 @@ namespace Web.Admin.RoleManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_RoleList", null);
             InitValidation();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             if (IsPostBack)
             {
                 await Create();

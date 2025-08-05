@@ -23,10 +23,7 @@ namespace Web.Admin.LanguageManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_LanguageList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { id = id, action = "update" });
 
-            if (CheckLoggedIn())
-                await GetLanguageInfo(id);
-            else
-                Response.RedirectToRoute("Account_Login", null);
+            await GetLanguageInfo(id);
         }
 
         private int GetLanguageId()

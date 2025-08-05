@@ -20,12 +20,6 @@ namespace Web.Admin.CategoryManagement
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { action = "create" });
             paged = new PagedList<CategoryDto>();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             GetPagnationQuery();
 
             if (!IsPostBack)

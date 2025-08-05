@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System;
 using System.Threading;
-using System.Web;
 using Common.Hash;
 using System.Linq;
 using System.Text;
@@ -12,36 +11,36 @@ namespace Web.Install
 {
     public class Installer
     {
-        public static bool Completed = false;
+        private static bool _isAppSettingsMissing = true;
+        private static readonly object _lock = new object();
 
-        public static void RunIfNotInstalled(HttpContext httpContext)
+        public static bool IsAppSettingsMissing
         {
-            if (Completed)
-                return;
-
-            if (HasAnyTable() && HasAppSettings())
+            get
             {
-                Completed = true;
-                return;
-            }
+                if (!_isAppSettingsMissing)
+                    return _isAppSettingsMissing; // nhanh, không cần lock nếu đã true
 
+                //Nếu chưa biết(false) thì mới lock lại để kiểm tra chắc chắn
+                //Giả sử nhiều thread vào cùng lúc, chỉ 1 thread sẽ chạy phần này và gọi DB
+                lock (_lock)
+                {
+                    if (!_isAppSettingsMissing)
+                        return _isAppSettingsMissing; // Cần kiểm tra lại sau khi đã vào lock
+
+                    _isAppSettingsMissing = !HasAppSettings();
+                    return _isAppSettingsMissing;
+                }
+            }
+        }
+
+        public static void RunIfNotInstalled()
+        {
             if (!HasAnyTable())
             {
                 CreateDatabase();
                 Thread.Sleep(500);
                 MigrateRole();
-                //MigrateUser();
-            }
-
-            if(!HasAppSettings())
-            {
-                string currentUrl = httpContext.Request.Url.AbsolutePath;
-
-                if (!currentUrl.EndsWith("/Install/AppSettings.aspx"))
-                {
-                    httpContext.Response.Redirect("~/Install/AppSettings.aspx", false);
-                    httpContext.ApplicationInstance.CompleteRequest();
-                }
             }
         }
 

@@ -21,10 +21,7 @@ namespace Web.Admin.CategoryManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = id, action = "update" });
 
-            if (CheckLoggedIn())
-                await GetCategory(id);
-            else
-                Response.RedirectToRoute("Account_Login", null);
+            await GetCategory(id);
         }
 
         private int GetCategoryId()

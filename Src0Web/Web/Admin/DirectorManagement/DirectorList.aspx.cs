@@ -20,12 +20,6 @@ namespace Web.Admin.DirectorManagement
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { action = "create" });
             paged = new PagedList<DirectorDto>();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             GetPagnationQuery();
 
             if (!IsPostBack)

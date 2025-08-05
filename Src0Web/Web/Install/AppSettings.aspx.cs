@@ -24,8 +24,6 @@ namespace Web.Install
 
             //AddUser();
             await AddAppSettings();
-
-            Installer.Completed = true;
             Response.RedirectToRoute("User_Home");
         }
 

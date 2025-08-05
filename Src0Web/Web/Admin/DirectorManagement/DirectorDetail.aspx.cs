@@ -23,10 +23,7 @@ namespace Web.Admin.DirectorManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_DirectorList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { id = id, action = "update" });
 
-            if (CheckLoggedIn())
-                await GetDirectorInfo(id);
-            else
-                Response.RedirectToRoute("Account_Login", null);
+            await GetDirectorInfo(id);
         }
 
         private long GetDirectorId()

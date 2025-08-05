@@ -33,13 +33,6 @@ namespace Web.Admin.LanguageManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_LanguageList", null);
             InitValidation();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-
-            }
-
             if (IsPostBack)
             {
                 if (isCreateAction)

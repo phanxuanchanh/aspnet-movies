@@ -19,12 +19,6 @@ namespace Web.Admin.ActorManagement
             _peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditActor", new { action = "create" });
             paged = new PagedList<ActorDto>();
-            
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
 
             GetPagnationQuery();
 

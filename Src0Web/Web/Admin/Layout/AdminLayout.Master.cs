@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Principal;
+using System.Web;
 using Web.Models;
 
 namespace Web.Admin.Layout
@@ -31,18 +33,8 @@ namespace Web.Admin.Layout
                 hyplnkCastList = GetRouteUrl("Admin_ActorList", null);
                 hyplnkFilmList = GetRouteUrl("Admin_FilmList", null);
 
-                object obj = Session["userSession"];
-                if (obj == null)
-                {
-                    txtUsername.InnerText = "Anonymous";
-                    //txtRole.InnerText = "N/A";
-                }
-                else
-                {
-                    UserSession userSession = (UserSession)obj;
-                    txtUsername.InnerText = userSession.username;
-                    //txtRole.InnerText = userSession.role;
-                }
+                IPrincipal principal = HttpContext.Current.User;
+                txtUsername.InnerText = principal.Identity.Name;
             }
             catch(Exception ex)
             {

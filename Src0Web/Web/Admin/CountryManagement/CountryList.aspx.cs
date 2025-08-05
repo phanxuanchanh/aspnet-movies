@@ -20,12 +20,6 @@ namespace Web.Admin.CountryManagement
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { action = "create" });
             paged = new PagedList<CountryDto>();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             GetPagnationQuery();
 
             if (!IsPostBack)

@@ -23,12 +23,6 @@ namespace Web.Admin.RoleManagement
             toolDetail = null;
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditRole", new { action = "create" });
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             if (!IsPostBack)
             {
                 await SetGrvRole();

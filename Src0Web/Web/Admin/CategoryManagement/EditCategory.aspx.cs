@@ -36,12 +36,6 @@ namespace Web.Admin.CategoryManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
             InitValidation();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             if (IsPostBack)
             {
                 if (isCreateAction)

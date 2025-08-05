@@ -21,12 +21,6 @@ namespace Web.Admin
             enableShowDetail = false;
             try
             {
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;                  
-                }
-
                 systemInfo = new SystemInfo();
                 await LoadOverview();
                 enableShowDetail = true;

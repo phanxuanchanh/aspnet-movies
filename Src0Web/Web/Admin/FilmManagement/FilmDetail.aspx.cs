@@ -34,10 +34,7 @@ namespace Web.Admin.FilmManagement
                 hyplnkEdit_Source.NavigateUrl = GetRouteUrl("Admin_EditSource_Film", new { id = id });
                 hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_UpdateFilm", new { id = id });
 
-                if (CheckLoggedIn())
-                    await GetFilm(id);
-                else
-                    Response.RedirectToRoute("Account_Login", null);
+                await GetFilm(id);
             }
             catch (Exception ex)
             {

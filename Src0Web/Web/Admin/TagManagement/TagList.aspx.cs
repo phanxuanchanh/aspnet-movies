@@ -21,12 +21,6 @@ namespace Web.Admin.TagManagement
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditTag", new { action = "create" });
             paged = new PagedList<TagDto>();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             GetPagnationQuery();
 
             if (!IsPostBack)

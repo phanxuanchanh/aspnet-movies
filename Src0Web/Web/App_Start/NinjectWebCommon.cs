@@ -4,7 +4,9 @@
 namespace Web.App_Start
 {
     using System;
+    using System.Net.Http;
     using System.Web;
+    using Cdn;
     using Data.BLL;
     using Data.Services;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;

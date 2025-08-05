@@ -45,12 +45,6 @@ namespace Web.Admin.FilmManagement
                 //await LoadFilmCountries();
                 //await LoadFilmLanguages();
 
-                if (!CheckLoggedIn())
-                {
-                    Response.RedirectToRoute("Account_Login", null);
-                    return;
-                }
-
                 if (IsPostBack)
                 {
                     if (isCreateAction)

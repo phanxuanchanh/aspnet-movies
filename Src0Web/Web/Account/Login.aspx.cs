@@ -5,6 +5,8 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Security;
 using Web.App_Start;
 using Web.Models;
 using Web.Validation;
@@ -106,12 +108,20 @@ namespace Web.Account
 
                 UserDto user = (await userService.GetUserByUsernameAsync(userLogin.UserName)).Data;
 
-                Session["userSession"] = new UserSession
+                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                    1, user.UserName, DateTime.Now, DateTime.Now.AddMinutes(30),
+                    false, string.Join(",", user.Role.Name), FormsAuthentication.FormsCookiePath);
+
+                string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+                HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
                 {
-                    userId = user.ID,
-                    username = user.UserName,
-                    role = user.Role.Name
+                    HttpOnly = true,
+                    Secure = FormsAuthentication.RequireSSL,
+                    Path = FormsAuthentication.FormsCookiePath,
+                    Expires = ticket.Expiration
                 };
+
+                Response.Cookies.Add(cookie);
 
                 if (!user.Activated)
                 {

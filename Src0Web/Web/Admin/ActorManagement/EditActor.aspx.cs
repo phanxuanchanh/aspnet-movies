@@ -33,12 +33,6 @@ namespace Web.Admin.ActorManagement
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
             InitValidation();
 
-            if (!CheckLoggedIn())
-            {
-                Response.RedirectToRoute("Account_Login", null);
-                return;
-            }
-
             if (IsPostBack)
             {
                 if (isCreateAction)
