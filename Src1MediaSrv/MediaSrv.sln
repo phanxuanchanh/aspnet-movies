@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaSrv", "MediaSrv\MediaSrv.csproj", "{F25EB8C2-68B3-4F15-A6D3-C84ED9784FAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaSrv.ApiKeyGenerator", "MediaSrv.ApiKeyGenerator\MediaSrv.ApiKeyGenerator.csproj", "{85D9BA88-2974-4FC2-B3B3-64293AF4424B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaSrv.Database", "MediaSrv.Database\MediaSrv.Database.csproj", "{91B797C7-A5EB-4992-940B-B15B5D73CEC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F25EB8C2-68B3-4F15-A6D3-C84ED9784FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25EB8C2-68B3-4F15-A6D3-C84ED9784FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F25EB8C2-68B3-4F15-A6D3-C84ED9784FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F25EB8C2-68B3-4F15-A6D3-C84ED9784FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85D9BA88-2974-4FC2-B3B3-64293AF4424B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D9BA88-2974-4FC2-B3B3-64293AF4424B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85D9BA88-2974-4FC2-B3B3-64293AF4424B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85D9BA88-2974-4FC2-B3B3-64293AF4424B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B797C7-A5EB-4992-940B-B15B5D73CEC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B797C7-A5EB-4992-940B-B15B5D73CEC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B797C7-A5EB-4992-940B-B15B5D73CEC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B797C7-A5EB-4992-940B-B15B5D73CEC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
