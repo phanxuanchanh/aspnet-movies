@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Web;
+using System.Web.Security;
 
 namespace Web.Account
 {
@@ -7,13 +9,14 @@ namespace Web.Account
         protected void Page_Load(object sender, EventArgs e)
         {
             hyplnkHome.NavigateUrl = GetRouteUrl("User_Home", null);
-            if (Session["userSession"] == null)
+
+            if (HttpContext.Current.User?.Identity?.IsAuthenticated != true)
                 Response.RedirectToRoute("User_Home");
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            Session["userSession"] = null;
+            FormsAuthentication.SignOut();
             Response.RedirectToRoute("User_Home");
         }
     }

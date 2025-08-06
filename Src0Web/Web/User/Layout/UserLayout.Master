@@ -109,7 +109,7 @@
                             140 Lê Trọng Tấn<br>
                             Tây Thạnh,Tân Phú, Việt Nam
                         </p>
-                        <p>Số ĐT: <a href="#">(+84) 0961314600</a></p>
+                        <p>Số ĐT: <a href="#">(+84) .....</a></p>
                     </div>
                     <div class="flex-child-ft item2">
                         <h4>Tài Nguyên</h4>
@@ -154,7 +154,7 @@
             </div>
             <div class="ft-copyright">
                 <div class="ft-left">
-                    <p>© <% = DateTime.Now.ToString("yyyy") %> MovieWeb.</p>
+                    <p>© <% = DateTime.Now.ToString("yyyy") %> Phan Xuân Chánh | aspnet-movies</p>
                 </div>
                 <div class="backtotop">
                     <p><a href="#" id="back-to-top">Về đầu trang  <i class="ion-ios-arrow-thin-up"></i></a></p>

@@ -1,26 +1,24 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logout.aspx.cs" Inherits="Web.Account.Logout" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logout.aspx.cs" MasterPageFile="~/Account/Layouts/AccountLayout.Master" Inherits="Web.Account.Logout" %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Đăng xuất</title>
-    <link rel="icon" type="image/png" href="<% = ResolveUrl("~/account_assets/images/favicon.png") %>" />
-    <link rel="stylesheet" href="<% = ResolveUrl("~/account_assets/css/logout.css") %>" />
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div class="logout-panel">
-            <div class="logout-panel-header">
-                <h3>ĐĂNG XUẤT KHỎI TÀI KHOẢN</h3>
-                <hr />
-            </div>
-            <div class="logout-panel-body">
-                <p>Quay về
-                    <asp:HyperLink ID="hyplnkHome" runat="server">trang chủ</asp:HyperLink></p>
-                <asp:Button ID="btnLogout" CssClass="button button-red button-logout" runat="server" Text="Đăng xuất" OnClick="btnLogout_Click" />
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
+
+
+    <div class="row my-5">
+        <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">ĐĂNG XUẤT KHỎI TÀI KHOẢN</strong>
+                </div>
+                <div class="toast-body text-center">
+                    <p>Bạn đang muốn đăng xuất?</p>
+                    <asp:HyperLink ID="hyplnkHome" CssClass="btn btn-success" runat="server">Trang chủ</asp:HyperLink>
+                    <asp:Button ID="btnLogout" CssClass="btn btn-danger" runat="server" Text="Đăng xuất" OnClick="btnLogout_Click" />
+                </div>
             </div>
         </div>
-    </form>
-</body>
-</html>
+    </div>
+</asp:Content>
