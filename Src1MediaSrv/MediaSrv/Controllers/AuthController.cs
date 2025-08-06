@@ -1,6 +1,7 @@
 ﻿using MediaSrv.AppCodes;
 using MediaSrv.Database;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace MediaSrv.Controllers;
 
@@ -18,6 +19,7 @@ public class AuthController : ControllerBase
 
     [Route("")]
     [HttpPost]
+    [ProducesResponseType(typeof(AuthenticationResult), (int)HttpStatusCode.OK)]
     public async Task<ActionResult> Authenticate([FromBody]ApiKey apiKey)
     {
         ApiKey? apiKeyFromDb = await _context.ApiKeys.FindAsync(apiKey.ClientId);
@@ -28,6 +30,6 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid API key or secret key");
 
         string token = _tokenService.GenerateToken(apiKeyFromDb.ClientId);
-        return Ok(new { token });
+        return Ok(new AuthenticationResult { Token = token });
     }
 }

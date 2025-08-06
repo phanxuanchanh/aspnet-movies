@@ -30,13 +30,14 @@ public class VideoController : ControllerBase
 
     [Route("get-default-video")]
     [HttpGet]
+    [ProducesResponseType(typeof(VideoMetaDto), (int)HttpStatusCode.OK)]
     public IActionResult GetDefault()
     {
         HttpRequest request = HttpContext.Request;
         string hostUrl = $"{request.Scheme}://{request.Host}";
         string? endpoint = Url.Action("GetDefault", "VideoFile");
 
-        return Ok(new { Url = $"{hostUrl}{endpoint}" });
+        return Ok(new VideoMetaDto { Url = $"{hostUrl}{endpoint}" });
     }
 
     [Route("get-video/{fileId}")]

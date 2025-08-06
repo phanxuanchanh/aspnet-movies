@@ -27,13 +27,14 @@ public class ImageController : ControllerBase
 
     [Route("get-default-image")]
     [HttpGet]
+    [ProducesResponseType(typeof(FileMetaDto), (int)HttpStatusCode.OK)]
     public IActionResult GetDefault()
     {
         HttpRequest request = HttpContext.Request;
         string hostUrl = $"{request.Scheme}://{request.Host}";
         string? endpoint = Url.Action("GetDefault", "ImageFile");
 
-        return Ok(new { Url = $"{hostUrl}{endpoint}" });
+        return Ok(new FileMetaDto { Url = $"{hostUrl}{endpoint}" });
     }
 
     [Route("get-image/{fileId}")]
