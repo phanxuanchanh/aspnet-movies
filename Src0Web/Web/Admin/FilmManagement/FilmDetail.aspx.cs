@@ -2,13 +2,13 @@
 using Common.Upload;
 using Data.DTO;
 using Data.Services;
+using MediaSrv;
 using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.FilmManagement
 {
@@ -22,19 +22,15 @@ namespace Web.Admin.FilmManagement
         protected async void Page_Load(object sender, EventArgs e)
         {
             enableShowDetail = false;
-            try
-            {
-                string id = GetFilmId();
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_FilmList", null);
-                hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { id = id, action = "update" });
+            string id = GetFilmId();
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_FilmList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { id = id, action = "update" });
 
-                await GetFilm(id);
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await GetFilm(id);
+
+            MediaServiceWrapper serviceWrapper = Inject<MediaServiceWrapper>();
+            var a = await serviceWrapper.GetDefaultImageAsync();
+            string url = a.Url;
         }
 
         private string GetFilmId()
@@ -78,15 +74,7 @@ namespace Web.Admin.FilmManagement
 
         protected async void btnDelete_Click(object sender, EventArgs e)
         {
-            try
-            {
-                await DeleteFilm();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await DeleteFilm();
         }
 
         private async Task DeleteFilm()

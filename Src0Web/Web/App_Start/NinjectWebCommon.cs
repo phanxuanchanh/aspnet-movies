@@ -8,11 +8,10 @@ namespace Web.App_Start
     using System.Linq;
     using System.Text.Json;
     using System.Web;
-    using Cdn;
-    using CdnService;
     using Data.BLL;
     using Data.Models;
     using Data.Services;
+    using MediaSrv;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
     using Ninject;
