@@ -1,7 +1,7 @@
 ﻿using Cdn;
 using System.Net.Http;
 
-namespace CdnService
+namespace MediaSrv
 {
     public class MediaServiceWrapper : CdnSerivce
     {

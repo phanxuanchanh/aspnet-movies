@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{9E3877F3-E094-4D4B-B954-A5D9F56FB1D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdnService", "CdnService\CdnService.csproj", "{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaSrv", "MediaSrv\MediaSrv.csproj", "{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
