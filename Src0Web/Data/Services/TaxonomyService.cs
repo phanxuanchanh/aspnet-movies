@@ -6,6 +6,7 @@ using Data.DTO;
 using MSSQL.Access;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -271,6 +272,11 @@ namespace Data.Services
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public override string ToString()
+        {
+            return $"TaxonomyService created: {GetHashCode()} at {DateTime.Now.Ticks}";
         }
     }
 }

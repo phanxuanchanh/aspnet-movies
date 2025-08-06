@@ -97,7 +97,7 @@ namespace Web
             Server.ClearError();
             Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
 
-            Response.RedirectToRoute("Notification_Error", null);
+            Server.Transfer("~/Notification/Error.aspx", preserveForm: false);
         }
 
         protected void Session_End(object sender, EventArgs e)

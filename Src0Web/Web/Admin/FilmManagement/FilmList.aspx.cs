@@ -18,25 +18,16 @@ namespace Web.Admin.FilmManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            _filmService = NinjectWebCommon.Kernel.Get<FilmService>();
+            _filmService = Inject<FilmService>();
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditFilm", new { action = "create" });
             paged = new PagedList<FilmDto>();
 
-            GetPagnationQuery();  
+            GetPagnationQuery();
 
             if (!IsPostBack)
             {
                 txtPageSize.Text = paged.PageSize.ToString();
                 await SetFilmTable();
-            }
-        }
-
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_filmService != null)
-            {
-                _filmService.Dispose();
-                _filmService = null;
             }
         }
 

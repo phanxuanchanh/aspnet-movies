@@ -2,7 +2,7 @@
 
 namespace Web.Admin
 {
-    public class AdminPage : Web.App_Code.GeneralPage
+    public class AdminPage : Web.Shared.GeneralPage
     {
         
     }

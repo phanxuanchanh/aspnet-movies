@@ -1,6 +1,5 @@
 ﻿using Data.Models;
 using MSSQL.Access;
-using MSSQL.Connection;
 
 namespace Data.DAL
 {
@@ -56,32 +55,26 @@ namespace Data.DAL
 
         protected override void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (disposed) return;
+
+            if (disposing)
             {
-                try
-                {
-                    if (disposing)
-                    {
-                        DisposeSqlAccess<Role>(ref roles);
-                        DisposeSqlAccess<User>(ref users);
-                        DisposeSqlAccess<PaymentMethod>(ref paymentMethods);
-                        DisposeSqlAccess<PaymentInfo>(ref paymentInfos);
-                        DisposeSqlAccess<Film>(ref films);
-                        DisposeSqlAccess<UserReaction>(ref userReactions);
-                        DisposeSqlAccess<FilmMetadata>(ref filmMetadata);
-                        DisposeSqlAccess<FilmMetaLink>(ref filmMetaLinks);
-                        DisposeSqlAccess<People>(ref people);
-                        DisposeSqlAccess<PeopleLink>(ref peopleLinks);
-                        DisposeSqlAccess<Taxonomy>(ref taxonomies);
-                        DisposeSqlAccess<TaxonomyLink>(ref taxonomyLinks);
-                    }
-                    this.disposed = true;
-                }
-                finally
-                {
-                    base.Dispose(disposing);
-                }
+                DisposeSqlAccess(ref roles);
+                DisposeSqlAccess(ref users);
+                DisposeSqlAccess(ref paymentMethods);
+                DisposeSqlAccess(ref paymentInfos);
+                DisposeSqlAccess(ref films);
+                DisposeSqlAccess(ref userReactions);
+                DisposeSqlAccess(ref filmMetadata);
+                DisposeSqlAccess(ref filmMetaLinks);
+                DisposeSqlAccess(ref people);
+                DisposeSqlAccess(ref peopleLinks);
+                DisposeSqlAccess(ref taxonomies);
+                DisposeSqlAccess(ref taxonomyLinks);
             }
+
+            disposed = true;
+            base.Dispose(disposing);
         }
     }
 }

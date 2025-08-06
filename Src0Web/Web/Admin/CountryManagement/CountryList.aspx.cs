@@ -5,18 +5,18 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
 
 namespace Web.Admin.CountryManagement
 {
     public partial class CountryList : AdminPage
     {
-        private FilmMetadataService _filmMetadataService;
+        [Inject]
+        public FilmMetadataService FilmMetadataService { get; set; }
+
         protected PagedList<CountryDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            _filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { action = "create" });
             paged = new PagedList<CountryDto>();
 
@@ -26,15 +26,6 @@ namespace Web.Admin.CountryManagement
             {
                 txtPageSize.Text = paged.PageSize.ToString();
                 await SetCountryTable();
-            }
-        }
-
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_filmMetadataService != null)
-            {
-                _filmMetadataService.Dispose();
-                _filmMetadataService = null;
             }
         }
 
@@ -68,7 +59,7 @@ namespace Web.Admin.CountryManagement
 
         private async Task SetCountryTable()
         {
-            paged = await _filmMetadataService
+            paged = await FilmMetadataService
                 .GetCountriesAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
 
             rptCountries.DataSource = paged.Items;
@@ -86,7 +77,7 @@ namespace Web.Admin.CountryManagement
 
             if (int.TryParse(strId, out int id))
             {
-                ExecResult commandResult = await _filmMetadataService.DeleteAsync(id);
+                ExecResult commandResult = await FilmMetadataService.DeleteAsync(id);
                 notifControl.Set(commandResult);   
             }
             else

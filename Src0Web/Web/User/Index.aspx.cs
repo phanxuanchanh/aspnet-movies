@@ -7,14 +7,20 @@ using Common.Upload;
 using System.Linq;
 using Common;
 using Data.Services;
-using Web.App_Start;
 using Ninject;
 using Common.Web;
+using Web.Shared;
 
 namespace Web.User
 {
-    public partial class Index : System.Web.UI.Page
+    public partial class Index : GeneralPage
     {
+        [Inject]
+        public TaxonomyService TaxonomyService { get; set; }
+
+        [Inject]
+        public FilmService FilmService { get; set; }
+
         protected List<FilmDto> latestFilms;
         protected List<CategoryDto> categories;
         protected Dictionary<CategoryDto, List<FilmDto>> films_CategoryDict;
@@ -51,28 +57,22 @@ namespace Web.User
 
         private async Task GetCategories()
         {
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
-            {
-                categories = (await taxonomyService.GetCategoriesAsync(1, 30)).Items
-                    .Select(s =>
-                    {
-                        s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID });
-                        return s;
-                    }).ToList();
-            }
+            categories = (await TaxonomyService.GetCategoriesAsync(1, 30)).Items
+                .Select(s =>
+                {
+                    s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID });
+                    return s;
+                }).ToList();
         }
 
         private async Task GetFilmsByCategory()
         {
             foreach (CategoryDto category in categories)
             {
-
                 List<FilmDto> films = null;
-                using (FilmService filmBLL = NinjectWebCommon.Kernel.Get<FilmService>())
-                {
-                    PagedList<FilmDto> result = await filmBLL.GetFilmsByCategoryIdAsync(category.ID, 24);
-                    films = result.Items;
-                }
+
+                PagedList<FilmDto> result = await FilmService.GetFilmsByCategoryIdAsync(category.ID, 24);
+                films = result.Items;
 
                 foreach (FilmDto film in films)
                 {
@@ -87,6 +87,7 @@ namespace Web.User
                     film.ScoreRating = rating.SolveScore();
                     film.Url = GetRouteUrl("User_FilmDetail", new { slug = film.Name.TextToUrl(), id = film.ID });
                 }
+
                 films_CategoryDict.Add(category, films);
             }
         }

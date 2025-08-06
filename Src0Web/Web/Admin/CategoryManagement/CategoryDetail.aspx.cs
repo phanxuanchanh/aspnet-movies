@@ -4,13 +4,14 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.CategoryManagement
 {
     public partial class CategoryDetail : AdminPage
     {
+        [Inject]
+        public TaxonomyService TaxonomyService { get; set; }
+
         protected CategoryDto category;
         protected bool enableShowDetail;
 
@@ -40,18 +41,15 @@ namespace Web.Admin.CategoryManagement
                 return;
             }
 
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            ExecResult<CategoryDto> result = await TaxonomyService.GetCategoryAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<CategoryDto> result = await taxonomyService.GetCategoryAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    category = result.Data;
-                    enableShowDetail = true;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_CategoryList", null);
-                }
+                category = result.Data;
+                enableShowDetail = true;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_CategoryList", null);
             }
         }
 
@@ -69,14 +67,11 @@ namespace Web.Admin.CategoryManagement
                 return;
             }
 
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            ExecResult commandResult = await TaxonomyService.DeleteAsync(id); ;
+            if (commandResult.Status == ExecStatus.Success)
             {
-                ExecResult commandResult = await taxonomyService.DeleteAsync(id); ;
-                if (commandResult.Status == ExecStatus.Success)
-                {
-                    Response.RedirectToRoute("Admin_CategoryList", null);
-                    return;
-                }
+                Response.RedirectToRoute("Admin_CategoryList", null);
+                return;
             }
         }
     }

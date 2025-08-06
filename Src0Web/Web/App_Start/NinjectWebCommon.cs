@@ -17,12 +17,12 @@ namespace Web.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
-    using Web.App_Code;
+    using Web.Shared;
 
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
-        public static IKernel Kernel;
+        public static IKernel Kernel => bootstrapper.Kernel;
 
         /// <summary>
         /// Starts the application.
@@ -48,12 +48,14 @@ namespace Web.App_Start
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
-            Kernel = kernel;
+            StandardKernel kernel = new StandardKernel();
             try
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+
+                kernel.Components.Add<INinjectHttpApplicationPlugin, NinjectWebFormsHttpApplicationPlugin>();
+
                 RegisterServices(kernel);
                 return kernel;
             }
@@ -70,15 +72,15 @@ namespace Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<GeneralDao>().To<GeneralDao>();
+            kernel.Bind<GeneralDao>().ToSelf().InRequestScope();
 
-            kernel.Bind<AppSettingService>().To<AppSettingService>().InRequestScope();
-            kernel.Bind<FilmMetadataService>().To<FilmMetadataService>().InRequestScope();
-            kernel.Bind<PeopleService>().To<PeopleService>().InRequestScope();
-            kernel.Bind<TaxonomyService>().To<TaxonomyService>().InRequestScope();
-            kernel.Bind<FilmService>().To<FilmService>().InRequestScope();
-            kernel.Bind<RoleService>().To<RoleService>().InRequestScope();
-            kernel.Bind<UserService>().To<UserService>().InRequestScope();
+            kernel.Bind<AppSettingService>().ToSelf().InRequestScope();
+            kernel.Bind<FilmMetadataService>().ToSelf().InRequestScope();
+            kernel.Bind<PeopleService>().ToSelf().InRequestScope();
+            kernel.Bind<TaxonomyService>().ToSelf().InRequestScope();
+            kernel.Bind<FilmService>().ToSelf().InRequestScope();
+            kernel.Bind<RoleService>().ToSelf().InRequestScope();
+            kernel.Bind<UserService>().ToSelf().InRequestScope();
 
             kernel.Bind<MediaServiceWrapper>()
                 .ToMethod(m =>

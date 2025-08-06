@@ -5,18 +5,18 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
 
 namespace Web.Admin.DirectorManagement
 {
     public partial class DirectorList : AdminPage
     {
-        private PeopleService _peopleService;
+        [Inject]
+        public PeopleService PeopleService { get; set; }
+
         protected PagedList<DirectorDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            _peopleService = NinjectWebCommon.Kernel.Get<PeopleService>();
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditDirector", new { action = "create" });
             paged = new PagedList<DirectorDto>();
 
@@ -26,15 +26,6 @@ namespace Web.Admin.DirectorManagement
             {
                 txtPageSize.Text = paged.PageSize.ToString();
                 await SetDirectorTable();
-            }
-        }
-
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_peopleService != null)
-            {
-                _peopleService.Dispose();
-                _peopleService = null;
             }
         }
 
@@ -68,7 +59,7 @@ namespace Web.Admin.DirectorManagement
 
         private async Task SetDirectorTable()
         {
-            paged = await _peopleService
+            paged = await PeopleService
                 .GetDirectorsAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
 
             rptDirectors.DataSource = paged.Items;
@@ -86,7 +77,7 @@ namespace Web.Admin.DirectorManagement
 
             if (int.TryParse(strId, out int id))
             {
-                ExecResult commandResult = await _peopleService.DeleteAsync(id);
+                ExecResult commandResult = await PeopleService.DeleteAsync(id);
                 notifControl.Set(commandResult);
             }
             else

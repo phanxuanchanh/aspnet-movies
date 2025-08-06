@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Collections.Generic;
 using Data.Services;
-using Web.App_Code;
+using Web.Shared;
 
 namespace Web.Admin
 {
@@ -46,16 +46,12 @@ namespace Web.Admin
 
         private async Task LoadOverview()
         {
-            using (FilmService filmService = Inject<FilmService>())
-            {
-                movieNumber = 0;
-            }
+            FilmService filmService = Inject<FilmService>();
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
 
-            using (TaxonomyService taxonomyService = Inject<TaxonomyService>())
-            {
-                categoryNumber = 0;
-                tagNumber = 0;
-            }
+            movieNumber = 0;
+            categoryNumber = 0;
+            tagNumber = 0;
         }
     }
 }

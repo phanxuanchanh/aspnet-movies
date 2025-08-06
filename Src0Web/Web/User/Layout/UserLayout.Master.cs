@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Data.DTO;
 using System.Linq;
 using Data.Services;
-using Web.App_Start;
 using Ninject;
 using System.Web;
 
@@ -38,15 +37,12 @@ namespace Web.User.Layout
 
         private void GetCategories()
         {
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            categories = new List<CategoryDto>()// (taxonomyService.GetCategoriesAsync(1, 30).Result).Items
+            .Select(s =>
             {
-                categories = new List<CategoryDto>()// (taxonomyService.GetCategoriesAsync(1, 30).Result).Items
-                .Select(s =>
-                {
-                    s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID });
-                    return s;
-                }).ToList();
-            }
+                s.Url = GetRouteUrl("User_FilmsByCategory", new { slug = s.Name.TextToUrl(), id = s.ID });
+                return s;
+            }).ToList();
         }
     }
 }

@@ -1,12 +1,8 @@
 ﻿using Common;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
-using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
-using Web.Models;
 using Web.Validation;
 
 namespace Web.Admin.CategoryManagement
@@ -31,7 +27,6 @@ namespace Web.Admin.CategoryManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             customValidation = new CustomValidation();
-            //enableShowResult = false;
 
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
             InitValidation();
@@ -58,20 +53,20 @@ namespace Web.Admin.CategoryManagement
                 return;
             }
 
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+
+            ExecResult<CategoryDto> result = await taxonomyService.GetCategoryAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<CategoryDto> result = await taxonomyService.GetCategoryAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    hdCategoryId.Value = result.Data.ID.ToString();
-                    txtCategoryName.Text = result.Data.Name;
-                    txtCategoryDescription.Text = result.Data.Description;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_CountryList", null);
-                }
+                hdCategoryId.Value = result.Data.ID.ToString();
+                txtCategoryName.Text = result.Data.Name;
+                txtCategoryDescription.Text = result.Data.Description;
             }
+            else
+            {
+                Response.RedirectToRoute("Admin_CountryList", null);
+            }
+
         }
 
         private void InitValidation()
@@ -122,11 +117,11 @@ namespace Web.Admin.CategoryManagement
                 return;
 
             CreateCategoryDto category = InitCreateCategoryDto();
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
-            {
-                ExecResult<CategoryDto> commandResult = await taxonomyService.AddCategoryAsync(category);
-                notifControl.Set<CategoryDto>(commandResult);
-            }
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+
+            ExecResult<CategoryDto> commandResult = await taxonomyService.AddCategoryAsync(category);
+            notifControl.Set<CategoryDto>(commandResult);
+
         }
 
         public async Task Update()
@@ -135,11 +130,11 @@ namespace Web.Admin.CategoryManagement
                 return;
 
             UpdateCategoryDto category = InitUpdateCategoryDto();
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
-            {
-                ExecResult<CategoryDto> commandResult = await taxonomyService.UpdateCategoryAsync(category);
-                notifControl.Set<CategoryDto>(commandResult);
-            }
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+
+            ExecResult<CategoryDto> commandResult = await taxonomyService.UpdateCategoryAsync(category);
+            notifControl.Set<CategoryDto>(commandResult);
+
         }
     }
 }

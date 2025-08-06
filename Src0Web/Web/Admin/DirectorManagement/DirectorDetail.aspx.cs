@@ -5,13 +5,14 @@ using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
-using Web.App_Start;
-using Web.Models;
 
 namespace Web.Admin.DirectorManagement
 {
     public partial class DirectorDetail : AdminPage
     {
+        [Inject]
+        public PeopleService PeopleService { get; set; }
+
         protected DirectorDto director;
         protected bool enableShowDetail;
 
@@ -42,18 +43,15 @@ namespace Web.Admin.DirectorManagement
                 return;
             }
 
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
+            ExecResult<DirectorDto> result = await PeopleService.GetDirectorAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<DirectorDto> result = await peopleService.GetDirectorAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    director = result.Data;
-                    enableShowDetail = true;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_DirectorList", null);
-                }
+                director = result.Data;
+                enableShowDetail = true;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_DirectorList", null);
             }
         }
 
@@ -71,14 +69,11 @@ namespace Web.Admin.DirectorManagement
                 return;
             }
 
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
+            ExecResult commandResult = await PeopleService.DeleteAsync(id); ;
+            if (commandResult.Status == ExecStatus.Success)
             {
-                ExecResult commandResult = await peopleService.DeleteAsync(id); ;
-                if (commandResult.Status == ExecStatus.Success)
-                {
-                    Response.RedirectToRoute("Admin_DirectorList", null);
-                    return;
-                }
+                Response.RedirectToRoute("Admin_DirectorList", null);
+                return;
             }
         }
     }

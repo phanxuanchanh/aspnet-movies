@@ -19,7 +19,6 @@ namespace Web.Admin.FilmManagement
         protected ExecResult<FilmDto> commandResult;
         private CustomValidation customValidation;
         protected bool isCreateAction;
-        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -35,33 +34,25 @@ namespace Web.Admin.FilmManagement
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
-            _filmMetaService = NinjectWebCommon.Kernel.Get<FilmMetadataService>();
+            _filmMetaService = Inject<FilmMetadataService>();
             customValidation = new CustomValidation();
-            enableShowResult = false;
-            try
-            {
-                hyplnkList.NavigateUrl = GetRouteUrl("Admin_FilmList", null);
-                InitValidation();
-                //await LoadFilmCountries();
-                //await LoadFilmLanguages();
 
-                if (IsPostBack)
-                {
-                    if (isCreateAction)
-                        await Create();
-                    else
-                        await Update();
-                }
-                else
-                {
-                    if (!isCreateAction)
-                        await LoadFilm(Request.QueryString["Id"]);
-                }
-            }
-            catch (Exception ex)
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_FilmList", null);
+            InitValidation();
+            //await LoadFilmCountries();
+            //await LoadFilmLanguages();
+
+            if (IsPostBack)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                if (isCreateAction)
+                    await Create();
+                else
+                    await Update();
+            }
+            else
+            {
+                if (!isCreateAction)
+                    await LoadFilm(Request.QueryString["Id"]);
             }
         }
 
@@ -73,30 +64,20 @@ namespace Web.Admin.FilmManagement
                 return;
             }
 
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
-            {
-                ExecResult<FilmDto> result = await filmService.GetFilmAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    hdFilmId.Value = result.Data.ID.ToString();
-                    txtFilmName.Text = result.Data.Name;
-                    txtFilmDescription.Text = result.Data.Description;
-                    txtProductionCompany.Text = result.Data.ProductionCompany;
-                    txtReleaseDate.Text = result.Data.ReleaseDate.ToString();
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_CountryList", null);
-                }
-            }
-        }
+            FilmService filmService = Inject<FilmService>();
 
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_filmMetaService != null)
+            ExecResult<FilmDto> result = await filmService.GetFilmAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                _filmMetaService.Dispose();
-                _filmMetaService = null;
+                hdFilmId.Value = result.Data.ID.ToString();
+                txtFilmName.Text = result.Data.Name;
+                txtFilmDescription.Text = result.Data.Description;
+                txtProductionCompany.Text = result.Data.ProductionCompany;
+                txtReleaseDate.Text = result.Data.ReleaseDate.ToString();
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_CountryList", null);
             }
         }
 
@@ -192,12 +173,10 @@ namespace Web.Admin.FilmManagement
                 return;
 
             CreateFilmDto film = InitCreateFilmDto();
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
-            {
-                commandResult = await filmService.AddFilmAsync(film);
-            }
+            FilmService filmService = Inject<FilmService>();
 
-            enableShowResult = true;
+            commandResult = await filmService.AddFilmAsync(film);
+            notifControl.Set(commandResult);
         }
 
         private async Task Update()
@@ -206,12 +185,10 @@ namespace Web.Admin.FilmManagement
                 return;
 
             UpdateFilmDto film = InitUpdateFilmDto();
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
-            {
-                commandResult = await filmService.UpdateFilmAsync(film);
-            }
+            FilmService filmService = Inject<FilmService>();
 
-            enableShowResult = true;
+            commandResult = await filmService.UpdateFilmAsync(film);
+            notifControl.Set(commandResult);
         }
     }
 }

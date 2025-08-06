@@ -5,20 +5,19 @@ using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
-using Web.App_Start;
-using Web.Models;
+using Web.Shared;
 
 namespace Web.Admin.CountryManagement
 {
     public partial class CountryDetail : AdminPage
     {
+        [Inject]
+        public FilmMetadataService FilmMetadataService { get; set; }
+
         protected CountryDto country;
-        protected bool enableShowDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            enableShowDetail = false;
-
             int id = GetCountryId();
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = id, action = "update" });
@@ -38,23 +37,19 @@ namespace Web.Admin.CountryManagement
         {
             if (id <= 0)
             {
-                Response.RedirectToRoute("Admin_CountryList", null);
+                Response.ForceRedirectToRoute(this, "Admin_CountryList", null);
                 return;
             }
 
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            ExecResult<CountryDto> result = await FilmMetadataService.GetCountryAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<CountryDto> result = await filmMetadataService.GetCountryAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    country = result.Data;
-                    enableShowDetail = true;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_CountryList", null);
-                }
-
+                country = result.Data;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_CountryList", null);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
@@ -65,21 +60,18 @@ namespace Web.Admin.CountryManagement
 
         private async Task DeleteCountry()
         {
-            int id = GetCountryId();
+            int id = GetCountryId(); id = 0;
             if (id <= 0)
             {
-                Response.RedirectToRoute("Admin_CountryList", null);
+                Response.ForceRedirectToRoute(this,"Admin_CountryList", null);
                 return;
             }
 
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            ExecResult commandResult = await FilmMetadataService.DeleteAsync(id); ;
+            if (commandResult.Status == ExecStatus.Success)
             {
-                ExecResult commandResult = await filmMetadataService.DeleteAsync(id); ;
-                if (commandResult.Status == ExecStatus.Success)
-                {
-                    Response.RedirectToRoute("Admin_CountryList", null);
-                    return;
-                }
+                Response.ForceRedirectToRoute(this, "Admin_CountryList", null);
+                return;
             }
         }
     }

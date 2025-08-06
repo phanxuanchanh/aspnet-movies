@@ -5,18 +5,18 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
 
 namespace Web.Admin.CategoryManagement
 {
     public partial class CategoryList : AdminPage
     {
-        private TaxonomyService _taxonomyService;
+        [Inject]
+        public TaxonomyService TaxonomyService { get; set; }
+
         protected PagedList<CategoryDto> paged;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { action = "create" });
             paged = new PagedList<CategoryDto>();
 
@@ -26,15 +26,6 @@ namespace Web.Admin.CategoryManagement
             {
                 txtPageSize.Text = paged.PageSize.ToString();
                 await SetCategoryTable();
-            }
-        }
-
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_taxonomyService != null)
-            {
-                _taxonomyService.Dispose();
-                _taxonomyService = null;
             }
         }
 
@@ -68,7 +59,7 @@ namespace Web.Admin.CategoryManagement
 
         private async Task SetCategoryTable()
         {
-            paged = await _taxonomyService
+            paged = await TaxonomyService
                 .GetCategoriesAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
 
             rptCategories.DataSource = paged.Items;
@@ -86,7 +77,7 @@ namespace Web.Admin.CategoryManagement
 
             if (int.TryParse(strId, out int id))
             {
-                ExecResult commandResult = await _taxonomyService.DeleteAsync(id);
+                ExecResult commandResult = await TaxonomyService.DeleteAsync(id);
                 notifControl.Set(commandResult);
             }
             else

@@ -3,12 +3,10 @@ using Common.Upload;
 using Data.DTO;
 using Data.Services;
 using MediaSrv;
-using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
-using Web.App_Start;
 
 namespace Web.Admin.FilmManagement
 {
@@ -28,9 +26,9 @@ namespace Web.Admin.FilmManagement
 
             await GetFilm(id);
 
-            MediaServiceWrapper serviceWrapper = Inject<MediaServiceWrapper>();
-            var a = await serviceWrapper.GetDefaultImageAsync();
-            string url = a.Url;
+            //MediaServiceWrapper serviceWrapper = Inject<MediaServiceWrapper>();
+            //var a = await serviceWrapper.GetDefaultImageAsync();
+            //string url = a.Url;
         }
 
         private string GetFilmId()
@@ -49,26 +47,24 @@ namespace Web.Admin.FilmManagement
                 return;
             }
 
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
+            FilmService filmService = Inject<FilmService>();
+
+            ExecResult<FilmDto> result = await filmService.GetFilmAsync(id, includeMetadata: true, includeTaxonomy: true);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<FilmDto> result = await filmService.GetFilmAsync(id, includeMetadata: true, includeTaxonomy: true);
-                if (result.Status == ExecStatus.Success)
-                {
-                    film = result.Data;
-                    enableShowDetail = true;
+                film = result.Data;
+                enableShowDetail = true;
 
-                    if (string.IsNullOrEmpty(film.Thumbnail))
-                        film.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
-                    else
-                        film.Thumbnail = VirtualPathUtility
-                            .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
-                }
+                if (string.IsNullOrEmpty(film.Thumbnail))
+                    film.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/Default/default.png", FileUpload.ImageFilePath));
                 else
-                {
-                    Response.RedirectToRoute("Admin_FilmList", null);
-                }
-
+                    film.Thumbnail = VirtualPathUtility
+                        .ToAbsolute(string.Format("{0}/{1}", FileUpload.ImageFilePath, film.Thumbnail));
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_FilmList", null);
             }
         }
 
@@ -86,14 +82,13 @@ namespace Web.Admin.FilmManagement
                 return;
             }
 
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
+            FilmService filmService = Inject<FilmService>();
+
+            commandResult = await filmService.DeleteAsync(id); ;
+            if (commandResult.Status == ExecStatus.Success)
             {
-                commandResult = await filmService.DeleteAsync(id); ;
-                if (commandResult.Status == ExecStatus.Success)
-                {
-                    Response.RedirectToRoute("Admin_CategoryList", null);
-                    return;
-                }
+                Response.RedirectToRoute("Admin_CategoryList", null);
+                return;
             }
         }
     }
