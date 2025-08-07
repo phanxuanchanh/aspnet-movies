@@ -7,8 +7,8 @@
     <ProjectGuid>{303547A6-0A2E-4ED2-9D0E-39F8066A80C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CdnService</RootNamespace>
-    <AssemblyName>CdnService</AssemblyName>
+    <RootNamespace>MediaSrv</RootNamespace>
+    <AssemblyName>MediaSrv</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
