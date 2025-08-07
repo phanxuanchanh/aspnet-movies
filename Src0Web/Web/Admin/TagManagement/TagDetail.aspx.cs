@@ -1,63 +1,43 @@
 ﻿using Common;
-using Data.BLL;
-using Data.DAL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using System.Web.UI;
-using Web.App_Start;
-using Web.Models;
+using Web.Shared;
 
 namespace Web.Admin.TagManagement
 {
     public partial class TagDetail : AdminPage
     {
+        [Inject]
+        public TaxonomyService TaxonomyService { get; set; }
+
+        private int id;
         protected TagDto tag;
-        protected ExecResult commandResult;
-        protected bool enableShowDetail;
-        protected bool enableShowResult;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            enableShowDetail = false;
-            int id = GetTagId();
+            id = GetId<int>();
+            if (id <= 0)
+            {
+                Response.ForceRedirectToRoute(this, "Admin_TagList", null);
+                return;
+            }
+
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditTag", new { id = id, action = "update" });
 
             await GetTag(id);
         }
 
-        private int GetTagId()
-        {
-            object obj = Page.RouteData.Values["id"];
-            if (obj == null)
-                return -1;
-            return int.Parse(obj.ToString());
-        }
-
         private async Task GetTag(int id)
         {
-            if (id <= 0)
-            {
-                Response.RedirectToRoute("Admin_TagList", null);
-                return;
-            }
-
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
-            {
-                ExecResult<TagDto> result = await taxonomyService.GetTagAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    tag = result.Data;
-                    enableShowDetail = true;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_TagList", null);
-                }
-            }
+            ExecResult<TagDto> result = await TaxonomyService.GetTagAsync(id);
+            if (result.Status == ExecStatus.Success)
+                tag = result.Data;
+            else
+                Response.ForceRedirectToRoute(this, "Admin_TagList", null);
         }
 
         protected async void btnDelete_Click(object sender, EventArgs e)
@@ -67,21 +47,15 @@ namespace Web.Admin.TagManagement
 
         private async Task DeleteTag()
         {
-            int id = GetTagId();
-            if (id <= 0)
+            ExecResult commandResult = await TaxonomyService.DeleteAsync(id); ;
+            if (commandResult.Status == ExecStatus.Success)
             {
-                Response.RedirectToRoute("Admin_TagList", null);
+                Response.ForceRedirectToRoute(this, "Admin_TagList", null);
                 return;
             }
-
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            else
             {
-                commandResult = await taxonomyService.DeleteAsync(id); ;
-                if (commandResult.Status == ExecStatus.Success)
-                {
-                    Response.RedirectToRoute("Admin_TagList", null);
-                    return;
-                }
+                notifControl.Set(commandResult);
             }
         }
     }

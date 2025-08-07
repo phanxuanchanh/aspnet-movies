@@ -14,33 +14,26 @@ namespace Web.Admin.CountryManagement
         [Inject]
         public FilmMetadataService FilmMetadataService { get; set; }
 
+        private int id;
         protected CountryDto country;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            int id = GetCountryId();
-            hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
-            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = id, action = "update" });
-
-            await GetCountry(id);
-        }
-
-        private int GetCountryId()
-        {
-            object obj = Page.RouteData.Values["id"];
-            if (obj == null)
-                return -1;
-            return int.Parse(obj.ToString());
-        }
-
-        private async Task GetCountry(int id)
-        {
+            id = GetId<int>();
             if (id <= 0)
             {
                 Response.ForceRedirectToRoute(this, "Admin_CountryList", null);
                 return;
             }
 
+            hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
+            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCountry", new { id = id, action = "update" });
+
+            await GetCountry(id);
+        }
+
+        private async Task GetCountry(int id)
+        {
             ExecResult<CountryDto> result = await FilmMetadataService.GetCountryAsync(id);
             if (result.Status == ExecStatus.Success)
             {
@@ -48,8 +41,7 @@ namespace Web.Admin.CountryManagement
             }
             else
             {
-                Response.RedirectToRoute("Admin_CountryList", null);
-                Context.ApplicationInstance.CompleteRequest();
+                Response.ForceRedirectToRoute(this, "Admin_CountryList", null);
             }
         }
 
@@ -60,18 +52,15 @@ namespace Web.Admin.CountryManagement
 
         private async Task DeleteCountry()
         {
-            int id = GetCountryId(); id = 0;
-            if (id <= 0)
-            {
-                Response.ForceRedirectToRoute(this,"Admin_CountryList", null);
-                return;
-            }
-
             ExecResult commandResult = await FilmMetadataService.DeleteAsync(id); ;
             if (commandResult.Status == ExecStatus.Success)
             {
                 Response.ForceRedirectToRoute(this, "Admin_CountryList", null);
                 return;
+            }
+            else
+            {
+                notifControl.Set(commandResult);
             }
         }
     }

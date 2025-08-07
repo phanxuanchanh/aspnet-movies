@@ -10,9 +10,6 @@
 
     <uc:NotifControl ID="notifControl" runat="server" />
 
-    <% if (enableShowDetail)
-        { %>
-
     <div class="card">
         <div class="card-header">
             <span>Chi tiết thẻ tag: <strong><%= tag.Name %></strong></span>
@@ -53,8 +50,6 @@
 
         </div>
     </div>
-
-    <%} %>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">

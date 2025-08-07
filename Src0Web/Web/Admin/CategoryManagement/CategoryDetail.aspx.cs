@@ -4,6 +4,7 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.Shared;
 
 namespace Web.Admin.CategoryManagement
 {
@@ -12,44 +13,34 @@ namespace Web.Admin.CategoryManagement
         [Inject]
         public TaxonomyService TaxonomyService { get; set; }
 
+        private int id;
         protected CategoryDto category;
-        protected bool enableShowDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            enableShowDetail = false;
-            int id = GetCategoryId();
+            id = GetId<int>();
+            if (id <= 0)
+            {
+                Response.ForceRedirectToRoute(this, "Admin_CategoryList", null);
+                return;
+            }
+
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { id = id, action = "update" });
 
             await GetCategory(id);
         }
 
-        private int GetCategoryId()
-        {
-            object obj = Page.RouteData.Values["id"];
-            if (obj == null)
-                return -1;
-            return int.Parse(obj.ToString());
-        }
-
         private async Task GetCategory(int id)
         {
-            if (id <= 0)
-            {
-                Response.RedirectToRoute("Admin_CategoryList", null);
-                return;
-            }
-
             ExecResult<CategoryDto> result = await TaxonomyService.GetCategoryAsync(id);
             if (result.Status == ExecStatus.Success)
             {
                 category = result.Data;
-                enableShowDetail = true;
             }
             else
             {
-                Response.RedirectToRoute("Admin_CategoryList", null);
+                Response.ForceRedirectToRoute(this, "Admin_CategoryList", null);
             }
         }
 
@@ -60,19 +51,15 @@ namespace Web.Admin.CategoryManagement
 
         private async Task DeleteCategory()
         {
-            int id = GetCategoryId();
-            if (id <= 0)
-            {
-                Response.RedirectToRoute("Admin_CategoryList", null);
-                return;
-            }
-
             ExecResult commandResult = await TaxonomyService.DeleteAsync(id); ;
             if (commandResult.Status == ExecStatus.Success)
             {
-                Response.RedirectToRoute("Admin_CategoryList", null);
+                Response.ForceRedirectToRoute(this, "Admin_CategoryList", null);
                 return;
-            }
+            }else
+            {
+                notifControl.Set(commandResult);
+            }    
         }
     }
 }

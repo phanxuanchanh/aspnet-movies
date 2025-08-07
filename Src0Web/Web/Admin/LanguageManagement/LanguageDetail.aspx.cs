@@ -1,60 +1,43 @@
 ﻿using Common;
-using Data.BLL;
 using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using System.Web.UI;
-using Web.App_Start;
-using Web.Models;
+using Web.Shared;
 
 namespace Web.Admin.LanguageManagement
 {
     public partial class LanguageDetail : AdminPage
     {
+        [Inject]
+        public FilmMetadataService FilmMetadataService { get; set; }
+
+        private int id;
         protected LanguageDto language;
-        protected bool enableShowDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            enableShowDetail = false;
-            int id = GetLanguageId();
+            id = GetId<int>();
+            if (id <= 0)
+            {
+                Response.ForceRedirectToRoute(this, "Admin_LanguageList", null);
+                return;
+            }
+
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_LanguageList", null);
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditLanguage", new { id = id, action = "update" });
 
             await GetLanguageInfo(id);
         }
 
-        private int GetLanguageId()
-        {
-            object obj = Page.RouteData.Values["id"];
-            if (obj == null)
-                return -1;
-            return int.Parse(obj.ToString());
-        }
-
         private async Task GetLanguageInfo(int id)
         {
-            if (id <= 0)
-            {
-                Response.RedirectToRoute("Admin_LanguageList", null);
-                return;
-            }
-
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
-            {
-                ExecResult<LanguageDto> result = await filmMetadataService.GetLanguageAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    language = result.Data;
-                    enableShowDetail = true;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_LanguageList", null);
-                }
-            }
+            ExecResult<LanguageDto> result = await FilmMetadataService.GetLanguageAsync(id);
+            if (result.Status == ExecStatus.Success)
+                language = result.Data;
+            else
+                Response.ForceRedirectToRoute(this, "Admin_LanguageList", null);
         }
 
         protected async void btnDelete_Click(object sender, EventArgs e)
@@ -64,21 +47,15 @@ namespace Web.Admin.LanguageManagement
 
         private async Task DeleteLanguage()
         {
-            int id = GetLanguageId();
-            if (id <= 0)
+            ExecResult commandResult = await FilmMetadataService.DeleteAsync(id); ;
+            if (commandResult.Status == ExecStatus.Success)
             {
-                Response.RedirectToRoute("Admin_CountryList", null);
+                Response.ForceRedirectToRoute(this, "Admin_LanguageList", null);
                 return;
             }
-
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            else
             {
-                ExecResult commandResult = await filmMetadataService.DeleteAsync(id); ;
-                if (commandResult.Status == ExecStatus.Success)
-                {
-                    Response.RedirectToRoute("Admin_CountryList", null);
-                    return;
-                }
+                notifControl.Set(commandResult);
             }
         }
     }
