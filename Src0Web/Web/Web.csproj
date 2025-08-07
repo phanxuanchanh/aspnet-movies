@@ -494,7 +494,6 @@
     <Compile Include="Admin\UserManagement\UserList.aspx.designer.cs">
       <DependentUpon>UserList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="App_Start\EmailConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\NinjectWebFormsHttpApplicationPlugin.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

@@ -7,15 +7,39 @@ using System.Security.Claims;
 
 namespace MediaSrv
 {
-    public class MediaServiceWrapper : MediaService
+    public class MediaServiceWrapper : MediaService, IDisposable
     {
         private static string _token = null;
+        private bool disposedValue;
         private static readonly object _tokenLock = new object();
+        private readonly HttpClient _httpClient;
 
         private MediaServiceWrapper(HttpClient httpClient)
             :base(httpClient)
         {
+            _httpClient = httpClient;
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+
+                }
+
+                _httpClient.Dispose();
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
 
         public static MediaServiceWrapper Init(string host, string clientId, string secretKey)
         {

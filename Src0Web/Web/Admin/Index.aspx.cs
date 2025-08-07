@@ -2,9 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using Common.Web;
-using Data.Models;
-using System.Linq;
-using System.Text.Json;
 using System.Collections.Generic;
 using Data.Services;
 using Web.Shared;
@@ -34,11 +31,7 @@ namespace Web.Admin
 
         private void LoadMediaServerSetting()
         {
-            AppSetting appSetting = AppSettingValues.Get()
-                .Where(x => x.Name == "cdn-server").FirstOrDefault();
-
-            mediaServerSetting = JsonSerializer
-                .Deserialize<Dictionary<string, object>>(appSetting.Value);
+            mediaServerSetting = AppSettingValues.GetAndParseValue<object>("cdn-server");
 
             mediaServerSetting.Remove("ClientId");
             mediaServerSetting.Remove("SecretKey");

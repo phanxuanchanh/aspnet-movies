@@ -1,6 +1,8 @@
 ﻿using Data.DAL;
 using Data.Models;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 
 namespace Web.Shared
 {
@@ -18,7 +20,7 @@ namespace Web.Shared
             }
         }
 
-        public static List<AppSetting> Get()
+        public static List<AppSetting> GetList()
         {
             if (_appSettings.Count > 0)
                 return _appSettings;
@@ -30,6 +32,26 @@ namespace Web.Shared
 
                 return _appSettings;
             }
+        }
+
+        public static AppSetting Get(string name)
+        {
+            if (_appSettings.Count > 0)
+                return _appSettings.Where(x => x.Name == name).SingleOrDefault();
+
+            lock (_lock)
+            {
+                if (_appSettings.Count == 0)
+                    LoadFromDb();
+
+                return _appSettings.Where(x => x.Name == name).SingleOrDefault();
+            }
+        }
+
+        public static Dictionary<string, Tval> GetAndParseValue<Tval>(string name)
+        {
+            AppSetting appSetting = Get(name);
+            return JsonSerializer.Deserialize<Dictionary<string, Tval>>(appSetting.Value);
         }
     }
 }

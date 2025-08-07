@@ -9,27 +9,24 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
-using Web.App_Start;
-using Web.Models;
+using Web.Shared;
 
 namespace Web.User
 {
-    public partial class FilmsByCategory : System.Web.UI.Page
+    public partial class FilmsByCategory : GeneralPage
     {
+        [Inject]
+        public FilmService FilmService { get; set; }
+
+        [Inject]
+        public TaxonomyService TaxonomyService { get; set; }
+
         protected List<FilmDto> films;
         protected string categoryName;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            try
-            {
-                await GetFilmsByCategoryId();
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            await GetFilmsByCategoryId();
         }
 
         private int GetCategoryId()
@@ -50,12 +47,10 @@ namespace Web.User
             }
 
             CategoryDto category = null;
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
-            {
-                ExecResult<CategoryDto> result = await taxonomyService.GetCategoryAsync(id);
-                if (result.Status == ExecStatus.Success)
-                    category = result.Data;
-            }
+
+            ExecResult<CategoryDto> result = await TaxonomyService.GetCategoryAsync(id);
+            if (result.Status == ExecStatus.Success)
+                category = result.Data;
 
             if (category == null)
             {
@@ -64,11 +59,10 @@ namespace Web.User
             }
 
             categoryName = category.Name;
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
-            {
-                PagedList<FilmDto> result = await filmService.GetFilmsByCategoryIdAsync(id, 24);
-                films = result.Items;
-            }
+
+            PagedList<FilmDto> filmResult = await FilmService.GetFilmsByCategoryIdAsync(id, 24);
+            films = filmResult.Items;
+
 
             foreach (FilmDto film in films)
             {

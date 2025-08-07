@@ -85,8 +85,7 @@ namespace Web.App_Start
             kernel.Bind<MediaServiceWrapper>()
                 .ToMethod(m =>
                 {
-                    AppSetting appSetting = AppSettingValues.Get().Where(x => x.Name == "cdn-server")
-                    .SingleOrDefault();
+                    AppSetting appSetting = AppSettingValues.Get("cdn-server");
 
                     Dictionary<string, string> mediaServerSetting = JsonSerializer
                         .Deserialize<Dictionary<string, string>>(appSetting.Value);
