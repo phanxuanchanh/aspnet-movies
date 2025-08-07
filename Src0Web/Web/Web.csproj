@@ -298,6 +298,7 @@
     <Compile Include="Admin\Base\AdminPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Admin\Base\IPostbackAwarePage.cs" />
     <Compile Include="Admin\Base\Pagination.ascx.cs">
       <DependentUpon>Pagination.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

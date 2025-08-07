@@ -5,38 +5,33 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
-using Web.Models;
+using Web.Admin.Base;
 
 namespace Web.Admin.TagManagement
 {
-    public partial class TagList : AdminPage
+    public partial class TagList : AdminPage, IPostbackAwarePage
     {
-        private TaxonomyService _taxonomyService;
+        [Inject]
+        public TaxonomyService TaxonomyService { get; set; }
+
+        protected string searchText;
         protected PagedList<TagDto> paged;
 
-        protected async void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
-            _taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>();
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditTag", new { action = "create" });
             paged = new PagedList<TagDto>();
-
             GetPagnationQuery();
-
-            if (!IsPostBack)
-            {
-                txtPageSize.Text = paged.PageSize.ToString();
-                await SetTagTable();
-            }
         }
 
-        protected void Page_Unload(object sender, EventArgs e)
+        public async void Page_LoadNoPostback(object sender, EventArgs e)
         {
-            if (_taxonomyService != null)
-            {
-                _taxonomyService.Dispose();
-                _taxonomyService = null;
-            }
+            await SetTagTable();
+        }
+
+        public void Page_LoadWithPostback(object sender, EventArgs e)
+        {
+
         }
 
         private void GetPagnationQuery()
@@ -64,14 +59,14 @@ namespace Web.Admin.TagManagement
                     paged.PageSize = 20;
             }
 
-            txtSearch.Text = Request.QueryString["searchText"] ?? string.Empty;
+            searchText = Request.QueryString["searchText"] ?? string.Empty;
         }
 
 
         private async Task SetTagTable()
         {
-            paged = await _taxonomyService
-                .GetTagsAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
+            paged = await TaxonomyService
+                .GetTagsAsync(paged.CurrentPage, paged.PageSize, searchText);
 
             rptTags.DataSource = paged.Items;
             rptTags.DataBind();
@@ -88,7 +83,7 @@ namespace Web.Admin.TagManagement
 
             if (int.TryParse(strId, out int id))
             {
-                ExecResult commandResult = await _taxonomyService.DeleteAsync(id);
+                ExecResult commandResult = await TaxonomyService.DeleteAsync(id);
                 notifControl.Set(commandResult);
             }
             else
@@ -96,19 +91,8 @@ namespace Web.Admin.TagManagement
                 notifControl.Set(ExecResult.Failure("ID không hợp lệ!"));
                 return;
             }
-        }
 
-        protected void txtPageSize_TextChanged(object sender, EventArgs e)
-        {
-            if (long.TryParse(txtPageSize.Text, out long size))
-                Response.RedirectToRoute("Admin_TagList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
-            else
-                notifControl.Set(ExecResult.Failure("PageSize không hợp lệ!"));
-        }
-
-        protected void txtSearch_TextChanged(object sender, EventArgs e)
-        {
-            Response.RedirectToRoute("Admin_TagList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText = txtSearch.Text });
+            await SetTagTable();
         }
     }
 }

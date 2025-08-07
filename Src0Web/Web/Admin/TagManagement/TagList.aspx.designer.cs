@@ -33,24 +33,6 @@ namespace Web.Admin.TagManagement
         protected global::System.Web.UI.WebControls.HyperLink hyplnkCreate;
 
         /// <summary>
-        /// txtSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
-
-        /// <summary>
-        /// txtPageSize control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPageSize;
-
-        /// <summary>
         /// rptTags control.
         /// </summary>
         /// <remarks>

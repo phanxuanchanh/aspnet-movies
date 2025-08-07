@@ -1,21 +1,19 @@
 ﻿using Common;
 using Data.DTO;
 using Data.Services;
-using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
-using Web.Models;
+using Web.Admin.Base;
 using Web.Validation;
 
 namespace Web.Admin.TagManagement
 {
-    public partial class EditTag : AdminPage
+    public partial class EditTag : AdminPage, IPostbackAwarePage
     {
         private CustomValidation customValidation;
         protected bool isCreateAction;
 
-        protected async void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             string action = Request.QueryString["action"];
             if (string.IsNullOrEmpty(action))
@@ -32,42 +30,44 @@ namespace Web.Admin.TagManagement
             customValidation = new CustomValidation();
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
             InitValidation();
-
-            if (IsPostBack)
-            {
-                if (isCreateAction)
-                    await Create();
-                else
-                    await Update();
-            }
-            else
-            {
-                if (!isCreateAction)
-                    await LoadTag(string.IsNullOrEmpty(Request.QueryString["Id"]) ? -1 : int.Parse(Request.QueryString["Id"]));
-            }
         }
 
-        private async Task LoadTag(int id)
+        public async void Page_LoadNoPostback(object sender, EventArgs e)
         {
+            if (isCreateAction)
+                return;
+
+            int id = GetId<int>(fromQueryString: true);
             if (id <= 0)
             {
                 Response.RedirectToRoute("Admin_TagList", null);
                 return;
             }
 
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
+            await LoadTag(id);
+        }
+
+        public async void Page_LoadWithPostback(object sender, EventArgs e)
+        {
+            if (isCreateAction)
+                await Create();
+            else
+                await Update();
+        }
+
+        private async Task LoadTag(int id)
+        {
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+            ExecResult<TagDto> result = await taxonomyService.GetTagAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<TagDto> result = await taxonomyService.GetTagAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    hdTagId.Value = result.Data.ID.ToString();
-                    txtTagName.Text = result.Data.Name;
-                    txtTagDescription.Text = result.Data.Description;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_TagList", null);
-                }
+                hdTagId.Value = result.Data.ID.ToString();
+                txtTagName.Text = result.Data.Name;
+                txtTagDescription.Text = result.Data.Description;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_TagList", null);
             }
         }
 
@@ -119,11 +119,10 @@ namespace Web.Admin.TagManagement
                 return;
 
             CreateTagDto tag = InitCreateTagDto();
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
-            {
-                ExecResult<TagDto> commandResult = await taxonomyService.AddTagAsync(tag);
-                notifControl.Set<TagDto>(commandResult);
-            }
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+
+            ExecResult<TagDto> commandResult = await taxonomyService.AddTagAsync(tag);
+            notifControl.Set<TagDto>(commandResult);
         }
 
         public async Task Update()
@@ -132,11 +131,9 @@ namespace Web.Admin.TagManagement
                 return;
 
             UpdateTagDto tag = InitUpdateTagDto();
-            using (TaxonomyService taxonomyService = NinjectWebCommon.Kernel.Get<TaxonomyService>())
-            {
-                ExecResult<TagDto> commandResult = await taxonomyService.UpdateTagAsync(tag);
-                notifControl.Set<TagDto>(commandResult);
-            }
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+            ExecResult<TagDto> commandResult = await taxonomyService.UpdateTagAsync(tag);
+            notifControl.Set<TagDto>(commandResult);
         }
     }
 }

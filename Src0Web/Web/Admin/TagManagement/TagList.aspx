@@ -23,7 +23,8 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <asp:TextBox CssClass="form-control" ID="txtSearch" TextMode="SingleLine" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true" runat="server" placeholder="Tìm kiếm"></asp:TextBox>
+                        <input type="text" class="form-control" name="search" id="searchBox" value="<%= searchText%>" />
+                        <%--<asp:TextBox CssClass="form-control" ID="txtSearch" TextMode="SingleLine" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true" runat="server" placeholder="Tìm kiếm"></asp:TextBox>--%>
                     </div>
                 </div>
                 <div class="card-body">
@@ -33,7 +34,8 @@
                 <label class="d-inline-block me-2">Số bản ghi: <%= paged.TotalItems %></label>
                         | 
                 <label class="d-inline-block">Số bản ghi/trang:</label>
-                        <asp:TextBox CssClass="form-control d-inline-block w-25 me-2" ID="txtPageSize" TextMode="Number" OnTextChanged="txtPageSize_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
+                        <input type="number" class="form-control d-inline-block w-25 me-2" id="pageSize" value="<%= paged.PageSize %>" />
+                       <%-- <asp:TextBox CssClass="form-control d-inline-block w-25 me-2" ID="txtPageSize" TextMode="Number" OnTextChanged="txtPageSize_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>--%>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover">
@@ -91,4 +93,23 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">
+    <script>
+        document.getElementById("searchBox").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const pageSize = document.getElementById("pageSize").value;
+                const keyword = document.getElementById("searchBox").value;
+                location.href = `<%= GetRouteUrl("Admin_TagList", new { page = paged.CurrentPage }) %>&pageSize=${pageSize}&searchText=${keyword}`;
+            }
+        });
+
+        document.getElementById("pageSize").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const pageSize = document.getElementById("pageSize").value;
+                const keyword = document.getElementById("searchBox").value;
+                location.href = `<%= GetRouteUrl("Admin_TagList", new { page = paged.CurrentPage})%>&pageSize=${pageSize}&searchText=${keyword}`;
+            }
+        });
+    </script>
 </asp:Content>
