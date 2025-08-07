@@ -295,7 +295,6 @@
     <Compile Include="Admin\ActorManagement\EditActor.aspx.designer.cs">
       <DependentUpon>EditActor.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ActorManagement\IPageWithDelete.cs" />
     <Compile Include="Admin\Base\AdminPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
