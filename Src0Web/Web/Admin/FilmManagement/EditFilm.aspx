@@ -1,7 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditFilm.aspx.cs" Inherits="Web.Admin.FilmManagement.EditFilm" %>
 
-<%@ Import Namespace="Common" %>
-<%@ Import Namespace="Data.DTO" %>
 <%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

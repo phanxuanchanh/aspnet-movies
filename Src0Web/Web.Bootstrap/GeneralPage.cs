@@ -3,7 +3,7 @@ using System;
 using System.Web.UI;
 using Web.App_Start;
 
-namespace Web.Shared
+namespace Web
 {
     public class GeneralPage : System.Web.UI.Page
     {
@@ -22,7 +22,7 @@ namespace Web.Shared
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if(!SkipRender)
+            if (!SkipRender)
                 base.Render(writer);
         }
     }

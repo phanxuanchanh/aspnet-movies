@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Common.Web
+namespace Web.Shared.Result
 {
     public class PagedList<T>
     {

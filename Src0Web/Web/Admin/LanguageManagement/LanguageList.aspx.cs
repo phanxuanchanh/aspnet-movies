@@ -6,6 +6,7 @@ using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
+using Web.Shared.Result;
 
 namespace Web.Admin.LanguageManagement
 {

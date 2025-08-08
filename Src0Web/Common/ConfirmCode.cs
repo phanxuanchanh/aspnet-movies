@@ -1,6 +1,6 @@
 ﻿using Common.Hash;
-using Common.Mail;
 using System;
+using Web.Shared;
 
 namespace Common.Web
 {
@@ -10,7 +10,7 @@ namespace Common.Web
         {
             string confirmCode = new Random().NextStringOnlyNumericCharacter(8);
             string message = string.Format("Mã xác nhận của bạn là: {0}", confirmCode);
-            new EMail().Send(emailAddress, "Mã xác nhận tài khoản", message);
+            //new SmtpMailSender().Send(emailAddress, "Mã xác nhận tài khoản", message);
             return confirmCode;
         }
 

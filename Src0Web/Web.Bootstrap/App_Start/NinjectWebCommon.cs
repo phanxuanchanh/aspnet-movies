@@ -5,7 +5,6 @@ namespace Web.App_Start
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text.Json;
     using System.Web;
     using Data.BLL;
@@ -17,7 +16,6 @@ namespace Web.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
-    using Web.Shared;
 
     public static class NinjectWebCommon 
     {

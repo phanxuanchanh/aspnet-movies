@@ -1,6 +1,5 @@
 ﻿using Common;
 using Common.Upload;
-using Common.Web;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
-using Web.Shared;
+using Web.Shared.Result;
 
 namespace Web.User
 {

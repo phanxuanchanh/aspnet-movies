@@ -1,7 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/User/Layout/UserLayout.Master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="Web.User.Search" %>
 
-<%@ Import Namespace="Data.DTO" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title> Từ khóa: <% = keyword %> - Trang tìm kiếm</title>
     <meta charset="UTF-8">

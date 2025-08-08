@@ -1,32 +1,35 @@
-﻿using Common;
-using Common.Web;
-using Data.DTO;
+﻿using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
+using Web.Shared.Result;
 
 namespace Web.Admin.CategoryManagement
 {
-    public partial class CategoryList : AdminPage
+    public partial class CategoryList : AdminPage, IPostbackAwarePage
     {
         [Inject]
         public TaxonomyService TaxonomyService { get; set; }
 
+        protected string searchText;
         protected PagedList<CategoryDto> paged;
 
-        protected async void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditCategory", new { action = "create" });
             paged = new PagedList<CategoryDto>();
+        }
 
+        public async void Page_LoadNoPostback(object sender, EventArgs e)
+        {
             GetPagnationQuery();
+            await SetCategoryTable();
+        }
 
-            if (!IsPostBack)
-            {
-                txtPageSize.Text = paged.PageSize.ToString();
-                await SetCategoryTable();
-            }
+        public void Page_LoadWithPostback(object sender, EventArgs e)
+        {
+
         }
 
         private void GetPagnationQuery()
@@ -54,13 +57,13 @@ namespace Web.Admin.CategoryManagement
                     paged.PageSize = 20;
             }
 
-            txtSearch.Text = Request.QueryString["searchText"] ?? string.Empty;
+            searchText = Request.QueryString["searchText"] ?? string.Empty;
         }
 
         private async Task SetCategoryTable()
         {
             paged = await TaxonomyService
-                .GetCategoriesAsync(paged.CurrentPage, paged.PageSize, txtSearch.Text);
+                .GetCategoriesAsync(paged.CurrentPage, paged.PageSize, searchText);
 
             rptCategories.DataSource = paged.Items;
             rptCategories.DataBind();
@@ -85,19 +88,8 @@ namespace Web.Admin.CategoryManagement
                 notifControl.Set(ExecResult.Failure("ID không hợp lệ!"));
                 return;
             }
-        }
 
-        protected void txtPageSize_TextChanged(object sender, EventArgs e)
-        {
-            if (long.TryParse(txtPageSize.Text, out long size))
-                Response.RedirectToRoute("Admin_CategoryList", new { page = paged.CurrentPage, pageSize = paged.PageSize });
-            else
-                notifControl.Set(ExecResult.Failure("PageSize không hợp lệ!"));
-        }
-
-        protected void txtSearch_TextChanged(object sender, EventArgs e)
-        {
-            Response.RedirectToRoute("Admin_CategoryList", new { page = paged.CurrentPage, pageSize = paged.PageSize, searchText = txtSearch.Text });
+            await SetCategoryTable();
         }
     }
 }

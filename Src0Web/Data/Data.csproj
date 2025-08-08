@@ -94,11 +94,10 @@
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
+    <ProjectReference Include="..\Common\Web.Shared.csproj">
       <Project>{2bafd121-9a00-48e8-921a-fb250b8f81ca}</Project>
-      <Name>Common</Name>
+      <Name>Web.Shared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

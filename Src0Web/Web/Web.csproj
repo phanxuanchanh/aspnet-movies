@@ -37,14 +37,17 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\Build\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.8\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -155,6 +158,7 @@
     <Content Include="admin_assets\images\avatar.png" />
     <Content Include="admin_assets\images\favicon.png" />
     <Content Include="admin_assets\js\jquery.js" />
+    <Content Include="Global.asax" />
     <Content Include="Install\AppSettings.aspx" />
     <Content Include="User\CategoryList.aspx" />
     <Content Include="User\FilmDetail.aspx" />
@@ -186,7 +190,6 @@
     <Content Include="admin_assets\css\font-awesome.min.css" />
     <Content Include="admin_assets\css\styles.css" />
     <Content Include="admin_assets\fonts\fontawesome\fontawesome-webfont.svg" />
-    <Content Include="Global.asax" />
     <Content Include="account_assets\js\confirm.js" />
     <Content Include="account_assets\js\login.js" />
     <Content Include="admin_assets\js\chart.min.js" />
@@ -295,10 +298,6 @@
     <Compile Include="Admin\ActorManagement\EditActor.aspx.designer.cs">
       <DependentUpon>EditActor.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Base\AdminPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Base\IPostbackAwarePage.cs" />
     <Compile Include="Admin\Base\Pagination.ascx.cs">
       <DependentUpon>Pagination.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -495,16 +494,8 @@
     <Compile Include="Admin\UserManagement\UserList.aspx.designer.cs">
       <DependentUpon>UserList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
-    <Compile Include="App_Start\NinjectWebFormsHttpApplicationPlugin.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="InstallationResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InstallationResource.resx</DependentUpon>
     </Compile>
     <Compile Include="Install\AppSettings.aspx.cs">
       <DependentUpon>AppSettings.aspx</DependentUpon>
@@ -513,8 +504,6 @@
     <Compile Include="Install\AppSettings.aspx.designer.cs">
       <DependentUpon>AppSettings.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Install\Installer.cs" />
-    <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\UserSession.cs" />
     <Compile Include="Models\History.cs" />
     <Compile Include="Notification\Error.aspx.cs">
@@ -525,11 +514,6 @@
       <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shared\AppSettingValues.cs" />
-    <Compile Include="Shared\HttpResponseExtensions.cs" />
-    <Compile Include="Shared\Page.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="User\CategoryList.aspx.cs">
       <DependentUpon>CategoryList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -631,9 +615,9 @@
     <Folder Include="common_assets\fonts\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
+    <ProjectReference Include="..\Common\Web.Shared.csproj">
       <Project>{2bafd121-9a00-48e8-921a-fb250b8f81ca}</Project>
-      <Name>Common</Name>
+      <Name>Web.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{9e3877f3-e094-4d4b-b954-a5d9f56fb1d8}</Project>
@@ -643,13 +627,16 @@
       <Project>{303547a6-0a2e-4ed2-9d0e-39f8066a80c8}</Project>
       <Name>MediaSrv</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Web.Bootstrap\Web.Bootstrap.csproj">
+      <Project>{25488b4f-a910-4052-bf08-61dcd87f5975}</Project>
+      <Name>Web.Bootstrap</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="InstallationResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>InstallationResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Content Include="admin_assets\js\list-page.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -682,7 +669,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

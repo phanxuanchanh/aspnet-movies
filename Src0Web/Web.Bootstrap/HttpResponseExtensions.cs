@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace Web.Shared
+namespace Web
 {
     public static class HttpResponseExtension
     {

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Common</RootNamespace>
-    <AssemblyName>Common</AssemblyName>
+    <AssemblyName>Web.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=3.3.6.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.6\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -41,22 +44,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExecResult.cs" />
-    <Compile Include="ExecStatus.cs" />
-    <Compile Include="Hash\HashFunction.cs" />
-    <Compile Include="Mail\EMail.cs" />
+    <Compile Include="Results\ExecResult.cs" />
+    <Compile Include="Results\ExecStatus.cs" />
+    <Compile Include="Helpers\HashFunction.cs" />
+    <Compile Include="Helpers\SmtpMailSender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Random\RandomExtension.cs" />
-    <Compile Include="Rating\Rating.cs" />
+    <Compile Include="Extensions\RandomExtension.cs" />
+    <Compile Include="Helpers\Rating.cs" />
     <Compile Include="Routing\HttpHandlerRoute.cs" />
-    <Compile Include="String\StringExtension.cs" />
-    <Compile Include="SystemInformation\SystemInfo.cs" />
+    <Compile Include="Extensions\StringExtension.cs" />
+    <Compile Include="Helpers\SystemInfo.cs" />
     <Compile Include="Upload\FileUpload.cs" />
-    <Compile Include="Web\ConfirmCode.cs" />
-    <Compile Include="Web\PagedList.cs" />
-    <Compile Include="Web\PageVisitor.cs" />
+    <Compile Include="ConfirmCode.cs" />
+    <Compile Include="Results\PagedList.cs" />
+    <Compile Include="PageVisitor.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

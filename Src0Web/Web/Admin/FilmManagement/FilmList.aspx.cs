@@ -7,7 +7,7 @@ using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web;
-using Web.App_Start;
+using Web.Shared.Result;
 
 namespace Web.Admin.FilmManagement
 {

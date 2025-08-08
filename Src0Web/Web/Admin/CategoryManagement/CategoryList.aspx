@@ -1,7 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="CategoryList.aspx.cs" Inherits="Web.Admin.CategoryManagement.CategoryList" MaintainScrollPositionOnPostback="true" %>
 
-<%@ Import Namespace="Common" %>
-<%@ Import Namespace="Data.DTO" %>
 <%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
 <%@ Register TagPrefix="uc" TagName="PaginationControl" Src="~/Admin/Base/Pagination.ascx" %>
 
@@ -23,7 +21,7 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <asp:TextBox CssClass="form-control" ID="txtSearch" TextMode="SingleLine" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true" runat="server" placeholder="Tìm kiếm"></asp:TextBox>
+                        <input type="text" class="form-control" name="search" id="searchBox" value="<%= searchText%>" placeholder="Tìm kiếm" />
                     </div>
                 </div>
                 <div class="card-body">
@@ -33,7 +31,7 @@
                 <label class="d-inline-block me-2">Số bản ghi: <%= paged.TotalItems %></label>
                         | 
                 <label class="d-inline-block">Số bản ghi/trang:</label>
-                        <asp:TextBox CssClass="form-control d-inline-block w-25 me-2" ID="txtPageSize" TextMode="Number" OnTextChanged="txtPageSize_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
+                        <input type="number" class="form-control d-inline-block w-25 me-2" id="pageSize" value="<%= paged.PageSize %>" />
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover">
@@ -91,4 +89,8 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">
+    <script>
+        const url = `<%= GetRouteUrl("Admin_CategoryList", new { page = paged.CurrentPage }) %>`;
+    </script>
+    <script src="<%= ResolveUrl("~/admin_assets/js/list-page.js") %>"></script>
 </asp:Content>

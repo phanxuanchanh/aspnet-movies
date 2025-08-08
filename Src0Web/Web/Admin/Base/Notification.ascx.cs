@@ -1,4 +1,4 @@
-﻿using Common;
+﻿using Web.Shared.Result;
 
 namespace Web.Admin.Base
 {

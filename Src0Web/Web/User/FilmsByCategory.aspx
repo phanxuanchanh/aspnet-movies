@@ -1,5 +1,4 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/User/Layout/UserLayout.Master" AutoEventWireup="true" CodeBehind="FilmsByCategory.aspx.cs" Inherits="Web.User.FilmsByCategory" %>
-<%@ Import Namespace="Data.DTO" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Thể loại: <% = categoryName %> -- Trang xem theo thể loại</title>

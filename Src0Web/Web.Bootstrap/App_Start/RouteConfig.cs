@@ -14,7 +14,7 @@ namespace Web.App_Start
             routes.MapPageRoute("Account_Confirm", "account/confirm/{userId}/{confirmToken}/{type}", "~/Account/Confirm.aspx");
 
             routes.MapPageRoute("Admin_Overview", "admin/overview", "~/Admin/Index.aspx");
-            
+
             routes.MapPageRoute("Admin_FilmList", "admin/film/list", "~/Admin/FilmManagement/FilmList.aspx");
             routes.MapPageRoute("Admin_FilmDetail", "admin/film/detail/{id}", "~/Admin/FilmManagement/FilmDetail.aspx");
             routes.MapPageRoute("Admin_EditFilm", "admin/film/edit", "~/Admin/FilmManagement/EditFilm.aspx");
@@ -22,7 +22,7 @@ namespace Web.App_Start
             routes.MapPageRoute("Admin_CategoryList", "admin/category/list", "~/Admin/CategoryManagement/CategoryList.aspx");
             routes.MapPageRoute("Admin_CategoryDetail", "admin/category/detail/{id}", "~/Admin/CategoryManagement/CategoryDetail.aspx");
             routes.MapPageRoute("Admin_EditCategory", "admin/category/create", "~/Admin/CategoryManagement/EditCategory.aspx");
-            
+
             routes.MapPageRoute("Admin_RoleList", "admin/role/list", "~/Admin/RoleManagement/RoleList.aspx");
             routes.MapPageRoute("Admin_RoleDetail", "admin/role/detail/{id}", "~/Admin/RoleManagement/RoleDetail.aspx");
             routes.MapPageRoute("Admin_EditRole", "admin/role/edit", "~/Admin/RoleManagement/EditRole.aspx");
@@ -30,15 +30,15 @@ namespace Web.App_Start
             routes.MapPageRoute("Admin_CountryList", "admin/country/list", "~/Admin/CountryManagement/CountryList.aspx");
             routes.MapPageRoute("Admin_CountryDetail", "admin/country/detail/{id}", "~/Admin/CountryManagement/CountryDetail.aspx");
             routes.MapPageRoute("Admin_EditCountry", "admin/country/edit", "~/Admin/CountryManagement/EditCountry.aspx");
-            
+
             routes.MapPageRoute("Admin_LanguageList", "admin/language/list", "~/Admin/LanguageManagement/LanguageList.aspx");
             routes.MapPageRoute("Admin_LanguageDetail", "admin/language/detail/{id}", "~/Admin/LanguageManagement/LanguageDetail.aspx");
             routes.MapPageRoute("Admin_EditLanguage", "admin/language/edit", "~/Admin/LanguageManagement/EditLanguage.aspx");
-            
+
             routes.MapPageRoute("Admin_DirectorList", "admin/director/list", "~/Admin/DirectorManagement/DirectorList.aspx");
             routes.MapPageRoute("Admin_DirectorDetail", "admin/director/detail/{id}", "~/Admin/DirectorManagement/DirectorDetail.aspx");
             routes.MapPageRoute("Admin_EditDirector", "admin/director/edit", "~/Admin/DirectorManagement/EditDirector.aspx");
-            
+
             routes.MapPageRoute("Admin_ActorList", "admin/actor/list", "~/Admin/ActorManagement/ActorList.aspx");
             routes.MapPageRoute("Admin_ActorDetail", "admin/actor/detail/{id}", "~/Admin/ActorManagement/ActorDetail.aspx");
             routes.MapPageRoute("Admin_EditActor", "admin/actor/edit", "~/Admin/ActorManagement/EditActor.aspx");
@@ -46,7 +46,7 @@ namespace Web.App_Start
             routes.MapPageRoute("Admin_TagList", "admin/tag/list", "~/Admin/TagManagement/TagList.aspx");
             routes.MapPageRoute("Admin_TagDetail", "admin/tag/detail/{id}", "~/Admin/TagManagement/TagDetail.aspx");
             routes.MapPageRoute("Admin_EditTag", "admin/tag/create", "~/Admin/TagManagement/EditTag.aspx");
-            
+
             routes.MapPageRoute("Admin_UserList", "admin/user/list", "~/Admin/UserManagement/UserList.aspx");
             routes.MapPageRoute("Admin_CreateUser", "admin/user/create", "~/Admin/UserManagement/CreateUser.aspx");
 

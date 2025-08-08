@@ -1,10 +1,9 @@
-﻿using System;
-using Web.Admin.Base;
-using NotifControl = Web.Admin.Base.Notification;
+﻿using Ninject;
+using System;
 
-namespace Web.Admin
+namespace Web
 {
-    public class AdminPage : Web.Shared.GeneralPage
+    public class AdminPage : GeneralPage
     {
         protected T GetId<T>(string key = "id", bool fromQueryString = false)
         {
@@ -30,20 +29,6 @@ namespace Web.Admin
 
             return default;
         }
-
-        //protected async Task Delete<TService, Tid>(TService service, Tid id, NotifControl notifControl, Func<TService, Tid, Task<ExecResult>> func)
-        //{
-        //    ExecResult commandResult = await func(service, id);
-        //    if (commandResult.Status == ExecStatus.Success)
-        //    {
-        //        Response.RedirectToRoute("Admin_ActorList", null);
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        notifControl.Set(commandResult);
-        //    }
-        //}
 
         public event EventHandler OnLoadNoPostback;
         public event EventHandler OnLoadWithPostback;

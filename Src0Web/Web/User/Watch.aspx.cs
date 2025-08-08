@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.UI;
 using Web.App_Start;
 using Web.Models;
+using Web.Shared.Result;
 
 namespace Web.User
 {

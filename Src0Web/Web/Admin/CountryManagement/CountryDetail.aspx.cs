@@ -1,10 +1,9 @@
-﻿using Common;
-using Data.DTO;
+﻿using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.Shared;
+using Web.Shared.Result;
 
 namespace Web.Admin.CountryManagement
 {

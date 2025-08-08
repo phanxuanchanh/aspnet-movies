@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Pagination.ascx.cs" Inherits="Web.Admin.Base.Pagination" %>
-<%@ Import Namespace="Common" %>
 
 <ul class="pagination m-0">
     <% if (showPrev)

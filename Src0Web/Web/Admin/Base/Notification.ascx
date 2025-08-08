@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Notification.ascx.cs" Inherits="Web.Admin.Base.Notification" %>
-<%@ Import Namespace="Common" %>
+<%@ Import Namespace="Web.Shared.Result" %>
 
 <% if (enableShowResult)
     { %>

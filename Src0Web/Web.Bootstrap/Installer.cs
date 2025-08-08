@@ -7,7 +7,7 @@ using Common.Hash;
 using System.Linq;
 using System.Text;
 
-namespace Web.Install
+namespace Web
 {
     public class Installer
     {

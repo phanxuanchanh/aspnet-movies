@@ -1,5 +1,5 @@
-﻿using Common.Web;
-using System;
+﻿using System;
+using Web.Shared.Result;
 
 namespace Web.Admin.Base
 {

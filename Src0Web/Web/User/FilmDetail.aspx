@@ -1,7 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/User/Layout/UserLayout.Master" AutoEventWireup="true" CodeBehind="FilmDetail.aspx.cs" Inherits="Web.User.FilmDetail" %>
 
-<%@ Import Namespace="Data.DTO" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title><% = title_HeadTag %> - Trang chi tiết</title>
     <meta charset="UTF-8">
