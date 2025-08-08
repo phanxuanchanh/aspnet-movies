@@ -1,13 +1,11 @@
-﻿using Common;
-using Common.Web;
-using Data.BLL;
+﻿using Data.BLL;
 using Data.DAL;
 using Data.DTO;
-using MSSQL.Access;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Shared.Result;
 
 namespace Data.Services
 {

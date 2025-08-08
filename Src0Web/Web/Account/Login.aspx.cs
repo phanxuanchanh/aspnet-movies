@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Security;
 using Web.App_Start;
 using Web.Models;
+using Web.Shared.Result;
 using Web.Validation;
 
 namespace Web.Account

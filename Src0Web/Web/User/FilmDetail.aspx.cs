@@ -11,6 +11,7 @@ using System.Text;
 using Data.Services;
 using Web.App_Start;
 using Ninject;
+using Web.Shared.Result;
 
 namespace Web.User
 {

@@ -18,6 +18,7 @@ namespace Web.App_Start
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
     using Web.Shared;
+    using Web.Shared.WebForms;
 
     public static class NinjectWebCommon 
     {
@@ -32,6 +33,8 @@ namespace Web.App_Start
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
+
+            GeneralPage.Kernel = bootstrapper.Kernel;
         }
 
         /// <summary>

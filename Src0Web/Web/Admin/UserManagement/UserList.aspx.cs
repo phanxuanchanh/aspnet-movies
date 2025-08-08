@@ -5,6 +5,8 @@ using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
+using Web.Shared.Result;
+using Web.Shared.WebForms;
 
 namespace Web.Admin.UserManagement
 {

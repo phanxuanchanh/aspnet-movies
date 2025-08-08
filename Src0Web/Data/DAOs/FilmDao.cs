@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Common.Web;
 using MSSQL.Mapper;
+using Web.Shared.Result;
 
 namespace Data.BLL
 {

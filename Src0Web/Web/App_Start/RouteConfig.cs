@@ -64,6 +64,8 @@ namespace Web.App_Start
             routes.MapPageRoute("Notification_Error", "notification/error", "~/Notification/Error.aspx");
 
             routes.MapPageRoute("Install", "install/run-setup", "~/Install/Index.aspx");
+
+            routes.MapPageRoute("Demo", "demo", "~/DemoPages/Demo.aspx");
         }
     }
 }

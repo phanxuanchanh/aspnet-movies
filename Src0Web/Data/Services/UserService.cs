@@ -1,11 +1,10 @@
-﻿using Common;
-using Common.Hash;
-using Common.Web;
+﻿using Common.Hash;
 using Data.BLL;
 using Data.DAL;
 using Data.DTO;
 using System;
 using System.Threading.Tasks;
+using Web.Shared.Result;
 
 namespace Data.Services
 {

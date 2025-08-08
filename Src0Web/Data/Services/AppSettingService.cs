@@ -1,12 +1,9 @@
-﻿using Common.Web;
-using Data.BLL;
+﻿using Data.BLL;
 using Data.DAOs;
 using Data.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Web.Shared.Result;
 
 namespace Data.Services
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common
+namespace Web.Shared.Result
 {
     public class ExecResult
     {

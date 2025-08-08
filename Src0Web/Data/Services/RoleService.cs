@@ -1,9 +1,8 @@
-﻿using Common;
-using Common.Web;
-using Data.BLL;
+﻿using Data.BLL;
 using Data.DTO;
 using System;
 using System.Threading.Tasks;
+using Web.Shared.Result;
 
 namespace Data.Services
 {

@@ -19,7 +19,6 @@ namespace Common.Hash
 
         public static string PBKDF2_Hash(string input, string salt, int length)
         {
-
             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, Encoding.ASCII.GetBytes(salt), iterations: 5000);
             StringBuilder hashSb = new StringBuilder();
             byte[] hash = pbkdf2.GetBytes(length);
