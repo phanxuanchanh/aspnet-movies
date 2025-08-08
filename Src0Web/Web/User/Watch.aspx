@@ -1,4 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/User/Layout/UserLayout.Master" AutoEventWireup="true" CodeBehind="Watch.aspx.cs" Inherits="Web.User.Watch" %>
+<%@ OutputCache Duration="60" VaryByParam="id" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title><% = title_HeadTag %> - Trang xem phim</title>
@@ -13,14 +14,13 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
-    <% if (filmInfo != null)
-        { %>
+
     <div class="hero common-hero">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="hero-ct">
-                        <h1>Bạn đang xem: <% = film.name %></h1>
+                        <h1>Bạn đang xem: <% = film.Name %></h1>
                         <%--<ul class="breadcumb">
                             <li class="active"><a href="#">Home</a></li>
                             <li><span class="ion-ios-arrow-right"></span>movie listing</li>
@@ -47,7 +47,6 @@
             height: 600px !important;
         }
     </style>
-    <%} %>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">
@@ -57,7 +56,7 @@
         setTimeout(function () {
             $(document).ready(function (e) {
                 $.post("<% = hyplnkIncreaseView %>", {
-                    filmId: "<% = filmInfo.ID %>"
+                    filmId: "<% = film.ID %>"
                 }, function (data) {
                     console.log(data);
                 });

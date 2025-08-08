@@ -29,7 +29,7 @@
     <div class="page-single">
         <div class="container">
             <div class="row ipad-width">
-                <% if (filmInfos != null)
+                <% if (films != null)
                     { %>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="topbar-filter">

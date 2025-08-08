@@ -20,27 +20,19 @@ namespace Web.Admin.Layout
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
-            {
-                hyplnkOverview = GetRouteUrl("Admin_Overview", null);
-                hyplnkCategoryList = GetRouteUrl("Admin_CategoryList", null);
-                hyplnkCountryList = GetRouteUrl("Admin_CountryList", null);
-                hyplnkLanguageList = GetRouteUrl("Admin_LanguageList", null);
-                hyplnkRoleList = GetRouteUrl("Admin_RoleList", null);
-                hyplnkDirectorList = GetRouteUrl("Admin_DirectorList", null);
-                hyplnkTagList = GetRouteUrl("Admin_TagList", null);
-                hyplnkUserList = GetRouteUrl("Admin_UserList", null);
-                hyplnkCastList = GetRouteUrl("Admin_ActorList", null);
-                hyplnkFilmList = GetRouteUrl("Admin_FilmList", null);
+            hyplnkOverview = GetRouteUrl("Admin_Overview", null);
+            hyplnkCategoryList = GetRouteUrl("Admin_CategoryList", null);
+            hyplnkCountryList = GetRouteUrl("Admin_CountryList", null);
+            hyplnkLanguageList = GetRouteUrl("Admin_LanguageList", null);
+            hyplnkRoleList = GetRouteUrl("Admin_RoleList", null);
+            hyplnkDirectorList = GetRouteUrl("Admin_DirectorList", null);
+            hyplnkTagList = GetRouteUrl("Admin_TagList", null);
+            hyplnkUserList = GetRouteUrl("Admin_UserList", null);
+            hyplnkCastList = GetRouteUrl("Admin_ActorList", null);
+            hyplnkFilmList = GetRouteUrl("Admin_FilmList", null);
 
-                IPrincipal principal = HttpContext.Current.User;
-                txtUsername.InnerText = principal.Identity.Name;
-            }
-            catch(Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
-            }
+            IPrincipal principal = HttpContext.Current.User;
+            txtUsername.InnerText = principal.Identity.Name;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/User/Layout/UserLayout.Master" AutoEventWireup="true" CodeBehind="FilmDetail.aspx.cs" Inherits="Web.User.FilmDetail" %>
+<%@ OutputCache Duration="60" VaryByParam="id" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title><% = title_HeadTag %> - Trang chi tiết</title>
@@ -18,8 +19,7 @@
             </div>
         </div>
     </div>
-    <% if (filmInfo != null)
-        { %>
+
     <div class="page-single movie-single movie_single">
         <div class="container">
             <div class="row ipad-width2">
@@ -38,7 +38,7 @@
                     <div class="movie-single-ct main-content">
                         <h1 class="bd-hd"><% = film.Name %><span><% = film.ReleaseDate %></span></h1>
                         <div class="social-btn">
-                            <% if (userId != null)
+                            <% if (userName != null)
                                 { %>
                             <a href="#" class="parent-btn" onclick="upvote();"><i class="ion-heart"></i>Thích</a>
                             <a href="#" class="parent-btn" onclick="downvote();"><i class="ion-heart"></i>Không thích</a>
@@ -104,7 +104,7 @@
                                                     <a href="#" class="time">Xem chi tiết<i class="ion-ios-arrow-right"></i></a>
                                                 </div>
                                                 <div class="mvcast-item">
-                                                    <% foreach (ActorDto actor in filmDto.Actors)
+                                                    <% foreach (ActorDto actor in film.Actors)
                                                         { %>
                                                     <div class="cast-it">
                                                         <div class="cast-left">
@@ -216,18 +216,18 @@
             </div>
         </div>
     </div>
-    <%} %>
+
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">
-    <% if (film != null && hyplnkUpvote != null && hyplnkDownvote != null && userId != null)
+    <% if (film != null && hyplnkUpvote != null && hyplnkDownvote != null && userName != null)
         { %>
     <script type="text/javascript">
         function upvote() {
             $(document).ready(function (e) {
                 $.post("<% = hyplnkUpvote %>", {
                     filmId: "<% = film.ID %>",
-                    userId: "<% = userId %>",
+                    userName: "<% = userName %>",
                 }, function (data) {
                     alert(data);
                 });
@@ -238,7 +238,7 @@
             $(document).ready(function (e) {
                 $.post("<% = hyplnkDownvote %>", {
                     filmId: "<% = film.ID %>",
-                    userId: "<% = userId %>",
+                    userId: "<% = userName %>",
                 }, function (data) {
                     alert(data);
                 });

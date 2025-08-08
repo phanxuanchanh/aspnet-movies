@@ -108,10 +108,11 @@ namespace Web.Account
                 }
 
                 UserDto user = (await userService.GetUserByUsernameAsync(userLogin.UserName)).Data;
+                string userData = $"{string.Join(",", user.Role.Name)}";
 
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
                     1, user.UserName, DateTime.Now, DateTime.Now.AddMinutes(30),
-                    false, string.Join(",", user.Role.Name), FormsAuthentication.FormsCookiePath);
+                    false, userData, FormsAuthentication.FormsCookiePath);
 
                 string encryptedTicket = FormsAuthentication.Encrypt(ticket);
                 HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)

@@ -15,8 +15,9 @@ using Web.Shared.Result;
 
 namespace Web.User
 {
-    public partial class Watch : System.Web.UI.Page
+    public partial class Watch : GeneralPage
     {
+        private string id;
         protected FilmDto film;
         protected string title_HeadTag;
         protected string keywords_MetaTag;
@@ -25,34 +26,40 @@ namespace Web.User
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            try
+            hyplnkIncreaseView = GetRouteUrl("User_IncreaseView", null);
+            id = GetFilmId();
+            if (id == null)
             {
-                hyplnkIncreaseView = GetRouteUrl("User_IncreaseView", null);
-                await GetFilm();
-                GenerateHeadTag();
-                object obj = Session["userSession"];
-                if (obj != null && film != null)
-                {
-                    UserSession userSession = (UserSession)obj;
-                    if (userSession.Histories == null)
-                    {
-                        userSession.Histories = new List<History>();
-                    }
-                    userSession.Histories.Add(new History
-                    {
-                        filmId = film.ID,
-                        name = film.Name,
-                        thumbnail = film.Thumbnail,
-                        url = film.Url,
-                        timestamp = DateTime.Now
-                    });
-                }
+                Response.ForceRedirectToRoute(this, "User_Home", null);
+                return;
             }
-            catch (Exception ex)
+
+            await GetFilm();
+            if (film == null)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                Response.ForceRedirectToRoute(this, "User_Home", null);
+                return;
             }
+
+            GenerateHeadTag();
+
+            //object obj = Session["userSession"];
+            //if (obj != null && film != null)
+            //{
+            //    UserSession userSession = (UserSession)obj;
+            //    if (userSession.Histories == null)
+            //    {
+            //        userSession.Histories = new List<History>();
+            //    }
+            //    userSession.Histories.Add(new History
+            //    {
+            //        filmId = film.ID,
+            //        name = film.Name,
+            //        thumbnail = film.Thumbnail,
+            //        url = film.Url,
+            //        timestamp = DateTime.Now
+            //    });
+            //}
         }
 
         private string GetFilmId()
@@ -65,25 +72,14 @@ namespace Web.User
 
         private async Task GetFilm()
         {
-            string id = GetFilmId();
-            if (id == null)
-            {
-                Response.RedirectToRoute("User_Home", null);
-                return;
-            }
+            FilmService filmService = Inject<FilmService>();
 
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
-            {
-                ExecResult<FilmDto> resutl = await filmService.GetFilmAsync(id);
-                if (resutl.Status == ExecStatus.Success)
-                    film = resutl.Data;
-            }
+            ExecResult<FilmDto> resutl = await filmService.GetFilmAsync(id);
+            if (resutl.Status == ExecStatus.Success)
+                film = resutl.Data;
 
             if (film == null)
-            {
-                Response.RedirectToRoute("User_Home", null);
                 return;
-            }
 
             if (string.IsNullOrEmpty(film.Thumbnail))
                 film.Thumbnail = VirtualPathUtility
@@ -104,18 +100,15 @@ namespace Web.User
 
         private void GenerateHeadTag()
         {
-            if (film != null)
-            {
-                title_HeadTag = film.Name;
-                description_MetaTag = (string.Format("{0}...", film.Description.TakeStr(100))).Replace("\n", " ");
+            title_HeadTag = film.Name;
+            description_MetaTag = (string.Format("{0}...", film.Description.TakeStr(100))).Replace("\n", " ");
 
-                StringBuilder stringBuilder = new StringBuilder();
-                foreach (TagDto tag in film.Tags)
-                {
-                    stringBuilder.Append(string.Format("{0}, ", tag.Name));
-                }
-                keywords_MetaTag = stringBuilder.ToString().TrimEnd(' ').TrimEnd(',');
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (TagDto tag in film.Tags)
+            {
+                stringBuilder.Append(string.Format("{0}, ", tag.Name));
             }
+            keywords_MetaTag = stringBuilder.ToString().TrimEnd(' ').TrimEnd(',');
         }
     }
 }
