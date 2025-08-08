@@ -8,8 +8,6 @@ using System.Linq;
 using Common;
 using Data.Services;
 using Ninject;
-using Common.Web;
-using Web.Shared.WebForms;
 using Web.Shared.Result;
 
 namespace Web.User

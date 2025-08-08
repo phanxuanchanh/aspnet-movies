@@ -1,7 +1,7 @@
 ﻿
 using System.Threading;
 
-namespace Common.Web
+namespace Web.Shared
 {
     public static class PageVisitor
     {

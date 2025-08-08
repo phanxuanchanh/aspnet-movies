@@ -1,6 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="EditActor.aspx.cs" Inherits="Web.Admin.ActorManagement.EditActor" %>
 
-<%@ Import Namespace="Common" %>
 <%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

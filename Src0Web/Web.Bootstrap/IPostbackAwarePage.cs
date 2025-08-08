@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Web.Admin.Base
+namespace Web
 {
     public interface IPostbackAwarePage
     {

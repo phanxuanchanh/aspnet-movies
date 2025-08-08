@@ -1,13 +1,10 @@
-﻿using Common;
-using Common.Web;
-using Data.DTO;
+﻿using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
 using Web.App_Start;
 using Web.Shared.Result;
-using Web.Shared.WebForms;
 
 namespace Web.Admin.ActorManagement
 {

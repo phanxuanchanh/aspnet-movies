@@ -1,7 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="UserLayout.master.cs" Inherits="Web.User.Layout.UserLayout" %>
 
-<%@ Import Namespace="Data.DTO" %>
-
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head runat="server">

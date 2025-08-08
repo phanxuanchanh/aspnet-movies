@@ -1,7 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="FilmList.aspx.cs" Inherits="Web.Admin.FilmManagement.FilmList" MaintainScrollPositionOnPostback="true" %>
 
-<%@ Import Namespace="Common" %>
-<%@ Import Namespace="Data.DTO" %>
 <%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
 <%@ Register TagPrefix="uc" TagName="PaginationControl" Src="~/Admin/Base/Pagination.ascx" %>
 

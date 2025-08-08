@@ -8,7 +8,6 @@ using System;
 using System.Threading.Tasks;
 using System.Web;
 using Web.Shared.Result;
-using Web.Shared.WebForms;
 
 namespace Web.Admin.FilmManagement
 {

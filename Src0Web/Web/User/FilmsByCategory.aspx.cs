@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using Web.Shared.Result;
-using Web.Shared.WebForms;
 
 namespace Web.User
 {

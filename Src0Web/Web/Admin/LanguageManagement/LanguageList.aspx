@@ -1,7 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Admin/Layout/AdminLayout.Master" AutoEventWireup="true" CodeBehind="LanguageList.aspx.cs" Inherits="Web.Admin.LanguageManagement.LanguageList" MaintainScrollPositionOnPostback="true" %>
 
-<%@ Import Namespace="Common" %>
-<%@ Import Namespace="Data.DTO" %>
 <%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Admin/Base/Notification.ascx" %>
 <%@ Register TagPrefix="uc" TagName="PaginationControl" Src="~/Admin/Base/Pagination.ascx" %>
 

@@ -1,11 +1,9 @@
 ﻿using Common.SystemInformation;
 using System;
 using System.Threading.Tasks;
-using Common.Web;
 using System.Collections.Generic;
 using Data.Services;
 using Web.Shared;
-using Web.Shared.WebForms;
 
 namespace Web.Admin
 {

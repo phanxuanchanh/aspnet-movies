@@ -158,6 +158,7 @@
     <Content Include="admin_assets\images\avatar.png" />
     <Content Include="admin_assets\images\favicon.png" />
     <Content Include="admin_assets\js\jquery.js" />
+    <Content Include="Global.asax" />
     <Content Include="Install\AppSettings.aspx" />
     <Content Include="User\CategoryList.aspx" />
     <Content Include="User\FilmDetail.aspx" />
@@ -189,7 +190,6 @@
     <Content Include="admin_assets\css\font-awesome.min.css" />
     <Content Include="admin_assets\css\styles.css" />
     <Content Include="admin_assets\fonts\fontawesome\fontawesome-webfont.svg" />
-    <Content Include="Global.asax" />
     <Content Include="account_assets\js\confirm.js" />
     <Content Include="account_assets\js\login.js" />
     <Content Include="admin_assets\js\chart.min.js" />
@@ -494,16 +494,8 @@
     <Compile Include="Admin\UserManagement\UserList.aspx.designer.cs">
       <DependentUpon>UserList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
-    <Compile Include="App_Start\NinjectWebFormsHttpApplicationPlugin.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="InstallationResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InstallationResource.resx</DependentUpon>
     </Compile>
     <Compile Include="Install\AppSettings.aspx.cs">
       <DependentUpon>AppSettings.aspx</DependentUpon>
@@ -512,8 +504,6 @@
     <Compile Include="Install\AppSettings.aspx.designer.cs">
       <DependentUpon>AppSettings.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Install\Installer.cs" />
-    <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\UserSession.cs" />
     <Compile Include="Models\History.cs" />
     <Compile Include="Notification\Error.aspx.cs">
@@ -524,7 +514,6 @@
       <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AppSettingValues.cs" />
     <Compile Include="User\CategoryList.aspx.cs">
       <DependentUpon>CategoryList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -638,17 +627,10 @@
       <Project>{303547a6-0a2e-4ed2-9d0e-39f8066a80c8}</Project>
       <Name>MediaSrv</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Web.Admin\Web.Admin.csproj">
-      <Project>{9f7f7842-2fe2-4d44-8ada-c9d06efe3a8a}</Project>
-      <Name>Web.Admin</Name>
+    <ProjectReference Include="..\Web.Bootstrap\Web.Bootstrap.csproj">
+      <Project>{25488b4f-a910-4052-bf08-61dcd87f5975}</Project>
+      <Name>Web.Bootstrap</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="InstallationResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>InstallationResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin_assets\js\list-page.js" />
@@ -697,9 +679,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-  <Content Include="**\*.aspx;**\*.ascx;**\*.js;**\*.css;**\*.png;**\*.jpg;**\*.svg">
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-  </Content>
-</ItemGroup>
 </Project>

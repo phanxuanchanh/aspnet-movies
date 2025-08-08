@@ -1,8 +1,7 @@
 ﻿using Ninject;
 using System;
-using Web.Admin.Base;
 
-namespace Web.Shared.WebForms
+namespace Web
 {
     public class AdminPage : GeneralPage
     {

@@ -1,7 +1,5 @@
 ﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/User/Layout/UserLayout.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="Web.User.Index" %>
 
-<%@ Import Namespace="Data.DTO" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Trang chủ</title>
     <meta charset="UTF-8">

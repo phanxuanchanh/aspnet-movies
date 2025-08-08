@@ -58,14 +58,6 @@
     <Compile Include="ConfirmCode.cs" />
     <Compile Include="Results\PagedList.cs" />
     <Compile Include="PageVisitor.cs" />
-    <Compile Include="WebForms\AdminPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForms\HttpResponseExtensions.cs" />
-    <Compile Include="WebForms\IPostbackAwarePage.cs" />
-    <Compile Include="WebForms\Page.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

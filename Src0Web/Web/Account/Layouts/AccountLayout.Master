@@ -1,7 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AccountLayout.Master.cs" Inherits="Web.Account.Layout.AccountLayout" %>
 
-<%@ Import Namespace="Data.DTO" %>
-
 <!DOCTYPE html>
 <html lang="vi" class="no-js">
 <head runat="server">
