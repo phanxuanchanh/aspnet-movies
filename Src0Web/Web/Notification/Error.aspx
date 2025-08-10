@@ -124,7 +124,7 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="frmError" runat="server">
         <div id="notfound">
 		<div class="notfound">
 			<div class="notfound-404">

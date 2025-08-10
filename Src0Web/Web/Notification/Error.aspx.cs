@@ -14,13 +14,11 @@ namespace Web.Notification
 
         private void GetError()
         {
-            error = Session["error"] as ErrorModel;
-            if (error == null)
-                error = new ErrorModel
-                {
-                    ErrorTitle = "Không có lỗi!",
-                    ErrorDetail = "Đây là nội dung mặc định khi bạn cố truy cập vào trang này. Lỗi chi tiết sẽ hiện khi thực sự có lỗi xảy ra"
-                };
+            error = new ErrorModel
+            {
+                ErrorTitle = "Lỗi đã xảy ra!",
+                ErrorDetail = "Đã có lỗi xảy ra, vui lòng thử lại sau, có thể do hệ thống hoặc đã bị chặn truy cập vào!"
+            };
         }
     }
 }
