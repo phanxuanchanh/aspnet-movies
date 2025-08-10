@@ -117,6 +117,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\NinjectWebFormsHttpApplicationPlugin.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="GCManager.cs" />
     <Compile Include="HttpResponseExtensions.cs" />
     <Compile Include="InstallationResource.Designer.cs">
       <DependentUpon>InstallationResource.resx</DependentUpon>

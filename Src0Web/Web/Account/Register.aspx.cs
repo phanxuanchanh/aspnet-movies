@@ -1,23 +1,20 @@
-﻿using Data.BLL;
-using Data.DTO;
+﻿using Data.DTO;
+using Data.Services;
 using System;
 using System.Threading.Tasks;
-using Web.Models;
+using System.Web;
+using Web.Shared.Result;
 using Web.Validation;
 
 namespace Web.Account
 {
-    public partial class Register : System.Web.UI.Page
+    public partial class Register : GeneralPage
     {
         private CustomValidation customValidation;
-        protected bool enableShowResult;
-        protected string stateDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             customValidation = new CustomValidation();
-            enableShowResult = false;
-            stateDetail = null;
 
             InitHyperLink();
             InitValidation();
@@ -35,7 +32,7 @@ namespace Web.Account
 
         private bool CheckLoggedIn()
         {
-            return (Session["userSession"] != null);
+            return !(HttpContext.Current.User?.Identity?.IsAuthenticated != true);
         }
 
         private void InitHyperLink()
@@ -109,10 +106,10 @@ namespace Web.Account
         {
             return new CreateUserDto
             {
-                UserName = Request.Form["txtUsername"],
-                Email = Request.Form["txtEmail"],
-                PhoneNumber = Request.Form["txtPhoneNumber"],
-                Password = Request.Form["txtPassword"],
+                UserName = txtUsername.Text,
+                Email = txtEmail.Text,
+                PhoneNumber = txtPhoneNumber.Text,
+                Password = txtPassword.Text,
             };
         }
 
@@ -121,42 +118,18 @@ namespace Web.Account
             if (!IsValidData())
                 return;
 
-            //UserCreation userCreation = GetUserRegister();
-            //UserDao.RegisterState registerState = await userBLL.RegisterAsync(userCreation);
+            CreateUserDto user = InitCreateUserDto();
+            UserService userService = Inject<UserService>();
 
-            //if (registerState == UserDao.RegisterState.Failed || registerState == UserDao.RegisterState.AlreadyExist)
-            //{
-            //    if (registerState == UserDao.RegisterState.Failed)
-            //        stateDetail = "Đăng ký tài khoản thất bại";
-            //    else
-            //        stateDetail = "Đã tồn tại tài khoản có thông tin này";
+            ExecResult commandResult = await userService.RegisterAsync(user);
+            if(commandResult.Status == ExecStatus.Success)
+            {
+                Response.RedirectToRoute("Account_Login");
+                return;
+                
+            }
 
-            //    enableShowResult = true;
-            //}
-            //else
-            //{
-            //    ConfirmCode confirmCode = new ConfirmCode();
-            //    Session["confirmCode"] = confirmCode.Send(userCreation.email);
-            //    string confirmToken = confirmCode.CreateToken();
-            //    Session["confirmToken"] = confirmToken;
-
-            //    UserInfo userInfo = await userBLL.GetUserByUserNameAsync(userCreation.userName);
-
-            //    if (registerState == UserDao.RegisterState.Success)
-            //        Response.RedirectToRoute("Account_Confirm", new
-            //        {
-            //            userId = userInfo.ID,
-            //            confirmToken = confirmToken,
-            //            type = "register"
-            //        });
-            //    else
-            //        Response.RedirectToRoute("Account_Confirm", new
-            //        {
-            //            userId =userInfo.ID,
-            //            confirmToken = confirmToken,
-            //            type = "register_no-payment-info"
-            //        });
-            //}
+            notifControl.Set(commandResult);
         }
     }
 }

@@ -37,6 +37,8 @@ namespace Web
             }
             else
             {
+                GCManager.CollectIfThresholdReached();
+
                 string url = HttpContext.Current.Request.RawUrl.ToLower();
                 if (url.EndsWith(".aspx"))
                 {

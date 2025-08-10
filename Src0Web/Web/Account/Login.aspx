@@ -1,4 +1,5 @@
 ﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" MasterPageFile="~/Account/Layouts/AccountLayout.Master" CodeBehind="Login.aspx.cs" Inherits="Web.Account.Login" EnableEventValidation="false" %>
+<%@ Register TagPrefix="uc" TagName="NotifControl" Src="~/Account/Notification.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Đăng nhập</title>
@@ -20,6 +21,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContent" runat="server">
     <div class="login-container">
+        <uc:NotifControl ID="notifControl" runat="server" />
         <h3 class="text-center mb-4">Đăng nhập</h3>
         <div class="mb-3">
             <label for="mainContent_txtUsername" class="form-label">Tên đăng nhập</label>

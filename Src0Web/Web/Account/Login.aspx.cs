@@ -1,6 +1,4 @@
-﻿using Common;
-using Common.Web;
-using Data.DTO;
+﻿using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
@@ -8,23 +6,18 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
 using Web.App_Start;
-using Web.Models;
 using Web.Shared.Result;
 using Web.Validation;
 
 namespace Web.Account
 {
-    public partial class Login : System.Web.UI.Page
+    public partial class Login : GeneralPage
     {
         private CustomValidation customValidation;
-        protected bool enableShowResult;
-        protected string stateDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             customValidation = new CustomValidation();
-            enableShowResult = false;
-            stateDetail = null;
 
             InitHyperLink();
             InitValidation();
@@ -80,7 +73,7 @@ namespace Web.Account
 
         private bool CheckLoggedIn()
         {
-            return (Session["userSession"] != null);
+            return !(HttpContext.Current.User?.Identity?.IsAuthenticated != true);
         }
 
         private UserLogin GetUserLogin()
@@ -100,10 +93,10 @@ namespace Web.Account
             UserLogin userLogin = GetUserLogin();
             using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
             {
-                ExecResult result = await userService.LoginAsync(userLogin);
-                if (result.Status != ExecStatus.Success)
+                ExecResult commandResult = await userService.LoginAsync(userLogin);
+                if (commandResult.Status != ExecStatus.Success)
                 {
-                    //Chèn uc thông báo
+                    notifControl.Set(commandResult);
                     return;
                 }
 
@@ -127,17 +120,7 @@ namespace Web.Account
 
                 if (!user.Activated)
                 {
-                    ConfirmCode confirmCode = new ConfirmCode();
-                    Session["confirmCode"] = confirmCode.Send(user.Email);
-                    string confirmToken = confirmCode.CreateToken();
-                    Session["confirmToken"] = confirmToken;
-
-                    Response.RedirectToRoute("Account_Confirm", new
-                    {
-                        userId = user.ID,
-                        confirmToken = confirmToken,
-                        type = "login_unconfirmed"
-                    });
+                    //Xử lý gửi mã kích hoạt
                 }
 
                 if (user.Role.Name == "User")

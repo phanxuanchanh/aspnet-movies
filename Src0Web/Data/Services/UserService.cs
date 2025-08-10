@@ -60,9 +60,17 @@ namespace Data.Services
             if (user1 != null || user2 != null)
                 return ExecResult.Failure("User already exists");
 
+            string salt = HashFunction.MD5_Hash(new Random().NextString(25));
+
             User newUser = new User
             {
-
+                Id = Guid.NewGuid().ToString(),
+                UserName = input.UserName,
+                Password = HashFunction.PBKDF2_Hash(input.Password, salt, 30),
+                Salt = salt,
+                Email = input.Email,
+                PhoneNumber = input.PhoneNumber,
+                Activated = false
             };
 
             int affected = await _userDao.InsertAsync(newUser);

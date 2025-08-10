@@ -118,6 +118,7 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Logout.aspx" />
     <Content Include="Account\NewPassword.aspx" />
+    <Content Include="Account\Notification.ascx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="Admin\Base\Pagination.ascx" />
@@ -262,6 +263,13 @@
     </Compile>
     <Compile Include="Account\NewPassword.aspx.designer.cs">
       <DependentUpon>NewPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Notification.ascx.cs">
+      <DependentUpon>Notification.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Notification.ascx.designer.cs">
+      <DependentUpon>Notification.ascx</DependentUpon>
     </Compile>
     <Compile Include="Account\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>
