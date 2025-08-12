@@ -147,10 +147,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Web.Shared.csproj">
-      <Project>{2bafd121-9a00-48e8-921a-fb250b8f81ca}</Project>
-      <Name>Web.Shared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{9e3877f3-e094-4d4b-b954-a5d9f56fb1d8}</Project>
       <Name>Data</Name>
@@ -158,6 +154,10 @@
     <ProjectReference Include="..\MediaSrv\MediaSrv.csproj">
       <Project>{303547a6-0a2e-4ed2-9d0e-39f8066a80c8}</Project>
       <Name>MediaSrv</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Shared\Web.Shared.csproj">
+      <Project>{0b0cbb39-6a1a-4708-89f4-9d44e5b3691f}</Project>
+      <Name>Web.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
