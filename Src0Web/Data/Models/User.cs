@@ -9,37 +9,37 @@ namespace Data.DAL
         [SqlColumn("ID", PrimaryKey = true)]
         public string Id { get; set; }
 
-        [SqlColumn("userName")]
+        [SqlColumn("UserName")]
         public string UserName { get; set; }
 
-        [SqlColumn("surName")]
+        [SqlColumn("SurName")]
         public string SurName { get; set; }
 
-        [SqlColumn("middleName")]
+        [SqlColumn("MiddleName")]
         public string MiddleName { get; set; }
 
-        [SqlColumn("name")]
+        [SqlColumn("Name")]
         public string Name { get; set; }
 
-        [SqlColumn("email")]
+        [SqlColumn("Email")]
         public string Email { get; set; }
 
-        [SqlColumn("phoneNumber")]
+        [SqlColumn("PhoneNumber")]
         public string PhoneNumber { get; set; }
 
-        [SqlColumn("password")]
+        [SqlColumn("Password")]
         public string Password { get; set; }
 
-        [SqlColumn("salt")]
+        [SqlColumn("Salt")]
         public string Salt { get; set; }
 
-        [SqlColumn("description")]
+        [SqlColumn("Description")]
         public string Description { get; set; }
 
-        [SqlColumn("activated")]
+        [SqlColumn("Activated")]
         public bool Activated { get; set; }
 
-        [SqlColumn("roleId")]
+        [SqlColumn("RoleId")]
         public string RoleId { get; set; }
     }
 }

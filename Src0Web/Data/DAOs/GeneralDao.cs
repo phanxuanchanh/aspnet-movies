@@ -19,7 +19,6 @@ namespace Data.BLL
         private FilmDao _filmDao;
         private RoleDao _roleDao;
         private UserDao _userDao;
-        private PaymentMethodDao _paymentMethodDao;
 
         public GeneralDao() {
             _context = new DBContext();
@@ -34,7 +33,6 @@ namespace Data.BLL
             _filmDao = new FilmDao(_context);
             _roleDao = new RoleDao(_context);
             _userDao = new UserDao(_context);
-            _paymentMethodDao = new PaymentMethodDao(_context);
         }
 
         public AppSettingDao AppSettingDao { get { return _appSettingDao; } }
@@ -47,7 +45,6 @@ namespace Data.BLL
         public FilmDao FilmDao { get { return _filmDao; } }
         public RoleDao RoleDao { get { return _roleDao; } }
         public UserDao UserDao { get { return _userDao; } }
-        public PaymentMethodDao PaymentMethodDao { get { return _paymentMethodDao; } }
 
         public DBContext Context => _context;
 
