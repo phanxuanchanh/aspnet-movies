@@ -513,8 +513,6 @@
     <Compile Include="Install\AppSettings.aspx.designer.cs">
       <DependentUpon>AppSettings.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserSession.cs" />
-    <Compile Include="Models\History.cs" />
     <Compile Include="Notification\Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

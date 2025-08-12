@@ -3,14 +3,15 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
 using Web.Shared.Result;
 
 namespace Web.Admin.RoleManagement
 {
     public partial class RoleList : AdminPage
     {
-        private RoleService _roleService;
+        [Inject]
+        public RoleService RoleService { get; set; }
+
         protected long currentPage;
         protected long pageNumber;
         protected bool enableTool;
@@ -18,7 +19,6 @@ namespace Web.Admin.RoleManagement
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            _roleService = NinjectWebCommon.Kernel.Get<RoleService>();
             enableTool = false;
             toolDetail = null;
             hyplnkCreate.NavigateUrl = GetRouteUrl("Admin_EditRole", new { action = "create" });
@@ -30,15 +30,6 @@ namespace Web.Admin.RoleManagement
             }
         }
 
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_roleService != null)
-            {
-                _roleService.Dispose();
-                _roleService = null;
-            }
-        }
-
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
             await SetGrvRole();
@@ -47,7 +38,7 @@ namespace Web.Admin.RoleManagement
 
         private async Task SetGrvRole()
         {
-            PagedList<RoleDto> roles = await _roleService
+            PagedList<RoleDto> roles = await RoleService
                 .GetRolesAsync(drdlPage.SelectedIndex, 20);
             grvRole.DataSource = roles.Items;
             grvRole.DataBind();
@@ -74,7 +65,7 @@ namespace Web.Admin.RoleManagement
         protected async void grvRole_SelectedIndexChanged(object sender, EventArgs e)
         {
             string key = (string)grvRole.DataKeys[grvRole.SelectedIndex].Value;
-            RoleDto role = (await _roleService.GetRoleAsync(key));
+            RoleDto role = (await RoleService.GetRoleAsync(key));
             toolDetail = string.Format("{0} -- {1}", role.ID, role.Name);
             hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = role.ID });
             hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditRole", new { id = role.ID, action = "update" });
