@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Text;
 using MSSQL.Mapper;
 using MSSQL.Access;
+using Data.DTO;
 
 namespace Data.BLL
 {

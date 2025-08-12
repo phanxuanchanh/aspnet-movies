@@ -167,6 +167,7 @@
     <Content Include="User\Search.aspx" />
     <Content Include="User\Watch.aspx" />
     <Content Include="User\WatchedList.aspx" />
+    <Content Include="user_assets\css\custom.css" />
     <Content Include="user_assets\css\plugins.css" />
     <Content Include="user_assets\css\style.css" />
     <Content Include="user_assets\fonts\fontawesome-webfont.svg" />

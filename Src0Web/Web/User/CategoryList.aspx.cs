@@ -1,45 +1,26 @@
-﻿using Data.BLL;
+﻿using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
-using System.Data;
-using Web.App_Start;
-using Web.Models;
+using Web.Shared.Result;
 
 namespace Web.User
 {
-    public partial class CategoryList : System.Web.UI.Page
+    public partial class CategoryList : GeneralPage
     {
+        [Inject]
+        public TaxonomyService TaxonomyService { get; set; }
+
         protected async void Page_Load(object sender, EventArgs e)
         {
-            using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
+            PagedList<CategoryDto> paged = await TaxonomyService.GetCategoriesAsync();
+            foreach (CategoryDto category in paged.Items)
             {
-                object obj = new { };// await filmBLL.CountFilmByCategoryAsync();
-                if (obj is DataSet)
-                {
-                    DataSet dataSet = (DataSet)obj;
-                    DataTable dataTable = dataSet.Tables[0]; ;
-
-                    DataTable dtTable = new DataTable();
-                    dtTable.Columns.Add("name", typeof(string));
-                    dtTable.Columns.Add("count", typeof(int));
-                    dtTable.Columns.Add("url", typeof(string));
-
-                    foreach (DataRow dataRow in dataTable.Rows)
-                    {
-                        DataRow newRow = dtTable.NewRow();
-                        string categoryName = dataRow["name"].ToString();
-                        string categoryId = dataRow["ID"].ToString();
-                        newRow["name"] = categoryName;
-                        newRow["count"] = dataRow["count"];
-                        newRow["url"] = GetRouteUrl("User_FilmsByCategory", new { slug = categoryName.TextToUrl(), id = categoryId });
-                        dtTable.Rows.Add(newRow);
-                    }
-
-                    grvCategoryList.DataSource = dtTable;
-                    grvCategoryList.DataBind();
-                }
+                category.Url = GetRouteUrl("User_FilmsByCategory", new { slug = category.Name.TextToUrl(), id = category.ID });
             }
+
+            rptCategories.DataSource = paged.Items;
+            rptCategories.DataBind();
         }
     }
 }

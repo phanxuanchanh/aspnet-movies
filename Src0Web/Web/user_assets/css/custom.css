@@ -1,0 +1,79 @@
+﻿/* Category Card */
+.category-card {
+    background: #00060c;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 6px 18px rgba(15,23,42,0.08);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    transition: transform .16s ease, box-shadow .16s ease;
+    text-decoration: none;
+    color: #d4d4d5;
+    min-height: 72px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+    .category-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 36px rgba(15,23,42,0.12);
+    }
+
+/* Thumbnail / icon */
+.category-card-thumb {
+    width: 56px;
+    height: 56px;
+    flex: 0 0 56px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(14,165,164,0.12), rgba(14,165,164,0.06));
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+/* Content */
+.category-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.category-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.category-card-sub {
+    font-size: 0.96rem;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* Badge showing film count */
+.category-card-badge {
+    background: rgba(14,165,164,0.12);
+    color: var(--accent);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex: 0 0 auto;
+}
+
+/* small screens tweak */
+@media (max-width:420px) {
+    .category-card-thumb {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+    }
+
+    .category-card {
+        padding: 10px;
+    }
+}

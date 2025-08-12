@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="<%= ResolveUrl("~/user_assets/css/plugins.css") %>">
     <link rel="stylesheet" href="<%= ResolveUrl("~/user_assets/css/style.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/user_assets/css/custom.css") %>">
 
     <script src="<%= ResolveUrl("~/user_assets/js/jquery.js") %>"></script>
 

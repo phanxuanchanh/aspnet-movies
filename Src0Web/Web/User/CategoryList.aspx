@@ -25,26 +25,25 @@
             </div>
         </div>
     </div>
-    <div class="page-single">
+    <div class="page-single" style="padding-top: 28px; padding-bottom: 28px;">
         <div class="container">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <asp:GridView ID="grvCategoryList" runat="server" AutoGenerateColumns="False">
-                    <Columns>
-                        <asp:BoundField DataField="name" HeaderText="Tên thể loại" />
-                        <asp:BoundField DataField="count" HeaderText="Số lượng phim" />
-                        <asp:HyperLinkField DataNavigateUrlFields="url" DataNavigateUrlFormatString="{0}" HeaderText="Truy cập" Text="Xem danh sách phim" />
-                    </Columns>
-                    <EditRowStyle BackColor="#2461BF" />
-                    <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" VerticalAlign="Middle" />
-                    <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" VerticalAlign="Middle" />
-                    <RowStyle BackColor="#EFF3FB" />
-                    <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                    <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                    <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                    <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                    <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                </asp:GridView>
+            <div class="row ipad-width">
+                <asp:Repeater ID="rptCategories" runat="server">
+                    <ItemTemplate>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="category-card" onclick="location.href='<%# Eval("Url") %>'">
+                                <div class="category-card-thumb" aria-hidden="true">
+                                    <img src="<% = ResolveUrl("~/user_assets/images/uploads/film-icon.png") %>"></img>
+                                </div>
+                                <div class="category-card-body">
+                                    <div class="category-card-title"><%# Eval("Name") %></div>
+                                    <div class="category-card-sub"><%# Eval("Description") %></div>
+                                </div>
+                                <div class="category-card-badge">120</div>
+                            </div>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
             </div>
         </div>
     </div>
