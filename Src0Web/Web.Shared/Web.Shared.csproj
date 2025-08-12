@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Totp.cs" />
     <Compile Include="Results\ExecResult.cs" />
     <Compile Include="Results\ExecStatus.cs" />
     <Compile Include="Helpers\HashFunction.cs" />
