@@ -230,6 +230,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\Active.ashx.cs">
+      <DependentUpon>Active.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Account\Confirm.aspx.cs">
       <DependentUpon>Confirm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -609,6 +612,7 @@
     <Content Include="user_assets\fonts\fontawesome-webfont.ttf" />
     <Content Include="user_assets\fonts\fontawesome-webfont.woff" />
     <Content Include="Account\Layouts\AccountLayout.Master" />
+    <Content Include="Account\Active.ashx" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

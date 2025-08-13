@@ -3,6 +3,7 @@ using Data.BLL;
 using Data.DAL;
 using Data.DTO;
 using System;
+using System.Data;
 using System.Threading.Tasks;
 using Web.Shared.Result;
 
@@ -21,7 +22,7 @@ namespace Data.Services
             _roleDao = generalDao.RoleDao;
         }
 
-        public async Task<ExecResult> LoginAsync(UserLogin userLogin)
+        public async Task<ExecResult<UserDto>> LoginAsync(UserLogin userLogin)
         {
             if (userLogin == null)
                 throw new Exception("@'userLogin' must not be null");
@@ -31,15 +32,31 @@ namespace Data.Services
 
             User user = await _userDao.GetByUserNameAsync(userLogin.UserName);
             if (user == null)
-                return ExecResult.NotFound("User does not exist");
+                return ExecResult<UserDto>.NotFound("User does not exist", null);
 
             string passwordHashed = HashFunction.PBKDF2_Hash(userLogin.Password, user.Salt, 30);
             if (user.Password != passwordHashed)
-                return ExecResult.Failure("Wrong password");
-            if (!user.Activated)
-                return ExecResult.Failure("User is not activated");
+                return ExecResult<UserDto>.Failure("Wrong password", null);
 
-            return ExecResult.Success("");
+            Role role = await _roleDao.GetAsync(user.RoleId);
+            if (role == null)
+                return new ExecResult<UserDto> { Status = ExecStatus.NotFound, Message = "Role not found" };
+
+            return ExecResult<UserDto>.Success("", new UserDto
+            {
+                ID = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Role = new RoleDto
+                {
+                    ID = role.Id,
+                    Name = role.Name
+                },
+                Activated = user.Activated,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
+            });
         }
 
         public async Task<ExecResult> RegisterAsync(CreateUserDto input)
@@ -61,6 +78,7 @@ namespace Data.Services
                 return ExecResult.Failure("User already exists");
 
             string salt = HashFunction.MD5_Hash(new Random().NextString(25));
+            Role role = await _roleDao.GetByNameAsync("User");
 
             User newUser = new User
             {
@@ -70,7 +88,8 @@ namespace Data.Services
                 Salt = salt,
                 Email = input.Email,
                 PhoneNumber = input.PhoneNumber,
-                Activated = false
+                Activated = false,
+                RoleId = role.Id
             };
 
             int affected = await _userDao.InsertAsync(newUser);

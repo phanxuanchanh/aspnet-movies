@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Web.Shared.Result
 {
     public class ExecResult
@@ -8,23 +7,26 @@ namespace Web.Shared.Result
         public string Message { get; set; }
 
         public static ExecResult NotFound(string message)
-        {
-            return new ExecResult { Status = ExecStatus.NotFound, Message = message };
-        }
+           => new ExecResult { Status = ExecStatus.NotFound, Message = message };
 
         public static ExecResult Failure(string message)
-        {
-            return new ExecResult { Status = ExecStatus.Failure, Message = message };
-        }
+            => new ExecResult { Status = ExecStatus.Failure, Message = message };
 
         public static ExecResult Success(string message)
-        {
-            return new ExecResult { Status = ExecStatus.Success, Message = message };
-        }
+            => new ExecResult { Status = ExecStatus.Success, Message = message };
     }
 
     public class ExecResult<T> : ExecResult
     {
         public T Data { get; set; }
+
+        public static ExecResult<T> NotFound(string message, T data)
+            => new ExecResult<T> { Status = ExecStatus.NotFound, Message = message, Data = data };
+
+        public static ExecResult<T> Failure(string message, T data)
+            => new ExecResult<T> { Status = ExecStatus.Success, Message = message, Data = data };
+
+        public static ExecResult<T> Success(string message, T data)
+            => new ExecResult<T> { Status = ExecStatus.Success, Message = message, Data = data };
     }
 }

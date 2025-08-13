@@ -16,6 +16,7 @@ namespace Web.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
+    using Web.Shared.Mapper;
 
     public static class NinjectWebCommon 
     {
@@ -70,6 +71,14 @@ namespace Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<MapperService>().ToMethod(m =>
+            {
+                MapperService mapper = new MapperService();
+                MapperConfig.RegisterProfiles(mapper);
+
+                return mapper;
+            }).InSingletonScope();
+
             kernel.Bind<GeneralDao>().ToSelf().InRequestScope();
 
             kernel.Bind<AppSettingService>().ToSelf().InRequestScope();

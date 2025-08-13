@@ -1,11 +1,10 @@
 ﻿using Data.DTO;
 using Data.Services;
-using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
-using Web.App_Start;
+using Web.Shared.Helpers;
 using Web.Shared.Result;
 using Web.Validation;
 
@@ -91,43 +90,42 @@ namespace Web.Account
                 return;
 
             UserLogin userLogin = GetUserLogin();
-            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
+            UserService userService = Inject<UserService>();
+
+            ExecResult<UserDto> commandResult = await userService.LoginAsync(userLogin);
+            if (commandResult.Status != ExecStatus.Success)
             {
-                ExecResult commandResult = await userService.LoginAsync(userLogin);
-                if (commandResult.Status != ExecStatus.Success)
-                {
-                    notifControl.Set(commandResult);
-                    return;
-                }
-
-                UserDto user = (await userService.GetUserByUsernameAsync(userLogin.UserName)).Data;
-                string userData = $"{string.Join(",", user.Role.Name)}";
-
-                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                    1, user.UserName, DateTime.Now, DateTime.Now.AddMinutes(30),
-                    false, userData, FormsAuthentication.FormsCookiePath);
-
-                string encryptedTicket = FormsAuthentication.Encrypt(ticket);
-                HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
-                {
-                    HttpOnly = true,
-                    Secure = FormsAuthentication.RequireSSL,
-                    Path = FormsAuthentication.FormsCookiePath,
-                    Expires = ticket.Expiration
-                };
-
-                Response.Cookies.Add(cookie);
-
-                if (!user.Activated)
-                {
-                    //Xử lý gửi mã kích hoạt
-                }
-
-                if (user.Role.Name == "User")
-                    Response.RedirectToRoute("User_Home", null);
-                else
-                    Response.RedirectToRoute("Admin_Overview", null);
+                notifControl.Set(commandResult);
+                return;
             }
+
+            UserDto user = commandResult.Data;
+            if (!user.Activated)
+            {
+                string token = ActivationToken.Generate();
+
+                commandResult.Message = "User is not activated. Please check the email we sent.";
+                notifControl.Set(commandResult);
+                return;
+            }
+
+            string userData = $"{string.Join(",", user.Role.Name)}";
+
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                1, user.UserName, DateTime.Now, DateTime.Now.AddMinutes(30),
+                false, userData, FormsAuthentication.FormsCookiePath);
+
+            string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
+            {
+                HttpOnly = true,
+                Secure = FormsAuthentication.RequireSSL,
+                Path = FormsAuthentication.FormsCookiePath,
+                Expires = ticket.Expiration
+            };
+
+            Response.Cookies.Add(cookie);
+            Response.RedirectToRoute("User_Home", null);
         }
 
     }

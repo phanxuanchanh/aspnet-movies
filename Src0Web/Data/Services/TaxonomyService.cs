@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Shared.Mapper;
 using Web.Shared.Result;
 
 namespace Data.Services
@@ -13,33 +14,26 @@ namespace Data.Services
     {
         private readonly GeneralDao _generalDao;
         private readonly TaxonomyDao _taxonomyDao;
+        private readonly MapperService _mapperService;
         private bool disposedValue;
 
-        public TaxonomyService(GeneralDao generalDao)
+        public TaxonomyService(GeneralDao generalDao, MapperService mapperService)
         {
             _generalDao = generalDao;
             _taxonomyDao = _generalDao.TaxonomyDao;
+            _mapperService = mapperService;
         }
 
         public async Task<ExecResult<CategoryDto>> GetCategoryAsync(int id)
         {
             Taxonomy taxonomy = await _taxonomyDao.GetAsync(id);
             if (taxonomy == null)
-                return new ExecResult<CategoryDto> { Status = ExecStatus.NotFound, Message = "Category not found." };
+                return ExecResult<CategoryDto>.NotFound("Category not found.", null);
 
-            return new ExecResult<CategoryDto>
-            {
-                Status = ExecStatus.Success,
-                Message = "Taxonomy retrieved successfully.",
-                Data = new CategoryDto
-                {
-                    ID = taxonomy.Id,
-                    Name = taxonomy.Name,
-                    Description = taxonomy.Description,
-                    CreatedAt = taxonomy.CreatedAt,
-                    UpdatedAt = taxonomy.UpdatedAt
-                }
-            };
+            CategoryDto categoryDto = _mapperService.Map<Taxonomy, CategoryDto>(taxonomy);
+
+            return ExecResult<CategoryDto>
+                .Success("Taxonomy retrieved successfully.", categoryDto);
         }
 
         public async Task<ExecResult<TagDto>> GetTagAsync(int id)

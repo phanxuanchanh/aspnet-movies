@@ -55,6 +55,7 @@
     <Compile Include="DAOs\PeopleLinkDao.cs" />
     <Compile Include="DAOs\TaxonomyDao.cs" />
     <Compile Include="DAOs\TaxonomyLinkDao.cs" />
+    <Compile Include="Mapping\Taxonomy_CategoryDto.cs" />
     <Compile Include="Models\AppSetting.cs" />
     <Compile Include="Models\FilmMetaLink.cs" />
     <Compile Include="DAOs\RoleDao.cs" />
