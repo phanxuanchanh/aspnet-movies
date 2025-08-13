@@ -11,5 +11,5 @@ ALTER TABLE [dbo].[TaxonomyLinks]
 GO
 
 ALTER TABLE [dbo].[TaxonomyLinks]
-  ADD FOREIGN KEY ([TaxonomyId]) REFERENCES [dbo].[Taxonomy] ([Id])
+  ADD FOREIGN KEY ([TaxonomyId]) REFERENCES [dbo].[Taxonomies] ([Id])
 GO

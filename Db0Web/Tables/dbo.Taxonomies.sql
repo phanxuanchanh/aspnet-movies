@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Taxonomy] (
+﻿CREATE TABLE [dbo].[Taxonomies] (
   [Id] [int] IDENTITY,
   [Name] [nvarchar](255) NOT NULL,
   [Description] [nvarchar](max) NULL,
