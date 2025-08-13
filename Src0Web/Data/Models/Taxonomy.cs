@@ -1,10 +1,11 @@
-﻿using MSSQL;
+﻿using Data.Base;
+using MSSQL;
 using MSSQL.Attributes;
 
 namespace Data.DAL
 {
     [SqlTable("Taxonomies")]
-    public class Taxonomy : SqlTableWithTimestamp
+    public class Taxonomy : SqlTableWithTimestamp, IStandardSqlTable<int>
     {
         [SqlColumn("Id", PrimaryKey = true, AutoIncrement = true)]
         public int Id { get; set; }

@@ -12,15 +12,13 @@ namespace Data.Services
 {
     public class TaxonomyService : IDisposable
     {
-        private readonly GeneralDao _generalDao;
         private readonly TaxonomyDao _taxonomyDao;
         private readonly MapperService _mapperService;
         private bool disposedValue;
 
-        public TaxonomyService(GeneralDao generalDao, MapperService mapperService)
+        public TaxonomyService(TaxonomyDao taxonomyDao, MapperService mapperService)
         {
-            _generalDao = generalDao;
-            _taxonomyDao = _generalDao.TaxonomyDao;
+            _taxonomyDao = taxonomyDao;
             _mapperService = mapperService;
         }
 
@@ -238,7 +236,7 @@ namespace Data.Services
 
         public async Task<ExecResult> DeleteAsync(int id, bool forceDelete = false)
         {
-            int affected = await _taxonomyDao.DeleteAsync(id, forceDelete);
+            int affected = await _taxonomyDao.DeleteAsync(id);
             if (affected <= 0)
                 return new ExecResult { Status = ExecStatus.NotFound, Message = "Taxonomy not found or deletion failed." };
 
@@ -254,7 +252,7 @@ namespace Data.Services
 
                 }
 
-                _generalDao.Dispose();
+                _taxonomyDao.Dispose();
                 disposedValue = true;
             }
         }

@@ -21,12 +21,12 @@ namespace Data.Services
         private readonly FilmDao _filmDao;
         private bool disposedValue;
 
-        public FilmService(GeneralDao generalDao)
+        public FilmService(GeneralDao generalDao, TaxonomyDao taxonomyDao)
         {
             _generalDao = generalDao;
             _filmMetadataDao = _generalDao.FilmMetadataDao;
             _filmMetaLinkDao = _generalDao.FilmMetaLinkDao;
-            _taxonomyDao = _generalDao.TaxonomyDao;
+            _taxonomyDao = taxonomyDao;
             _taxonomyLinkDao = _generalDao.TaxonomyLinkDao;
             _peopleDao = _generalDao.PeopleDao;
             _peopleLinkDao = _generalDao.PeopleLinkDao;

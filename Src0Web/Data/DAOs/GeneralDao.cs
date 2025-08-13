@@ -14,10 +14,8 @@ namespace Data.BLL
         private FilmMetaLinkDao _filmMetaLinkDao;
         private PeopleDao _peopleDao;
         private PeopleLinkDao _peopleLinkDao;
-        private TaxonomyDao _taxonomyDao;
         private TaxonomyLinkDao _taxonomyLinkDao;
         private FilmDao _filmDao;
-        private RoleDao _roleDao;
         private UserDao _userDao;
 
         public GeneralDao() {
@@ -28,10 +26,8 @@ namespace Data.BLL
             _filmMetaLinkDao = new FilmMetaLinkDao(_context);
             _peopleDao = new PeopleDao(_context);
             _peopleLinkDao = new PeopleLinkDao(_context);
-            _taxonomyDao = new TaxonomyDao(_context);
             _taxonomyLinkDao = new TaxonomyLinkDao(_context);
             _filmDao = new FilmDao(_context);
-            _roleDao = new RoleDao(_context);
             _userDao = new UserDao(_context);
         }
 
@@ -40,10 +36,8 @@ namespace Data.BLL
         public FilmMetaLinkDao FilmMetaLinkDao { get { return _filmMetaLinkDao; } }
         public PeopleDao PeopleDao { get { return _peopleDao; } }
         public PeopleLinkDao PeopleLinkDao { get { return _peopleLinkDao; } }
-        public TaxonomyDao TaxonomyDao { get { return _taxonomyDao; } }
         public TaxonomyLinkDao TaxonomyLinkDao { get { return _taxonomyLinkDao; } }
         public FilmDao FilmDao { get { return _filmDao; } }
-        public RoleDao RoleDao { get { return _roleDao; } }
         public UserDao UserDao { get { return _userDao; } }
 
         public DBContext Context => _context;

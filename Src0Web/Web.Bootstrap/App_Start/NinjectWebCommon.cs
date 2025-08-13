@@ -80,6 +80,8 @@ namespace Web.App_Start
             }).InSingletonScope();
 
             kernel.Bind<GeneralDao>().ToSelf().InRequestScope();
+            kernel.Bind<TaxonomyDao>().ToSelf().InRequestScope();
+            kernel.Bind<RoleDao>().ToSelf().InSingletonScope();
 
             kernel.Bind<AppSettingService>().ToSelf().InRequestScope();
             kernel.Bind<FilmMetadataService>().ToSelf().InRequestScope();

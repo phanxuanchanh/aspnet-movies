@@ -36,6 +36,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\MSSQL.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.3.6.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.6\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\GenericDao.cs" />
+    <Compile Include="Base\IStandardSqlTable.cs" />
     <Compile Include="DAOs\AppSettingDao.cs" />
     <Compile Include="DAOs\FilmDao.cs" />
     <Compile Include="DAOs\FilmMetadataDao.cs" />
@@ -94,6 +99,9 @@
       <Project>{0b0cbb39-6a1a-4708-89f4-9d44e5b3691f}</Project>
       <Name>Web.Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

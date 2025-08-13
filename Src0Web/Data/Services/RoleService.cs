@@ -8,14 +8,12 @@ namespace Data.Services
 {
     public class RoleService : IDisposable
     {
-        private readonly GeneralDao _generalDao;
         private readonly RoleDao _roleDao;
         private bool disposedValue;
 
-        public RoleService(GeneralDao generalDao)
+        public RoleService(RoleDao roleDao)
         {
-            _generalDao = generalDao;
-            _roleDao = generalDao.RoleDao;
+            _roleDao = roleDao;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -27,7 +25,7 @@ namespace Data.Services
 
                 }
 
-                _generalDao.Dispose();
+                _roleDao.Dispose();
                 disposedValue = true;
             }
         }

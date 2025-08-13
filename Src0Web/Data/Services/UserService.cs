@@ -16,10 +16,10 @@ namespace Data.Services
         private readonly RoleDao _roleDao;
         private bool disposedValue;
 
-        public UserService(GeneralDao generalDao) {
+        public UserService(GeneralDao generalDao, RoleDao roleDao) {
             _generalDao = generalDao;
             _userDao = generalDao.UserDao;
-            _roleDao = generalDao.RoleDao;
+            _roleDao = roleDao;
         }
 
         public async Task<ExecResult<UserDto>> LoginAsync(UserLogin userLogin)
