@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Role] (
+﻿CREATE TABLE [dbo].[Roles] (
   [ID] [varchar](100) NOT NULL,
   [name] [nvarchar](50) NOT NULL,
   [CreatedAt] [datetime] NULL,

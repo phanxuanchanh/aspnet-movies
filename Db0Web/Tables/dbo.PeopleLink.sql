@@ -7,7 +7,7 @@ ON [PRIMARY]
 GO
 
 ALTER TABLE [dbo].[PeopleLink]
-  ADD FOREIGN KEY ([FilmId]) REFERENCES [dbo].[Film] ([ID])
+  ADD FOREIGN KEY ([FilmId]) REFERENCES [dbo].[Films] ([ID])
 GO
 
 ALTER TABLE [dbo].[PeopleLink]

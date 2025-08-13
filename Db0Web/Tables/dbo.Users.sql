@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[User] (
+﻿CREATE TABLE [dbo].[Users] (
   [ID] [varchar](100) NOT NULL,
   [UserName] [varchar](50) NOT NULL,
   [SurName] [nvarchar](50) NULL,
@@ -20,6 +20,6 @@ ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[User]
-  ADD CONSTRAINT [FK_User_Role] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Role] ([ID])
+ALTER TABLE [dbo].[Users]
+  ADD CONSTRAINT [FK_User_Role] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles] ([ID])
 GO
