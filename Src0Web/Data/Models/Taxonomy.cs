@@ -3,7 +3,7 @@ using MSSQL.Attributes;
 
 namespace Data.DAL
 {
-    [SqlTable("Taxonomy")]
+    [SqlTable("Taxonomies")]
     public class Taxonomy : SqlTableWithTimestamp
     {
         [SqlColumn("Id", PrimaryKey = true, AutoIncrement = true)]

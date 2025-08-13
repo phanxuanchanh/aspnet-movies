@@ -1,7 +1,9 @@
 ﻿using MSSQL;
+using MSSQL.Attributes;
 
 namespace Data.DAL
 {
+    [SqlTable("PeopleLinks")]
     public class PeopleLink : ISqlTable
     {
         public string FilmId { get; set; }

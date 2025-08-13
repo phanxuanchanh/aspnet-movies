@@ -3,7 +3,7 @@ using MSSQL.Attributes;
 
 namespace Data.DAL
 {
-    [SqlTable("Film")]
+    [SqlTable("Films")]
     public class Film : SqlTableWithTimestamp
     {
         [SqlColumn("Id", PrimaryKey = true)]

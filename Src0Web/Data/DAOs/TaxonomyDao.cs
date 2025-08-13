@@ -25,7 +25,7 @@ namespace Data.BLL
 
         public async Task<List<Taxonomy>> GetsByIdsAsync(List<int> ids)
         {
-            StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM Taxonomy WHERE Id IN (");
+            StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM Taxonomies WHERE Id IN (");
             //SqlParameter[] parameters = new SqlParameter[ids.Count];
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             for (int i = 0; i < ids.Count; i++)

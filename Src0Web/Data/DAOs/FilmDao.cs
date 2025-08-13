@@ -1,9 +1,7 @@
 ﻿using Data.DAL;
-using MSSQL.Access;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Common.Web;
 using MSSQL.Mapper;
 using Web.Shared.Result;
 
@@ -40,19 +38,19 @@ namespace Data.BLL
         {
             string countCommand = @"
                 SELECT CAST(COUNT(*) AS BIGINT)
-                FROM [Film]
-                INNER JOIN [TaxonomyLink] tl ON [Film].[ID] = tl.FilmId
+                FROM [Films]
+                INNER JOIN [TaxonomyLinks] tl ON [Films].[ID] = tl.FilmId
                 WHERE tl.TaxonomyId = @categoryId";
 
             long totalRecord = await _context.GetHelper()
                 .ExecuteScalarQueryAsync<long>(countCommand, new Dictionary<string, object> { { "@categoryId", categoryId } });
 
             string command = @"
-                SELECT [Film].*
-                FROM [Film]
-                INNER JOIN [TaxonomyLink] tl ON [Film].[ID] = tl.FilmId
+                SELECT [Films].*
+                FROM [Films]
+                INNER JOIN [TaxonomyLinks] tl ON [Films].[ID] = tl.FilmId
                 WHERE tl.TaxonomyId = @categoryId
-                ORDER BY [Film].[ID]
+                ORDER BY [Films].[ID]
                 OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
             long offest = ((pageIndex - 1) * pageSize);
