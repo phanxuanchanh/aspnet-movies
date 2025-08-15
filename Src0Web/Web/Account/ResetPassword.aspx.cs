@@ -1,19 +1,14 @@
-﻿using Common;
-using Common.Web;
-using Data.BLL;
+﻿using Common.Web;
 using Data.DTO;
 using Data.Services;
-using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
-using Web.Models;
 using Web.Shared.Result;
 using Web.Validation;
 
 namespace Web.Account
 {
-    public partial class ResetPassword : System.Web.UI.Page
+    public partial class ResetPassword : GeneralPage
     {
         private CustomValidation customValidation;
         protected bool enableShowResult;
@@ -22,18 +17,10 @@ namespace Web.Account
         protected async void Page_Load(object sender, EventArgs e)
         {
             customValidation = new CustomValidation();
-            try
+            InitValidation();
+            if (IsPostBack)
             {
-                InitValidation();
-                if (IsPostBack)
-                {
-                    await ResetPwd();
-                }
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                await ResetPwd();
             }
         }
 
@@ -71,28 +58,27 @@ namespace Web.Account
                 return;
 
             string email = GetEmailAddress();
-            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
+            UserService userService = Inject<UserService>();
+
+            ExecResult<UserDto> result = await userService.GetUserByEmailAsync(email);
+            if (result.Status != ExecStatus.Success)
             {
-                ExecResult<UserDto> result = await userService.GetUserByEmailAsync(email);
-                if (result.Status != ExecStatus.Success)
-                {
-                    enableShowResult = true;
-                    stateDetail = result.Message;
-                    return;
-                }
-
-                ConfirmCode confirmCode = new ConfirmCode();
-                Session["confirmCode"] = confirmCode.Send(result.Data.Email);
-                string confirmToken = confirmCode.CreateToken();
-                Session["confirmToken"] = confirmToken;
-
-                Response.RedirectToRoute("Account_Confirm", new
-                {
-                    userId = result.Data.ID,
-                    confirmToken = confirmToken,
-                    type = "reset-password"
-                });
+                enableShowResult = true;
+                stateDetail = result.Message;
+                return;
             }
+
+            ConfirmCode confirmCode = new ConfirmCode();
+            Session["confirmCode"] = confirmCode.Send(result.Data.Email);
+            string confirmToken = confirmCode.CreateToken();
+            Session["confirmToken"] = confirmToken;
+
+            Response.RedirectToRoute("Account_Confirm", new
+            {
+                userId = result.Data.ID,
+                confirmToken = confirmToken,
+                type = "reset-password"
+            });
         }
     }
 }

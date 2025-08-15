@@ -1,30 +1,18 @@
 ﻿using Data.Base;
 using Data.DAL;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Data.BLL
+namespace Data.DAOs
 {
-    public class RoleDao : GenericDao<Role, string>
+    public class RoleDao : GenericDao<Role>
     {
         private readonly DBContext _context;
 
-        public RoleDao()
-            :base(x => x.Roles)
+        public RoleDao(DBContext context)
+            :base(context, x => x.Roles)
         {
             _context = context;
-        }
-
-        protected override Expression<Func<Role, bool>> SetPkExpr(string id)
-        {
-            return x => x.Id == id;
-        }
-
-        protected override Expression<Func<Role, object>> SetUpdateSelectorExpr(Role input)
-        {
-            return s => new { s.Name, s.UpdatedAt };
         }
 
         public async Task<List<Role>> GetsAsync()

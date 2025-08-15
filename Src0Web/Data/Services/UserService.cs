@@ -1,24 +1,20 @@
 ﻿using Common.Hash;
-using Data.BLL;
 using Data.DAL;
+using Data.DAOs;
 using Data.DTO;
 using System;
-using System.Data;
 using System.Threading.Tasks;
 using Web.Shared.Result;
 
 namespace Data.Services
 {
-    public class UserService : IDisposable
+    public class UserService
     {
-        private readonly GeneralDao _generalDao;
         private readonly UserDao _userDao;
         private readonly RoleDao _roleDao;
-        private bool disposedValue;
 
-        public UserService(GeneralDao generalDao, RoleDao roleDao) {
-            _generalDao = generalDao;
-            _userDao = generalDao.UserDao;
+        public UserService(UserDao userDao, RoleDao roleDao) {
+            _userDao = userDao;
             _roleDao = roleDao;
         }
 
@@ -38,7 +34,7 @@ namespace Data.Services
             if (user.Password != passwordHashed)
                 return ExecResult<UserDto>.Failure("Wrong password", null);
 
-            Role role = await _roleDao.GetAsync(user.RoleId);
+            Role role = await _roleDao.GetAsync(x => x.Id == user.RoleId);
             if (role == null)
                 return new ExecResult<UserDto> { Status = ExecStatus.NotFound, Message = "Role not found" };
 
@@ -104,7 +100,7 @@ namespace Data.Services
             if (string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(userId))
                 throw new Exception("");
 
-            User user = await _userDao.GetAsync(userId);
+            User user = await _userDao.GetAsync(x => x.Id == userId);
             if (user == null)
                 return ExecResult.NotFound("User does not exist");
 
@@ -113,7 +109,8 @@ namespace Data.Services
             user.Salt = salt;
             user.UpdatedAt = DateTime.Now;
 
-            int affected = await _userDao.UpdateAsync(user);
+            int affected = await _userDao.UpdateAsync(
+                user, x => x.Id == userId, s => new { s.Password });
             if(affected == 0)
                 return ExecResult.Failure("Failed to update password");
 
@@ -122,7 +119,7 @@ namespace Data.Services
 
         public async Task<ExecResult<UserDto>> GetUserAsync(string id)
         {
-            User user = await _userDao.GetAsync(id);
+            User user = await _userDao.GetAsync(x => x.Id == id);
             if(user == null)
                 return new ExecResult<UserDto> { Status = ExecStatus.NotFound, Message = "User not found" };
 
@@ -149,7 +146,7 @@ namespace Data.Services
             if (user == null)
                 return new ExecResult<UserDto> { Status = ExecStatus.NotFound, Message = "User not found" };
 
-            Role role = await _roleDao.GetAsync(user.RoleId);
+            Role role = await _roleDao.GetAsync(x => x.Id == user.RoleId);
             if (role == null)
                 return new ExecResult<UserDto> { Status = ExecStatus.NotFound, Message = "Role not found" };
 
@@ -173,26 +170,6 @@ namespace Data.Services
                     UpdatedAt = user.UpdatedAt
                 }
             };
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-
-                }
-
-                _generalDao.Dispose();
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
 
         public async Task<PagedList<UserDto>> GetUsersAsync(int selectedIndex, int v)

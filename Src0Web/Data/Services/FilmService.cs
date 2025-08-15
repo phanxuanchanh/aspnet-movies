@@ -1,5 +1,5 @@
-﻿using Data.BLL;
-using Data.DAL;
+﻿using Data.DAL;
+using Data.DAOs;
 using Data.DTO;
 using System;
 using System.Collections.Generic;
@@ -9,9 +9,8 @@ using Web.Shared.Result;
 
 namespace Data.Services
 {
-    public class FilmService : IDisposable
+    public class FilmService //: IDisposable
     {
-        private readonly GeneralDao _generalDao;
         private readonly FilmMetadataDao _filmMetadataDao;
         private readonly FilmMetaLinkDao _filmMetaLinkDao;
         private readonly TaxonomyDao _taxonomyDao;
@@ -19,29 +18,31 @@ namespace Data.Services
         private readonly PeopleDao _peopleDao;
         private readonly PeopleLinkDao _peopleLinkDao;
         private readonly FilmDao _filmDao;
-        private bool disposedValue;
 
-        public FilmService(GeneralDao generalDao, TaxonomyDao taxonomyDao)
+        public FilmService(
+            FilmMetadataDao filmMetadataDao, FilmMetaLinkDao filmMetaLinkDao, 
+            TaxonomyDao taxonomyDao, TaxonomyLinkDao taxonomyLinkDao, 
+            PeopleDao peopleDao, PeopleLinkDao peopleLinkDao, FilmDao filmDao
+        )
         {
-            _generalDao = generalDao;
-            _filmMetadataDao = _generalDao.FilmMetadataDao;
-            _filmMetaLinkDao = _generalDao.FilmMetaLinkDao;
+            _filmMetadataDao = filmMetadataDao;
+            _filmMetaLinkDao = filmMetaLinkDao;
             _taxonomyDao = taxonomyDao;
-            _taxonomyLinkDao = _generalDao.TaxonomyLinkDao;
-            _peopleDao = _generalDao.PeopleDao;
-            _peopleLinkDao = _generalDao.PeopleLinkDao;
-            _filmDao = _generalDao.FilmDao;
+            _taxonomyLinkDao = taxonomyLinkDao;
+            _peopleDao = peopleDao;
+            _peopleLinkDao = peopleLinkDao;
+            _filmDao = filmDao;
         }
 
         public async Task<ExecResult<FilmDto>> GetFilmAsync(string id, bool includeMetadata = true, bool includeTaxonomy = true, bool includePeople = true)
         {
-            Film film = await _filmDao.GetAsync(id);
+            Film film = await _filmDao.GetAsync(x => x.Id == id);
             if (film == null)
                 return new ExecResult<FilmDto> { Status = ExecStatus.NotFound, Message = "Director not found." };
 
             FilmDto filmDto = new FilmDto
             {
-                ID = film.ID,
+                ID = film.Id,
                 Name = film.Name,
                 Description = film.Description,
                 ProductionCompany = film.ProductionCompany,
@@ -54,7 +55,7 @@ namespace Data.Services
 
             if (includeMetadata)
             {
-                List<FilmMetadata> metadata = await GetMetadataByFilmIdAsync(film.ID);
+                List<FilmMetadata> metadata = await GetMetadataByFilmIdAsync(film.Id);
                 filmDto.Language = metadata.Where(x => x.Type == "language").Select(s => new LanguageDto
                 {
                     ID = s.Id,
@@ -78,7 +79,7 @@ namespace Data.Services
 
             if (includeTaxonomy)
             {
-                List<Taxonomy> taxonomies = await GetTaxonomiesByFilmIdAsync(film.ID);
+                List<Taxonomy> taxonomies = await GetTaxonomiesByFilmIdAsync(film.Id);
                 filmDto.Tags = taxonomies.Where(x => x.Type == "tag").Select(s => new TagDto
                 {
                     ID = s.Id,
@@ -106,7 +107,7 @@ namespace Data.Services
 
             if (includePeople)
             {
-                List<People> peoples = await GetPeoplesByFilmIdAsync(film.ID);
+                List<People> peoples = await GetPeoplesByFilmIdAsync(film.Id);
                 filmDto.Directors = peoples.Where(x => x.Type == "director").Select(s => new DirectorDto
                 {
                     ID = s.Id,
@@ -170,7 +171,7 @@ namespace Data.Services
                 return new List<People>();
 
             List<long> personIds = links.Select(s => s.PersonId).ToList();
-            List<People> peoples = await _generalDao.PeopleDao.GetsByIdsAsync(personIds);
+            List<People> peoples = await _peopleDao.GetsByIdsAsync(personIds);
             return peoples;
         }
 
@@ -181,7 +182,7 @@ namespace Data.Services
 
             List<FilmDto> filmDtos = films.Select(s => new FilmDto
             {
-                ID = s.ID,
+                ID = s.Id,
                 Name = s.Name,
                 Description = s.Description,
                 Thumbnail = s.Thumbnail,
@@ -206,7 +207,7 @@ namespace Data.Services
 
             List<FilmDto> films = data.Items.Select(s => new FilmDto
             {
-                ID = s.ID,
+                ID = s.Id,
                 Name = s.Name,
                 Description = s.Description,
                 Thumbnail = s.Thumbnail,
@@ -235,7 +236,7 @@ namespace Data.Services
 
             Film newFilm = new Film
             {
-                ID = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid().ToString(),
                 Name = film.Name,
                 Description = film.Description,
                 ProductionCompany = film.ProductionCompany,
@@ -254,7 +255,7 @@ namespace Data.Services
                 Message = "Film added successfully.",
                 Data = new FilmDto
                 {
-                    ID = newFilm.ID,
+                    ID = newFilm.Id,
                     Name = newFilm.Name,
                     Description = newFilm.Description,
                     ProductionCompany = newFilm.ProductionCompany,
@@ -272,7 +273,7 @@ namespace Data.Services
 
         public async Task<ExecResult> DeleteAsync(string id, bool forceDelete = false)
         {
-            Film existingFilm = await _filmDao.GetAsync(id);
+            Film existingFilm = await _filmDao.GetAsync(x => x.Id == id);
             if (existingFilm == null)
                 return new ExecResult { Status = ExecStatus.NotFound, Message = "Film not found." };
 
@@ -284,14 +285,16 @@ namespace Data.Services
                     return new ExecResult { Status = ExecStatus.Invalid, Message = "Film already deleted." };
 
                 existingFilm.DeletedAt = DateTime.Now;
-                affected = await _filmDao.UpdateAsync(existingFilm);
+                affected = await _filmDao.UpdateAsync(
+                    existingFilm, x => x.Id == id, s => new { s.DeletedAt });
+
                 if (affected <= 0)
                     return new ExecResult { Status = ExecStatus.Failure, Message = "Failed to mark film as deleted." };
 
                 return new ExecResult { Status = ExecStatus.Success, Message = "Film marked as deleted successfully." };
             }
 
-            _generalDao.Context.BeginTransaction();
+            _filmDao.Context.BeginTransaction();
 
             try
             {
@@ -299,43 +302,43 @@ namespace Data.Services
                 _ = await _taxonomyLinkDao.DeleteManyByFilmIdAsync(id);
                 _ = await _peopleLinkDao.DeleteManyByFilmIdAsync(id);
 
-                affected = await _filmDao.DeleteAsync(id);
+                affected = await _filmDao.DeleteAsync(x => x.Id == id);
 
                 if (affected <= 0)
                 {
-                    _generalDao.Context.RollbackTransaction();
+                    _filmDao.Context.RollbackTransaction();
                     return new ExecResult { Status = ExecStatus.Failure, Message = "Failed to delete film and its related data." };
                 }
 
-                _generalDao.Context.CommitTransaction();
+                _filmDao.Context.CommitTransaction();
 
                 return new ExecResult { Status = ExecStatus.Success, Message = "Country deleted successfully." };
             }
             catch (Exception ex)
             {
-                _generalDao.Context.RollbackTransaction();
+                _filmDao.Context.RollbackTransaction();
                 throw new Exception($"An error occurred while deleting film: {ex.Message}", ex);
             }
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (!disposedValue)
+        //    {
+        //        if (disposing)
+        //        {
 
-                }
+        //        }
 
-                _generalDao.Dispose();
-                disposedValue = true;
-            }
-        }
+        //        //_generalDao.Dispose();
+        //        disposedValue = true;
+        //    }
+        //}
 
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
+        //public void Dispose()
+        //{
+        //    Dispose(disposing: true);
+        //    GC.SuppressFinalize(this);
+        //}
     }
 }

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Data.BLL
+namespace Data.DAOs
 {
     public class PeopleLinkDao
     {
         private readonly DBContext _context;
 
-        internal PeopleLinkDao(DBContext context)
+        public PeopleLinkDao(DBContext context)
         {
             _context = context;
         }

@@ -1,6 +1,4 @@
-﻿using Common;
-using Common.Web;
-using Data.BLL;
+﻿using Common.Web;
 using Data.DTO;
 using Data.Services;
 using Ninject;
@@ -14,39 +12,32 @@ using Web.Validation;
 
 namespace Web.Account
 {
-    public partial class Confirm : System.Web.UI.Page
+    public partial class Confirm : GeneralPage
     {
         private CustomValidation customValidation;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             customValidation = new CustomValidation();
-            try
-            {
-                InitHyperlink();
-                InitValidation();
-                if (Session["confirmCode"] == null || Session["confirmToken"] == null)
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                    return;
-                }
-                
-                if (!IsValidConfirmToken())
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                    return;
-                }
 
-                if (IsPostBack)
-                    await ConfirmAccount();
-                else
-                    await ReSendConfirmCode();
-            }
-            catch (Exception ex)
+            InitHyperlink();
+            InitValidation();
+            if (Session["confirmCode"] == null || Session["confirmToken"] == null)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                Response.RedirectToRoute("User_Home", null);
+                return;
             }
+
+            if (!IsValidConfirmToken())
+            {
+                Response.RedirectToRoute("User_Home", null);
+                return;
+            }
+
+            if (IsPostBack)
+                await ConfirmAccount();
+            else
+                await ReSendConfirmCode();
         }
 
         private void InitHyperlink()
@@ -99,17 +90,16 @@ namespace Web.Account
             if (!IsReConfirm())
                 return;
 
-            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
-            {
-                ExecResult<UserDto> result = await userService.GetUserAsync(GetUserId());
-                if (result.Status != ExecStatus.Success)
-                {
-                    Response.RedirectToRoute("Notification_Error");
-                    return;
-                }
+            UserService userService = Inject<UserService>();
 
-                Session["confirmCode"] = new ConfirmCode().Send(result.Data.Email);
+            ExecResult<UserDto> result = await userService.GetUserAsync(GetUserId());
+            if (result.Status != ExecStatus.Success)
+            {
+                Response.RedirectToRoute("Notification_Error");
+                return;
             }
+
+            Session["confirmCode"] = new ConfirmCode().Send(result.Data.Email);
         }
 
         private bool IsValidConfirmToken()
@@ -139,10 +129,9 @@ namespace Web.Account
             {
                 string userId = GetUserId();
                 ExecResult commandResult = null;
-                using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
-                {
-                    commandResult = await userService.ActiveUserAsync(userId);
-                }
+                UserService userService = Inject<UserService>();
+
+                commandResult = await userService.ActiveUserAsync(userId);
 
                 Session["confirmCode"] = null;
                 Session["confirmToken"] = null;
@@ -153,7 +142,7 @@ namespace Web.Account
                     return;
                 }
 
-                if(commandResult.Status != ExecStatus.Success)
+                if (commandResult.Status != ExecStatus.Success)
                 {
                     Response.RedirectToRoute("Notification_Error", null);
                     return;

@@ -1,29 +1,25 @@
-﻿using Data.BLL;
-using Data.DAL;
+﻿using Data.DAL;
+using Data.DAOs;
 using Data.DTO;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Shared.Result;
 
 namespace Data.Services
 {
-    public class PeopleService : IDisposable
+    public class PeopleService
     {
-        private readonly GeneralDao _generalDao;
         private readonly PeopleDao _peopleDao;
-        private bool disposedValue;
 
-        public PeopleService(GeneralDao generalDao) {
-            _generalDao = generalDao;
-            _peopleDao = _generalDao.PeopleDao;
+        public PeopleService(PeopleDao peopleDao) {
+            _peopleDao = peopleDao;
         }
 
         public async Task<ExecResult<DirectorDto>> GetDirectorAsync(long id)
         {
-            People people = await _peopleDao.GetAsync(id);
+            People people = await _peopleDao.GetAsync(x => x.Id == id);
             if (people == null)
                 return new ExecResult<DirectorDto> { Status = ExecStatus.NotFound, Message = "Director not found." };
 
@@ -44,7 +40,7 @@ namespace Data.Services
 
         public async Task<ExecResult<ActorDto>> GetActorAsync(long id)
         {
-            People people = await _peopleDao.GetAsync(id);
+            People people = await _peopleDao.GetAsync(x => x.Id == id);
             if (people == null)
                 return new ExecResult<ActorDto> { Status = ExecStatus.NotFound, Message = "Actor not found." };
 
@@ -191,7 +187,9 @@ namespace Data.Services
                 CreatedAt = DateTime.Now,
             };
 
-            int affected = await _peopleDao.UpdateAsync(person);
+            int affected = await _peopleDao.UpdateAsync(
+                person,
+                x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
             if (affected <= 0)
                 return new ExecResult<DirectorDto> { Status = ExecStatus.Failure, Message = "Failed to update director." };
 
@@ -224,7 +222,9 @@ namespace Data.Services
                 CreatedAt = DateTime.Now,
             };
 
-            int affected = await _peopleDao.UpdateAsync(person);
+            int affected = await _peopleDao.UpdateAsync(
+                person,
+                x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
             if (affected <= 0)
                 return new ExecResult<ActorDto> { Status = ExecStatus.Failure, Message = "Failed to update director." };
 
@@ -245,31 +245,11 @@ namespace Data.Services
 
         public async Task<ExecResult> DeleteAsync(long id, bool forceDelete = false)
         {
-            int affected = await _peopleDao.DeleteAsync(id, forceDelete);
+            int affected = await _peopleDao.DeleteAsync(x => x.Id == id);
             if (affected <= 0)
                 return new ExecResult { Status = ExecStatus.NotFound, Message = "People not found or deletion failed." };
 
             return new ExecResult { Status = ExecStatus.Success, Message = "People deleted successfully." };
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    
-                }
-
-                _generalDao.Dispose();
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
     }
 }

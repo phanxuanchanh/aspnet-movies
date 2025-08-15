@@ -1,28 +1,27 @@
-﻿using Common.Web;
+﻿using Data.Base;
 using Data.DAL;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Shared.Result;
 
-namespace Data.BLL
+namespace Data.DAOs
 {
-    public class UserDao
+    public class UserDao : GenericDao<User>
     {
-        private DBContext _context;
-
         public UserDao(DBContext context)
+            : base(context, x => x.Users)
         {
-            _context = context;
+
         }
 
         public async Task<PagedList<User>> GetsAsync(long pageIndex, long pageSize)
         {
             long skip = (pageIndex - 1) * pageSize;
-            List<User> users = await _context.Users
+            List<User> users = await Context.Users
                 .OrderBy(o => new { o.Id }).ToListAsync();
 
-            long count = await _context.Users.CountAsync();
+            long count = await Context.Users.CountAsync();
 
             return new PagedList<User>
             {
@@ -31,19 +30,14 @@ namespace Data.BLL
             };
         }
 
-        public async Task<User> GetAsync(string userId)
-        {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
-        }
-
         public async Task<User> GetByUserNameAsync(string userName)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            return await Context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
         }
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return await Context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public enum LoginState { Success, Unconfirmed, WrongPassword, NotExists };
@@ -78,15 +72,7 @@ namespace Data.BLL
         public async Task<int> InsertAsync(User user)
         {
             user.CreatedAt = DateTime.Now;
-            return await _context.Users.InsertAsync(user, new List<string> { "Id", "UpdatedAt", "DeletedAt" });
-        }
-
-        public async Task<int> UpdateAsync(User user)
-        {
-            user.UpdatedAt = DateTime.Now;
-            return await _context.Users
-                .Where(x => x.Id == user.Id)
-                .UpdateAsync(user, s => new { });
+            return await Context.Users.InsertAsync(user, new List<string> { "Id", "UpdatedAt", "DeletedAt" });
         }
     }
 }

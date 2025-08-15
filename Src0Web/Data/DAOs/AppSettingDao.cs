@@ -10,7 +10,7 @@ namespace Data.DAOs
     {
         private readonly DBContext _context;
 
-        internal AppSettingDao(DBContext context)
+        public AppSettingDao(DBContext context)
         {
             _context = context;
         }

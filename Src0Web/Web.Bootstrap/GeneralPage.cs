@@ -15,7 +15,7 @@ namespace Web
             NinjectWebCommon.Kernel.Inject(this);
         }
 
-        public T Inject<T>() where T : IDisposable
+        public T Inject<T>() where T : class
         {
             return NinjectWebCommon.Kernel.Get<T>();
         }

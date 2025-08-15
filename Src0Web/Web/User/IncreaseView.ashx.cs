@@ -1,5 +1,4 @@
-﻿using Data.BLL;
-using Data.Services;
+﻿using Data.Services;
 using Ninject;
 using System;
 using System.Web;
@@ -26,14 +25,14 @@ namespace Web.User
                     return;
                 }
 
-                using (FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>())
-                {
-                    //UpdateState state = UpdateState.Failed;// filmBLL.IncreaseView(filmId);
-                    //if (state == UpdateState.Success)
-                    //    context.Response.Write("Đã tăng lượt xem");
-                    //else
-                    //    context.Response.Write("Lỗi tăng lượt xem");
-                }
+                FilmService filmService = NinjectWebCommon.Kernel.Get<FilmService>();
+
+                //UpdateState state = UpdateState.Failed;// filmBLL.IncreaseView(filmId);
+                //if (state == UpdateState.Success)
+                //    context.Response.Write("Đã tăng lượt xem");
+                //else
+                //    context.Response.Write("Lỗi tăng lượt xem");
+
             }
             catch (Exception ex)
             {

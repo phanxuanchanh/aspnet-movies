@@ -7,7 +7,8 @@ namespace Web.App_Start
     using System.Collections.Generic;
     using System.Text.Json;
     using System.Web;
-    using Data.BLL;
+    using Data.DAL;
+    using Data.DAOs;
     using Data.Models;
     using Data.Services;
     using MediaSrv;
@@ -79,8 +80,17 @@ namespace Web.App_Start
                 return mapper;
             }).InSingletonScope();
 
-            kernel.Bind<GeneralDao>().ToSelf().InRequestScope();
+            kernel.Bind<DBContext>().ToSelf().InRequestScope();
+
+            kernel.Bind<AppSettingDao>().ToSelf().InRequestScope();
             kernel.Bind<TaxonomyDao>().ToSelf().InRequestScope();
+            kernel.Bind<TaxonomyLinkDao>().ToSelf().InRequestScope();
+            kernel.Bind<FilmMetadataDao>().ToSelf().InRequestScope();
+            kernel.Bind<FilmMetaLinkDao>().ToSelf().InRequestScope();
+            kernel.Bind<PeopleDao>().ToSelf().InRequestScope();
+            kernel.Bind<PeopleLinkDao>().ToSelf().InRequestScope();
+            kernel.Bind<FilmDao>().ToSelf().InRequestScope();
+            kernel.Bind<UserDao>().ToSelf().InRequestScope();
             kernel.Bind<RoleDao>().ToSelf().InSingletonScope();
 
             kernel.Bind<AppSettingService>().ToSelf().InRequestScope();

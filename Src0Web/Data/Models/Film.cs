@@ -1,13 +1,14 @@
-﻿using MSSQL;
+﻿using Data.Base;
+using MSSQL;
 using MSSQL.Attributes;
 
 namespace Data.DAL
 {
     [SqlTable("Films")]
-    public class Film : SqlTableWithTimestamp
+    public class Film : SqlTableWithTimestamp, IStandardSqlTable<string>
     {
         [SqlColumn("Id", PrimaryKey = true)]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [SqlColumn("Name")]
         public string Name { get; set; }

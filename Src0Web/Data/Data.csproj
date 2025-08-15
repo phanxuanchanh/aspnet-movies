@@ -55,7 +55,6 @@
     <Compile Include="DAOs\FilmDao.cs" />
     <Compile Include="DAOs\FilmMetadataDao.cs" />
     <Compile Include="DAOs\FilmMetaLinkDao.cs" />
-    <Compile Include="DAOs\GeneralDao.cs" />
     <Compile Include="DAOs\PeopleDao.cs" />
     <Compile Include="DAOs\PeopleLinkDao.cs" />
     <Compile Include="DAOs\TaxonomyDao.cs" />

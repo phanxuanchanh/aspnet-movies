@@ -1,5 +1,5 @@
-﻿using Data.BLL;
-using Data.DAL;
+﻿using Data.DAL;
+using Data.DAOs;
 using Data.DTO;
 using System;
 using System.Collections.Generic;
@@ -10,11 +10,10 @@ using Web.Shared.Result;
 
 namespace Data.Services
 {
-    public class TaxonomyService : IDisposable
+    public class TaxonomyService
     {
         private readonly TaxonomyDao _taxonomyDao;
         private readonly MapperService _mapperService;
-        private bool disposedValue;
 
         public TaxonomyService(TaxonomyDao taxonomyDao, MapperService mapperService)
         {
@@ -24,7 +23,7 @@ namespace Data.Services
 
         public async Task<ExecResult<CategoryDto>> GetCategoryAsync(int id)
         {
-            Taxonomy taxonomy = await _taxonomyDao.GetAsync(id);
+            Taxonomy taxonomy = await _taxonomyDao.GetAsync(x => x.Id == id);
             if (taxonomy == null)
                 return ExecResult<CategoryDto>.NotFound("Category not found.", null);
 
@@ -36,7 +35,7 @@ namespace Data.Services
 
         public async Task<ExecResult<TagDto>> GetTagAsync(int id)
         {
-            Taxonomy taxonomy = await _taxonomyDao.GetAsync(id);
+            Taxonomy taxonomy = await _taxonomyDao.GetAsync(x => x.Id == id);
             if (taxonomy == null)
                 return new ExecResult<TagDto> { Status = ExecStatus.NotFound, Message = "Tag not found." };
 
@@ -58,7 +57,7 @@ namespace Data.Services
         public async Task<PagedList<CategoryDto>> GetCategoriesAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
             long skip = (pageIndex - 1) * pageSize;
-            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("category", skip, take: pageSize, searchText);
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetManyAsync("category", skip, pageSize, searchText);
 
             List<CategoryDto> categories = taxonomies.Select(s => new CategoryDto
             {
@@ -82,7 +81,7 @@ namespace Data.Services
 
         public async Task<PagedList<TagDto>> GetTagsAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
-            List<Taxonomy> taxonomies = await _taxonomyDao.GetsAsync("tag", pageIndex, pageSize, searchText);
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetManyAsync("tag", pageIndex, pageSize, searchText);
 
             List<TagDto> tags = taxonomies.Select(s => new TagDto
             {
@@ -182,7 +181,10 @@ namespace Data.Services
                 CreatedAt = DateTime.Now,
             };
 
-            int affected = await _taxonomyDao.UpdateAsync(taxonomy);
+            int affected = await _taxonomyDao.UpdateAsync(
+                taxonomy, 
+                x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
+
             if (affected <= 0)
                 return new ExecResult<CategoryDto> { Status = ExecStatus.Failure, Message = "Failed to update category." };
 
@@ -215,7 +217,10 @@ namespace Data.Services
                 CreatedAt = DateTime.Now,
             };
 
-            int affected = await _taxonomyDao.UpdateAsync(taxonomy);
+            int affected = await _taxonomyDao.UpdateAsync(
+                taxonomy,
+                x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
+
             if (affected <= 0)
                 return new ExecResult<TagDto> { Status = ExecStatus.Failure, Message = "Failed to update tag." };
 
@@ -236,36 +241,11 @@ namespace Data.Services
 
         public async Task<ExecResult> DeleteAsync(int id, bool forceDelete = false)
         {
-            int affected = await _taxonomyDao.DeleteAsync(id);
+            int affected = await _taxonomyDao.DeleteAsync(x => x.Id == id);
             if (affected <= 0)
                 return new ExecResult { Status = ExecStatus.NotFound, Message = "Taxonomy not found or deletion failed." };
 
             return new ExecResult { Status = ExecStatus.Success, Message = "Taxonomy deleted successfully." };
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-
-                }
-
-                _taxonomyDao.Dispose();
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
-        public override string ToString()
-        {
-            return $"TaxonomyService created: {GetHashCode()} at {DateTime.Now.Ticks}";
         }
     }
 }

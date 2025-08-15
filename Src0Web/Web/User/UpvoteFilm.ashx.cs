@@ -1,5 +1,4 @@
-﻿using Data.BLL;
-using Data.DTO;
+﻿using Data.DTO;
 using System;
 using System.Web;
 

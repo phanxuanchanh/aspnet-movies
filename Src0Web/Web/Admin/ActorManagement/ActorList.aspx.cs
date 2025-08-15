@@ -28,15 +28,6 @@ namespace Web.Admin.ActorManagement
             }
         }
 
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_peopleService != null)
-            {
-                _peopleService.Dispose();
-                _peopleService = null;
-            }
-        }
-
         private void GetPagnationQuery()
         {
             string pageQuery = Request.QueryString["page"];

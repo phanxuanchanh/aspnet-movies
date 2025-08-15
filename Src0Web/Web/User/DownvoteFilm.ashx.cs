@@ -1,6 +1,4 @@
-﻿using Data.BLL;
-using Data.DTO;
-using System;
+﻿using System;
 using System.Web;
 
 namespace Web.User

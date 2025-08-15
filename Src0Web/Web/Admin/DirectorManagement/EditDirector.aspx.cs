@@ -54,19 +54,18 @@ namespace Web.Admin.DirectorManagement
                 return;
             }
 
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
+            PeopleService peopleService = Inject<PeopleService>();
+
+            ExecResult<DirectorDto> result = await peopleService.GetDirectorAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<DirectorDto> result = await peopleService.GetDirectorAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    hdDirectorId.Value = result.Data.ID.ToString();
-                    txtDirectorName.Text = result.Data.Name;
-                    txtDirectorDescription.Text = result.Data.Description;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_DirectorList", null);
-                }
+                hdDirectorId.Value = result.Data.ID.ToString();
+                txtDirectorName.Text = result.Data.Name;
+                txtDirectorDescription.Text = result.Data.Description;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_DirectorList", null);
             }
         }
 
@@ -118,11 +117,10 @@ namespace Web.Admin.DirectorManagement
                 return;
 
             CreateDirectorDto director = InitCreateDirectorDto();
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
-            {
-                ExecResult<DirectorDto> commandResult = await peopleService.AddDirectorAsync(director);
-                notifControl.Set<DirectorDto>(commandResult);
-            }
+            PeopleService peopleService = Inject<PeopleService>();
+
+            ExecResult<DirectorDto> commandResult = await peopleService.AddDirectorAsync(director);
+            notifControl.Set<DirectorDto>(commandResult);
         }
 
         private async Task Update()
@@ -131,11 +129,10 @@ namespace Web.Admin.DirectorManagement
                 return;
 
             UpdateDirectorDto director = InitUpdateDirectorDto();
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
-            {
-                ExecResult<DirectorDto> commandResult = await peopleService.UpdateDirectorAsync(director);
-                notifControl.Set<DirectorDto>(commandResult);
-            }
+            PeopleService peopleService = Inject<PeopleService>();
+
+            ExecResult<DirectorDto> commandResult = await peopleService.UpdateDirectorAsync(director);
+            notifControl.Set<DirectorDto>(commandResult);
         }
     }
 }

@@ -1,47 +1,36 @@
-﻿using Common;
-using Data.Services;
-using Ninject;
+﻿using Data.Services;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
-using Web.App_Start;
-using Web.Models;
 using Web.Shared.Result;
 using Web.Validation;
 
 namespace Web.Account
 {
-    public partial class NewPassword : System.Web.UI.Page
+    public partial class NewPassword : GeneralPage
     {
         private CustomValidation customValidation;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             customValidation = new CustomValidation();
-            try
-            {
-                InitValidation();
 
-                if (Session["newPasswordToken"] == null)
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                }
-                else if (!IsValidNewPasswordToken())
-                {
-                    Response.RedirectToRoute("User_Home", null);
-                }
-                else
-                {
-                    if (IsPostBack)
-                    {
-                        await CreateNewPassword();
-                    }
-                }
-            }
-            catch (Exception ex)
+            InitValidation();
+
+            if (Session["newPasswordToken"] == null)
             {
-                Session["error"] = new ErrorModel { ErrorTitle = "Ngoại lệ", ErrorDetail = ex.Message };
-                Response.RedirectToRoute("Notification_Error", null);
+                Response.RedirectToRoute("User_Home", null);
+            }
+            else if (!IsValidNewPasswordToken())
+            {
+                Response.RedirectToRoute("User_Home", null);
+            }
+            else
+            {
+                if (IsPostBack)
+                {
+                    await CreateNewPassword();
+                }
             }
         }
 
@@ -95,11 +84,10 @@ namespace Web.Account
 
             string userId = GetUserId();
             string password = GetNewPassword();
-            ExecResult commandResult = null;
-            using (UserService userService = NinjectWebCommon.Kernel.Get<UserService>())
-            {
-                commandResult = await userService.CreateNewPasswordAsync(userId, password);
-            }
+
+            UserService userService = Inject<UserService>();
+
+            ExecResult commandResult = await userService.CreateNewPasswordAsync(userId, password);
 
             Session["newPasswordToken"] = null;
             if (commandResult.Status == ExecStatus.Success)

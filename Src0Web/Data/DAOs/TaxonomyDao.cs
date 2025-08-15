@@ -1,31 +1,19 @@
 ﻿using Data.DAL;
 using System.Collections.Generic;
-using System;
 using System.Threading.Tasks;
 using System.Text;
 using MSSQL.Mapper;
 using MSSQL.Access;
 using Data.Base;
-using System.Linq.Expressions;
 
-namespace Data.BLL
+namespace Data.DAOs
 {
-    public class TaxonomyDao : GenericDao<Taxonomy, int>
+    public class TaxonomyDao : GenericDao<Taxonomy>
     {
-        public TaxonomyDao()
-            :base(x => x.Taxonomies)
+        public TaxonomyDao(DBContext context)
+            :base(context, x => x.Taxonomies)
         {
 
-        }
-
-        protected override Expression<Func<Taxonomy, bool>> SetPkExpr(int id)
-        {
-            return x => x.Id == id;
-        }
-
-        protected override Expression<Func<Taxonomy, object>> SetUpdateSelectorExpr(Taxonomy input)
-        {
-            return s => new { s.Name, s.Description, s.UpdatedAt };
         }
 
         public async Task<List<Taxonomy>> GetsByIdsAsync(List<int> ids)
@@ -41,13 +29,13 @@ namespace Data.BLL
             }
             commandTextBuilder.Append(")").Replace(", )", " )");
 
-            return await context.GetHelper()
+            return await Context.GetHelper()
                 .ExecuteReaderAsync<Taxonomy>(commandTextBuilder.ToString(), parameters, r => SqlMapper.MapRow<Taxonomy>(r));
         }
 
-        public async Task<List<Taxonomy>> GetsAsync(string type = "category", long skip = 0, long take = 0, string searchText = null)
+        public async Task<List<Taxonomy>> GetManyAsync(string type = "category", long skip = 1, long take = 10, string searchText = null)
         {
-            SqlAccess<Taxonomy> access = context.Taxonomies
+            SqlAccess<Taxonomy> access = Context.Taxonomies
                 .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
 
             if(string.IsNullOrEmpty(searchText))
@@ -60,7 +48,7 @@ namespace Data.BLL
 
         public async Task<long> CountAsync(string type = "category", string searchText = null)
         {
-            SqlAccess<Taxonomy> access = context.Taxonomies
+            SqlAccess<Taxonomy> access = Context.Taxonomies
                 .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
 
             if (string.IsNullOrEmpty(searchText))

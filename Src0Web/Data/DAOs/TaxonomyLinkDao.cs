@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Data.BLL
+namespace Data.DAOs
 {
     public class TaxonomyLinkDao
     {
         private readonly DBContext _context;
 
-        internal TaxonomyLinkDao(DBContext context)
+        public TaxonomyLinkDao(DBContext context)
         {
             _context = context;
         }

@@ -1,9 +1,7 @@
 ﻿using Data.DTO;
 using Data.Services;
-using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
 using Web.Shared.Result;
 using Web.Validation;
 
@@ -56,19 +54,18 @@ namespace Web.Admin.CountryManagement
                 return;
             }
 
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            FilmMetadataService filmMetadataService = Inject<FilmMetadataService>();
+
+            ExecResult<CountryDto> result = await filmMetadataService.GetCountryAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<CountryDto> result = await filmMetadataService.GetCountryAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    hdCountryId.Value = result.Data.ID.ToString();
-                    txtCountryName.Text = result.Data.Name;
-                    txtCountryDescription.Text = result.Data.Description;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_CountryList", null);
-                }
+                hdCountryId.Value = result.Data.ID.ToString();
+                txtCountryName.Text = result.Data.Name;
+                txtCountryDescription.Text = result.Data.Description;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_CountryList", null);
             }
         }
 
@@ -120,11 +117,10 @@ namespace Web.Admin.CountryManagement
                 return;
 
             CreateCountryDto country = InitCreateCountryDto();
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
-            {
-                ExecResult<CountryDto> commandResult = await filmMetadataService.AddCountryAsync(country);
-                notifControl.Set<CountryDto>(commandResult);
-            }
+            FilmMetadataService filmMetadataService = Inject<FilmMetadataService>();
+
+            ExecResult<CountryDto> commandResult = await filmMetadataService.AddCountryAsync(country);
+            notifControl.Set<CountryDto>(commandResult);
         }
 
         private async Task Update()
@@ -133,11 +129,10 @@ namespace Web.Admin.CountryManagement
                 return;
 
             UpdateCountryDto countryUpdate = InitUpdateCountryDto();
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
-            {
-                ExecResult<CountryDto> commandResult = await filmMetadataService.UpdateCountryAsync(countryUpdate);
-                notifControl.Set<CountryDto>(commandResult);
-            }
+            FilmMetadataService filmMetadataService = Inject<FilmMetadataService>();
+
+            ExecResult<CountryDto> commandResult = await filmMetadataService.UpdateCountryAsync(countryUpdate);
+            notifControl.Set<CountryDto>(commandResult);
         }
     }
 }

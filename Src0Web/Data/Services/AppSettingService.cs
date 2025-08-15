@@ -1,5 +1,4 @@
-﻿using Data.BLL;
-using Data.DAOs;
+﻿using Data.DAOs;
 using Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,12 +8,10 @@ namespace Data.Services
 {
     public class AppSettingService
     {
-        private readonly GeneralDao _generalDao;
         private readonly AppSettingDao _appSettingDao;
 
-        public AppSettingService(GeneralDao generalDao) {
-            _generalDao = generalDao;
-            _appSettingDao = _generalDao.AppSettingDao;
+        public AppSettingService(AppSettingDao appSettingDao) {
+            _appSettingDao = appSettingDao;
         }
 
         public async Task<AppSetting> GetSettingAsync(int id)

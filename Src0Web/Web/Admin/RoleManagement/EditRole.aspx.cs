@@ -1,10 +1,7 @@
-﻿using Common;
-using Data.DTO;
+﻿using Data.DTO;
 using Data.Services;
-using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
 using Web.Shared.Result;
 using Web.Validation;
 
@@ -77,11 +74,9 @@ namespace Web.Admin.RoleManagement
                 return;
 
             CreateRoleDto createRoleDto = InitCreateRoleDto();
-            using (RoleService roleService = NinjectWebCommon.Kernel.Get<RoleService>())
-            {
-                ExecResult<RoleDto> commandResult = await roleService.CreateAsync(createRoleDto);
-                notifControl.Set<RoleDto>(commandResult);
-            }
+            RoleService roleService = Inject<RoleService>();
+            ExecResult<RoleDto> commandResult = await roleService.CreateAsync(createRoleDto);
+            notifControl.Set<RoleDto>(commandResult);
         }
 
         public async Task Update()
@@ -90,11 +85,10 @@ namespace Web.Admin.RoleManagement
                 return;
 
             CreateRoleDto createRoleDto = InitUpdateRoleDto();
-            using (RoleService roleService = NinjectWebCommon.Kernel.Get<RoleService>())
-            {
-                ExecResult<RoleDto> commandResult = await roleService.UpdateAsync(createRoleDto);
-                notifControl.Set<RoleDto>(commandResult);
-            }
+            RoleService roleService = Inject<RoleService>();
+
+            ExecResult<RoleDto> commandResult = await roleService.UpdateAsync(createRoleDto);
+            notifControl.Set<RoleDto>(commandResult);
         }
     }
 }

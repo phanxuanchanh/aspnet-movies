@@ -1,5 +1,5 @@
-﻿using Data.BLL;
-using Data.DAL;
+﻿using Data.DAL;
+using Data.DAOs;
 using Data.DTO;
 using System;
 using System.Collections.Generic;
@@ -9,20 +9,17 @@ using Web.Shared.Result;
 
 namespace Data.Services
 {
-    public class FilmMetadataService : IDisposable
+    public class FilmMetadataService
     {
-        private readonly GeneralDao _generalDao;
         private readonly FilmMetadataDao _filmMetadataDao;
-        private bool disposedValue;
 
-        public FilmMetadataService(GeneralDao generalDao) { 
-            _generalDao = generalDao;
-            _filmMetadataDao = _generalDao.FilmMetadataDao;
+        public FilmMetadataService(FilmMetadataDao metadataDao) { 
+            _filmMetadataDao = metadataDao;
         }
 
         public async Task<ExecResult<CountryDto>> GetCountryAsync(int id)
         {
-            FilmMetadata metadata = await _filmMetadataDao.GetAsync(id);
+            FilmMetadata metadata = await _filmMetadataDao.GetAsync(x => x.Id == id);
             if (metadata == null)
                 return new ExecResult<CountryDto> { Status = ExecStatus.NotFound, Message = "Metadata not found." };
 
@@ -43,7 +40,7 @@ namespace Data.Services
 
         public async Task<ExecResult<LanguageDto>> GetLanguageAsync(int id)
         {
-            FilmMetadata metadata = await _filmMetadataDao.GetAsync(id);
+            FilmMetadata metadata = await _filmMetadataDao.GetAsync(x => x.Id == id);
             if (metadata == null)
                 return new ExecResult<LanguageDto> { Status = ExecStatus.NotFound, Message = "Metadata not found." };
 
@@ -189,7 +186,9 @@ namespace Data.Services
                 CreatedAt = DateTime.Now,
             };
 
-            int affected = await _filmMetadataDao.UpdateAsync(filmMetadata);
+            int affected = await _filmMetadataDao.UpdateAsync(
+                filmMetadata,
+                x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
             if (affected <= 0)
                 return new ExecResult<CountryDto> { Status = ExecStatus.Failure, Message = "Failed to update country." };
 
@@ -222,7 +221,9 @@ namespace Data.Services
                 CreatedAt = DateTime.Now,
             };
 
-            int affected = await _filmMetadataDao.UpdateAsync(filmMetadata);
+            int affected = await _filmMetadataDao.UpdateAsync(
+                filmMetadata,
+                x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
             if (affected <= 0)
                 return new ExecResult<LanguageDto> { Status = ExecStatus.Failure, Message = "Failed to update country." };
 
@@ -243,31 +244,11 @@ namespace Data.Services
 
         public async Task<ExecResult> DeleteAsync(int id, bool forceDelete = false)
         {
-            int affected = await _filmMetadataDao.DeleteAsync(id, forceDelete);
+            int affected = await _filmMetadataDao.DeleteAsync(x => x.Id == id);
             if (affected <= 0)
                 return new ExecResult { Status = ExecStatus.NotFound, Message = "Country not found or deletion failed." };
             
             return new ExecResult { Status = ExecStatus.Success, Message = "Country deleted successfully." };
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    
-                }
-
-                _generalDao?.Dispose();
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
     }
 }

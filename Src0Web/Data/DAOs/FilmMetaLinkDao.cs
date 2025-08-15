@@ -1,9 +1,8 @@
-﻿using Common;
-using Data.DAL;
+﻿using Data.DAL;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Data.BLL
+namespace Data.DAOs
 {
     public class FilmMetaLinkDao
     {

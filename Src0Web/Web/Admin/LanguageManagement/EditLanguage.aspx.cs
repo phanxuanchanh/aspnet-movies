@@ -55,19 +55,18 @@ namespace Web.Admin.LanguageManagement
                 return;
             }
 
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
+            FilmMetadataService filmMetadataService = Inject<FilmMetadataService>();
+
+            ExecResult<CountryDto> result = await filmMetadataService.GetCountryAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<CountryDto> result = await filmMetadataService.GetCountryAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    hdLanguageId.Value = result.Data.ID.ToString();
-                    txtLanguageName.Text = result.Data.Name;
-                    txtLanguageDescription.Text = result.Data.Description;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_LanguageList", null);
-                }
+                hdLanguageId.Value = result.Data.ID.ToString();
+                txtLanguageName.Text = result.Data.Name;
+                txtLanguageDescription.Text = result.Data.Description;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_LanguageList", null);
             }
         }
 
@@ -119,11 +118,10 @@ namespace Web.Admin.LanguageManagement
                 return;
 
             CreateLanguageDto language = InitCreateLanguageDto();
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
-            {
-                ExecResult<LanguageDto> commandResult = await filmMetadataService.AddLanguageAsync(language);
-                notifControl.Set<LanguageDto>(commandResult);
-            }
+            FilmMetadataService filmMetadataService = Inject<FilmMetadataService>();
+
+            ExecResult<LanguageDto> commandResult = await filmMetadataService.AddLanguageAsync(language);
+            notifControl.Set<LanguageDto>(commandResult);
         }
 
         public async Task Update()
@@ -132,11 +130,10 @@ namespace Web.Admin.LanguageManagement
                 return;
 
             UpdateLanguageDto language = InitUpdateLanguageDto();
-            using (FilmMetadataService filmMetadataService = NinjectWebCommon.Kernel.Get<FilmMetadataService>())
-            {
-                ExecResult<LanguageDto> commandResult = await filmMetadataService.UpdateLanguageAsync(language);
-                notifControl.Set<LanguageDto>(commandResult);
-            }
+            FilmMetadataService filmMetadataService = Inject<FilmMetadataService>();
+
+            ExecResult<LanguageDto> commandResult = await filmMetadataService.UpdateLanguageAsync(language);
+            notifControl.Set<LanguageDto>(commandResult);
         }
     }
 }

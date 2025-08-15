@@ -4,34 +4,29 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MSSQL.Mapper;
 using Web.Shared.Result;
+using Data.Base;
 
-namespace Data.BLL
+namespace Data.DAOs
 {
-    public class FilmDao
+    public class FilmDao : GenericDao<Film>
     {
-        private readonly DBContext _context;
-
-        internal FilmDao(DBContext context)
+        public FilmDao(DBContext context)
+            : base(context, x => x.Films)
         {
-            _context = context;
-        }
 
-        public async Task<Film> GetAsync(string id)
-        {
-            return await _context.Films.SingleOrDefaultAsync(x => x.ID == id);
         }
 
         public async Task<List<Film>> GetsAsync(long skip = 0, long take = 0)
         {
-            List<Film> films = await _context.Films.Where(x => x.DeletedAt == null)
-                .OrderBy(o => new { o.ID }).ToListAsync();
+            List<Film> films = await Context.Films.Where(x => x.DeletedAt == null)
+                .OrderBy(o => new { o.Id }).ToListAsync();
 
             return films;
         }
 
         public async Task<long> CountAsync()
         {
-            return await _context.Films.CountAsync();
+            return await Context.Films.CountAsync();
         }
 
         public async Task<PagedList<Film>> GetsByCategoryIdAsync(int categoryId, long pageIndex = 1, long pageSize = 10)
@@ -42,7 +37,7 @@ namespace Data.BLL
                 INNER JOIN [TaxonomyLinks] tl ON [Films].[ID] = tl.FilmId
                 WHERE tl.TaxonomyId = @categoryId";
 
-            long totalRecord = await _context.GetHelper()
+            long totalRecord = await Context.GetHelper()
                 .ExecuteScalarQueryAsync<long>(countCommand, new Dictionary<string, object> { { "@categoryId", categoryId } });
 
             string command = @"
@@ -64,7 +59,7 @@ namespace Data.BLL
 
             PagedList<Film> pagedList = new PagedList<Film>();
 
-            pagedList.Items = await _context.GetHelper()
+            pagedList.Items = await Context.GetHelper()
                 .ExecuteReaderAsync<Film>(command, parameters, r => SqlMapper.MapRow<Film>(r));
 
             //pagedList.Solve(totalRecord, pageIndex - 1, pageSize);
@@ -72,21 +67,9 @@ namespace Data.BLL
             return pagedList;
         }
 
-        public async Task<int> AddAsync(Film film)
-        {
-            film.CreatedAt = DateTime.Now;
-
-            return await _context.Films.InsertAsync(film, new List<string> { "UpdatedAt", "DeletedAt" });
-        }
-
-        public async Task<int> UpdateAsync(Film existingFilm)
+        public Task<List<Film>> GetManyAsync(int pageIndex, int pageSize)
         {
             throw new NotImplementedException();
-        }
-
-        public async Task<int> DeleteAsync(string id)
-        {
-            return await _context.Films.DeleteAsync(x => x.ID == id);
         }
     }
 }

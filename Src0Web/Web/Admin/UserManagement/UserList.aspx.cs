@@ -31,15 +31,6 @@ namespace Web.Admin.UserManagement
             }
         }
 
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_userService != null)
-            {
-                _userService.Dispose();
-                _userService = null;
-            }
-        }
-
         protected async void drdlPage_SelectedIndexChanged(object sender, EventArgs e)
         {
             await SetGrvUser();

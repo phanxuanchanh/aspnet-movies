@@ -55,19 +55,18 @@ namespace Web.Admin.ActorManagement
                 return;
             }
 
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
+            PeopleService peopleService = Inject<PeopleService>();
+
+            ExecResult<ActorDto> result = await peopleService.GetActorAsync(id);
+            if (result.Status == ExecStatus.Success)
             {
-                ExecResult<ActorDto> result = await peopleService.GetActorAsync(id);
-                if (result.Status == ExecStatus.Success)
-                {
-                    hdActorId.Value = result.Data.ID.ToString();
-                    txtActorName.Text = result.Data.Name;
-                    txtActorDescription.Text = result.Data.Description;
-                }
-                else
-                {
-                    Response.RedirectToRoute("Admin_ActorList", null);
-                }
+                hdActorId.Value = result.Data.ID.ToString();
+                txtActorName.Text = result.Data.Name;
+                txtActorDescription.Text = result.Data.Description;
+            }
+            else
+            {
+                Response.RedirectToRoute("Admin_ActorList", null);
             }
         }
 
@@ -119,11 +118,10 @@ namespace Web.Admin.ActorManagement
                 return;
 
             CreateActorDto actor = InitCreateActorDto();
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
-            {
-                ExecResult<ActorDto> commandResult = await peopleService.AddActorAsync(actor);
-                notifControl.Set<ActorDto>(commandResult);
-            }
+            PeopleService peopleService = Inject<PeopleService>();
+
+            ExecResult<ActorDto> commandResult = await peopleService.AddActorAsync(actor);
+            notifControl.Set<ActorDto>(commandResult);
         }
 
         public async Task Update()
@@ -132,11 +130,10 @@ namespace Web.Admin.ActorManagement
                 return;
 
             UpdateActorDto actor = InitUpdateActorDto();
-            using (PeopleService peopleService = NinjectWebCommon.Kernel.Get<PeopleService>())
-            {
-                ExecResult<ActorDto> commandResult = await peopleService.UpdateActorAsync(actor);
-                notifControl.Set<ActorDto>(commandResult);
-            }
+            PeopleService peopleService = Inject<PeopleService>();
+
+            ExecResult<ActorDto> commandResult = await peopleService.UpdateActorAsync(actor);
+            notifControl.Set<ActorDto>(commandResult);
         }
     }
 }

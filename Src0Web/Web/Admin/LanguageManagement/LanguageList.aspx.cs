@@ -1,6 +1,4 @@
-﻿using Common;
-using Common.Web;
-using Data.DTO;
+﻿using Data.DTO;
 using Data.Services;
 using Ninject;
 using System;
@@ -27,15 +25,6 @@ namespace Web.Admin.LanguageManagement
             {
                 txtPageSize.Text = paged.PageSize.ToString();
                 await SetLanguageTable();
-            }
-        }
-
-        protected void Page_Unload(object sender, EventArgs e)
-        {
-            if (_filmMetadataService != null)
-            {
-                _filmMetadataService.Dispose();
-                _filmMetadataService = null;
             }
         }
 
