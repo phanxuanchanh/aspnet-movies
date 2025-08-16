@@ -47,8 +47,11 @@
     <Compile Include="Helpers\ActivationToken.cs" />
     <Compile Include="Helpers\Base64.cs" />
     <Compile Include="Helpers\Totp.cs" />
-    <Compile Include="Mapper\IMapperHandler.cs" />
-    <Compile Include="Mapper\MapperService.cs" />
+    <Compile Include="Mapper\AutoMapperHelper.cs" />
+    <Compile Include="Mapper\IMapper.cs" />
+    <Compile Include="Mapper\IMappingProfile.cs" />
+    <Compile Include="Mapper\ITypeMapper.cs" />
+    <Compile Include="Mapper\Mapper.cs" />
     <Compile Include="Results\ExecResult.cs" />
     <Compile Include="Results\ExecStatus.cs" />
     <Compile Include="Helpers\HashFunction.cs" />

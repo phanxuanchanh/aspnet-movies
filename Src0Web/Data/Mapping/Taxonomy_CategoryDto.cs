@@ -4,7 +4,7 @@ using Web.Shared.Mapper;
 
 namespace Data.Mapping
 {
-    public class Taxonomy_CategoryDto : IMappingProfile<Taxonomy, CategoryDto>
+    public class Taxonomy_CategoryDto : ITypeMapper<Taxonomy, CategoryDto>
     {
         public CategoryDto Map(Taxonomy source)
         {

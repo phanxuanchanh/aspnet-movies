@@ -9,6 +9,7 @@ namespace Web.App_Start
     using System.Web;
     using Data.DAL;
     using Data.DAOs;
+    using Data.Mapping;
     using Data.Models;
     using Data.Services;
     using MediaSrv;
@@ -72,10 +73,11 @@ namespace Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<MapperService>().ToMethod(m =>
+            kernel.Bind<IMapper>().ToMethod(m =>
             {
-                MapperService mapper = new MapperService();
-                MapperConfig.RegisterProfiles(mapper);
+                Mapper mapper = new Mapper();
+
+                mapper.AddProfile(new MappingProfile());
 
                 return mapper;
             }).InSingletonScope();

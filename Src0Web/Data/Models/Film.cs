@@ -5,7 +5,7 @@ using MSSQL.Attributes;
 namespace Data.DAL
 {
     [SqlTable("Films")]
-    public class Film : SqlTableWithTimestamp, IStandardSqlTable<string>
+    public class Film : SqlTableWithTimestamp
     {
         [SqlColumn("Id", PrimaryKey = true)]
         public string Id { get; set; }

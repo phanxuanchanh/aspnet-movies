@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\GenericDao.cs" />
-    <Compile Include="Base\IStandardSqlTable.cs" />
     <Compile Include="DAOs\AppSettingDao.cs" />
     <Compile Include="DAOs\FilmDao.cs" />
     <Compile Include="DAOs\FilmMetadataDao.cs" />
@@ -59,6 +58,7 @@
     <Compile Include="DAOs\PeopleLinkDao.cs" />
     <Compile Include="DAOs\TaxonomyDao.cs" />
     <Compile Include="DAOs\TaxonomyLinkDao.cs" />
+    <Compile Include="Mapping\MappingProfile.cs" />
     <Compile Include="Mapping\Taxonomy_CategoryDto.cs" />
     <Compile Include="Models\AppSetting.cs" />
     <Compile Include="Models\FilmMetaLink.cs" />

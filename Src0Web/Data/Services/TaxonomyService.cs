@@ -13,12 +13,12 @@ namespace Data.Services
     public class TaxonomyService
     {
         private readonly TaxonomyDao _taxonomyDao;
-        private readonly MapperService _mapperService;
+        private readonly IMapper _mapper;
 
-        public TaxonomyService(TaxonomyDao taxonomyDao, MapperService mapperService)
+        public TaxonomyService(TaxonomyDao taxonomyDao, IMapper mapper)
         {
             _taxonomyDao = taxonomyDao;
-            _mapperService = mapperService;
+            _mapper = mapper;
         }
 
         public async Task<ExecResult<CategoryDto>> GetCategoryAsync(int id)
@@ -27,7 +27,7 @@ namespace Data.Services
             if (taxonomy == null)
                 return ExecResult<CategoryDto>.NotFound("Category not found.", null);
 
-            CategoryDto categoryDto = _mapperService.Map<Taxonomy, CategoryDto>(taxonomy);
+            CategoryDto categoryDto = _mapper.Map<Taxonomy, CategoryDto>(taxonomy);
 
             return ExecResult<CategoryDto>
                 .Success("Taxonomy retrieved successfully.", categoryDto);

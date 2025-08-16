@@ -114,7 +114,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AppSettingValues.cs" />
-    <Compile Include="App_Start\MapperConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\NinjectWebFormsHttpApplicationPlugin.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

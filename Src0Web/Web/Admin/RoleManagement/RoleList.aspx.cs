@@ -64,12 +64,12 @@ namespace Web.Admin.RoleManagement
 
         protected async void grvRole_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string key = (string)grvRole.DataKeys[grvRole.SelectedIndex].Value;
-            RoleDto role = (await RoleService.GetRoleAsync(key));
-            toolDetail = string.Format("{0} -- {1}", role.ID, role.Name);
-            hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = role.ID });
-            hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditRole", new { id = role.ID, action = "update" });
-            enableTool = true;
+            //string key = (string)grvRole.DataKeys[grvRole.SelectedIndex].Value;
+            //RoleDto role = (await RoleService.GetRoleAsync(key));
+            //toolDetail = string.Format("{0} -- {1}", role.ID, role.Name);
+            //hyplnkDetail.NavigateUrl = GetRouteUrl("Admin_RoleDetail", new { id = role.ID });
+            //hyplnkEdit.NavigateUrl = GetRouteUrl("Admin_EditRole", new { id = role.ID, action = "update" });
+            //enableTool = true;
         }
     }
 }

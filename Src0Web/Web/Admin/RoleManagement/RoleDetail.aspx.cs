@@ -2,6 +2,7 @@
 using Data.Services;
 using System;
 using System.Threading.Tasks;
+using Web.Shared.Result;
 
 namespace Web.Admin.RoleManagement
 {
@@ -29,14 +30,13 @@ namespace Web.Admin.RoleManagement
         {
             RoleService roleService = Inject<RoleService>();
 
-            role = await roleService.GetRoleAsync(id);
+            ExecResult commandResult = await roleService.GetRoleAsync(id);
 
-            if (role == null)
+            if (commandResult.Status != ExecStatus.Success)
             {
                 Response.ForceRedirectToRoute(this, "Admin_RoleList", null);
                 return;
             }
-
         }
     }
 }

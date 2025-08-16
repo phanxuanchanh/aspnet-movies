@@ -87,8 +87,8 @@ namespace Web.Admin.RoleManagement
             CreateRoleDto createRoleDto = InitUpdateRoleDto();
             RoleService roleService = Inject<RoleService>();
 
-            ExecResult<RoleDto> commandResult = await roleService.UpdateAsync(createRoleDto);
-            notifControl.Set<RoleDto>(commandResult);
+            ExecResult commandResult = await roleService.UpdateAsync(createRoleDto);
+            notifControl.Set(commandResult);
         }
     }
 }
