@@ -1,5 +1,5 @@
-﻿using Data.DAL;
-using Data.DTO;
+﻿using Data.DTO;
+using Data.Models;
 using Web.Shared.Mapper;
 
 namespace Data.Mapping

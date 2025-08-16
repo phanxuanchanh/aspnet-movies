@@ -1,5 +1,6 @@
 ﻿using Data.Base;
-using Data.DAL;
+using Data.Context;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Data.DAOs
         {
             long skip = (pageIndex - 1) * pageSize;
             List<User> users = await Context.Users
-                .OrderBy(o => new { o.Id }).ToListAsync();
+                .OrderBy(o => o.Id).ToListAsync();
 
             long count = await Context.Users.CountAsync();
 

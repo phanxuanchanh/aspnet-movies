@@ -1,10 +1,11 @@
-﻿using Data.DAL;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
 using MSSQL.Mapper;
 using MSSQL.Access;
 using Data.Base;
+using Data.Models;
+using Data.Context;
 
 namespace Data.DAOs
 {
@@ -34,7 +35,7 @@ namespace Data.DAOs
         public async Task<List<People>> GetsAsync(string type = "director", long skip = 0, long take = 0, string searchText = null)
         {
             SqlAccess<People> access = Context.People
-                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
+                .Where(x => x.DeletedAt == null).OrderBy(o => o.Id);
 
             if(string.IsNullOrEmpty(searchText))
                 access.Where(x => x.Type == type);
@@ -47,7 +48,7 @@ namespace Data.DAOs
         public async Task<long> CountAsync(string type = "director", string searchText = null)
         {
             SqlAccess<People> access = Context.People
-                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
+                .Where(x => x.DeletedAt == null).OrderBy(o => o.Id);
 
             if (string.IsNullOrEmpty(searchText))
                 access.Where(x => x.Type == type);

@@ -1,7 +1,7 @@
 ﻿using Data.Models;
 using MSSQL.Access;
 
-namespace Data.DAL
+namespace Data.Context
 {
     public class DBContext : SqlContext
     {

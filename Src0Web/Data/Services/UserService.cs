@@ -1,7 +1,7 @@
 ﻿using Common.Hash;
-using Data.DAL;
 using Data.DAOs;
 using Data.DTO;
+using Data.Models;
 using System;
 using System.Threading.Tasks;
 using Web.Shared.Result;

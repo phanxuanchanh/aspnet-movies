@@ -1,5 +1,6 @@
 ﻿using Data.Base;
-using Data.DAL;
+using Data.Context;
+using Data.Models;
 using MSSQL.Access;
 using MSSQL.Mapper;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Data.DAOs
         public async Task<List<FilmMetadata>> GetsAsync(string type = "language", long skip = 1, long take = 10, string searchText = null)
         {
             SqlAccess<FilmMetadata> access = Context.FilmMetadata
-                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
+                .Where(x => x.DeletedAt == null).OrderBy(o => o.Id);
 
             if(string.IsNullOrEmpty(searchText))
                 access.Where(x => x.Type == type);

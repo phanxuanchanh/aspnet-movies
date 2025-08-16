@@ -1,6 +1,6 @@
-﻿using Data.DAL;
-using Data.DAOs;
+﻿using Data.DAOs;
 using Data.DTO;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using Web.Shared.Result;
 
 namespace Data.Services
 {
-    public class FilmService //: IDisposable
+    public class FilmService
     {
         private readonly FilmMetadataDao _filmMetadataDao;
         private readonly FilmMetaLinkDao _filmMetaLinkDao;

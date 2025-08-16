@@ -1,5 +1,5 @@
 ﻿using Common.Hash;
-using Data.DAL;
+using Data.Context;
 using Data.Models;
 using Data.Services;
 using Ninject;
@@ -50,7 +50,7 @@ namespace Web.Install
         {
             string salt = HashFunction.MD5_Hash(new Random().NextString(25));
 
-            Data.DAL.User user = new Data.DAL.User
+            Data.Models.User user = new Data.Models.User
             {
             };
 

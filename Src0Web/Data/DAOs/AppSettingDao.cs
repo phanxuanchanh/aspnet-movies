@@ -1,8 +1,8 @@
-﻿using Data.DAL;
-using Data.Models;
+﻿using Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MSSQL.Access;
+using Data.Context;
 
 namespace Data.DAOs
 {
@@ -28,7 +28,7 @@ namespace Data.DAOs
         public async Task<List<AppSetting>> GetManyAsync(long skip = 1, long take = 10, string searchText = null)
         {
             SqlAccess<AppSetting> access = _context.AppSettings
-                .OrderBy(o => new { o.Id });
+                .OrderBy(o => o.Id);
 
             if (!string.IsNullOrEmpty(searchText))
                 access.Where(x => x.Name.Contains(searchText));

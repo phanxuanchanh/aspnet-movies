@@ -1,7 +1,7 @@
 ﻿using MSSQL;
 using MSSQL.Attributes;
 
-namespace Data.DAL
+namespace Data.Models
 {
     [SqlTable("FilmMetadata")]
     public class FilmMetadata : SqlTableWithTimestamp

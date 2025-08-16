@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\GenericDao.cs" />
+    <Compile Include="Context\DbContextPool.cs" />
+    <Compile Include="Context\DBContextPoolHandle.cs" />
     <Compile Include="DAOs\AppSettingDao.cs" />
     <Compile Include="DAOs\FilmDao.cs" />
     <Compile Include="DAOs\FilmMetadataDao.cs" />
@@ -64,7 +66,7 @@
     <Compile Include="Models\FilmMetaLink.cs" />
     <Compile Include="DAOs\RoleDao.cs" />
     <Compile Include="DAOs\UserDao.cs" />
-    <Compile Include="Models\DBContext.cs" />
+    <Compile Include="Context\DBContext.cs" />
     <Compile Include="Models\Film.cs" />
     <Compile Include="Models\FilmMetadata.cs" />
     <Compile Include="Models\People.cs" />

@@ -1,10 +1,11 @@
-﻿using Data.DAL;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
 using MSSQL.Mapper;
 using MSSQL.Access;
 using Data.Base;
+using Data.Context;
+using Data.Models;
 
 namespace Data.DAOs
 {
@@ -36,7 +37,7 @@ namespace Data.DAOs
         public async Task<List<Taxonomy>> GetManyAsync(string type = "category", long skip = 1, long take = 10, string searchText = null)
         {
             SqlAccess<Taxonomy> access = Context.Taxonomies
-                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
+                .Where(x => x.DeletedAt == null).OrderBy(o => o.Id);
 
             if(string.IsNullOrEmpty(searchText))
                 access.Where(x => x.Type == type);
@@ -49,7 +50,7 @@ namespace Data.DAOs
         public async Task<long> CountAsync(string type = "category", string searchText = null)
         {
             SqlAccess<Taxonomy> access = Context.Taxonomies
-                .Where(x => x.DeletedAt == null).OrderBy(o => new { o.Id });
+                .Where(x => x.DeletedAt == null).OrderBy(o => o.Id);
 
             if (string.IsNullOrEmpty(searchText))
                 access.Where(x => x.Type == type);

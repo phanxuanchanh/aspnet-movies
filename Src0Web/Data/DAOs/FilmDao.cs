@@ -1,10 +1,11 @@
-﻿using Data.DAL;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using MSSQL.Mapper;
 using Web.Shared.Result;
 using Data.Base;
+using Data.Models;
+using Data.Context;
 
 namespace Data.DAOs
 {
@@ -19,7 +20,7 @@ namespace Data.DAOs
         public async Task<List<Film>> GetsAsync(long skip = 0, long take = 0)
         {
             List<Film> films = await Context.Films.Where(x => x.DeletedAt == null)
-                .OrderBy(o => new { o.Id }).ToListAsync();
+                .OrderBy(o => o.Id).ToListAsync();
 
             return films;
         }

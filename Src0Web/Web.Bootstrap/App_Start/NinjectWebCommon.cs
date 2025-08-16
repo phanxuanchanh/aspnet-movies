@@ -7,14 +7,14 @@ namespace Web.App_Start
     using System.Collections.Generic;
     using System.Text.Json;
     using System.Web;
-    using Data.DAL;
+    using Data.Context;
     using Data.DAOs;
     using Data.Mapping;
     using Data.Models;
     using Data.Services;
     using MediaSrv;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
+    using MSSQL.Access;
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
@@ -82,7 +82,15 @@ namespace Web.App_Start
                 return mapper;
             }).InSingletonScope();
 
-            kernel.Bind<DBContext>().ToSelf().InRequestScope();
+            kernel.Bind<DBContextPool>()
+                .ToMethod(m => new DBContextPool(2)).InSingletonScope();
+            kernel.Bind<DBContextPoolHandle>().ToSelf().InRequestScope();
+
+            kernel.Bind<DBContext>().ToMethod(m =>
+            {
+                DBContextPoolHandle handle = m.Kernel.Get<DBContextPoolHandle>();
+                return handle.Context;
+            }).InRequestScope();
 
             kernel.Bind<AppSettingDao>().ToSelf().InRequestScope();
             kernel.Bind<TaxonomyDao>().ToSelf().InRequestScope();
