@@ -1,0 +1,3 @@
+[submodule "Src0Web-Libs/MSSQL"]
+	path = Src0Web-Libs/MSSQL
+	url = https://github.com/omnisci-lab/MSSQL.git
