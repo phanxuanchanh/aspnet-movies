@@ -52,6 +52,9 @@
     <Compile Include="Base\GenericDao.cs" />
     <Compile Include="Context\DbContextPool.cs" />
     <Compile Include="Context\DBContextPoolHandle.cs" />
+    <Compile Include="CQRSServices\Role\Queries\GetRoleQuery\GetRoleQuery.cs" />
+    <Compile Include="CQRSServices\Role\Queries\GetRoleQuery\GetRoleQueryHandler.cs" />
+    <Compile Include="CQRSServices\Role\Queries\GetRoleQuery\GetRoleQueryValidator.cs" />
     <Compile Include="DAOs\AppSettingDao.cs" />
     <Compile Include="DAOs\FilmDao.cs" />
     <Compile Include="DAOs\FilmMetadataDao.cs" />
@@ -94,6 +97,9 @@
     <Compile Include="Services\FilmMetadataService.cs" />
     <Compile Include="Services\FilmService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Validators\IValidator.cs" />
+    <Compile Include="Validators\UserValidator.cs" />
+    <Compile Include="Validators\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Shared\Web.Shared.csproj">
@@ -103,6 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CQRSServices\Role\Commands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,20 +1,19 @@
-﻿using Common.Hash;
-using Data.Context;
+﻿using Data.DTO;
 using Data.Models;
 using Data.Services;
-using Ninject;
+using Data.Validators;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Web.App_Start;
+using Web.Shared.Result;
 
 namespace Web.Install
 {
-    public partial class AppSettings : System.Web.UI.Page
+    public partial class AppSettings : GeneralPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         protected async void btnSubmit_Click(object sender, EventArgs e)
@@ -22,7 +21,7 @@ namespace Web.Install
             if (!Page.IsValid)
                 return;
 
-            //AddUser();
+            await AddUser();
             await AddAppSettings();
             Response.RedirectToRoute("User_Home");
         }
@@ -42,28 +41,34 @@ namespace Web.Install
                 Value = JsonSerializer.Serialize(value),
             };
 
-            AppSettingService appSettingService = NinjectWebCommon.Kernel.Get<AppSettingService>();
+            AppSettingService appSettingService = Inject<AppSettingService>();
             await appSettingService.AddAsync(setting);
         }
 
-        private void AddUser()
+        private async Task AddUser()
         {
-            string salt = HashFunction.MD5_Hash(new Random().NextString(25));
-
-            Data.Models.User user = new Data.Models.User
+            CreateUserDto user = new CreateUserDto
             {
+                UserName = txtAdminUsername.Text.Trim(),
+                Password = txtAdminPassword.Text.Trim(),
+                Email = txtAdminEmail.Text.Trim()
             };
 
-            using (DBContext db = new DBContext())
+            CreateUserDtoValidator validator = new CreateUserDtoValidator();
+            validator.Validate(user);
+            if (!validator.IsValid())
             {
-                long recordNumber = db.Users.Count();
-                if (recordNumber == 0)
-                {
-                    Role role = db.Roles.Select(s => new { s.Id }).SingleOrDefault(x => x.Name == "Admin");
-                    user.RoleId = role.Id;
+                
+            }
+            else
+            {
+                UserService userService = Inject<UserService>();
+                RoleService roleService = Inject<RoleService>();
 
-                    int affected = db.Users.Insert(user);
-                }
+                ExecResult<RoleDto> roleResult = await roleService.GetRoleByNameAsync("Admin");
+
+                await userService.RegisterAsync(user);
+                await userService.ActiveUserAsync(user.UserName);
             }
         }
     }

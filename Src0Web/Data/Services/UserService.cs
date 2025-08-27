@@ -20,12 +20,6 @@ namespace Data.Services
 
         public async Task<ExecResult<UserDto>> LoginAsync(UserLogin userLogin)
         {
-            if (userLogin == null)
-                throw new Exception("@'userLogin' must not be null");
-
-            if (userLogin.UserName == null || userLogin.Password == null)
-                throw new Exception("");
-
             User user = await _userDao.GetByUserNameAsync(userLogin.UserName);
             if (user == null)
                 return ExecResult<UserDto>.NotFound("User does not exist", null);
@@ -57,17 +51,6 @@ namespace Data.Services
 
         public async Task<ExecResult> RegisterAsync(CreateUserDto input)
         {
-            if (input == null)
-                throw new Exception("@'userCreation' must not be null");
-
-            if (
-                input.UserName == null || input.Password == null
-                || input.Email == null || input.PhoneNumber == null
-            )
-            {
-                throw new Exception("");
-            }
-
             User user1 = await _userDao.GetByUserNameAsync(input.UserName);
             User user2 = await _userDao.GetByEmailAsync(input.Email);
             if (user1 != null || user2 != null)
@@ -179,7 +162,22 @@ namespace Data.Services
 
         public async Task<ExecResult> ActiveUserAsync(string userId)
         {
-            throw new NotImplementedException();
+            User user = await _userDao.GetAsync(x => x.Id == userId);
+            if (user == null)
+                return ExecResult.NotFound("User does not exist");
+
+            if (user.Activated)
+                return ExecResult.Success("User is already activated");
+
+            user.Activated = true;
+            user.UpdatedAt = DateTime.Now;
+            int affected = await _userDao.UpdateAsync(
+                user, x => x.Id == userId, s => new { s.Activated, s.UpdatedAt });
+
+            if (affected == 0)
+                return ExecResult.Failure("Failed to activate user");
+
+            return ExecResult.Success("User activated successfully");
         }
 
         public async Task<ExecResult<UserDto>> GetUserByEmailAsync(string email)

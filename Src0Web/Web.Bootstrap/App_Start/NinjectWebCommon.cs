@@ -90,7 +90,7 @@ namespace Web.App_Start
             {
                 DBContextPoolHandle handle = m.Kernel.Get<DBContextPoolHandle>();
                 return handle.Context;
-            }).InRequestScope();
+            }).InTransientScope();
 
             kernel.Bind<AppSettingDao>().ToSelf().InRequestScope();
             kernel.Bind<TaxonomyDao>().ToSelf().InRequestScope();

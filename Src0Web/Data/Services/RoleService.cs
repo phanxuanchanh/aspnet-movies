@@ -34,6 +34,16 @@ namespace Data.Services
             return ExecResult<RoleDto>.Success("", roleOutput);
         }
 
+        public async Task<ExecResult<RoleDto>> GetRoleByNameAsync(string name)
+        {
+            Role role = await _roleDao.GetAsync(x => x.Name == name);
+            if (role == null)
+                return ExecResult<RoleDto>.NotFound("Role not found.", null);
+
+            RoleDto roleOutput = _mapper.Map<Role, RoleDto>(role);
+            return ExecResult<RoleDto>.Success("Role found.", roleOutput);
+        }
+
         public async Task<ExecResult> UpdateAsync(CreateRoleDto createRoleDto)
         {
             Role role = _mapper.Map<CreateRoleDto, Role>(createRoleDto);
