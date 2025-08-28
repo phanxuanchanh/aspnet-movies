@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone-no">
 
-    <link rel="icon" type="image/png" href="<% = ResolveUrl("~/user_assets/images/favicon.png") %>"/>
+    <link rel="icon" type="image/png" href="<% = ResolveUrl("~/user_assets/images/favicon.png") %>" />
 
     <link rel="stylesheet" href="<%= ResolveUrl("~/user_assets/css/plugins.css") %>">
     <link rel="stylesheet" href="<%= ResolveUrl("~/user_assets/css/style.css") %>">
@@ -74,7 +74,10 @@
                                 </a>
                                 <ul class="dropdown-menu level1">
                                     <li><a href="#">API</a></li>
-                                    <li><a href="<% = hyplnkLiteVersion %>">Phiên bản rút gọn</a></li>
+                                    <% if (enableHyplnkAdmin)
+                                        { %>
+                                    <li><a href="<%= hyplnkAdmin %>">Quản trị</a></li>
+                                    <% } %>
                                 </ul>
                             </li>
                             <li><a href="#">Hỗ trợ</a></li>

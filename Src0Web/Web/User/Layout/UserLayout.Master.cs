@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Data.DTO;
 using System.Linq;
-using Data.Services;
-using Ninject;
 using System.Web;
+using System.Security.Principal;
 
 namespace Web.User.Layout
 {
@@ -15,16 +14,22 @@ namespace Web.User.Layout
         protected string hyplnkWatchedList;
         protected string hyplnkLiteVersion;
         protected string hyplnkHome;
+        protected bool enableHyplnkAdmin;
+        protected string hyplnkAdmin;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (HttpContext.Current.User?.Identity?.IsAuthenticated != true)
+            IPrincipal principal = HttpContext.Current.User;
+
+            if (principal?.Identity?.IsAuthenticated != true)
             {
                 hyplnkAccount.HRef = GetRouteUrl("Account_Login", null);
                 hyplnkAccount.InnerText = "Đăng nhập / Đăng ký";
             }
             else
             {
+                enableHyplnkAdmin = principal.IsInRole("Admin");
+                hyplnkAdmin = GetRouteUrl("Admin_Overview", null);
                 hyplnkAccount.HRef = GetRouteUrl("Account_Logout", null);
                 hyplnkAccount.InnerText = "Đăng xuất";
             }
