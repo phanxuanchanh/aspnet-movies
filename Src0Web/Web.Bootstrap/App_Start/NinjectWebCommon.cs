@@ -76,14 +76,13 @@ namespace Web.App_Start
             kernel.Bind<IMapper>().ToMethod(m =>
             {
                 Mapper mapper = new Mapper();
-
                 mapper.AddProfile(new MappingProfile());
 
                 return mapper;
             }).InSingletonScope();
 
             kernel.Bind<DBContextPool>()
-                .ToMethod(m => new DBContextPool(2)).InSingletonScope();
+                .ToMethod(m => new DBContextPool()).InSingletonScope();
             kernel.Bind<DBContextPoolHandle>().ToSelf().InRequestScope();
 
             kernel.Bind<DBContext>().ToMethod(m =>

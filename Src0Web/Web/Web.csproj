@@ -589,7 +589,6 @@
     <Compile Include="User\WatchedList.aspx.designer.cs">
       <DependentUpon>WatchedList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Validation\CustomValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="User\Layout\UserLayout.Master" />

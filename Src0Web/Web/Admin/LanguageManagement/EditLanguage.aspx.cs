@@ -4,9 +4,7 @@ using Data.Services;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using Web.App_Start;
 using Web.Shared.Result;
-using Web.Validation;
 
 namespace Web.Admin.LanguageManagement
 {

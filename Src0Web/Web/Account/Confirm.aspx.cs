@@ -1,14 +1,10 @@
 ﻿using Common.Web;
 using Data.DTO;
 using Data.Services;
-using Ninject;
 using System;
 using System.Threading.Tasks;
 using System.Web.UI;
-using Web.App_Start;
-using Web.Models;
 using Web.Shared.Result;
-using Web.Validation;
 
 namespace Web.Account
 {

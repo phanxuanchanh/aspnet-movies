@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 
-namespace Web.Validation
+namespace Web
 {
     public class CustomValidation
     {
