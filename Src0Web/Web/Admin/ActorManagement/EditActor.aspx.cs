@@ -8,7 +8,6 @@ namespace Web.Admin.ActorManagement
 {
     public partial class EditActor : AdminPage
     {
-        private CustomValidation customValidation;
         protected bool isCreateAction;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -24,8 +23,6 @@ namespace Web.Admin.ActorManagement
 
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
-
-            customValidation = new CustomValidation();
 
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_ActorList", null);
             InitValidation();
@@ -69,13 +66,12 @@ namespace Web.Admin.ActorManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvActorName,
-                "txtActorName",
+            cvActorName.SetValidator(
+                nameof(txtActorName),
                 "Tên diễn viên không hợp lệ",
                 true,
                 null,
-                customValidation.ValidateCastName
+                CustomValidation.ValidateCastName
             );
         }
 

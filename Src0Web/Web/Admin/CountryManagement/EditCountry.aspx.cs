@@ -8,7 +8,6 @@ namespace Web.Admin.CountryManagement
 {
     public partial class EditCountry : AdminPage
     {
-        private CustomValidation customValidation;
         protected bool isCreateAction;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -24,8 +23,6 @@ namespace Web.Admin.CountryManagement
 
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
-
-            customValidation = new CustomValidation();
 
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CountryList", null);
             InitValidation();
@@ -70,25 +67,13 @@ namespace Web.Admin.CountryManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvCountryName,
-                "txtCountryName",
+            cvCountryName.SetValidator(
+                nameof(txtCountryName),
                 "Tên quốc gia không hợp lệ",
                 true,
                 null,
-                customValidation.ValidateCountryName
+                CustomValidation.ValidateCountryName
             );
-        }
-
-        private void ValidateData()
-        {
-            cvCountryName.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return cvCountryName.IsValid;
         }
 
         private CreateCountryDto InitCreateCountryDto()
@@ -112,7 +97,9 @@ namespace Web.Admin.CountryManagement
 
         public async Task Create()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateCountryDto country = InitCreateCountryDto();
@@ -124,7 +111,9 @@ namespace Web.Admin.CountryManagement
 
         private async Task Update()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             UpdateCountryDto countryUpdate = InitUpdateCountryDto();

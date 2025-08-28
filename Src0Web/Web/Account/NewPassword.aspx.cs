@@ -8,12 +8,8 @@ namespace Web.Account
 {
     public partial class NewPassword : GeneralPage
     {
-        private CustomValidation customValidation;
-
         protected async void Page_Load(object sender, EventArgs e)
         {
-            customValidation = new CustomValidation();
-
             InitValidation();
 
             if (Session["newPasswordToken"] == null)
@@ -35,13 +31,12 @@ namespace Web.Account
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvPassword,
-                "txtNewPassword",
+            cvPassword.SetValidator(
+                nameof(txtNewPassword),
                 "Tối thiểu 6 ký tự, tối đa 20 ký tự",
                 true,
                 null,
-                customValidation.ValidatePassword
+                CustomValidation.ValidatePassword
             );
         }
 

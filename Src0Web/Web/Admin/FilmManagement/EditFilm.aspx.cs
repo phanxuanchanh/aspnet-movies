@@ -10,7 +10,6 @@ namespace Web.Admin.FilmManagement
     {
         private FilmMetadataService _filmMetaService;
         protected ExecResult<FilmDto> commandResult;
-        private CustomValidation customValidation;
         protected bool isCreateAction;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -28,7 +27,6 @@ namespace Web.Admin.FilmManagement
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
             _filmMetaService = Inject<FilmMetadataService>();
-            customValidation = new CustomValidation();
 
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_FilmList", null);
             InitValidation();
@@ -98,43 +96,29 @@ namespace Web.Admin.FilmManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvFilmName,
-                "txtFilmName",
+            cvFilmName.SetValidator(
+                nameof(txtFilmName),
                 "Tên phim không hợp lệ",
                 true,
                 null,
-                customValidation.ValidateFilmName
+                CustomValidation.ValidateFilmName
             );
-            customValidation.Init(
-                cvProductionCompany,
-                "txtProductionCompany",
+
+            cvProductionCompany.SetValidator(
+                nameof(txtProductionCompany),
                 "Tên công ty sản xuất không hợp lệ",
                 true,
                 null,
-                customValidation.ValidateProductionCompany
+                CustomValidation.ValidateProductionCompany
             );
-            customValidation.Init(
-                cvReleaseDate,
-                "txtReleaseDate",
+
+            cvReleaseDate.SetValidator(
+                nameof(txtReleaseDate),
                 "Năm phát hành không hợp lệ",
                 true,
                 null,
-                customValidation.ValidateReleaseDate
+                CustomValidation.ValidateReleaseDate
             );
-        }
-
-        private void ValidateData()
-        {
-            cvFilmName.Validate();
-            cvProductionCompany.Validate();
-            cvReleaseDate.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return (cvFilmName.IsValid && cvProductionCompany.IsValid && cvReleaseDate.IsValid);
         }
 
         private CreateFilmDto InitCreateFilmDto()
@@ -162,7 +146,9 @@ namespace Web.Admin.FilmManagement
 
         public async Task Create()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateFilmDto film = InitCreateFilmDto();
@@ -174,7 +160,9 @@ namespace Web.Admin.FilmManagement
 
         private async Task Update()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             UpdateFilmDto film = InitUpdateFilmDto();

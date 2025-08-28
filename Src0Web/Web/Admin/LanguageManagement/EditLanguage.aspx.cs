@@ -10,7 +10,6 @@ namespace Web.Admin.LanguageManagement
 {
     public partial class EditLanguage : AdminPage
     {
-        private CustomValidation customValidation;
         protected bool isCreateAction;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -27,7 +26,6 @@ namespace Web.Admin.LanguageManagement
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
-            customValidation = new CustomValidation();
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_LanguageList", null);
             InitValidation();
 
@@ -70,25 +68,13 @@ namespace Web.Admin.LanguageManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvLanguageName,
-                "txtLanguageName",
-                "Tên ngôn ngữ không hợp lệ",
+            cvLanguageName.SetValidator(
+                nameof(txtLanguageName),
+                "Tên ngôn ngữ không được để trống",
                 true,
                 null,
-                customValidation.ValidateCategoryName
+                CustomValidation.ValidateCategoryName
             );
-        }
-
-        private void ValidateData()
-        {
-            cvLanguageName.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return cvLanguageName.IsValid;
         }
 
         private CreateLanguageDto InitCreateLanguageDto()
@@ -112,7 +98,9 @@ namespace Web.Admin.LanguageManagement
 
         public async Task Create()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateLanguageDto language = InitCreateLanguageDto();
@@ -124,7 +112,9 @@ namespace Web.Admin.LanguageManagement
 
         public async Task Update()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             UpdateLanguageDto language = InitUpdateLanguageDto();

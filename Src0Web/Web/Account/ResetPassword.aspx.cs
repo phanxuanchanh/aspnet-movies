@@ -9,13 +9,11 @@ namespace Web.Account
 {
     public partial class ResetPassword : GeneralPage
     {
-        private CustomValidation customValidation;
         protected bool enableShowResult;
         protected string stateDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            customValidation = new CustomValidation();
             InitValidation();
             if (IsPostBack)
             {
@@ -25,13 +23,12 @@ namespace Web.Account
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvEmail,
-                "txtEmail",
+            cvEmail.SetValidator(
+                nameof(txtEmail),
                 "Địa chỉ Email không hợp lệ",
                 true,
                 null,
-                customValidation.ValidateEmail
+                CustomValidation.ValidateEmail
             );
         }
 

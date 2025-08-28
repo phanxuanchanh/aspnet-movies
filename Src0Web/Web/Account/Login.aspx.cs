@@ -11,12 +11,8 @@ namespace Web.Account
 {
     public partial class Login : GeneralPage
     {
-        private CustomValidation customValidation;
-
         protected async void Page_Load(object sender, EventArgs e)
         {
-            customValidation = new CustomValidation();
-
             InitHyperLink();
             InitValidation();
             if (CheckLoggedIn())
@@ -39,34 +35,19 @@ namespace Web.Account
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvUsername,
-                "txtUsername",
-                "Không được trống, chỉ chứa a-z, 0-9, _ và -",
-                true,
-                null,
-                customValidation.ValidateUsername
+            cvUsername.SetValidator(
+                nameof(txtUsername), 
+                "Không được trống, chỉ chứa a-z, 0-9, _ và -", 
+                true, null, 
+                CustomValidation.ValidateUsername
             );
-            customValidation.Init(
-                cvPassword,
-                "txtPassword",
+
+            cvPassword.SetValidator(
+                nameof(txtPassword),
                 "Tối thiểu 6 ký tự, tối đa 20 ký tự",
-                true,
-                null,
-                customValidation.ValidatePassword
+                true, null,
+                CustomValidation.ValidatePassword
             );
-        }
-
-        private void ValidateData()
-        {
-            cvUsername.Validate();
-            cvPassword.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return (cvUsername.IsValid && cvPassword.IsValid);
         }
 
         private bool CheckLoggedIn()
@@ -85,7 +66,9 @@ namespace Web.Account
 
         private async Task LoginToAccount()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             UserLogin userLogin = GetUserLogin();

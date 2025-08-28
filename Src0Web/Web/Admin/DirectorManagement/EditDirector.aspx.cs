@@ -8,7 +8,6 @@ namespace Web.Admin.DirectorManagement
 {
     public partial class EditDirector : AdminPage
     {
-        private CustomValidation customValidation;
         protected bool isCreateAction;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -25,7 +24,6 @@ namespace Web.Admin.DirectorManagement
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
-            customValidation = new CustomValidation();
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_DirectorList", null);
             InitValidation();
 
@@ -68,25 +66,13 @@ namespace Web.Admin.DirectorManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvDirectorName,
-                "txtDirectorName",
+            cvDirectorName.SetValidator(
+                nameof(txtDirectorName),
                 "Tên đạo diễn không hợp lệ",
                 true,
                 null,
-                customValidation.ValidateDirectorName
+                CustomValidation.ValidateDirectorName
             );
-        }
-
-        private void ValidateData()
-        {
-            cvDirectorName.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return cvDirectorName.IsValid;
         }
 
         private CreateDirectorDto InitCreateDirectorDto()
@@ -110,7 +96,9 @@ namespace Web.Admin.DirectorManagement
 
         public async Task Create()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateDirectorDto director = InitCreateDirectorDto();
@@ -122,7 +110,9 @@ namespace Web.Admin.DirectorManagement
 
         private async Task Update()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             UpdateDirectorDto director = InitUpdateDirectorDto();

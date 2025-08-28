@@ -8,14 +8,12 @@ namespace Web.Admin.RoleManagement
 {
     public partial class EditRole : AdminPage
     {
-        private CustomValidation customValidation;
         protected bool enableShowResult;
         protected string stateString;
         protected string stateDetail;
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            customValidation = new CustomValidation();
             enableShowResult = false;
             stateString = null;
             stateDetail = null;
@@ -30,25 +28,13 @@ namespace Web.Admin.RoleManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvRoleName,
-                "txtRoleName",
-                "Tên vai trò không hợp lệ",
+            cvRoleName.SetValidator(
+                nameof(txtRoleName),
+                "Tên vai trò không được để trống",
                 true,
                 null,
-                customValidation.ValidateRoleName
+                CustomValidation.ValidateRoleName
             );
-        }
-
-        private void ValidateData()
-        {
-            cvRoleName.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return cvRoleName.IsValid;
         }
 
         private CreateRoleDto InitCreateRoleDto()
@@ -69,7 +55,9 @@ namespace Web.Admin.RoleManagement
 
         public async Task Create()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateRoleDto createRoleDto = InitCreateRoleDto();
@@ -80,7 +68,9 @@ namespace Web.Admin.RoleManagement
 
         public async Task Update()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateRoleDto createRoleDto = InitUpdateRoleDto();

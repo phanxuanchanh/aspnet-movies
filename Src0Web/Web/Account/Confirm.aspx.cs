@@ -10,12 +10,8 @@ namespace Web.Account
 {
     public partial class Confirm : GeneralPage
     {
-        private CustomValidation customValidation;
-
         protected async void Page_Load(object sender, EventArgs e)
         {
-            customValidation = new CustomValidation();
-
             InitHyperlink();
             InitValidation();
             if (Session["confirmCode"] == null || Session["confirmToken"] == null)
@@ -48,13 +44,12 @@ namespace Web.Account
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvConfirmCode,
-                "txtConfirmCode",
+            cvConfirmCode.SetValidator(
+                nameof(txtConfirmCode),
                 "Không được để trống, từ 6 đến 20 ký tự số",
                 true,
                 null,
-                customValidation.ValidateConfirmCode
+                CustomValidation.ValidateConfirmCode
             );
         }
 

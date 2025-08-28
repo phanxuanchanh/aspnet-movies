@@ -9,12 +9,8 @@ namespace Web.Account
 {
     public partial class Register : GeneralPage
     {
-        private CustomValidation customValidation;
-
         protected async void Page_Load(object sender, EventArgs e)
         {
-            customValidation = new CustomValidation();
-
             InitHyperLink();
             InitValidation();
             if (CheckLoggedIn())
@@ -42,63 +38,41 @@ namespace Web.Account
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvUsername,
-                "txtUsername",
+            cvUsername.SetValidator(
+                nameof(txtUsername),
                 "Không được trống, chỉ chứa a-z, 0-9, _ và -",
                 true,
                 null,
-                customValidation.ValidateUsername
+                CustomValidation.ValidateUsername
             );
 
-            customValidation.Init(
-                cvEmail,
-                "txtEmail",
+            cvEmail.SetValidator(
+                nameof(txtEmail),
                 "Không được để trống và phải hợp lệ",
                 true,
                 null,
-                customValidation.ValidateEmail
+                CustomValidation.ValidateEmail
             );
 
-            customValidation.Init(
-                cvPhoneNumber,
-                "txtPhoneNumber",
+            cvPhoneNumber.SetValidator(
+                nameof(txtPhoneNumber),
                 "Số điện thoại không hợp lệ",
                 false,
                 null,
-                customValidation.ValidatePhoneNumber
+                CustomValidation.ValidatePhoneNumber
             );
 
-            customValidation.Init(
-                cvPassword,
-                "txtPassword",
+            cvPassword.SetValidator(
+                nameof(txtPassword),
                 "Tối thiểu 6 ký tự, tối đa 20 ký tự",
                 true,
                 null,
-                customValidation.ValidatePassword
+                CustomValidation.ValidatePassword
             );
 
             cmpRePassword.ControlToValidate = "txtPassword";
             cmpRePassword.ControlToCompare = "txtRePassword";
             cmpRePassword.ErrorMessage = "Không khớp với mật khẩu mà bạn đã nhập";
-        }
-
-        private void ValidateData()
-        {
-            cvUsername.Validate();
-            cvEmail.Validate();
-            cvPhoneNumber.Validate();
-            cvPassword.Validate();
-            cmpRePassword.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return (
-                cvUsername.IsValid && cvEmail.IsValid && cvPhoneNumber.IsValid && cvPassword.IsValid
-                && cmpRePassword.IsValid
-            );
         }
 
         private CreateUserDto InitCreateUserDto()
@@ -114,7 +88,9 @@ namespace Web.Account
 
         private async Task RegisterAccount()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if(!Page.IsValid)
                 return;
 
             CreateUserDto user = InitCreateUserDto();

@@ -8,7 +8,6 @@ namespace Web.Admin.TagManagement
 {
     public partial class EditTag : AdminPage, IPostbackAwarePage
     {
-        private CustomValidation customValidation;
         protected bool isCreateAction;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -25,7 +24,6 @@ namespace Web.Admin.TagManagement
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
-            customValidation = new CustomValidation();
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_TagList", null);
             InitValidation();
         }
@@ -71,25 +69,13 @@ namespace Web.Admin.TagManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvTagName,
-                "txtTagName",
-                "Tên thẻ tag không hợp lệ",
+            cvTagName.SetValidator(
+                nameof(txtTagName),
+                "Tên thẻ tag không được để trống",
                 true,
                 null,
-                customValidation.ValidateTagName
+                CustomValidation.ValidateTagName
             );
-        }
-
-        private void ValidateData()
-        {
-            cvTagName.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return cvTagName.IsValid;
         }
 
         private CreateTagDto InitCreateTagDto()
@@ -113,7 +99,9 @@ namespace Web.Admin.TagManagement
 
         public async Task Create()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateTagDto tag = InitCreateTagDto();
@@ -125,7 +113,9 @@ namespace Web.Admin.TagManagement
 
         public async Task Update()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             UpdateTagDto tag = InitUpdateTagDto();

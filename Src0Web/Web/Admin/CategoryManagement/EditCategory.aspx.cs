@@ -8,7 +8,6 @@ namespace Web.Admin.CategoryManagement
 {
     public partial class EditCategory : AdminPage
     {
-        private CustomValidation customValidation;
         protected bool isCreateAction;
 
         protected async void Page_Load(object sender, EventArgs e)
@@ -24,8 +23,6 @@ namespace Web.Admin.CategoryManagement
 
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
-
-            customValidation = new CustomValidation();
 
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_CategoryList", null);
             InitValidation();
@@ -70,25 +67,13 @@ namespace Web.Admin.CategoryManagement
 
         private void InitValidation()
         {
-            customValidation.Init(
-                cvCategoryName,
-                "txtCategoryName",
-                "Tên thể loại không hợp lệ",
+            cvCategoryName.SetValidator(
+                nameof(txtCategoryName),
+                "Không được trống, từ 2 đến 100 ký tự",
                 true,
                 null,
-                customValidation.ValidateCategoryName
+                CustomValidation.ValidateCategoryName
             );
-        }
-
-        private void ValidateData()
-        {
-            cvCategoryName.Validate();
-        }
-
-        private bool IsValidData()
-        {
-            ValidateData();
-            return cvCategoryName.IsValid;
         }
 
         private CreateCategoryDto InitCreateCategoryDto()
@@ -112,7 +97,9 @@ namespace Web.Admin.CategoryManagement
 
         public async Task Create()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             CreateCategoryDto category = InitCreateCategoryDto();
@@ -120,12 +107,13 @@ namespace Web.Admin.CategoryManagement
 
             ExecResult<CategoryDto> commandResult = await taxonomyService.AddCategoryAsync(category);
             notifControl.Set<CategoryDto>(commandResult);
-
         }
 
         public async Task Update()
         {
-            if (!IsValidData())
+            Page.Validate();
+
+            if (!Page.IsValid)
                 return;
 
             UpdateCategoryDto category = InitUpdateCategoryDto();
@@ -133,7 +121,6 @@ namespace Web.Admin.CategoryManagement
 
             ExecResult<CategoryDto> commandResult = await taxonomyService.UpdateCategoryAsync(category);
             notifControl.Set<CategoryDto>(commandResult);
-
         }
     }
 }
