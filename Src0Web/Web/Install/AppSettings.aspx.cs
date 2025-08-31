@@ -1,7 +1,6 @@
 ﻿using Data.DTO;
 using Data.Models;
 using Data.Services;
-using Data.Validators;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,17 +12,24 @@ namespace Web.Install
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            InitValidation();
         }
 
         protected async void btnSubmit_Click(object sender, EventArgs e)
         {
+            Page.Validate();
+
             if (!Page.IsValid)
                 return;
 
             await AddUser();
             await AddAppSettings();
             Response.RedirectToRoute("User_Home");
+        }
+
+        private void InitValidation()
+        {
+            
         }
 
         private async Task AddAppSettings()
@@ -54,22 +60,13 @@ namespace Web.Install
                 Email = txtAdminEmail.Text.Trim()
             };
 
-            CreateUserDtoValidator validator = new CreateUserDtoValidator();
-            validator.Validate(user);
-            if (!validator.IsValid())
-            {
-                
-            }
-            else
-            {
-                UserService userService = Inject<UserService>();
-                RoleService roleService = Inject<RoleService>();
+            UserService userService = Inject<UserService>();
+            RoleService roleService = Inject<RoleService>();
 
-                ExecResult<RoleDto> roleResult = await roleService.GetRoleByNameAsync("Admin");
+            ExecResult<RoleDto> roleResult = await roleService.GetRoleByNameAsync("Admin");
 
-                await userService.RegisterAsync(user);
-                await userService.ActiveUserAsync(user.UserName);
-            }
+            await userService.RegisterAsync(user);
+            await userService.ActiveUserAsync(user.UserName);
         }
     }
 }

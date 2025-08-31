@@ -94,9 +94,6 @@
     <Compile Include="Services\FilmMetadataService.cs" />
     <Compile Include="Services\FilmService.cs" />
     <Compile Include="Services\UserService.cs" />
-    <Compile Include="Validators\IValidator.cs" />
-    <Compile Include="Validators\UserValidator.cs" />
-    <Compile Include="Validators\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Shared\Web.Shared.csproj">
