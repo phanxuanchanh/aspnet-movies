@@ -6,7 +6,7 @@ using Web.Shared.Result;
 
 namespace Web.Admin.FilmManagement
 {
-    public partial class EditFilm : AdminPage
+    public partial class EditFilm : AdminPage, IPostbackAwarePage
     {
         private FilmMetadataService _filmMetaService;
         protected ExecResult<FilmDto> commandResult;
@@ -30,20 +30,27 @@ namespace Web.Admin.FilmManagement
 
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_FilmList", null);
             InitValidation();
-            //await LoadFilmCountries();
-            //await LoadFilmLanguages();
+        }
 
-            if (IsPostBack)
+        public async void Page_LoadNoPostback(object sender, EventArgs e)
+        {
+            if (!isCreateAction)
+                await LoadFilm(Request.QueryString["Id"]);
+        }
+
+        public async void Page_LoadWithPostback(object sender, EventArgs e)
+        {
+            if (isCreateAction)
+                return;
+
+            string target = Request["__EVENTTARGET"];
+            string argument = Request["__EVENTARGUMENT"];
+            if (target == "CategorySelected_Click" && !string.IsNullOrEmpty(argument))
             {
-                if (isCreateAction)
-                    await Create();
-                else
-                    await Update();
-            }
-            else
-            {
-                if (!isCreateAction)
-                    await LoadFilm(Request.QueryString["Id"]);
+                string filmId = hdFilmId.Value;
+                string categoryId = argument;
+
+                await Task.CompletedTask;
             }
         }
 
@@ -72,26 +79,12 @@ namespace Web.Admin.FilmManagement
             }
         }
 
-        private async Task LoadFilmCountries()
+        protected async void btnSubmit_Click(object sender, EventArgs e)
         {
-            //drdlFilmCountry.Items.Clear();
-            //List<CountryDto> countries = (await _filmMetaService.GetCountriesAsync(1, 30)).Items;
-            //foreach (CountryDto country in countries)
-            //{
-            //    drdlFilmCountry.Items.Add(new ListItem(country.Name, country.ID.ToString()));
-            //}
-            //drdlFilmCountry.SelectedIndex = 0;
-        }
-
-        private async Task LoadFilmLanguages()
-        {
-            //drdlFilmLanguage.Items.Clear();
-            //List<LanguageDto> languages = (await _filmMetaService.GetLanguagesAsync(1, 30)).Items;
-            //foreach (LanguageDto language in languages)
-            //{
-            //    drdlFilmLanguage.Items.Add(new ListItem(language.Name, language.ID.ToString()));
-            //}
-            //drdlFilmLanguage.SelectedIndex = 0;
+            if (isCreateAction)
+                await Create();
+            else
+                await Update();
         }
 
         private void InitValidation()

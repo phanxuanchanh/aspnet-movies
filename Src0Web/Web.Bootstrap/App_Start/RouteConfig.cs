@@ -6,6 +6,8 @@ namespace Web.App_Start
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            RegisterHttpHandlerRoutes(routes);
+
             routes.MapPageRoute("Account_Login", "account/login", "~/Account/Login.aspx");
             routes.MapPageRoute("Account_Logout", "account/logout", "~/Account/Logout.aspx");
             routes.MapPageRoute("Account_Register", "account/register", "~/Account/Register.aspx");
@@ -57,11 +59,18 @@ namespace Web.App_Start
             routes.MapPageRoute("User_Search", "search/", "~/User/Search.aspx");
             routes.MapPageRoute("User_WatchedList", "watched-list", "~/User/WatchedList.aspx");
             routes.MapPageRoute("User_FilmsByCategory", "films-by-category/{slug}-{id}", "~/User/FilmsByCategory.aspx");
+           
+
+            routes.MapPageRoute("Notification_Error", "notification/error", "~/Notification/Error.aspx");
+        }
+
+        private static void RegisterHttpHandlerRoutes(RouteCollection routes)
+        {
             routes.MapHttpHandlerRoute("User_UpvoteFilm", "film/upvote", "~/User/UpvoteFilm.ashx");
             routes.MapHttpHandlerRoute("User_DownvoteFilm", "film/downvote", "~/User/DownvoteFilm.ashx");
             routes.MapHttpHandlerRoute("User_IncreaseView", "film/increase-view", "~/User/IncreaseView.ashx");
 
-            routes.MapPageRoute("Notification_Error", "notification/error", "~/Notification/Error.aspx");
+            routes.MapHttpHandlerRoute("Admin_FilmDependentData", "admin/film/film-dependent-data", "~/Admin/FilmManagement/FilmDependentData.ashx");
         }
     }
 }

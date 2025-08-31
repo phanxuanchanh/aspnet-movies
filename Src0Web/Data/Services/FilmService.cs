@@ -225,15 +225,6 @@ namespace Data.Services
 
         public async Task<ExecResult<FilmDto>> AddFilmAsync(CreateFilmDto film)
         {
-            if (string.IsNullOrEmpty(film.Name) || string.IsNullOrEmpty(film.ProductionCompany) || string.IsNullOrEmpty(film.ReleaseDate))
-            {
-                return new ExecResult<FilmDto>
-                {
-                    Status = ExecStatus.Invalid,
-                    Message = "Film name, production company, and release date are required."
-                };
-            }
-
             Film newFilm = new Film
             {
                 Id = Guid.NewGuid().ToString(),
@@ -320,25 +311,5 @@ namespace Data.Services
                 throw new Exception($"An error occurred while deleting film: {ex.Message}", ex);
             }
         }
-
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!disposedValue)
-        //    {
-        //        if (disposing)
-        //        {
-
-        //        }
-
-        //        //_generalDao.Dispose();
-        //        disposedValue = true;
-        //    }
-        //}
-
-        //public void Dispose()
-        //{
-        //    Dispose(disposing: true);
-        //    GC.SuppressFinalize(this);
-        //}
     }
 }

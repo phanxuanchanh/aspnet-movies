@@ -390,6 +390,9 @@
     <Compile Include="Admin\FilmManagement\EditFilm.aspx.designer.cs">
       <DependentUpon>EditFilm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\FilmManagement\FilmDependentData.ashx.cs">
+      <DependentUpon>FilmDependentData.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\FilmManagement\FilmDetail.aspx.cs">
       <DependentUpon>FilmDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -612,6 +615,7 @@
     <Content Include="user_assets\fonts\fontawesome-webfont.woff" />
     <Content Include="Account\Layouts\AccountLayout.Master" />
     <Content Include="Account\Active.ashx" />
+    <Content Include="Admin\FilmManagement\FilmDependentData.ashx" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -52,24 +52,25 @@
                     <asp:CustomValidator ID="cvReleaseDate" CssClass="text-red" runat="server"></asp:CustomValidator>
                 </div>
             </div>
+
             <div class="mb-3 text-center">
-                <asp:Button ID="btnSubmit" CssClass="btn btn-success" runat="server" Text="Tạo mới" />
+                <asp:Button ID="btnSubmit" CssClass="btn btn-success" OnClick="btnSubmit_Click" runat="server" Text="Tạo mới" />
             </div>
         </div>
     </div>
 
+    <% if (!isCreateAction)
+        { %>
     <div class="card mt-3">
         <div class="card-header">
             <span><strong>Chỉnh sửa thể loại</strong></span>
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <input list="filmList" name="film" id="filmInput" class="form-control">
-                <datalist id="filmList">
-                    <option value="Inception">
-                    <option value="Interstellar">
-                    <option value="Tenet">
-                </datalist>
+                <input name="film" id="searchCategory" class="form-control">
+                <ul id="categorySearchList" style="display: none; border: 1px solid #ccc; position: absolute; background: white; list-style: none; padding: 0; margin: 0; max-height: 150px; overflow-y: auto; width: 200px;">
+                    <li style="padding: 4px; cursor: pointer">a</li>
+                </ul>
             </div>
             <div class="table-responsive">
                 <table class="table">
@@ -106,7 +107,52 @@
         <div class="card-body">
         </div>
     </div>
+    <% } %>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="foot" runat="server">
+    <% if (!isCreateAction)
+        { %>
+    <script type="text/javascript">
+        const categorySearchList = document.getElementById('categorySearchList');
+        let timeoutId;
+        document.getElementById('searchCategory').addEventListener('input', function (e) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function () {
+                const searchText = e.target.value;
+
+                const formData = new FormData();
+                formData.append('action', 'loadCategories');
+                formData.append('categorySearchText', searchText);
+
+                fetch('<%= GetRouteUrl("Admin_FilmDependentData", null) %>', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(res => res.json())
+                    .then(execResult => {
+                        const paged = execResult.Data;
+
+                        if (paged.Items.length > 0) {
+                            categorySearchList.style.display = 'block';
+                            categorySearchList.innerText = '';
+
+                            for (let item of paged.Items) {
+                                let li = document.createElement("li");
+                                li.setAttribute('data-id', item.ID);
+                                li.setAttribute('class', 'category-search-item');
+                                li.addEventListener('click', function () {
+                                    const id = li.getAttribute('data-id');
+                                    __doPostBack("CategorySelected_Click", id);
+                                });
+                                li.innerText = item.Name;
+                                categorySearchList.appendChild(li);
+                            }
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }, 1000);
+        });
+    </script>
+    <% } %>
 </asp:Content>
