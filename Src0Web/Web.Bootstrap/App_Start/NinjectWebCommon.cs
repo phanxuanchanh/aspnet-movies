@@ -1,4 +1,4 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Web.App_Start.NinjectWebCommon), "Start")]
+﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Web.App_Start.NinjectWebCommon), "Stop")]
 
 namespace Web.App_Start
@@ -83,12 +83,15 @@ namespace Web.App_Start
 
             kernel.Bind<DBContextPool>()
                 .ToMethod(m => new DBContextPool()).InSingletonScope();
-            kernel.Bind<DBContextPoolHandle>().ToSelf().InRequestScope();
+
+            kernel.Bind<DBContextPoolHandle>().ToSelf()
+                .InRequestScope()
+                .OnDeactivation(a => a.Return());
 
             kernel.Bind<DBContext>().ToMethod(m =>
             {
                 DBContextPoolHandle handle = m.Kernel.Get<DBContextPoolHandle>();
-                return handle.Context;
+                return handle.Get();
             }).InTransientScope();
 
             kernel.Bind<AppSettingDao>().ToSelf().InRequestScope();

@@ -1,22 +1,18 @@
-﻿using System;
-
+﻿
 namespace Data.Context
 {
-    public class DBContextPoolHandle : IDisposable
+    public class DBContextPoolHandle
     {
         private readonly DBContextPool _contextPool;
-        public DBContext Context { get; }
-
+        private DBContext _context;
 
         public DBContextPoolHandle(DBContextPool contextPool)
         {
             _contextPool = contextPool;
-            Context = _contextPool.Acquire();
+            _context = _contextPool.Acquire();
         }
 
-        public void Dispose()
-        {
-            _contextPool.Release(Context);
-        }
+        public DBContext Get() => _context;
+        public void Return() => _contextPool.Release(_context);
     }
 }
