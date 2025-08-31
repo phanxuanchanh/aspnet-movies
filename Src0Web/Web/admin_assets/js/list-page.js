@@ -22,3 +22,15 @@ document.getElementById('selectAll').addEventListener('change', function (e) {
     const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
     checkboxes.forEach(cb => cb.checked = e.target.checked);
 });
+
+
+document.getElementById('btnDeleteSelected').addEventListener('click', () => {
+    const ids = Array.from(document.querySelectorAll('input[name="selected_ids[]"]:checked'))
+        .map(cb => cb.value);
+
+    if (ids.length === 0)
+        return alert('Chọn ít nhất 1 item');
+
+    const argument = ids.join(',');
+    __doPostBack('btnDeleteSelected_Click', argument);
+});

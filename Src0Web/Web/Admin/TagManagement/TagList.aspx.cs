@@ -27,9 +27,30 @@ namespace Web.Admin.TagManagement
             await SetTagTable();
         }
 
-        public void Page_LoadWithPostback(object sender, EventArgs e)
+        public async void Page_LoadWithPostback(object sender, EventArgs e)
         {
+            string eventTarget = Request["__EVENTTARGET"];
+            string eventArgument = Request["__EVENTARGUMENT"];
 
+            if (eventTarget == "btnDeleteSelected_Click")
+            {
+                await DeletedSelectedItems(eventArgument.Split(','));
+                await SetTagTable();
+            }
+        }
+
+        private async Task DeletedSelectedItems(params string[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+                return;
+
+            foreach (string strId in ids)
+            {
+                if (int.TryParse(strId, out int id))
+                {
+                    await TaxonomyService.DeleteAsync(id, forceDelete: false);
+                }
+            }
         }
 
         private void GetPagnationQuery()

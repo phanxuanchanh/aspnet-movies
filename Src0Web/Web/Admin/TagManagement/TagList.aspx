@@ -73,7 +73,7 @@
                                     Hàng loạt
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item text-danger border-top" href="#" onclick="bulkDelete();">Xóa</a></li>
+                                    <li><a class="dropdown-item text-danger border-top" href="#" id="btnDeleteSelected">Xóa</a></li>
                                 </ul>
                             </div>
                             <button class="btn btn-sm btn-warning">Thùng rác</button>

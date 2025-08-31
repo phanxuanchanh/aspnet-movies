@@ -105,9 +105,6 @@ namespace Data.Services
 
         public async Task<ExecResult<CategoryDto>> AddCategoryAsync(CreateCategoryDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<CategoryDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             Taxonomy taxonomy = new Taxonomy
             {
                 Name = input.Name,
@@ -169,9 +166,6 @@ namespace Data.Services
 
         public async Task<ExecResult<CategoryDto>> UpdateCategoryAsync(UpdateCategoryDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<CategoryDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             Taxonomy taxonomy = new Taxonomy
             {
                 Id = input.ID,
@@ -205,9 +199,6 @@ namespace Data.Services
 
         public async Task<ExecResult<TagDto>> UpdateTagAsync(UpdateTagDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<TagDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             Taxonomy taxonomy = new Taxonomy
             {
                 Id = input.ID,
@@ -241,11 +232,25 @@ namespace Data.Services
 
         public async Task<ExecResult> DeleteAsync(int id, bool forceDelete = false)
         {
-            int affected = await _taxonomyDao.DeleteAsync(x => x.Id == id);
-            if (affected <= 0)
-                return new ExecResult { Status = ExecStatus.NotFound, Message = "Taxonomy not found or deletion failed." };
+            Taxonomy taxonomy = await _taxonomyDao.GetAsync(x => x.Id == id);
+            if (taxonomy == null)
+                return ExecResult.NotFound("Taxonomy not found.");
 
-            return new ExecResult { Status = ExecStatus.Success, Message = "Taxonomy deleted successfully." };
+            if (forceDelete)
+            {
+                int affected = await _taxonomyDao.DeleteAsync(x => x.Id == id);
+                if (affected <= 0)
+                    return ExecResult.Failure("Taxonomy not found or deletion failed.");
+
+                return ExecResult.Success("Taxonomy deleted successfully.");
+            }
+
+            taxonomy.DeletedAt = DateTime.Now;
+            int updated = await _taxonomyDao.UpdateAsync(taxonomy, x => x.Id == id, s => new { s.DeletedAt });
+            if (updated <= 0)
+                return ExecResult.Failure("Failed to move taxonomy to trash.");
+
+            return ExecResult.Success("Taxonomy moved to trash.");
         }
     }
 }
