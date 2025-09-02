@@ -111,9 +111,6 @@ namespace Data.Services
 
         public async Task<ExecResult<DirectorDto>> AddDirectorAsync(CreateDirectorDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<DirectorDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             People person = new People
             {
                 Name = input.Name,
@@ -143,9 +140,6 @@ namespace Data.Services
 
         public async Task<ExecResult<ActorDto>> AddActorAsync(CreateActorDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<ActorDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             People person = new People
             {
                 Name = input.Name,
@@ -175,9 +169,6 @@ namespace Data.Services
 
         public async Task<ExecResult<DirectorDto>> UpdateDirectorAsync(UpdateDirectorDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<DirectorDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             People person = new People
             {
                 Id = input.ID,
@@ -210,9 +201,6 @@ namespace Data.Services
 
         public async Task<ExecResult<ActorDto>> UpdateActorAsync(UpdateActorDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<ActorDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             People person = new People
             {
                 Id = input.ID,

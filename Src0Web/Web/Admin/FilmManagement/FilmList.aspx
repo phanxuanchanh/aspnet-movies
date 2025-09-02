@@ -55,7 +55,7 @@
                                             <td><%# Eval("Name") %></td>
                                             <td>
                                                 <img src="<%# Eval("Thumbnail") %>" width="80" height="110" style="display: none" /></td>
-                                            <td></td>
+                                            <td><%# Eval("CreatedAt") %></td>
                                             <td>
                                                 <a class="btn btn-sm btn-success" href="<%# GetRouteUrl("Admin_FilmDetail", new { id = Eval("ID") }) %>">Chi tiết</a> | 
                                                 <a class="btn btn-sm btn-warning" href="<%# GetRouteUrl("Admin_EditFilm", new { id = Eval("ID"), action = "update"}) %>">Sửa</a> | 

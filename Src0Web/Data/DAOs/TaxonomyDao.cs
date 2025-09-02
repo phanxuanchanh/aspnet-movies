@@ -17,12 +17,12 @@ namespace Data.DAOs
 
         }
 
-        public async Task<List<Taxonomy>> GetsByIdsAsync(List<int> ids)
+        public async Task<List<Taxonomy>> GetsByIdsAsync(params int[] ids)
         {
             StringBuilder commandTextBuilder = new StringBuilder("SELECT * FROM Taxonomies WHERE Id IN (");
             //SqlParameter[] parameters = new SqlParameter[ids.Count];
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            for (int i = 0; i < ids.Count; i++)
+            for (int i = 0; i < ids.Length; i++)
             {
                 commandTextBuilder.Append($"@Id{i}, ");
                 //parameters[i] = new SqlParameter($"@Id{i}", ids[i]);

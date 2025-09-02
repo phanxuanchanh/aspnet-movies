@@ -53,7 +53,7 @@
                                                 <input type="checkbox" name="selected_ids[]" value="<%# Eval("ID") %>">
                                             </td>
                                             <td><%# Eval("Name") %></td>
-                                            <td></td>
+                                            <td><%# Eval("CreatedAt") %></td>
                                             <td>
                                                 <a class="btn btn-sm btn-success" href="<%# GetRouteUrl("Admin_ActorDetail", new { id = Eval("ID") }) %>">Chi tiết</a> | 
                                         <a class="btn btn-sm btn-warning" href="<%# GetRouteUrl("Admin_EditActor", new { id = Eval("ID"), action = "update"}) %>">Sửa</a> | 

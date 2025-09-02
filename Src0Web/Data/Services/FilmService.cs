@@ -159,7 +159,7 @@ namespace Data.Services
             if (links == null || links.Count == 0)
                 return new List<Taxonomy>();
 
-            List<int> taxonomyIds = links.Select(s => s.TaxonomyId).ToList();
+            int[] taxonomyIds = links.Select(s => s.TaxonomyId).ToArray();
             List<Taxonomy> taxonomies = await _taxonomyDao.GetsByIdsAsync(taxonomyIds);
             return taxonomies;
         }

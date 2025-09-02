@@ -13,11 +13,13 @@ namespace Data.Services
     public class TaxonomyService
     {
         private readonly TaxonomyDao _taxonomyDao;
+        private readonly TaxonomyLinkDao _taxonomyLinkDao;
         private readonly IMapper _mapper;
 
-        public TaxonomyService(TaxonomyDao taxonomyDao, IMapper mapper)
+        public TaxonomyService(TaxonomyDao taxonomyDao, TaxonomyLinkDao taxonomyLinkDao, IMapper mapper)
         {
             _taxonomyDao = taxonomyDao;
+            _taxonomyLinkDao = taxonomyLinkDao;
             _mapper = mapper;
         }
 
@@ -37,21 +39,10 @@ namespace Data.Services
         {
             Taxonomy taxonomy = await _taxonomyDao.GetAsync(x => x.Id == id);
             if (taxonomy == null)
-                return new ExecResult<TagDto> { Status = ExecStatus.NotFound, Message = "Tag not found." };
+                return ExecResult<TagDto>.NotFound("Tag not found.", null);
 
-            return new ExecResult<TagDto>
-            {
-                Status = ExecStatus.Success,
-                Message = "People retrieved successfully.",
-                Data = new TagDto
-                {
-                    ID = taxonomy.Id,
-                    Name = taxonomy.Name,
-                    Description = taxonomy.Description,
-                    CreatedAt = taxonomy.CreatedAt,
-                    UpdatedAt = taxonomy.UpdatedAt
-                }
-            };
+            TagDto tagDto = _mapper.Map<Taxonomy, TagDto>(taxonomy);
+            return ExecResult<TagDto>.Success("People retrieved successfully.", tagDto);
         }
 
         public async Task<PagedList<CategoryDto>> GetCategoriesAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
@@ -59,14 +50,8 @@ namespace Data.Services
             long skip = (pageIndex - 1) * pageSize;
             List<Taxonomy> taxonomies = await _taxonomyDao.GetManyAsync("category", skip, pageSize, searchText);
 
-            List<CategoryDto> categories = taxonomies.Select(s => new CategoryDto
-            {
-                ID = s.Id,
-                Name = s.Name,
-                Description = s.Description,
-                CreatedAt = s.CreatedAt,
-                UpdatedAt = s.UpdatedAt
-            }).ToList();
+            List<CategoryDto> categories = taxonomies
+                .Select(s => _mapper.Map<Taxonomy, CategoryDto>(s)).ToList();
 
             long totalItems = await _taxonomyDao.CountAsync("category");
 
@@ -79,18 +64,26 @@ namespace Data.Services
             };
         }
 
+        public async Task<List<CategoryDto>> GetCategoriesByFilmIdAsync(string filmId)
+        {
+            List<TaxonomyLink> taxonomyLinks = await _taxonomyLinkDao
+                .GetManyByFilmIdAsync(filmId);
+
+            if (taxonomyLinks == null || taxonomyLinks.Count == 0)
+                return new List<CategoryDto>();
+
+            int[] taxonomyIds = taxonomyLinks.Select(s => s.TaxonomyId).ToArray();
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetsByIdsAsync(taxonomyIds);
+
+            return taxonomies.Select(s => _mapper.Map<Taxonomy, CategoryDto>(s)).ToList();
+        }
+
         public async Task<PagedList<TagDto>> GetTagsAsync(long pageIndex = 1, long pageSize = 10, string searchText = null)
         {
             List<Taxonomy> taxonomies = await _taxonomyDao.GetManyAsync("tag", pageIndex, pageSize, searchText);
-
-            List<TagDto> tags = taxonomies.Select(s => new TagDto
-            {
-                ID = s.Id,
-                Name = s.Name,
-                Description = s.Description,
-                CreatedAt = s.CreatedAt,
-                UpdatedAt = s.UpdatedAt
-            }).ToList();
+            
+            List<TagDto> tags = taxonomies
+                .Select(s => _mapper.Map<Taxonomy, TagDto>(s)).ToList();
 
             long totalItems = await _taxonomyDao.CountAsync("tag");
 
@@ -101,6 +94,20 @@ namespace Data.Services
                 CurrentPage = pageIndex,
                 TotalItems = totalItems
             };
+        }
+
+        public async Task<List<TagDto>> GetTagsByFilmIdAsync(string filmId)
+        {
+            List<TaxonomyLink> taxonomyLinks = await _taxonomyLinkDao
+                .GetManyByFilmIdAsync(filmId);
+
+            if (taxonomyLinks == null || taxonomyLinks.Count == 0)
+                return new List<TagDto>();
+
+            int[] taxonomyIds = taxonomyLinks.Select(s => s.TaxonomyId).ToArray();
+            List<Taxonomy> taxonomies = await _taxonomyDao.GetsByIdsAsync(taxonomyIds);
+
+            return taxonomies.Select(s => _mapper.Map<Taxonomy, TagDto>(s)).ToList();
         }
 
         public async Task<ExecResult<CategoryDto>> AddCategoryAsync(CreateCategoryDto input)
@@ -115,28 +122,14 @@ namespace Data.Services
 
             int affected = await _taxonomyDao.AddAsync(taxonomy);
             if (affected <= 0)
-                return new ExecResult<CategoryDto> { Status = ExecStatus.Failure, Message = "Failed to add category." };
+                return ExecResult<CategoryDto>.Failure("Failed to add category.", null);
 
-            return new ExecResult<CategoryDto>
-            {
-                Status = ExecStatus.Success,
-                Message = "Category added successfully.",
-                Data = new CategoryDto
-                {
-                    ID = taxonomy.Id,
-                    Name = taxonomy.Name,
-                    Description = taxonomy.Description,
-                    CreatedAt = taxonomy.CreatedAt,
-                    UpdatedAt = taxonomy.UpdatedAt
-                }
-            };
+            CategoryDto categoryDto = _mapper.Map<Taxonomy, CategoryDto>(taxonomy);
+            return ExecResult<CategoryDto>.Success("Category added successfully.", categoryDto);
         }
 
         public async Task<ExecResult<TagDto>> AddTagAsync(CreateTagDto input)
         {
-            if (string.IsNullOrEmpty(input.Name))
-                return new ExecResult<TagDto> { Status = ExecStatus.Invalid, Message = "Name is required." };
-
             Taxonomy taxonomy = new Taxonomy
             {
                 Name = input.Name,
@@ -147,21 +140,10 @@ namespace Data.Services
 
             int affected = await _taxonomyDao.AddAsync(taxonomy);
             if (affected <= 0)
-                return new ExecResult<TagDto> { Status = ExecStatus.Failure, Message = "Failed to add actor." };
+                return ExecResult<TagDto>.Failure("Failed to add actor.", null);
 
-            return new ExecResult<TagDto>
-            {
-                Status = ExecStatus.Success,
-                Message = "Actor added successfully.",
-                Data = new TagDto
-                {
-                    ID = taxonomy.Id,
-                    Name = taxonomy.Name,
-                    Description = taxonomy.Description,
-                    CreatedAt = taxonomy.CreatedAt,
-                    UpdatedAt = taxonomy.UpdatedAt
-                }
-            };
+            TagDto tagDto = _mapper.Map<Taxonomy, TagDto>(taxonomy);
+            return ExecResult<TagDto>.Success("Actor added successfully.", tagDto);
         }
 
         public async Task<ExecResult<CategoryDto>> UpdateCategoryAsync(UpdateCategoryDto input)
@@ -180,21 +162,10 @@ namespace Data.Services
                 x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
 
             if (affected <= 0)
-                return new ExecResult<CategoryDto> { Status = ExecStatus.Failure, Message = "Failed to update category." };
+                return ExecResult<CategoryDto>.Failure("Failed to update category.", null);
 
-            return new ExecResult<CategoryDto>
-            {
-                Status = ExecStatus.Success,
-                Message = "Category updated successfully.",
-                Data = new CategoryDto
-                {
-                    ID = taxonomy.Id,
-                    Name = taxonomy.Name,
-                    Description = taxonomy.Description,
-                    CreatedAt = taxonomy.CreatedAt,
-                    UpdatedAt = taxonomy.UpdatedAt
-                }
-            };
+            CategoryDto categoryDto = _mapper.Map<Taxonomy, CategoryDto>(taxonomy);
+            return ExecResult<CategoryDto>.Success("Category updated successfully.", categoryDto);
         }
 
         public async Task<ExecResult<TagDto>> UpdateTagAsync(UpdateTagDto input)
@@ -213,21 +184,10 @@ namespace Data.Services
                 x => x.Id == input.ID, s => new { s.Name, s.Description, s.UpdatedAt });
 
             if (affected <= 0)
-                return new ExecResult<TagDto> { Status = ExecStatus.Failure, Message = "Failed to update tag." };
+                return ExecResult<TagDto>.Failure("Failed to update tag.", null);
 
-            return new ExecResult<TagDto>
-            {
-                Status = ExecStatus.Success,
-                Message = "Tag updated successfully.",
-                Data = new TagDto
-                {
-                    ID = taxonomy.Id,
-                    Name = taxonomy.Name,
-                    Description = taxonomy.Description,
-                    CreatedAt = taxonomy.CreatedAt,
-                    UpdatedAt = taxonomy.UpdatedAt
-                }
-            };
+            TagDto tagDto = _mapper.Map<Taxonomy, TagDto>(taxonomy);
+            return ExecResult<TagDto>.Success("Tag updated successfully.", tagDto);
         }
 
         public async Task<ExecResult> DeleteAsync(int id, bool forceDelete = false)

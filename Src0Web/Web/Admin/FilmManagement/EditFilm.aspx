@@ -73,22 +73,27 @@
                 </ul>
             </div>
             <div class="table-responsive">
-                <table class="table">
-                    <thead>
+                <table class="table table-bordered table-hover">
+                    <thead class="table-warning">
                         <tr>
-                            <th>ID</th>
-                            <td>Tên thể loại</td>
+                            <th>Tên thể loại</th>
+                            <th>Xóa</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <asp:Repeater ID="rptCategories" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td><%# Eval("Name") %></td>
+                                    <td>
+                                        <asp:LinkButton CssClass="btn btn-sm btn-danger" ID="lnkDelete" runat="server" OnCommand="lnkCategoryDelete_Command" CommandArgument='<%# Eval("ID").ToString() %>'>Xóa</asp:LinkButton>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 
@@ -97,6 +102,34 @@
             <span><strong>Chỉnh sửa thẻ tag</strong></span>
         </div>
         <div class="card-body">
+            <div class="mb-3">
+                <input name="film" id="searchTag" class="form-control">
+                <ul id="tagSearchList" style="display: none; border: 1px solid #ccc; position: absolute; background: white; list-style: none; padding: 0; margin: 0; max-height: 150px; overflow-y: auto; width: 200px;">
+                    <li style="padding: 4px; cursor: pointer">a</li>
+                </ul>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-warning">
+                        <tr>
+                            <th>Tên thẻ tag</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="rptTags" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td><%# Eval("Name") %></td>
+                                    <td>
+                                        <asp:LinkButton CssClass="btn btn-sm btn-danger" ID="lnkDelete" runat="server" OnCommand="lnkTagDelete_Command" CommandArgument='<%# Eval("ID").ToString() %>'>Xóa</asp:LinkButton>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

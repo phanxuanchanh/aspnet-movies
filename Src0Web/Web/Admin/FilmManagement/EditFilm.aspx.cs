@@ -1,6 +1,7 @@
 ﻿using Data.DTO;
 using Data.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Shared.Result;
 
@@ -8,11 +9,10 @@ namespace Web.Admin.FilmManagement
 {
     public partial class EditFilm : AdminPage, IPostbackAwarePage
     {
-        private FilmMetadataService _filmMetaService;
         protected ExecResult<FilmDto> commandResult;
         protected bool isCreateAction;
 
-        protected async void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             string action = Request.QueryString["action"];
             if (string.IsNullOrEmpty(action))
@@ -26,16 +26,25 @@ namespace Web.Admin.FilmManagement
             isCreateAction = action == "create";
             btnSubmit.Text = isCreateAction ? "Create" : "Update";
 
-            _filmMetaService = Inject<FilmMetadataService>();
-
             hyplnkList.NavigateUrl = GetRouteUrl("Admin_FilmList", null);
             InitValidation();
         }
 
         public async void Page_LoadNoPostback(object sender, EventArgs e)
         {
-            if (!isCreateAction)
-                await LoadFilm(Request.QueryString["Id"]);
+            if (isCreateAction)
+                return;
+
+            string filmId = GetId<string>(fromQueryString: true);
+            if (string.IsNullOrEmpty(filmId))
+            {
+                Response.ForceRedirectToRoute(this, "Admin_FilmList", null);
+                return;
+            }
+
+            await LoadFilm(filmId);
+            await LoadCategories(filmId);
+            await LoadTags(filmId);
         }
 
         public async void Page_LoadWithPostback(object sender, EventArgs e)
@@ -45,23 +54,23 @@ namespace Web.Admin.FilmManagement
 
             string target = Request["__EVENTTARGET"];
             string argument = Request["__EVENTARGUMENT"];
+            string filmId = hdFilmId.Value;
+
             if (target == "CategorySelected_Click" && !string.IsNullOrEmpty(argument))
             {
-                string filmId = hdFilmId.Value;
                 string categoryId = argument;
+                await LoadCategories(filmId);
+            }
 
-                await Task.CompletedTask;
+            if(target == "TagSelected_Click" && !string.IsNullOrEmpty(argument))
+            {
+                string tagId = argument;
+                await LoadTags(filmId);
             }
         }
 
         private async Task LoadFilm(string id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                Response.RedirectToRoute("Admin_FilmList", null);
-                return;
-            }
-
             FilmService filmService = Inject<FilmService>();
 
             ExecResult<FilmDto> result = await filmService.GetFilmAsync(id);
@@ -79,12 +88,44 @@ namespace Web.Admin.FilmManagement
             }
         }
 
+        private async Task LoadCategories(string filmId)
+        {
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+            List<CategoryDto> categories = await taxonomyService
+                .GetCategoriesByFilmIdAsync(filmId);
+
+            rptCategories.DataSource = categories;
+            rptCategories.DataBind();
+        }
+
+        private async Task LoadTags(string filmId)
+        {
+            TaxonomyService taxonomyService = Inject<TaxonomyService>();
+            List<CategoryDto> categories = await taxonomyService
+                .GetCategoriesByFilmIdAsync(filmId);
+
+            rptTags.DataSource = categories;
+            rptTags.DataBind();
+        }
+
         protected async void btnSubmit_Click(object sender, EventArgs e)
         {
             if (isCreateAction)
                 await Create();
             else
                 await Update();
+        }
+        
+        protected void lnkCategoryDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
+        {
+            string categoryId = e.CommandArgument.ToString();
+
+        }
+
+        protected void lnkTagDelete_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)
+        {
+            string tagId = e.CommandArgument.ToString();
+
         }
 
         private void InitValidation()
